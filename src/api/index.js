@@ -1,7 +1,7 @@
 import * as pub from './pub';
-import * as notice from './notice';
+import * as member from './member';
 
 export default {
-	...pub,
-  ...notice
+    ...pub,
+    ...member
 }

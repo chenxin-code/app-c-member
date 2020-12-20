@@ -1,0 +1,31 @@
+import nav from '@zkty-team/x-engine-module-nav';
+
+export default {
+    //是否为移动端 false不是，true 是
+    isPhone: false,
+    formatData: function(data) {
+        var returnData = data;
+        var paramsStr = '';
+        if (this.isPhone == true) {
+            //拼接参数
+            for (var k in returnData) {
+                paramsStr = paramsStr + k + '=' + returnData[k] + '&'
+            }
+            paramsStr = paramsStr.substr(0, paramsStr.length - 1)
+            returnData = encodeURI(paramsStr);
+        }
+        return returnData;
+    },
+    router: function(self, path, data) {
+        var par = {};
+        par[this.isPhone == true ? 'url' : 'path'] = path;
+        if (data != undefined) {
+            par[this.isPhone == true ? 'params' : 'query'] = this.formatData(data);
+        }
+        if (this.isPhone) {
+            nav.navigatorPush(par);
+        } else {
+            self.$router.push(par)
+        }
+    }
+}
