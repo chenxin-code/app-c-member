@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="page-head" :class="getPageClass(memberObject.memberCardRelats[0].levelId)">
+    <div class="page-head" :class="getPageClass(memberObject==null?'':memberObject.memberCardRelats[0].levelId)">
       <div class="option">
         <div class="btn-return"></div>
         <div class="updataDeital">如何升级</div>
@@ -8,10 +8,10 @@
       <div class="memberDetial">
         <div class="memberDetial-body">
           <div class="leveName"></div>
-          <did class="cz-number-body" @click="goProwthValue">
+          <div class="cz-number-body" @click="goProwthValue">
             当前成长值
-            <div class="cz-number">{{memberObject.memberCardRelats[0].grow}}</div>
-          </did>
+            <div class="cz-number">{{memberObject==null?'':memberObject.memberCardRelats[0].grow}}</div>
+          </div>
           <div class="progressBar">
             <div class="bg"></div>
             <div class="progres" :style="{width:differencePercentage*100+'%'}"></div>
@@ -33,27 +33,15 @@
       <div>
         <div class="Bangdou-body">
           <div class="Bangdou" @click="IntegralRecord">我的邦豆<span class="num">{{integral}}</span></div>
-          <div>全部领取</div>
+          <div v-if="integralRecordData.length>0" @click="receiveAll">全部领取</div>
         </div>
       </div>
-      <div>
+      <div v-if="integralRecordData.length>0">
         <div class="notReceived">
-          <div class="notReceivedNode">
-            <div class="integralChange">100</div>
+          <div @click="receive(item)" v-for="(item,index) in integralRecordData" :key="index" class="notReceivedNode">
+            <div class="integralChange"> {{item.integralChange}}</div>
             <div class="sourceType">
-              临停缴费
-            </div>
-          </div>
-          <div class="notReceivedNode">
-            <div class="integralChange">100</div>
-            <div class="sourceType">
-              临停缴费
-            </div>
-          </div>
-          <div class="notReceivedNode">
-            <div class="integralChange">100</div>
-            <div class="sourceType">
-              临停缴费
+              {{item.behaviourName}}
             </div>
           </div>
         </div>
@@ -67,32 +55,38 @@
         </div>
       </div>
       <div class="task-list-body">
-        <div class="task-node">
-          <div class="task-left">
-            <div class="title">每日阅读精彩内容</div>
-            <div class="explain">单日最高可得300积分</div>
-          </div>
-          <div class="task-right">
-            <div class="btn red">领取</div>
-          </div>
+        <div v-if="taskList.length<=0" class="dataMessage">
+          <div class="icon"></div>
+          <div class="message">暂无任务</div>
         </div>
-        <div class="task-node">
-          <div class="task-left">
-            <div class="title">每日阅读精彩内容</div>
-            <div class="explain">单日最高可得300积分</div>
+        <div v-if="taskList.length>0">
+          <div class="task-node" v-for="(item,index) in taskList" :key="index">
+            <div class="task-left">
+              <div class="title">{{item.taskName}}</div>
+              <div class="explain">{{item.taskCondition}}</div>
+            </div>
+            <!-- <div class="task-right">
+              <div class="btn red">领取</div>
+            </div> -->
           </div>
-          <div class="task-right">
-            <div class="btn red">去完成</div>
+          <!-- <div class="task-node">
+            <div class="task-left">
+              <div class="title">每日阅读精彩内容</div>
+              <div class="explain">单日最高可得300积分</div>
+            </div>
+            <div class="task-right">
+              <div class="btn red">去完成</div>
+            </div>
           </div>
-        </div>
-        <div class="task-node">
-          <div class="task-left">
-            <div class="title">每日阅读精彩内容</div>
-            <div class="explain">单日最高可得300积分</div>
-          </div>
-          <div class="task-right">
-            <div class="btn red disable">已完成</div>
-          </div>
+          <div class="task-node">
+            <div class="task-left">
+              <div class="title">每日阅读精彩内容</div>
+              <div class="explain">单日最高可得300积分</div>
+            </div>
+            <div class="task-right">
+              <div class="btn red disable">已完成</div>
+            </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -108,10 +102,15 @@ export default {
       currentLeve: 1,
       beginTitle: '',
       endTitle: '',
+      taskList: [],
       difference: 0,
       classTypeName: '',
       integral: 0,
       memberId: '',
+      userPhone: '13800008888',
+      phoneArea: '81',
+      differencePercentage: 0,
+      integralRecordData: [],
       memberObject: null,
     }
   },
@@ -125,11 +124,36 @@ export default {
     })
   },
   methods: {
+    //领取全部
+    receiveAll: function () {
+      const par = {
+        memberId: this.memberId,
+      }
+      api.integralRecordReceiveAll(par).then((res) => {
+        if (res.code == 200) {
+          this.$toast.clear()
+          this.getMemberDetial()
+        }
+      })
+    },
+    //领取一个
+    receive: function (item) {
+      const par = {
+        memberId: this.memberId,
+        recordId: item.id,
+      }
+      api.integralRecordReceive(par).then((res) => {
+        if (res.code == 200) {
+          this.$toast.clear()
+          this.getMemberDetial()
+        }
+      })
+    },
     IntegralRecord: function () {
-      this.$routeHelper.router(this, '/IntegralRecord')
+      this.$routeHelper.router(this, '/IntegralRecord',{totalNumber:this.integral})
     },
     goProwthValue: function () {
-      this.$routeHelper.router(this, '/growthValueRecord')
+      this.$routeHelper.router(this, '/growthValueRecord',{totalNumber:this.memberObject.memberCardRelats[0].grow})
     },
     getPageClass: function (currentLeve) {
       let classTypeName = ''
@@ -166,6 +190,7 @@ export default {
       this.endTitle = 'V2'
       this.integral = sourceData.integral
       this.memberId = sourceData.memberId
+      this.currentLeve = sourceData.memberCardRelats[0].levelId
       this.difference =
         sourceData.memberCardRelats[0].rangeEnd -
         sourceData.memberCardRelats[0].grow
@@ -173,10 +198,11 @@ export default {
         sourceData.memberCardRelats[0].grow /
         sourceData.memberCardRelats[0].rangeEnd
       this.integralRecord(this.memberId)
+      this.getMyTaskListByMember(this.memberId)
       this.$forceUpdate()
     },
     getUserInfo: function () {
-      this.getMemberDetial('13800008888', '81')
+      this.getMemberDetial()
       // api.getUserInfo().then((res) => {
       //   if (res.code == 200) {
       //     this.$toast.clear()
@@ -195,22 +221,32 @@ export default {
       api.integralRecord(par).then((res) => {
         if (res.code == 200) {
           this.$toast.clear()
-          this.memberObject = res.data
-          this.currentLeve = res.data.memberCardRelats[0].levelId
-          this.pageInitial(res.data)
+          this.integralRecordData = res.data.records
         }
       })
     },
-    getMemberDetial: function (phone, phoneArea) {
+    getMyTaskListByMember: function (memberID) {
       const par = {
-        phoneArea: phoneArea,
-        phone: phone,
+        pageIndex: 1,
+        pageSize: 3,
+        memberId: memberID,
+      }
+      api.getMyTaskListByMember(par).then((res) => {
+        if (res.code == 200) {
+          this.$toast.clear()
+          this.taskList = res.data.records
+        }
+      })
+    },
+    getMemberDetial: function () {
+      const par = {
+        phoneArea: this.phoneArea,
+        phone: this.userPhone,
       }
       api.memberDetailByPhone(par).then((res) => {
         if (res.code == 200) {
           this.$toast.clear()
           this.memberObject = res.data
-          this.currentLeve = res.data.memberCardRelats[0].levelId
           this.pageInitial(res.data)
         }
       })
@@ -219,7 +255,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.page-body {
+  padding-top: 282px;
+}
 .page-head {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 6666;
   width: 100%;
   height: 282px;
   background-size: 100% 100%;
@@ -497,7 +540,7 @@ export default {
 }
 
 .page-body {
-  padding: 0px 16px 16px 16px;
+  padding: 282px 16px 16px 16px;
 }
 .page-body .Bangdou-body {
   display: flex;
@@ -529,7 +572,7 @@ export default {
   flex-flow: column;
   width: 96px;
   height: 58px;
-  padding-left: 47px;
+  padding-left: 44px;
   padding-top: 12px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -602,6 +645,9 @@ export default {
   background-size: 16px 16px;
   background-repeat: no-repeat;
   background-image: url('../assets/img/member/icon-biaoshi.png');
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .btn.red {
@@ -628,6 +674,24 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #d8d8d8;
+}
+.dataMessage {
+  .icon {
+    width: 100%;
+    height: 200px;
+    margin-top: 10px;
+    background-position: center center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url('../assets/img/icon-nodata.png');
+  }
+  .message {
+    text-align: center;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #8d8d8d;
+  }
 }
 </style>
 

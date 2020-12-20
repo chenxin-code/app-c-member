@@ -9,36 +9,51 @@
           成长值
         </div>
         <div class="number">
-          2394
+          {{totalNumber}}
         </div>
       </div>
     </div>
-    <div>
+    <div class="page-body">
       <div class="task-list-body">
-        <div class="task-node" v-for="(item,index) in dataSource" :key="index">
-          <div class="task-left">
-            <div class="title">behaviourName</div>
-            <div class="explain">{{item.createTime}}</div>
-          </div>
-          <div class="task-right">
-            <div>+{{item.growthChange}}</div>
-          </div>
-        </div>
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+          <van-list v-model="loading" :finished="finished" :offset="10" finished-text="没有更多了" @load="onLoad">
+            <template v-slot:default>
+              <div class="task-node" v-for="(item,index) in dataSource" :key="index">
+                <div class="task-left">
+                  <div class="title">{{item.behaviourName}}</div>
+                  <div class="explain">{{item.createTime|timeFormat}}</div>
+                </div>
+                <div class="task-right">
+                  <div>+{{item.growthChange}}</div>
+                </div>
+              </div>
+            </template>
+          </van-list>
+        </van-pull-refresh>
       </div>
     </div>
   </div>
 </template>
 <script>
+/* eslint-disable */
 import nav from '@zkty-team/x-engine-module-nav'
 import api from '@/api'
-// import * as moment from 'moment'
+import * as moment from 'moment'
 
 export default {
   data() {
-    return {}
+    return {
+      totalNumber: 0,
+      pageIndex: 0,
+      pageSize: 5,
+      loading: false,
+      finished: false,
+      refreshing: false,
+      dataSource: [],
+    }
   },
   created() {
-    this.getMemberGrownLogListUsingGET(1)
+    this.totalNumber = this.$route.query.totalNumber
   },
   mounted() {
     nav.setNavBarHidden({
@@ -47,11 +62,54 @@ export default {
     })
   },
   filters: {
-    timeFormat: function () {
-      return 1212
+    timeFormat: function (value) {
+      return moment(value).format('YYYY-MM-DD HH:mm:ss')
     },
   },
   methods: {
+    onLoad() {
+      this.pageIndex = this.pageIndex + 1
+      const par = {
+        memberId: 1,
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize,
+      }
+
+      if (this.total != null && this.dataSource.length >= this.total) {
+        this.finished = true
+        this.loading = false
+        return false
+      }
+
+      api.getMemberGrownLogListUsingGET(par).then((res) => {
+        if (res.code == 200) {
+          this.$toast.clear()
+          this.total = res.data.total
+          if (this.refreshing) {
+            this.dataSource = []
+            this.refreshing = false
+          }
+          for (let i = 0; i < res.data.records.length; i++) {
+            this.dataSource.push(res.data.records[i])
+          }
+          this.loading = false
+          if (this.dataSource.length >= res.data.total) {
+            this.finished = true
+          }
+        }
+      })
+    },
+    onRefresh() {
+      // 清空列表数据
+      this.dataSource = []
+      this.pageIndex = 0
+      ;(this.total = null), (this.finished = false)
+
+      // 重新加载数据
+      // 将 loading 设置为 true，表示处于加载状态
+      this.loading = true
+      this.onLoad()
+    },
     getMemberGrownLogListUsingGET: function (memberId) {
       const par = {
         memberId: memberId,
@@ -69,7 +127,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.page-body {
+  padding-top: 244px;
+}
 .page-head {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 6666;
   width: 100%;
   height: 244px;
   background-size: 100% 100%;

@@ -9,61 +9,153 @@
           我已连续签到
         </div>
         <div class="number">
-          <div class="bg">2</div>
+          <div class="bg">{{count}}</div>
           <div class="days">天</div>
         </div>
       </div>
     </div>
-    <div class="page-body">
+    <div class="page-body" v-if="taskVoList!=null">
       <div class="form-body">
-        <div class="form-body-node">
-          <div class="">
-            10<span>邦豆</span>
+        <div class="form-body-node signlnBtn" :class="{'currentDay':count+1==1&&taskVoList[0].complete==false,'active':taskVoList[0].complete}">
+          <div class="awardIntegral">
+            <div v-if="count+1==1">
+              神秘宝箱
+            </div>
+            <div v-if="count+1!=1">
+              {{taskVoList[0].awardIntegral}}<span>邦豆</span>
+            </div>
           </div>
-          <div class="node-logo">
-
-          </div>
-          <div class="">
-            1<span>天</span>
+          <div class="node-logo"></div>
+          <div class="today">
+            <div v-if="count+1==1">
+              今天
+            </div>
+            <div v-if="count+1!=1">
+              1<span>天</span>
+            </div>
           </div>
         </div>
-        <div class="form-body-node">
-
+        <div class="form-body-node signlnBtn" :class="{'currentDay':count+1==2&&taskVoList[1].complete==false,'active':taskVoList[1].complete}">
+          <div class="awardIntegral">
+            {{taskVoList[1].awardIntegral}}<span>邦豆</span>
+          </div>
+          <div class="node-logo"></div>
+          <div class="today">
+            <div v-if="count+1==2">
+              今天
+            </div>
+            <div v-if="count+1!=2">
+              2<span>天</span>
+            </div>
+          </div>
         </div>
-        <div class="form-body-node">
-
+        <div class="form-body-node signlnBtn day3" :class="{'currentDay':count+1==3&&taskVoList[2].complete==false,'active':taskVoList[2].complete}">
+          <div class="awardIntegral">
+            神秘宝箱
+          </div>
+          <div class="node-logo"></div>
+          <div class="today">
+            <div v-if="count+1==3">
+              今天
+            </div>
+            <div v-if="count+1!=3">
+              3<span>天</span>
+            </div>
+          </div>
         </div>
-        <div class="form-body-node">
-
+        <div class="form-body-node signlnBtn" :class="{'currentDay':count+1==4&&taskVoList[3].complete==false,'active':taskVoList[3].complete}">
+          <div class="awardIntegral">
+            <div v-if="count+1==4">
+              神秘宝箱
+            </div>
+            <div v-if="count+1!=4">
+              {{taskVoList[3].awardIntegral}}<span>邦豆</span>
+            </div>
+          </div>
+          <div class="node-logo"></div>
+          <div class="today">
+            <div v-if="count+1==4">
+              今天
+            </div>
+            <div v-if="count+1!=4">
+              4<span>天</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="form-body">
-        <div class="form-body-node">
-
+        <div class="form-body-node signlnBtn" :class="{'currentDay':count+1==5&&taskVoList[4].complete==false,'active':taskVoList[4].complete}">
+          <div class="awardIntegral">
+            <div v-if="count+1==5">
+              神秘宝箱
+            </div>
+            <div v-if="count+1!=5">
+              {{taskVoList[4].awardIntegral}}<span>邦豆</span>
+            </div>
+          </div>
+          <div class="node-logo"></div>
+          <div class="today">
+            <div v-if="count+1==5">
+              今天
+            </div>
+            <div v-if="count+1!=5">
+              5<span>天</span>
+            </div>
+          </div>
         </div>
-        <div class="form-body-node">
-
+        <div class="form-body-node signlnBtn" :class="{'currentDay':count+1==6&&taskVoList[5].complete==false,'active':taskVoList[5].complete}">
+          <div class="awardIntegral">
+            <div v-if="count+1==6">
+              神秘宝箱
+            </div>
+            <div v-if="count+1!=6">
+              {{taskVoList[5].awardIntegral}}<span>邦豆</span>
+            </div>
+          </div>
+          <div class="node-logo"></div>
+          <div class="today">
+            <div v-if="count+1==6">
+              今天
+            </div>
+            <div v-if="count+1!=6">
+              6<span>天</span>
+            </div>
+          </div>
         </div>
-        <div class="form-body-node">
-
+        <div class="form-body-node signlnBtn day7">
+          <div class="awardIntegral">
+            <!-- {{taskVoList[6].awardIntegral}}<span>邦豆</span> -->
+            神秘豪礼
+          </div>
+          <div class="node-logo"></div>
+          <div class="today">
+            7<span>天</span>
+          </div>
         </div>
-        <div class="form-body-node"
-             style="  visibility: hidden;">
+        <div class="form-body-node" style="  visibility: hidden;">
 
         </div>
       </div>
+    </div>
+    <div class="btn-body">
+      <div class="btn" @click="signln">签到</div>
     </div>
   </div>
 </template>
 <script>
 import nav from '@zkty-team/x-engine-module-nav'
 import api from '@/api'
+import * as moment from 'moment'
 export default {
   data() {
-    return {}
+    return {
+      memberId: 1,
+      count: 0,
+      taskVoList: null,
+    }
   },
   created() {
-    this.getSignTasklistUsingget(1)
+    this.getSignTasklistUsingget(this.memberId)
   },
   mounted() {
     nav.setNavBarHidden({
@@ -72,6 +164,25 @@ export default {
     })
   },
   methods: {
+    signln: function () {
+      const par = {
+        behaviourId: 10,
+        clientCode: 'sys_linlibang',
+        createTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+        mapPamater: {
+          sign: moment().format('YYYY-MM-DD HH:mm:ss'),
+        },
+        memberId: this.memberId,
+      }
+
+      console.log(JSON.stringify(par))
+      api.collectUsingPOST(par).then((res) => {
+        if (res.code == 200) {
+          this.$toast.clear()
+          this.getSignTasklistUsingget(this.memberId)
+        }
+      })
+    },
     getSignTasklistUsingget: function (memberId) {
       const par = {
         memberId: memberId,
@@ -80,6 +191,8 @@ export default {
         if (res.code == 200) {
           this.$toast.clear()
           console.log(res)
+          this.taskVoList = res.data.taskVoList
+          this.count = res.data.count
         }
       })
     },
@@ -87,6 +200,21 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.btn-body {
+  padding: 0px 16px;
+  .btn {
+    height: 42px;
+    line-height: 42px;
+    background: linear-gradient(180deg, #ff8381 0%, #e8374a 100%);
+    border-radius: 26px;
+    text-align: center;
+    font-size: 18px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #ffffff;
+  }
+}
+
 .page-head {
   width: 100%;
   height: 244px;
@@ -106,8 +234,6 @@ export default {
       background-repeat: no-repeat;
       background-image: url('../assets/img/member/icon-a-left.png');
     }
-  }
-  .title-body {
   }
   .title-body .title {
     width: 100%;
@@ -158,11 +284,96 @@ export default {
     height: 100px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url('../assets/img/member/icon-bj-sing-1.png');
     margin-right: 12px;
   }
   .form-body-node:last-child {
     margin-right: 0px;
+  }
+}
+
+.signlnBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../assets/img/member/icon-bj-sing-1.png');
+  .awardIntegral {
+    width: 100%;
+    position: absolute;
+    top: 8px;
+    text-align: center;
+    font-size: 20px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #e8374a;
+  }
+  .awardIntegral span {
+    font-size: 10px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #e8374a;
+  }
+  .today {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+    vertical-align: baseline;
+  }
+  .node-logo {
+    width: 30px;
+    height: 30px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url('../assets/img/member/icon-signln-1.png');
+  }
+}
+
+.day3 {
+  .awardIntegral {
+    font-size: 12px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #121212;
+  }
+  .node-logo {
+    width: 67px;
+    height: 30px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url('../assets/img/member/icon-signln-3.png');
+  }
+}
+
+.day7 {
+  .awardIntegral {
+    font-size: 12px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #121212;
+  }
+  .node-logo {
+    width: 67px;
+    height: 30px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url('../assets/img/member/icon-signln-3.png');
+  }
+}
+.active {
+  background-image: url('../assets/img/member/icon-bj-sing-2.png');
+}
+.currentDay {
+  background-image: url('../assets/img/member/icon-bj-sing-3.png');
+  // .awardIntegral {
+  //   font-size: 12px;
+  //   font-family: PingFangSC-Medium, PingFang SC;
+  //   font-weight: 500;
+  //   color: #121212;
+  // }
+  .today {
+    color: #ffffff;
   }
 }
 </style>
