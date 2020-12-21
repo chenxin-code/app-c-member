@@ -150,7 +150,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .page-body {
-  padding-top: 244px;
+  padding-top: 264px;
 }
 .page-head {
   position: fixed;
@@ -196,7 +196,7 @@ export default {
   }
   .totonumber {
     position: absolute;
-    bottom: 10px;
+    bottom: -10px;
   }
 }
 
@@ -238,6 +238,8 @@ export default {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #121212;
+  background-color: #fff;
+  padding-bottom: 10px;
   span {
     margin-left: 10px;
     color: red;

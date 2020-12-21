@@ -16,54 +16,49 @@
     </div>
     <div class="page-body" v-if="taskVoList!=null">
       <div class="form-body">
-        <div class="form-body-node signlnBtn" :class="{'currentDay':count+1==1&&taskVoList[0].complete==false,'active':taskVoList[0].complete}">
+        <div class="form-body-node signlnBtn" :class="{'active':taskVoList[0].complete}">
           <div class="awardIntegral">
-            <div v-if="count+1==1">
-              神秘宝箱
-            </div>
-            <div v-if="count+1!=1">
-              {{taskVoList[0].awardIntegral}}<span>邦豆</span>
-            </div>
+            {{taskVoList[0].awardIntegral}}<span>邦豆</span>
           </div>
           <div class="node-logo"></div>
           <div class="today">
-            <div v-if="count+1==1">
+            <div v-if="count==0||count==1">
               今天
             </div>
-            <div v-if="count+1!=1">
-              1<span>天</span>
+            <div v-if="count!=0">
+              {{taskVoList[1].day}}<span>天</span>
             </div>
           </div>
         </div>
-        <div class="form-body-node signlnBtn" :class="{'currentDay':count+1==2&&taskVoList[1].complete==false,'active':taskVoList[1].complete}">
+        <div class="form-body-node signlnBtn" :class="{'active':taskVoList[1].complete}">
           <div class="awardIntegral">
             {{taskVoList[1].awardIntegral}}<span>邦豆</span>
           </div>
           <div class="node-logo"></div>
           <div class="today">
-            <div v-if="count+1==2">
+            <div v-if="taskVoList[count-1].day==2">
               今天
             </div>
-            <div v-if="count+1!=2">
-              2<span>天</span>
+            <div v-if="taskVoList[count-1].day!=2">
+              {{taskVoList[1].day}}<span>天</span>
             </div>
           </div>
         </div>
-        <div class="form-body-node signlnBtn day3" :class="{'currentDay':count+1==3&&taskVoList[2].complete==false,'active':taskVoList[2].complete}">
+        <div class="form-body-node signlnBtn day3" :class="{'active':taskVoList[2].complete}">
           <div class="awardIntegral">
             神秘宝箱
           </div>
           <div class="node-logo"></div>
           <div class="today">
-            <div v-if="count+1==3">
+            <div v-if="taskVoList[count-1].day==3">
               今天
             </div>
-            <div v-if="count+1!=3">
-              3<span>天</span>
+            <div v-if="taskVoList[count-1].day!=3">
+              {{taskVoList[2].day}}<span>天</span>
             </div>
           </div>
         </div>
-        <div class="form-body-node signlnBtn" :class="{'currentDay':count+1==4&&taskVoList[3].complete==false,'active':taskVoList[3].complete}">
+        <div class="form-body-node signlnBtn" :class="{'active':taskVoList[3].complete}">
           <div class="awardIntegral">
             <div v-if="count+1==4">
               神秘宝箱
@@ -74,17 +69,17 @@
           </div>
           <div class="node-logo"></div>
           <div class="today">
-            <div v-if="count+1==4">
+            <div v-if="taskVoList[count-1].day==4">
               今天
             </div>
-            <div v-if="count+1!=4">
-              4<span>天</span>
+            <div v-if="taskVoList[count-1].day!=4">
+              {{taskVoList[3].day}}<span>天</span>
             </div>
           </div>
         </div>
       </div>
       <div class="form-body">
-        <div class="form-body-node signlnBtn" :class="{'currentDay':count+1==5&&taskVoList[4].complete==false,'active':taskVoList[4].complete}">
+        <div class="form-body-node signlnBtn" :class="{'active':taskVoList[4].complete}">
           <div class="awardIntegral">
             <div v-if="count+1==5">
               神秘宝箱
@@ -95,15 +90,15 @@
           </div>
           <div class="node-logo"></div>
           <div class="today">
-            <div v-if="count+1==5">
+            <div v-if="taskVoList[count-1].day==5">
               今天
             </div>
-            <div v-if="count+1!=5">
-              5<span>天</span>
+            <div v-if="taskVoList[count-1].day!=5">
+              {{taskVoList[4].day}}<span>天</span>
             </div>
           </div>
         </div>
-        <div class="form-body-node signlnBtn" :class="{'currentDay':count+1==6&&taskVoList[5].complete==false,'active':taskVoList[5].complete}">
+        <div class="form-body-node signlnBtn" :class="{'active':taskVoList[5].complete}">
           <div class="awardIntegral">
             <div v-if="count+1==6">
               神秘宝箱
@@ -114,11 +109,11 @@
           </div>
           <div class="node-logo"></div>
           <div class="today">
-            <div v-if="count+1==6">
+            <div v-if="taskVoList[count-1].day==6">
               今天
             </div>
-            <div v-if="count+1!=6">
-              6<span>天</span>
+            <div v-if="taskVoList[count-1].day!=6">
+              {{taskVoList[5].day}}<span>天</span>
             </div>
           </div>
         </div>
@@ -129,7 +124,12 @@
           </div>
           <div class="node-logo"></div>
           <div class="today">
-            7<span>天</span>
+            <div v-if="taskVoList[count-1].day==7">
+              今天
+            </div>
+            <div v-if="taskVoList[count-1].day!=7">
+              {{taskVoList[6].day}}<span>天</span>
+            </div>
           </div>
         </div>
         <div class="form-body-node" style="  visibility: hidden;">
@@ -137,9 +137,17 @@
         </div>
       </div>
     </div>
-    <div class="btn-body">
+    <div class="btn-body" v-if="sign==false">
       <div class="btn" @click="signln">签到</div>
     </div>
+    <div class="btn-body" v-if="sign==true">
+      <div class="btn goPath">已签到,查看更多会员信息</div>
+    </div>
+    <!-- <van-overlay :show="showPopup" @click="showPopup = false">
+      <div>
+
+      </div>
+    </van-overlay> -->
   </div>
 </template>
 <script>
@@ -151,7 +159,9 @@ export default {
     return {
       memberId: 1,
       count: 0,
+      sign: false,
       taskVoList: null,
+      showPopup: true,
     }
   },
   created() {
@@ -193,6 +203,8 @@ export default {
           console.log(res)
           this.taskVoList = res.data.taskVoList
           this.count = res.data.count
+          // this.count = 0
+          this.sign = res.data.sign
         }
       })
     },
@@ -212,6 +224,14 @@ export default {
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #ffffff;
+  }
+  .btn.goPath {
+    background: #fcecee;
+    border-radius: 26px;
+    font-size: 18px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #e8374a;
   }
 }
 
@@ -342,7 +362,7 @@ export default {
     height: 30px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url('../assets/img/member/icon-signln-3.png');
+    background-image: url('../assets/img/member/icon-signln-2.png');
   }
 }
 

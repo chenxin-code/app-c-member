@@ -563,12 +563,12 @@ export default {
 }
 .page-body .notReceived {
   display: flex;
-  justify-content: space-between;
   margin-top: 27px;
 }
 .page-body .notReceivedNode {
   display: flex;
   justify-items: left;
+  margin-right: 10px;
   flex-flow: column;
   width: 96px;
   height: 58px;
