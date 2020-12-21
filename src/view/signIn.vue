@@ -22,12 +22,7 @@
           </div>
           <div class="node-logo"></div>
           <div class="today">
-            <div v-if="count==0||count==1">
-              今天
-            </div>
-            <div v-if="count!=0">
-              {{taskVoList[1].day}}<span>天</span>
-            </div>
+            <div v-html="getIsToady(1,taskVoList[0])"></div>
           </div>
         </div>
         <div class="form-body-node signlnBtn" :class="{'active':taskVoList[1].complete}">
@@ -36,12 +31,7 @@
           </div>
           <div class="node-logo"></div>
           <div class="today">
-            <div v-if="taskVoList[count-1].day==2">
-              今天
-            </div>
-            <div v-if="taskVoList[count-1].day!=2">
-              {{taskVoList[1].day}}<span>天</span>
-            </div>
+            <div v-html="getIsToady(2,taskVoList[1])"></div>
           </div>
         </div>
         <div class="form-body-node signlnBtn day3" :class="{'active':taskVoList[2].complete}">
@@ -50,92 +40,49 @@
           </div>
           <div class="node-logo"></div>
           <div class="today">
-            <div v-if="taskVoList[count-1].day==3">
-              今天
-            </div>
-            <div v-if="taskVoList[count-1].day!=3">
-              {{taskVoList[2].day}}<span>天</span>
-            </div>
+            <div v-html="getIsToady(3,taskVoList[2])"></div>
           </div>
         </div>
         <div class="form-body-node signlnBtn" :class="{'active':taskVoList[3].complete}">
           <div class="awardIntegral">
-            <div v-if="count+1==4">
-              神秘宝箱
-            </div>
-            <div v-if="count+1!=4">
-              {{taskVoList[3].awardIntegral}}<span>邦豆</span>
-            </div>
+            {{taskVoList[3].awardIntegral}}<span>邦豆</span>
           </div>
           <div class="node-logo"></div>
           <div class="today">
-            <div v-if="taskVoList[count-1].day==4">
-              今天
-            </div>
-            <div v-if="taskVoList[count-1].day!=4">
-              {{taskVoList[3].day}}<span>天</span>
-            </div>
+            <div v-html="getIsToady(4,taskVoList[3])"></div>
           </div>
         </div>
       </div>
-      <div class="form-body">
-        <div class="form-body-node signlnBtn" :class="{'active':taskVoList[4].complete}">
-          <div class="awardIntegral">
-            <div v-if="count+1==5">
-              神秘宝箱
-            </div>
-            <div v-if="count+1!=5">
-              {{taskVoList[4].awardIntegral}}<span>邦豆</span>
-            </div>
-          </div>
-          <div class="node-logo"></div>
-          <div class="today">
-            <div v-if="taskVoList[count-1].day==5">
-              今天
-            </div>
-            <div v-if="taskVoList[count-1].day!=5">
-              {{taskVoList[4].day}}<span>天</span>
-            </div>
-          </div>
+    </div>
+    <div class="form-body">
+      <div class="form-body-node signlnBtn" :class="{'active':taskVoList[4].complete}">
+        <div class="awardIntegral">
+          {{taskVoList[4].awardIntegral}}<span>邦豆</span>
         </div>
-        <div class="form-body-node signlnBtn" :class="{'active':taskVoList[5].complete}">
-          <div class="awardIntegral">
-            <div v-if="count+1==6">
-              神秘宝箱
-            </div>
-            <div v-if="count+1!=6">
-              {{taskVoList[5].awardIntegral}}<span>邦豆</span>
-            </div>
-          </div>
-          <div class="node-logo"></div>
-          <div class="today">
-            <div v-if="taskVoList[count-1].day==6">
-              今天
-            </div>
-            <div v-if="taskVoList[count-1].day!=6">
-              {{taskVoList[5].day}}<span>天</span>
-            </div>
-          </div>
-        </div>
-        <div class="form-body-node signlnBtn day7">
-          <div class="awardIntegral">
-            <!-- {{taskVoList[6].awardIntegral}}<span>邦豆</span> -->
-            神秘豪礼
-          </div>
-          <div class="node-logo"></div>
-          <div class="today">
-            <div v-if="taskVoList[count-1].day==7">
-              今天
-            </div>
-            <div v-if="taskVoList[count-1].day!=7">
-              {{taskVoList[6].day}}<span>天</span>
-            </div>
-          </div>
-        </div>
-        <div class="form-body-node" style="  visibility: hidden;">
-
+        <div class="node-logo"></div>
+        <div class="today">
+          <div v-html="getIsToady(5,taskVoList[4])"></div>
         </div>
       </div>
+      <div class="form-body-node signlnBtn" :class="{'active':taskVoList[5].complete}">
+        <div class="awardIntegral">
+          {{taskVoList[5].awardIntegral}}<span>邦豆</span>
+        </div>
+        <div class="node-logo"></div>
+        <div class="today">
+          <div v-html="getIsToady(6,taskVoList[5])"></div>
+        </div>
+      </div>
+      <div class="form-body-node signlnBtn day7" :class="{'active':taskVoList[6].complete}">
+        <div class="awardIntegral">
+          神秘豪礼
+        </div>
+        <div class="node-logo"></div>
+        <div class="today">
+          <div v-html="getIsToady(7,taskVoList[6])"></div>
+        </div>
+      </div>
+      <div class="form-body-node signlnBtn" style="visibility: hidden;"></div>
     </div>
     <div class="btn-body" v-if="sign==false">
       <div class="btn" @click="signln">签到</div>
@@ -174,6 +121,21 @@ export default {
     })
   },
   methods: {
+    getIsToady: function (index, node) {
+      if (this.sign == false) {
+        if (this.count == index - 1) {
+          return '今天'
+        } else {
+          return node.day + '<span>天</span>'
+        }
+      } else {
+        if (this.count == index) {
+          return '今天'
+        } else {
+          return node.day + '<span>天</span>'
+        }
+      }
+    },
     signln: function () {
       const par = {
         behaviourId: 10,
