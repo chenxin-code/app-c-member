@@ -1,4 +1,3 @@
-/* elsint-disable */
 import axios from 'axios'
 import JSONbig from 'json-bigint'
 import api from "@/api";
@@ -34,6 +33,31 @@ export const HTTP = axios.create({
             return JSONBigString.parse(data)
         }
     ]
+});
+
+//请求拦截
+HTTP.interceptors.request.use(async(config) => {
+    let tokenStr1;
+    if (process.env.NODE_ENV === 'development') {
+        // await localstorage.get({ key: "LLBToken", isPublic: true }).then((res) => {
+        //     tokenStr1 = "Bearer " + res.result;
+        // });
+        // await localstorage.get({ key: "LLBRefreshToken", isPublic: true }).then((res) => {
+        //     RERRESH = "Bearer " + res.result;
+        // });
+        tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMzU1MjEzOTUyNiIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjI2MzE1NDcxMDc4MzQ2MTcyMiwiZXhwIjoxNjA4NjUyODE3LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIiwib3duZXIiXSwianRpIjoiMWEyYTMzYTgtZGE3Yi00YmY5LWEwMDQtZmM2MmUyMDUxOGEwIiwiY2xpZW50X2lkIjoiYXBwX2MifQ.cuWikCfUG9xaixjP00R6R1WS6lp6DgvWbcRwx_gZJiJyk9PI78HNnlK_-okjLKEVo5sbr2RboyMfifjPHrAQ2moVFjwvSbSmr0cuDq-egZ3fg-MD0Y2AL2v_N6VSlUqOryUCKGp9ei6pbIfHQbbyRBWxsYat82X4snphE0NjYIefOCDRc2WU6HtUXoSrqEnm282WPxH26agaW5Ju_YAxywSoa_bmz1ihpZtEQ_P04JH18kcTL5N2QqMuYrDKco8bRKZdqAcQjBIQlOoaywIEcwYNmevdj7h8nC36iys6-dixUPmDkTZSJOuyH0LW07KvgUmoTDyfmPZ0l4opqm_0gQ`
+        config.headers.Authorization = tokenStr1;
+        return config
+    } else {
+        await localstorage.get({ key: "LLBToken", isPublic: true }).then((res) => {
+            tokenStr1 = "Bearer " + res.result;
+        });
+        await localstorage.get({ key: "LLBRefreshToken", isPublic: true }).then((res) => {
+            RERRESH = "Bearer " + res.result;
+        });
+        config.headers.Authorization = tokenStr1;
+        return config
+    }
 });
 
 

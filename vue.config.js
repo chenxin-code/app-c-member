@@ -132,7 +132,7 @@ const vueConfig = {
         proxy: {
             "/times/": {
                 // target: "http://8.129.225.124:16666/", //后端ip地址及端口
-                target: 'http://8.129.64.205:20000',
+                target: 'http://dev.linli590.cn:16666',
                 ws: true, //是否跨域
                 changeOrigin: true,
             },

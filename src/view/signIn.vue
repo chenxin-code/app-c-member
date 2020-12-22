@@ -53,36 +53,37 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="form-body">
-      <div class="form-body-node signlnBtn" :class="{'active':taskVoList[4].complete}">
-        <div class="awardIntegral">
-          {{taskVoList[4].awardIntegral}}<span>邦豆</span>
+
+      <div class="form-body">
+        <div class="form-body-node signlnBtn" :class="{'active':taskVoList[4].complete}">
+          <div class="awardIntegral">
+            {{taskVoList[4].awardIntegral}}<span>邦豆</span>
+          </div>
+          <div class="node-logo"></div>
+          <div class="today">
+            <div v-html="getIsToady(5,taskVoList[4])"></div>
+          </div>
         </div>
-        <div class="node-logo"></div>
-        <div class="today">
-          <div v-html="getIsToady(5,taskVoList[4])"></div>
+        <div class="form-body-node signlnBtn" :class="{'active':taskVoList[5].complete}">
+          <div class="awardIntegral">
+            {{taskVoList[5].awardIntegral}}<span>邦豆</span>
+          </div>
+          <div class="node-logo"></div>
+          <div class="today">
+            <div v-html="getIsToady(6,taskVoList[5])"></div>
+          </div>
         </div>
+        <div class="form-body-node signlnBtn day7" :class="{'active':taskVoList[6].complete}">
+          <div class="awardIntegral">
+            神秘豪礼
+          </div>
+          <div class="node-logo"></div>
+          <div class="today">
+            <div v-html="getIsToady(7,taskVoList[6])"></div>
+          </div>
+        </div>
+        <div class="form-body-node signlnBtn" style="visibility: hidden;"></div>
       </div>
-      <div class="form-body-node signlnBtn" :class="{'active':taskVoList[5].complete}">
-        <div class="awardIntegral">
-          {{taskVoList[5].awardIntegral}}<span>邦豆</span>
-        </div>
-        <div class="node-logo"></div>
-        <div class="today">
-          <div v-html="getIsToady(6,taskVoList[5])"></div>
-        </div>
-      </div>
-      <div class="form-body-node signlnBtn day7" :class="{'active':taskVoList[6].complete}">
-        <div class="awardIntegral">
-          神秘豪礼
-        </div>
-        <div class="node-logo"></div>
-        <div class="today">
-          <div v-html="getIsToady(7,taskVoList[6])"></div>
-        </div>
-      </div>
-      <div class="form-body-node signlnBtn" style="visibility: hidden;"></div>
     </div>
     <div class="btn-body" v-if="sign==false">
       <div class="btn" @click="signln">签到</div>
