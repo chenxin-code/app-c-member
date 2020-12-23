@@ -45,7 +45,7 @@ HTTP.interceptors.request.use(async(config) => {
         // await localstorage.get({ key: "LLBRefreshToken", isPublic: true }).then((res) => {
         //     RERRESH = "Bearer " + res.result;
         // });
-        tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMzU1MjEzOTUyNiIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjI2MzE1NDcxMDc4MzQ2MTcyMiwiZXhwIjoxNjA4NjUyODE3LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIiwib3duZXIiXSwianRpIjoiMWEyYTMzYTgtZGE3Yi00YmY5LWEwMDQtZmM2MmUyMDUxOGEwIiwiY2xpZW50X2lkIjoiYXBwX2MifQ.cuWikCfUG9xaixjP00R6R1WS6lp6DgvWbcRwx_gZJiJyk9PI78HNnlK_-okjLKEVo5sbr2RboyMfifjPHrAQ2moVFjwvSbSmr0cuDq-egZ3fg-MD0Y2AL2v_N6VSlUqOryUCKGp9ei6pbIfHQbbyRBWxsYat82X4snphE0NjYIefOCDRc2WU6HtUXoSrqEnm282WPxH26agaW5Ju_YAxywSoa_bmz1ihpZtEQ_P04JH18kcTL5N2QqMuYrDKco8bRKZdqAcQjBIQlOoaywIEcwYNmevdj7h8nC36iys6-dixUPmDkTZSJOuyH0LW07KvgUmoTDyfmPZ0l4opqm_0gQ`
+        tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTgxNTgxODE4MiIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjI0ODYzOTMwMTg3MDk0NjEyNCwiZXhwIjoxNjA4NzM2MTg1LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIiwib3duZXIiXSwianRpIjoiOGQyMjdmMzYtY2VkMy00ZjJmLTgxMDMtNDc0OTRlNTYyOTg5IiwiY2xpZW50X2lkIjoiYXBwX2MifQ.OjBJEyqrGtvIfmHPReyTIJDcOIYIYwSVDTQ0zZib62l2sr86FEZ1L6cWZ6RtKxlCf8M7eOqQVjfehffJmSmgu_p0MpZGkoJP7l7FLVqZUKgbSd5P7_s5JE9WAclej9vfiPros7m4R0XO7lsyYA3Vh3JmaxcQnEUy4rv8GRlGxAeFmHgp_ASrfMZ1t9ZMOPz1--20MWmvUlP2-MBnZsdZP7YDnJVDwRULpjLb-gugXj8VS7AXAY8UIeqrrBm2giAwWOL6CC6EMmKFA2kbmJRnA1Pro7uCe8_22Ke2a1nCbRy0DpyvwqmBWgXmbrNda-hnDTO5jtzh5Hz2v6TIMZL4CA`
         config.headers.Authorization = tokenStr1;
         return config
     } else {

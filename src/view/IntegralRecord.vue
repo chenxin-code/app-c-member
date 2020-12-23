@@ -76,6 +76,11 @@ export default {
   },
   methods: {
     overdueIntegral: function () {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: "加载中...",
+      });
       const par = {
         invalidTime: this.invalidTime,
         memberId: this.memberId,
@@ -88,6 +93,11 @@ export default {
       })
     },
     onLoad() {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: "加载中...",
+      });
       this.pageIndex = this.pageIndex + 1
       const par = {
         memberId: 1,
@@ -133,6 +143,11 @@ export default {
       this.onLoad()
     },
     getMemberGrownLogListUsingGET: function (memberId) {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: "加载中...",
+      });
       const par = {
         memberId: memberId,
         pageIndex: 1,

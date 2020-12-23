@@ -68,19 +68,22 @@ export default {
   },
   methods: {
     onLoad() {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: "加载中...",
+      });
       this.pageIndex = this.pageIndex + 1
       const par = {
         memberId: 1,
         pageIndex: this.pageIndex,
         pageSize: this.pageSize,
       }
-
       if (this.total != null && this.dataSource.length >= this.total) {
         this.finished = true
         this.loading = false
         return false
       }
-
       api.getMemberGrownLogListUsingGET(par).then((res) => {
         if (res.code == 200) {
           this.$toast.clear()
@@ -111,6 +114,11 @@ export default {
       this.onLoad()
     },
     getMemberGrownLogListUsingGET: function (memberId) {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: "加载中...",
+      });
       const par = {
         memberId: memberId,
         pageIndex: 1,

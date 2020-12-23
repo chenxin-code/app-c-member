@@ -1,75 +1,77 @@
 <template>
   <div>
-    <div class="page-head" :class="getPageClass(memberObject==null?'':memberObject.memberCardRelats[0].levelId)">
-      <div class="option">
-        <div class="btn-return"></div>
-        <div class="updataDeital">如何升级</div>
-      </div>
-      <div class="memberDetial">
-        <div class="memberDetial-body">
-          <div class="leveName"></div>
-          <div class="cz-number-body" @click="goProwthValue">
-            当前成长值
-            <div class="cz-number">{{memberObject==null?'':memberObject.memberCardRelats[0].grow}}</div>
+    <div v-if="memberObject==null"></div>
+    <div v-if="memberObject!=null">
+      <div class="page-head" :class="getPageClass(memberObject==null?'':memberObject.memberCardRelats[0].levelId)">
+        <div class="option">
+          <div class="btn-return"></div>
+          <div class="updataDeital">如何升级</div>
+        </div>
+        <div class="memberDetial">
+          <div class="memberDetial-body">
+            <div class="leveName"></div>
+            <div class="cz-number-body" @click="goProwthValue">
+              当前成长值
+              <div class="cz-number">{{memberObject==null?'':memberObject.memberCardRelats[0].grow}}</div>
+            </div>
+            <div class="progressBar">
+              <div class="bg"></div>
+              <div class="progres" :style="{width:differencePercentage*100+'%'}"></div>
+            </div>
+            <div class="progressBarWord">
+              <span>{{beginTitle}}</span>
+              <span class="pbn">还差{{difference}}成长值</span>
+              <span class="pbn">
+                {{endTitle}}
+              </span>
+            </div>
           </div>
-          <div class="progressBar">
-            <div class="bg"></div>
-            <div class="progres" :style="{width:differencePercentage*100+'%'}"></div>
-          </div>
-          <div class="progressBarWord">
-            <span>{{beginTitle}}</span>
-            <span class="pbn">还差{{difference}}成长值</span>
-            <span class="pbn">
-              {{endTitle}}
-            </span>
+          <div class="leveLogo-body">
+            <div class="leveLogo"></div>
           </div>
         </div>
-        <div class="leveLogo-body">
-          <div class="leveLogo"></div>
-        </div>
       </div>
-    </div>
-    <div class="page-body">
-      <div>
-        <div class="Bangdou-body">
-          <div class="Bangdou" @click="IntegralRecord">我的邦豆<span class="num">{{integral}}</span></div>
-          <div v-if="integralRecordData.length>0" @click="receiveAll">全部领取</div>
+      <div class="page-body">
+        <div>
+          <div class="Bangdou-body">
+            <div class="Bangdou" @click="IntegralRecord">我的邦豆<span class="num">{{integral}}</span></div>
+            <div v-if="integralRecordData.length>0" @click="receiveAll">全部领取</div>
+          </div>
         </div>
-      </div>
-      <div v-if="integralRecordData.length>0">
-        <div class="notReceived">
-          <div @click="receive(item)" v-for="(item,index) in integralRecordData" :key="index" class="notReceivedNode">
-            <div class="integralChange"> {{item.integralChange}}</div>
-            <div class="sourceType">
-              {{item.behaviourName}}
+        <div v-if="integralRecordData.length>0">
+          <div class="notReceived">
+            <div @click="receive(item)" v-for="(item,index) in integralRecordData" :key="index" class="notReceivedNode">
+              <div class="integralChange"> {{item.integralChange}}</div>
+              <div class="sourceType">
+                {{item.behaviourName}}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="dotask-body">
-        <div class="dotask">
-          做任务赚邦豆
+        <div class="dotask-body">
+          <div class="dotask">
+            做任务赚邦豆
+          </div>
+          <div class="btnMore">
+            更多
+          </div>
         </div>
-        <div class="btnMore">
-          更多
-        </div>
-      </div>
-      <div class="task-list-body">
-        <div v-if="taskList.length<=0" class="dataMessage">
-          <div class="icon"></div>
-          <div class="message">暂无任务</div>
-        </div>
-        <div v-if="taskList.length>0">
-          <div class="task-node" v-for="(item,index) in taskList" :key="index">
-            <div class="task-left">
-              <div class="title">{{item.taskName}}</div>
-              <div class="explain">{{item.taskCondition}}</div>
-            </div>
-            <!-- <div class="task-right">
+        <div class="task-list-body">
+          <div v-if="taskList.length<=0" class="dataMessage">
+            <div class="icon"></div>
+            <div class="message">暂无任务</div>
+          </div>
+          <div v-if="taskList.length>0">
+            <div class="task-node" v-for="(item,index) in taskList" :key="index">
+              <div class="task-left">
+                <div class="title">{{item.taskName}}</div>
+                <div class="explain">{{item.taskCondition}}</div>
+              </div>
+              <!-- <div class="task-right">
               <div class="btn red">领取</div>
             </div> -->
-          </div>
-          <!-- <div class="task-node">
+            </div>
+            <!-- <div class="task-node">
             <div class="task-left">
               <div class="title">每日阅读精彩内容</div>
               <div class="explain">单日最高可得300积分</div>
@@ -87,6 +89,7 @@
               <div class="btn red disable">已完成</div>
             </div>
           </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -126,6 +129,11 @@ export default {
   methods: {
     //领取全部
     receiveAll: function () {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: '加载中...',
+      })
       const par = {
         memberId: this.memberId,
       }
@@ -138,6 +146,11 @@ export default {
     },
     //领取一个
     receive: function (item) {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: '加载中...',
+      })
       const par = {
         memberId: this.memberId,
         recordId: item.id,
@@ -150,10 +163,14 @@ export default {
       })
     },
     IntegralRecord: function () {
-      this.$routeHelper.router(this, '/IntegralRecord',{totalNumber:this.integral})
+      this.$routeHelper.router(this, '/IntegralRecord', {
+        totalNumber: this.integral,
+      })
     },
     goProwthValue: function () {
-      this.$routeHelper.router(this, '/growthValueRecord',{totalNumber:this.memberObject.memberCardRelats[0].grow})
+      this.$routeHelper.router(this, '/growthValueRecord', {
+        totalNumber: this.memberObject.memberCardRelats[0].grow,
+      })
     },
     getPageClass: function (currentLeve) {
       let classTypeName = ''
@@ -211,6 +228,11 @@ export default {
       // })
     },
     integralRecord: function (memberID) {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: '加载中...',
+      })
       const par = {
         memberId: memberID,
         pageIndex: 1,
@@ -226,6 +248,11 @@ export default {
       })
     },
     getMyTaskListByMember: function (memberID) {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: '加载中...',
+      })
       const par = {
         pageIndex: 1,
         pageSize: 3,

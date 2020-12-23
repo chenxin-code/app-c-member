@@ -14,6 +14,20 @@
         </div>
       </div>
     </div>
+    <div class="page-body" v-if="taskVoList==null">
+      <div class="form-body">
+        <div class="form-body-node signlnBtn"></div>
+        <div class="form-body-node signlnBtn"></div>
+        <div class="form-body-node signlnBtn"></div>
+        <div class="form-body-node signlnBtn"></div>
+      </div>
+      <div class="form-body">
+        <div class="form-body-node signlnBtn"></div>
+        <div class="form-body-node signlnBtn"></div>
+        <div class="form-body-node signlnBtn"></div>
+        <div class="form-body-node signlnBtn" style="visibility: hidden;"></div>
+      </div>
+    </div>
     <div class="page-body" v-if="taskVoList!=null">
       <div class="form-body">
         <div class="form-body-node signlnBtn" :class="{'active':taskVoList[0].complete}">
@@ -85,20 +99,28 @@
         <div class="form-body-node signlnBtn" style="visibility: hidden;"></div>
       </div>
     </div>
-    <div class="btn-body" v-if="sign==false">
+    <div class="btn-body" v-if="isClick==false">
       <div class="btn" @click="signln">签到</div>
     </div>
-    <div class="btn-body" v-if="sign==true">
+    <div class="btn-body" v-if="isClick==true">
       <div class="btn goPath">已签到,查看更多会员信息</div>
     </div>
-    <!-- <van-overlay :show="showPopup" @click="showPopup = false">
-      <div>
-
+    <van-overlay class="van-overlay" :show="showPopup" @click="showPopup = false">
+      <div class="messageBox">
+        <div class="popImages" :class="{'pop3':currentDay.day==3,'pop7':currentDay.day==7}"></div>
+        <div class="bangdong">
+          恭喜你获得{{currentDay.awardIntegral}}邦豆
+        </div>
+        <div class="bangdong2">
+          可到邦豆商城兑换免费商品
+        </div>
+        <div class="btn-know">知道了</div>
       </div>
-    </van-overlay> -->
+    </van-overlay>
   </div>
 </template>
 <script>
+/* eslint-disable */
 import nav from '@zkty-team/x-engine-module-nav'
 import api from '@/api'
 import * as moment from 'moment'
@@ -107,9 +129,10 @@ export default {
     return {
       memberId: 1,
       count: 0,
-      sign: false,
+      btnSign: false,
+      currentDay: null,
       taskVoList: null,
-      showPopup: true,
+      showPopup: false,
     }
   },
   created() {
@@ -123,14 +146,16 @@ export default {
   },
   methods: {
     getIsToady: function (index, node) {
-      if (this.sign == false) {
+      if (this.isClick == false) {
         if (this.count == index - 1) {
+          this.currentDay = node
           return '今天'
         } else {
           return node.day + '<span>天</span>'
         }
       } else {
         if (this.count == index) {
+          this.currentDay = node
           return '今天'
         } else {
           return node.day + '<span>天</span>'
@@ -138,6 +163,11 @@ export default {
       }
     },
     signln: function () {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: '加载中...',
+      })
       const par = {
         behaviourId: 10,
         clientCode: 'sys_linlibang',
@@ -152,22 +182,41 @@ export default {
       api.collectUsingPOST(par).then((res) => {
         if (res.code == 200) {
           this.$toast.clear()
+          this.showPopup = true
           this.getSignTasklistUsingget(this.memberId)
         }
       })
     },
     getSignTasklistUsingget: function (memberId) {
+      var self = this
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: '加载中...',
+      })
       const par = {
         memberId: memberId,
       }
       api.getSignTasklistUsingget(par).then((res) => {
         if (res.code == 200) {
-          this.$toast.clear()
+          self.$toast.clear()
           console.log(res)
-          this.taskVoList = res.data.taskVoList
-          this.count = res.data.count
-          // this.count = 0
-          this.sign = res.data.sign
+          self.taskVoList = res.data.taskVoList
+          self.isClick = res.data.sign
+          var number = parseInt(res.data.count / 7)
+          self.count = res.data.count - number * 7
+
+          // alert(number);
+          // if (res.data.count == 7 || res.data.sign == false) {
+          //   res.data.count = 0
+          // } else {
+          //   if (res.data.count >= 8) {
+          //     this.count = res.data.count - 8
+          //   } else {
+          //     this.count = res.data.count
+          //   }
+          // }
+          //
         }
       })
     },
@@ -358,6 +407,61 @@ export default {
   .today {
     color: #ffffff;
   }
+}
+
+.van-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.messageBox {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 283px;
+  height: 321px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 16px;
+}
+.popImages {
+  width: 192px;
+  height: 136px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-image: url('../assets/img/member/icon-pop-1.png');
+}
+.pop3 {
+  background-image: url('../assets/img/member/icon-pop-3.png');
+}
+.pop7 {
+  background-image: url('../assets/img/member/icon-pop-7.png');
+}
+.bangdong {
+  font-size: 18px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #121212;
+  margin: 24px 0px 10px 0px;
+}
+.bangdong2 {
+  font-size: 12px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #8d8d8d;
+}
+.btn-know {
+  width: 100%;
+  text-align: center;
+  height: 38px;
+  line-height: 38px;
+  background: #f5f5f6;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #8d8d8d;
+  margin-top: 40px;
 }
 </style>
 
