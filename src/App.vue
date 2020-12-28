@@ -17,5 +17,6 @@
   -moz-osx-font-smoothing: grayscale;
   font-size: .24rem;
   box-sizing: border-box;
+  word-break: break-all;
 }
 </style>

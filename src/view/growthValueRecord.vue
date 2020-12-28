@@ -68,10 +68,6 @@ export default {
     this.getMemberDetial();
   },
   mounted() {
-    nav.setNavBarHidden({
-      isHidden: true,
-      isAnimation: true,
-    });
     this.pageHeight = this.$refs.integralRecord.clientHeight + "px";
   },
   filters: {
@@ -161,7 +157,6 @@ export default {
       api.getMemberGrownLogListUsingGET(par).then((res) => {
         if (res.code == 200) {
           this.$toast.clear();
-          alert(1212);
           if (res.data.records > 0) {
             this.showNoData = false;
             this.showDataList = true;

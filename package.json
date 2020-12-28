@@ -16,6 +16,7 @@
         "@zkty-team/x-engine-module-router": "0.0.67",
         "@zkty-team/x-engine-module-ui": "0.0.67",
         "@zkty-team/x-engine-module-yjzdbill": "^0.0.67",
+        "style-resources-loader": "1.2.1",
         "add": "^2.0.6",
         "core-js": "^3.6.5",
         "js-md5": "^0.7.3",

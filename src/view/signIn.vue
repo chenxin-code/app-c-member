@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="taskVoList != null">
     <div class="page-head Lv1">
       <div class="option">
         <div class="btn-return" @click="pageBack"></div>
@@ -7,7 +7,7 @@
       <div class="title-body">
         <div class="title">我已连续签到</div>
         <div class="number">
-          <div class="bg">{{ count }}</div>
+          <div class="bg">{{ count==0&&isClick==true?7:count }}</div>
           <div class="days">天</div>
         </div>
       </div>
@@ -134,7 +134,7 @@ export default {
     };
   },
   created() {
-    // this.memberId = "2248639301870946124";
+    // this.memberId = "2309350880803029939";
     // localStorage.setItem("memberId", this.memberId);
     // this.getSignTasklistUsingget();
     localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
@@ -144,10 +144,6 @@ export default {
     });
   },
   mounted() {
-    nav.setNavBarHidden({
-      isHidden: true,
-      isAnimation: true,
-    });
   },
   beforeDestroy() {
     nav.navigatorBack({
@@ -159,6 +155,7 @@ export default {
       nativeRouter.openTargetRouter({
         type: "microapp",
         uri: "com.times.microapp.AppcMember",
+        hideNavbar: true,
         path: encodeURI("/"),
       });
     },
@@ -183,6 +180,7 @@ export default {
           return node.day + "<span>天</span>";
         }
       }
+      return node.day + "<span>天</span>";
     },
     signln: function () {
       this.$toast.loading({

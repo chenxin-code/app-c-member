@@ -1,113 +1,100 @@
 <template>
   <div>
-    <div v-if="memberObject == null"></div>
-    <div v-if="memberObject != null">
-      <div
-        class="page-head"
-        :class="
-          getPageClass(
-            memberObject == null ? '' : memberObject.memberCardRelats[0].levelId
-          )
-        "
-      >
-        <div class="option">
-          <div class="btn-return" @click="pageBack"></div>
-          <div class="updataDeital" @click="goPage">如何升级</div>
+    <transition name="plus-icon1">      
+      <div class="page-content" v-if="memberObject == null">
+        <div class="page-head Lv1" style="opacity: 0.4;">
+          <div class="option"></div>
         </div>
-        <div class="memberDetial">
-          <div class="memberDetial-body">
-            <div class="leveName"></div>
-            <div class="cz-number-body" @click="goProwthValue">
-              当前成长值
-              <div class="cz-number">
-                {{ memberObject == null ? "" : memberObject.memberCardRelats[0].grow }}
+        <div class="page-body">
+          <div class="Bangdou-body zhanwei"></div>
+          <div class="Bangdou-body zhanwei"></div>
+        </div>
+      </div>
+    </transition>
+    <transition name="plus-icon">
+      <div class="page-content" v-if="memberObject != null">
+        <div
+          class="page-head"
+          :class="getPageClass(memberObject == null ? '' : memberObject.memberCardRelats[0].levelId)"
+        >
+          <div class="option">
+            <div class="btn-return" @click="pageBack"></div>
+            <div class="updataDeital" @click="goPage">如何升级</div>
+          </div>
+          <div class="memberDetial">
+            <div class="memberDetial-body">
+              <div class="leveName"></div>
+              <div class="cz-number-body" @click="goProwthValue">
+                当前成长值
+                <div
+                  class="cz-number"
+                >{{ memberObject == null ? "" : memberObject.memberCardRelats[0].grow }}</div>
+              </div>
+              <div class="progressBar">
+                <div class="bg"></div>
+                <div class="progres" :style="{ width: differencePercentage * 100 + '%' }"></div>
+              </div>
+              <div class="progressBarWord">
+                <span>{{ beginTitle }}</span>
+                <span class="pbn">还差{{ difference }}成长值</span>
+                <span class="pbn">{{ endTitle }}</span>
               </div>
             </div>
-            <div class="progressBar">
-              <div class="bg"></div>
+            <div class="leveLogo-body">
+              <div class="leveLogo"></div>
+            </div>
+          </div>
+        </div>
+        <div class="page-body">
+          <div>
+            <div class="Bangdou-body">
+              <div class="Bangdou" @click="IntegralRecord">
+                我的邦豆
+                <span class="num">{{ integral }}</span>
+              </div>
+              <div v-if="integralRecordData.length > 0" @click="receiveAll">全部领取</div>
+            </div>
+          </div>
+          <div v-if="integralRecordData.length > 0">
+            <div class="notReceived">
               <div
-                class="progres"
-                :style="{ width: differencePercentage * 100 + '%' }"
-              ></div>
-            </div>
-            <div class="progressBarWord">
-              <span>{{ beginTitle }}</span>
-              <span class="pbn">还差{{ difference }}成长值</span>
-              <span class="pbn">{{ endTitle }} </span>
+                @click="receive(item)"
+                v-for="(item, index) in integralRecordData"
+                :key="index"
+                class="notReceivedNode"
+              >
+                <div class="integralChange">{{ item.integralChange }}</div>
+                <div class="sourceType">{{ item.behaviourName }}</div>
+              </div>
             </div>
           </div>
-          <div class="leveLogo-body">
-            <div class="leveLogo"></div>
+          <div class="dotask-body">
+            <div class="dotask">
+              <span style="margin-right: 5px">做任务</span>
+              <span>赚邦豆</span>
+            </div>
+            <!-- <div class="btnMore">更多</div> -->
+          </div>
+          <div class="task-list-body">
+            <div v-if="taskList.length <= 0" class="dataMessage">
+              <div class="icon"></div>
+              <div class="message">暂无任务</div>
+            </div>
+            <div v-if="taskList.length > 0">
+              <div class="task-node" v-for="(item, index) in taskList" :key="index">
+                <div class="task-left">
+                  <div class="title">{{ item.taskName }}</div>
+                  <div class="explain">{{ item.taskCondition }}</div>
+                </div>
+                <div class="task-right">
+                  <div class="btn red">{{ getBtnWord(item) }}</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="page-body">
-        <div>
-          <div class="Bangdou-body">
-            <div class="Bangdou" @click="IntegralRecord">
-              我的邦豆<span class="num">{{ integral }}</span>
-            </div>
-            <div v-if="integralRecordData.length > 0" @click="receiveAll">全部领取</div>
-          </div>
-        </div>
-        <div v-if="integralRecordData.length > 0">
-          <div class="notReceived">
-            <div
-              @click="receive(item)"
-              v-for="(item, index) in integralRecordData"
-              :key="index"
-              class="notReceivedNode"
-            >
-              <div class="integralChange">{{ item.integralChange }}</div>
-              <div class="sourceType">
-                {{ item.behaviourName }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="dotask-body">
-          <div class="dotask">
-            <span style="margin-right: 5px">做任务</span><span>赚邦豆</span>
-          </div>
-          <!-- <div class="btnMore">更多</div> -->
-        </div>
-        <div class="task-list-body">
-          <div v-if="taskList.length <= 0" class="dataMessage">
-            <div class="icon"></div>
-            <div class="message">暂无任务</div>
-          </div>
-          <div v-if="taskList.length > 0">
-            <div class="task-node" v-for="(item, index) in taskList" :key="index">
-              <div class="task-left">
-                <div class="title">{{ item.taskName }}</div>
-                <div class="explain">{{ item.taskCondition }}</div>
-              </div>
-              <div class="task-right">
-                <div class="btn red">{{ getBtnWord(item) }}</div>
-              </div>
-            </div>
-            <!-- <div class="task-node">
-            <div class="task-left">
-              <div class="title">每日阅读精彩内容</div>
-              <div class="explain">单日最高可得300积分</div>
-            </div>
-            <div class="task-right">
-              <div class="btn red">去完成</div>
-            </div>
-          </div>
-          <div class="task-node">
-            <div class="task-left">
-              <div class="title">每日阅读精彩内容</div>
-              <div class="explain">单日最高可得300积分</div>
-            </div>
-            <div class="task-right">
-              <div class="btn red disable">已完成</div>
-            </div>
-          </div> -->
-          </div>
-        </div>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -133,28 +120,35 @@ export default {
       memberObject: null,
     };
   },
+
+  activated() {
+    this.memberId = '2309350880803029939'
+    localStorage.setItem('memberId', this.memberId)
+    this.getMemberDetial()
+    if (this.$route.meta.isBack != true) {
+      localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
+        this.memberId = res.result;
+        localStorage.setItem("memberId", this.memberId);
+        this.getMemberDetial();
+      });
+    }
+  },
   created() {
-    // this.memberId = '2248639301870946124'
-    // localStorage.setItem('memberId', this.memberId)
-    // this.getMemberDetial()
-    localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
-      this.memberId = res.result;
-      localStorage.setItem("memberId", this.memberId);
-      this.getMemberDetial();
-    });
+
   },
   mounted() {
-    nav.setNavBarHidden({
-      isHidden: true,
-      isAnimation: true,
-    });
+
+  },
+  beforeRouteEnter(to, from, next) {
+    if (from.name == "growthValueRecord" || from.name == "IntegralRecord" || from.name == "gradeDescription") {
+      to.meta.isBack = true
+    } else {
+      to.meta.isBack = false
+    }
+    next()
   },
   beforeRouteLeave(to, from, next) {
-    if (
-      to.name == "growthValueRecord" ||
-      to.name == "IntegralRecord" ||
-      to.name == "gradeDescription"
-    ) {
+    if (to.name == "growthValueRecord" || to.name == "IntegralRecord" || to.name == "gradeDescription") {
       next();
     } else {
       nav.navigatorBack({
@@ -223,13 +217,13 @@ export default {
       });
     },
     goPage: function () {
-      this.$routeHelper.router(this, "/gradeDescription");
+      this.$routeHelper.router(this, "/gradeDescription", null, false);
     },
     IntegralRecord: function () {
-      this.$routeHelper.router(this, "/IntegralRecord");
+      this.$routeHelper.router(this, "/IntegralRecord", null, true);
     },
     goProwthValue: function () {
-      this.$routeHelper.router(this, "/growthValueRecord");
+      this.$routeHelper.router(this, "/growthValueRecord", null, true);
     },
     getPageClass: function (currentLeve) {
       let classTypeName = "";
@@ -256,6 +250,8 @@ export default {
           break;
         case 5:
           classTypeName = "Lv5";
+          this.beginTitle = "V5";
+          this.endTitle = "V5";
           break;
       }
       return classTypeName;
@@ -338,6 +334,41 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.plus-icon1-enter-active {
+  transition: opacity 0;
+}
+.plus-icon1-enter {
+  opacity: 0;
+}
+.plus-icon1-leave-active {
+  transition: opacity 0.5s;
+}
+.plus-icon1-leave-to {
+  opacity: 0;
+}
+
+.plus-icon-enter-active {
+  transition: opacity 0.5s;
+}
+.plus-icon-enter {
+  opacity: 0;
+}
+.plus-icon-leave-active {
+  transition: opacity 0.5s;
+}
+.plus-icon-leave-to {
+  opacity: 0;
+}
+
+.page-content{
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+
 .page-body {
   padding-top: 282px;
 }
@@ -752,8 +783,8 @@ export default {
   font-size: 14px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #ffffff;
-  background: linear-gradient(360deg, #e8374a 0%, #f7676d 100%);
+  color: #e8374a;
+  background: #fcecee;
   border-radius: 15px;
 }
 
@@ -786,5 +817,13 @@ export default {
     font-weight: 400;
     color: #8d8d8d;
   }
+}
+.zhanwei {
+  width: 100%;
+  height: 40px;
+  background-color: #d4d6e2;
+  border-radius: 10px;
+  opacity: 0.2;
+  margin: 10px 0px;
 }
 </style>

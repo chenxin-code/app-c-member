@@ -6,15 +6,13 @@
       </div>
       <div class="title-body">
         <div class="title">邦豆记录</div>
-        <div class="number">
-          {{ totalNumber }}
-        </div>
+        <div class="number">{{ totalNumber }}</div>
       </div>
       <!-- <div class="totonumber" v-if="guoqi != 0">
         <div class="guoqitishi">
           {{ invalidTime }}即将过期的积分<span>{{ guoqi }}</span>
         </div>
-      </div> -->
+      </div>-->
     </div>
     <div class="page-body" :style="{ height: pageHeight }" v-if="memberId != null">
       <div class="dataMessage" v-if="showNoData">
@@ -34,13 +32,11 @@
             <template v-slot:default>
               <div class="task-node" v-for="(item, index) in dataSource" :key="index">
                 <div class="task-left">
-                  <div class="title">{{ item.clientName }}</div>
+                  <div class="title">{{ item.behaviourName }}</div>
                   <div class="explain">{{ item.createTime | timeFormat }}</div>
                 </div>
                 <div class="task-right">
-                  <div>
-                    {{ item.changeType == 1 ? "+" : "-" }}{{ item.integralChange }}
-                  </div>
+                  <div>{{ item.changeType == 1 ? "+" : "-" }}{{ item.integralChange }}</div>
                 </div>
               </div>
             </template>
@@ -85,10 +81,6 @@ export default {
     this.overdueIntegral();
   },
   mounted() {
-    nav.setNavBarHidden({
-      isHidden: true,
-      isAnimation: true,
-    });
     this.pageHeight = this.$refs.integralRecord.clientHeight + "px";
   },
   filters: {
