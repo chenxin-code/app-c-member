@@ -52,10 +52,10 @@
             <tr>
               <td style="width: 100px">升级规则</td>
               <td style="text-align: left">
-                <div>
+                <div class="jiaozhong">
                   <span>当：</span>成长值等于或大于当前层级最大值时
                 </div>
-                <div>
+                <div  class="jiaozhong">
                   <span>则：</span>进入至下一层级。成长值增长超出当前层级最大值的部分计入下一层级
                 </div>
               </td>
@@ -155,5 +155,8 @@ export default {
   background-color: #e1e1e1;
   color: #121212;
   text-align: center;
+}
+.jiaozhong span{
+  font-weight: 700;
 }
 </style>

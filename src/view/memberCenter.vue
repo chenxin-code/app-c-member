@@ -157,10 +157,10 @@ export default {
     ) {
       next();
     } else {
-      // nav.navigatorBack({
-      //   url: "0",
-      // });
-      // next();
+      nav.navigatorBack({
+        url: "0",
+      });
+      next();
     }
   },
   methods: {
@@ -241,7 +241,7 @@ export default {
           break;
         case 2:
           classTypeName = "Lv2";
-          this.beginTitle = "V";
+          this.beginTitle = "V2";
           this.endTitle = "V3";
           break;
         case 3:

@@ -18,8 +18,4 @@
   font-size: .24rem;
   box-sizing: border-box;
 }
-/*增加底部适配层*/
-@media (device-width : 375px) and (min-device-height : 812px) , (device-width : 414px) and (min-device-height : 896px){
-  #app{padding-bottom: 34px;}
-}
 </style>
