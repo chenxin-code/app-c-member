@@ -157,7 +157,6 @@ export default {
         if (res.code == 200) {
           this.$toast.clear();
           this.total = res.data.total;
-          alert(JSON.stringify(res));
           if (res.data.records.length > 0) {
             this.showNoData = false;
             this.showDataList = true;
