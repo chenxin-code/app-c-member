@@ -102,7 +102,7 @@
       <div class="btn" @click="signln">签到</div>
     </div>
     <div class="btn-body" v-if="isClick == true">
-      <div class="btn goPath" @click="goPath">已签到,查看更多会员信息</div>
+      <div class="btn goPath" @click="goPath">已签到，查看更多会员信息</div>
     </div>
     <van-overlay class="van-overlay" :show="showPopup" @click="showPopup = false">
       <div class="messageBox">
