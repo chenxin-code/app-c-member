@@ -38,15 +38,15 @@ export const HTTP = axios.create({
 HTTP.interceptors.request.use(async config => {
   let tokenStr1;
   if (process.env.NODE_ENV === "development") {
-    // await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
-    //   tokenStr1 = "Bearer " + res.result;
-    // });
-    // await localstorage
-    //   .get({ key: "LLBRefreshToken", isPublic: true })
-    //   .then(res => {
-    //     RERRESH = "Bearer " + res.result;
-    //   });
-    tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxODYwMDQ2MzM4MCIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjMwMDY3NDc3MTk4NzIwNDIxNCwiZXhwIjoxNjA5MTgxODIwLCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIl0sImp0aSI6ImIzNTdjMWMyLTJlODYtNDdiZi1iMDBlLTM5Y2Y2NGMyYTI0MiIsImNsaWVudF9pZCI6ImFwcF9jIn0.kpdUqr5lgy3gDWMTEKSS0WXSnFMiEdthEVkELocnU8d-MHV_pd7bVAmeKHxmhizb4VFHWRa7e_bIiFAezUDFbbGtCKBJVFDZ7UgJkO7OarFl0EGKs0A-ZSje0kPg3Dt5wW0VNZKC7mPGV1pVAv9lXidAS2YC3THfeJUQqp0OB3yvBGacrZSQy1cDgNKfSGXoUK413vpb7hk0lGrKFLvbS8cdPV16DX75ymh2n6SsZ6_L0XHo-khWdrKltWML4a0AtqWY3C7GW7VqBWROlurAGzDZD2tHTgvc06xVqNrZkBLcJSlEOSY-NSuWEp-emn0CN4v2izcqi6QIPJBXLRmfaQ`
+    await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
+      tokenStr1 = "Bearer " + res.result;
+    });
+    await localstorage
+      .get({ key: "LLBRefreshToken", isPublic: true })
+      .then(res => {
+        RERRESH = "Bearer " + res.result;
+      });
+    //tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxODYwMDQ2MzM4MCIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjMwMDY3NDc3MTk4NzIwNDIxNCwiZXhwIjoxNjA5MTgxODIwLCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIl0sImp0aSI6ImIzNTdjMWMyLTJlODYtNDdiZi1iMDBlLTM5Y2Y2NGMyYTI0MiIsImNsaWVudF9pZCI6ImFwcF9jIn0.kpdUqr5lgy3gDWMTEKSS0WXSnFMiEdthEVkELocnU8d-MHV_pd7bVAmeKHxmhizb4VFHWRa7e_bIiFAezUDFbbGtCKBJVFDZ7UgJkO7OarFl0EGKs0A-ZSje0kPg3Dt5wW0VNZKC7mPGV1pVAv9lXidAS2YC3THfeJUQqp0OB3yvBGacrZSQy1cDgNKfSGXoUK413vpb7hk0lGrKFLvbS8cdPV16DX75ymh2n6SsZ6_L0XHo-khWdrKltWML4a0AtqWY3C7GW7VqBWROlurAGzDZD2tHTgvc06xVqNrZkBLcJSlEOSY-NSuWEp-emn0CN4v2izcqi6QIPJBXLRmfaQ`
     config.headers.Authorization = tokenStr1;
     return config;
   } else {

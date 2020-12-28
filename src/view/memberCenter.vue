@@ -122,9 +122,9 @@ export default {
   },
 
   activated() {
-    this.memberId = '2309350880803029939'
-    localStorage.setItem('memberId', this.memberId)
-    this.getMemberDetial()
+    // this.memberId = '2309350880803029654'
+    // localStorage.setItem('memberId', this.memberId)
+    // this.getMemberDetial()
     if (this.$route.meta.isBack != true) {
       localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
         this.memberId = res.result;

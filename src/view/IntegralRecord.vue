@@ -73,7 +73,6 @@ export default {
     // // this.projectId = 2243550298201130566;
     // this.memberId = "2243550298201130566";
     await localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
-      // this.projectId = 2243550298201130566;
       this.memberId = res.result;
     });
     this.getMemberDetial();

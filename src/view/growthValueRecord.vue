@@ -6,9 +6,7 @@
       </div>
       <div class="title-body">
         <div class="title">成长值</div>
-        <div class="number">
-          {{ totalNumber }}
-        </div>
+        <div class="number">{{ totalNumber }}</div>
       </div>
     </div>
     <div class="page-body" :style="{ height: pageHeight }">
@@ -198,6 +196,7 @@ export default {
 }
 .page-body {
   padding-top: 244px;
+  overflow: auto;
 }
 .page-head {
   position: fixed;
