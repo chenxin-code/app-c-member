@@ -1,29 +1,39 @@
 <template>
   <div>
-    <div v-if="memberObject==null"></div>
-    <div v-if="memberObject!=null">
-      <div class="page-head" :class="getPageClass(memberObject==null?'':memberObject.memberCardRelats[0].levelId)">
+    <div v-if="memberObject == null"></div>
+    <div v-if="memberObject != null">
+      <div
+        class="page-head"
+        :class="
+          getPageClass(
+            memberObject == null ? '' : memberObject.memberCardRelats[0].levelId
+          )
+        "
+      >
         <div class="option">
-          <div class="btn-return"></div>
-          <div class="updataDeital">如何升级</div>
+          <div class="btn-return" @click="pageBack"></div>
+          <div class="updataDeital" @click="goPage">如何升级</div>
         </div>
         <div class="memberDetial">
           <div class="memberDetial-body">
             <div class="leveName"></div>
             <div class="cz-number-body" @click="goProwthValue">
               当前成长值
-              <div class="cz-number">{{memberObject==null?'':memberObject.memberCardRelats[0].grow}}</div>
+              <div class="cz-number">
+                {{ memberObject == null ? "" : memberObject.memberCardRelats[0].grow }}
+              </div>
             </div>
             <div class="progressBar">
               <div class="bg"></div>
-              <div class="progres" :style="{width:differencePercentage*100+'%'}"></div>
+              <div
+                class="progres"
+                :style="{ width: differencePercentage * 100 + '%' }"
+              ></div>
             </div>
             <div class="progressBarWord">
-              <span>{{beginTitle}}</span>
-              <span class="pbn">还差{{difference}}成长值</span>
-              <span class="pbn">
-                {{endTitle}}
-              </span>
+              <span>{{ beginTitle }}</span>
+              <span class="pbn">还差{{ difference }}成长值</span>
+              <span class="pbn">{{ endTitle }} </span>
             </div>
           </div>
           <div class="leveLogo-body">
@@ -34,42 +44,47 @@
       <div class="page-body">
         <div>
           <div class="Bangdou-body">
-            <div class="Bangdou" @click="IntegralRecord">我的邦豆<span class="num">{{integral}}</span></div>
-            <div v-if="integralRecordData.length>0" @click="receiveAll">全部领取</div>
+            <div class="Bangdou" @click="IntegralRecord">
+              我的邦豆<span class="num">{{ integral }}</span>
+            </div>
+            <div v-if="integralRecordData.length > 0" @click="receiveAll">全部领取</div>
           </div>
         </div>
-        <div v-if="integralRecordData.length>0">
+        <div v-if="integralRecordData.length > 0">
           <div class="notReceived">
-            <div @click="receive(item)" v-for="(item,index) in integralRecordData" :key="index" class="notReceivedNode">
-              <div class="integralChange"> {{item.integralChange}}</div>
+            <div
+              @click="receive(item)"
+              v-for="(item, index) in integralRecordData"
+              :key="index"
+              class="notReceivedNode"
+            >
+              <div class="integralChange">{{ item.integralChange }}</div>
               <div class="sourceType">
-                {{item.behaviourName}}
+                {{ item.behaviourName }}
               </div>
             </div>
           </div>
         </div>
         <div class="dotask-body">
           <div class="dotask">
-            做任务赚邦豆
+            <span style="margin-right: 5px">做任务</span><span>赚邦豆</span>
           </div>
-          <div class="btnMore">
-            更多
-          </div>
+          <!-- <div class="btnMore">更多</div> -->
         </div>
         <div class="task-list-body">
-          <div v-if="taskList.length<=0" class="dataMessage">
+          <div v-if="taskList.length <= 0" class="dataMessage">
             <div class="icon"></div>
             <div class="message">暂无任务</div>
           </div>
-          <div v-if="taskList.length>0">
-            <div class="task-node" v-for="(item,index) in taskList" :key="index">
+          <div v-if="taskList.length > 0">
+            <div class="task-node" v-for="(item, index) in taskList" :key="index">
               <div class="task-left">
-                <div class="title">{{item.taskName}}</div>
-                <div class="explain">{{item.taskCondition}}</div>
+                <div class="title">{{ item.taskName }}</div>
+                <div class="explain">{{ item.taskCondition }}</div>
               </div>
-              <!-- <div class="task-right">
-              <div class="btn red">领取</div>
-            </div> -->
+              <div class="task-right">
+                <div class="btn red">{{ getBtnWord(item) }}</div>
+              </div>
             </div>
             <!-- <div class="task-node">
             <div class="task-left">
@@ -97,129 +112,171 @@
 </template>
 <script>
 /* eslint-disable */
-import nav from '@zkty-team/x-engine-module-nav'
-import api from '@/api'
+import nav from "@zkty-team/x-engine-module-nav";
+import api from "@/api";
+import localstorage from "@zkty-team/x-engine-module-localstorage";
 export default {
   data() {
     return {
       currentLeve: 1,
-      beginTitle: '',
-      endTitle: '',
+      beginTitle: "",
+      endTitle: "",
       taskList: [],
       difference: 0,
-      classTypeName: '',
+      classTypeName: "",
       integral: 0,
-      memberId: '',
-      userPhone: '13800008888',
-      phoneArea: '81',
+      memberId: "",
+      userPhone: "13800008888",
+      phoneArea: "81",
       differencePercentage: 0,
       integralRecordData: [],
       memberObject: null,
-    }
+    };
   },
   created() {
-    this.getUserInfo()
+    // this.memberId = '2248639301870946124'
+    // localStorage.setItem('memberId', this.memberId)
+    // this.getMemberDetial()
+    localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
+      this.memberId = res.result;
+      localStorage.setItem("memberId", this.memberId);
+      this.getMemberDetial();
+    });
   },
   mounted() {
     nav.setNavBarHidden({
       isHidden: true,
       isAnimation: true,
-    })
+    });
+  },
+  beforeRouteLeave(to, from, next) {
+    if (
+      to.name == "growthValueRecord" ||
+      to.name == "IntegralRecord" ||
+      to.name == "gradeDescription"
+    ) {
+      next();
+    } else {
+      // nav.navigatorBack({
+      //   url: "0",
+      // });
+      // next();
+    }
   },
   methods: {
+    getBtnWord: function (state) {
+      var reMsg = "未开始";
+      switch (state.statues) {
+        case 0:
+          reMsg = "未完成";
+          break;
+        case 1:
+          reMsg = "已完成";
+          break;
+        case 2:
+          reMsg = "已过期";
+          break;
+        case 3:
+          reMsg = "领取";
+          break;
+      }
+      return reMsg;
+    },
+    pageBack: function () {
+      nav.navigatorBack({
+        url: "0",
+      });
+    },
     //领取全部
     receiveAll: function () {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: '加载中...',
-      })
+        message: "加载中...",
+      });
       const par = {
         memberId: this.memberId,
-      }
+      };
       api.integralRecordReceiveAll(par).then((res) => {
         if (res.code == 200) {
-          this.$toast.clear()
-          this.getMemberDetial()
+          this.$toast.clear();
+          this.getMemberDetial();
         }
-      })
+      });
     },
     //领取一个
     receive: function (item) {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: '加载中...',
-      })
+        message: "加载中...",
+      });
       const par = {
         memberId: this.memberId,
         recordId: item.id,
-      }
+      };
       api.integralRecordReceive(par).then((res) => {
         if (res.code == 200) {
-          this.$toast.clear()
-          this.getMemberDetial()
+          this.$toast.clear();
+          this.getMemberDetial();
         }
-      })
+      });
+    },
+    goPage: function () {
+      this.$routeHelper.router(this, "/gradeDescription");
     },
     IntegralRecord: function () {
-      this.$routeHelper.router(this, '/IntegralRecord', {
-        totalNumber: this.integral,
-      })
+      this.$routeHelper.router(this, "/IntegralRecord");
     },
     goProwthValue: function () {
-      this.$routeHelper.router(this, '/growthValueRecord', {
-        totalNumber: this.memberObject.memberCardRelats[0].grow,
-      })
+      this.$routeHelper.router(this, "/growthValueRecord");
     },
     getPageClass: function (currentLeve) {
-      let classTypeName = ''
+      let classTypeName = "";
       switch (currentLeve) {
         case 1:
-          classTypeName = 'Lv1'
-          this.beginTitle = 'V1'
-          this.endTitle = 'V2'
-          break
+          classTypeName = "Lv1";
+          this.beginTitle = "V1";
+          this.endTitle = "V2";
+          break;
         case 2:
-          classTypeName = 'Lv2'
-          this.beginTitle = 'V'
-          this.endTitle = 'V3'
-          break
+          classTypeName = "Lv2";
+          this.beginTitle = "V";
+          this.endTitle = "V3";
+          break;
         case 3:
-          classTypeName = 'Lv3'
-          this.beginTitle = 'V3'
-          this.endTitle = 'V4'
-          break
+          classTypeName = "Lv3";
+          this.beginTitle = "V3";
+          this.endTitle = "V4";
+          break;
         case 4:
-          classTypeName = 'Lv4'
-          this.beginTitle = 'V4'
-          this.endTitle = 'V5'
-          break
+          classTypeName = "Lv4";
+          this.beginTitle = "V4";
+          this.endTitle = "V5";
+          break;
         case 5:
-          classTypeName = 'Lv5'
-          break
+          classTypeName = "Lv5";
+          break;
       }
-      return classTypeName
+      return classTypeName;
     },
     pageInitial: function (sourceData) {
-      this.classTypeName = ''
-      this.beginTitle = 'V1'
-      this.endTitle = 'V2'
-      this.integral = sourceData.integral
-      this.memberId = sourceData.memberId
-      this.currentLeve = sourceData.memberCardRelats[0].levelId
+      this.classTypeName = "";
+      this.beginTitle = "V1";
+      this.endTitle = "V2";
+      this.integral = sourceData.integral;
+      this.memberId = sourceData.memberId;
+      this.currentLeve = sourceData.memberCardRelats[0].levelId;
       this.difference =
-        sourceData.memberCardRelats[0].rangeEnd -
-        sourceData.memberCardRelats[0].grow
+        sourceData.memberCardRelats[0].rangeEnd - sourceData.memberCardRelats[0].grow;
       this.differencePercentage =
-        sourceData.memberCardRelats[0].grow /
-        sourceData.memberCardRelats[0].rangeEnd
-      this.integralRecord(this.memberId)
-      this.getMyTaskListByMember(this.memberId)
-      this.$forceUpdate()
+        sourceData.memberCardRelats[0].grow / sourceData.memberCardRelats[0].rangeEnd;
+      this.integralRecord(this.memberId);
+      this.getMyTaskListByMember(this.memberId);
+      this.$forceUpdate();
     },
     getUserInfo: function () {
-      this.getMemberDetial()
+      this.getMemberDetial();
       // api.getUserInfo().then((res) => {
       //   if (res.code == 200) {
       //     this.$toast.clear()
@@ -231,55 +288,54 @@ export default {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: '加载中...',
-      })
+        message: "加载中...",
+      });
       const par = {
         memberId: memberID,
         pageIndex: 1,
         pageSize: 3,
         isInvalid: 0,
         status: 1,
-      }
+      };
       api.integralRecord(par).then((res) => {
         if (res.code == 200) {
-          this.$toast.clear()
-          this.integralRecordData = res.data.records
+          this.$toast.clear();
+          this.integralRecordData = res.data.records;
         }
-      })
+      });
     },
     getMyTaskListByMember: function (memberID) {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: '加载中...',
-      })
+        message: "加载中...",
+      });
       const par = {
         pageIndex: 1,
         pageSize: 3,
         memberId: memberID,
-      }
+      };
       api.getMyTaskListByMember(par).then((res) => {
         if (res.code == 200) {
-          this.$toast.clear()
-          this.taskList = res.data.records
+          this.$toast.clear();
+          this.taskList = res.data.records;
         }
-      })
+      });
     },
     getMemberDetial: function () {
       const par = {
-        phoneArea: this.phoneArea,
-        phone: this.userPhone,
-      }
-      api.memberDetailByPhone(par).then((res) => {
+        memberId: this.memberId,
+      };
+      api.memberDetailByMemberID(par).then((res) => {
         if (res.code == 200) {
-          this.$toast.clear()
-          this.memberObject = res.data
-          this.pageInitial(res.data)
+          this.$toast.clear();
+          this.memberObject = res.data;
+          this.pageInitial(res.data);
         }
-      })
+      });
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
 .page-body {
@@ -306,7 +362,7 @@ export default {
       height: 20px;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      background-image: url('../assets/img/member/icon-a-left.png');
+      background-image: url("../assets/img/member/icon-a-left.png");
     }
 
     .updataDeital {
@@ -317,7 +373,7 @@ export default {
       color: #ffffff;
       background-size: 12px 12px;
       background-repeat: no-repeat;
-      background-image: url('../assets/img/member/icon-a-left.png');
+      background-image: url("../assets/img/member/icon-wenhao.png");
       background-position: 0px center;
     }
   }
@@ -388,23 +444,26 @@ export default {
       }
     }
     .progressBarWord {
-      clear: both;
       padding-top: 6px;
+      clear: both;
       width: 170px;
       display: flex;
-      justify-content: space-between;
       font-size: 12px;
+      display: flex;
+      justify-content: space-between;
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
+      height: 20px;
+      line-height: 20px;
     }
   }
 }
 
 .page-head.Lv1 {
-  background-image: url('../assets/img/member/icon-member-Lv1.png');
+  background-image: url("../assets/img/member/icon-member-Lv1.png");
 
   .leveName {
-    background-image: url('../assets/img/member/icon-leve-name-l1.png');
+    background-image: url("../assets/img/member/icon-leve-name-l1.png");
   }
 
   .cz-number-body {
@@ -412,11 +471,11 @@ export default {
   }
   .cz-number {
     color: #7f86aa;
-    background-image: url('../assets/img/member/icon-chno-l1.png');
+    background-image: url("../assets/img/member/icon-chno-l1.png");
   }
 
   .leveLogo {
-    background-image: url('../assets/img/member/icon-leve-l1.png');
+    background-image: url("../assets/img/member/icon-leve-l1.png");
   }
 
   .progressBar {
@@ -434,10 +493,10 @@ export default {
 }
 
 .page-head.Lv2 {
-  background-image: url('../assets/img/member/icon-member-Lv2.png');
+  background-image: url("../assets/img/member/icon-member-Lv2.png");
 
   .leveName {
-    background-image: url('../assets/img/member/icon-leve-name-l2.png');
+    background-image: url("../assets/img/member/icon-leve-name-l2.png");
   }
 
   .cz-number-body {
@@ -445,11 +504,11 @@ export default {
   }
   .cz-number {
     color: #b5561a;
-    background-image: url('../assets/img/member/icon-chno-l2.png');
+    background-image: url("../assets/img/member/icon-chno-l2.png");
   }
 
   .leveLogo {
-    background-image: url('../assets/img/member/icon-leve-l2.png');
+    background-image: url("../assets/img/member/icon-leve-l2.png");
   }
 
   .progressBar {
@@ -467,21 +526,21 @@ export default {
 }
 
 .page-head.Lv3 {
-  background-image: url('../assets/img/member/icon-member-Lv3.png');
+  background-image: url("../assets/img/member/icon-member-Lv3.png");
 
   .leveName {
-    background-image: url('../assets/img/member/icon-leve-name-l3.png');
+    background-image: url("../assets/img/member/icon-leve-name-l3.png");
   }
 
   .cz-number-body {
     color: #434342;
   }
   .cz-number {
-    background-image: url('../assets/img/member/icon-chno-l3.png');
+    background-image: url("../assets/img/member/icon-chno-l3.png");
   }
 
   .leveLogo {
-    background-image: url('../assets/img/member/icon-leve-l3.png');
+    background-image: url("../assets/img/member/icon-leve-l3.png");
   }
 
   .progressBar {
@@ -499,21 +558,21 @@ export default {
 }
 
 .page-head.Lv4 {
-  background-image: url('../assets/img/member/icon-member-Lv4.png');
+  background-image: url("../assets/img/member/icon-member-Lv4.png");
 
   .leveName {
-    background-image: url('../assets/img/member/icon-leve-name-l4.png');
+    background-image: url("../assets/img/member/icon-leve-name-l4.png");
   }
 
   .cz-number-body {
     color: #986b1b;
   }
   .cz-number {
-    background-image: url('../assets/img/member/icon-chno-l4.png');
+    background-image: url("../assets/img/member/icon-chno-l4.png");
   }
 
   .leveLogo {
-    background-image: url('../assets/img/member/icon-leve-l4.png');
+    background-image: url("../assets/img/member/icon-leve-l4.png");
   }
 
   .progressBar {
@@ -531,21 +590,21 @@ export default {
 }
 
 .page-head.Lv5 {
-  background-image: url('../assets/img/member/icon-member-Lv5.png');
+  background-image: url("../assets/img/member/icon-member-Lv5.png");
 
   .leveName {
-    background-image: url('../assets/img/member/icon-leve-name-l5.png');
+    background-image: url("../assets/img/member/icon-leve-name-l5.png");
   }
 
   .cz-number-body {
     color: #fff;
   }
   .cz-number {
-    background-image: url('../assets/img/member/icon-chno-l5.png');
+    background-image: url("../assets/img/member/icon-chno-l5.png");
   }
 
   .leveLogo {
-    background-image: url('../assets/img/member/icon-leve-l5.png');
+    background-image: url("../assets/img/member/icon-leve-l5.png");
   }
 
   .progressBar {
@@ -583,7 +642,7 @@ export default {
   background-position: right center;
   background-size: 18px 18px;
   background-repeat: no-repeat;
-  background-image: url('../assets/img/member/icon-jt-right.png');
+  background-image: url("../assets/img/member/icon-jt-right.png");
   .num {
     color: #e8374a;
   }
@@ -593,17 +652,15 @@ export default {
   margin-top: 27px;
 }
 .page-body .notReceivedNode {
-  display: flex;
-  justify-items: left;
+  display: inline-block;
   margin-right: 10px;
-  flex-flow: column;
-  width: 96px;
+  width: 33%;
   height: 58px;
   padding-left: 44px;
   padding-top: 12px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-image: url('../assets/img/member/icon-getBangDou-bg.png');
+  background-image: url("../assets/img/member/icon-getBangDou-bg.png");
 }
 .page-body .notReceivedNode .integralChange {
   font-size: 16px;
@@ -639,7 +696,7 @@ export default {
   background-position: right center;
   background-size: 16px 16px;
   background-repeat: no-repeat;
-  background-image: url('../assets/img/member/icon-jt-right.png');
+  background-image: url("../assets/img/member/icon-jt-right.png");
 }
 
 .task-list-body {
@@ -655,6 +712,16 @@ export default {
   box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
   border-radius: 12px;
 }
+
+.task-list-body .task-node .task-left {
+  flex: 1;
+}
+.task-list-body .task-node .task-right {
+  flex: 0 0 80px;
+  display: flex;
+  justify-content: center;
+}
+
 .task-list-body .task-node .title {
   font-size: 16px;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -671,10 +738,10 @@ export default {
   background-position: left center;
   background-size: 16px 16px;
   background-repeat: no-repeat;
-  background-image: url('../assets/img/member/icon-biaoshi.png');
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  background-image: url("../assets/img/member/icon-biaoshi.png");
+  // overflow: hidden;
+  // white-space: nowrap;
+  // text-overflow: ellipsis;
 }
 
 .btn.red {
@@ -710,7 +777,7 @@ export default {
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url('../assets/img/icon-nodata.png');
+    background-image: url("../assets/img/icon-nodata.png");
   }
   .message {
     text-align: center;
@@ -721,4 +788,3 @@ export default {
   }
 }
 </style>
-

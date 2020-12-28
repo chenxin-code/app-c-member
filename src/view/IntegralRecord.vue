@@ -1,33 +1,46 @@
 <template>
-  <div>
+  <div class="integralRecord" ref="integralRecord">
     <div class="page-head">
       <div class="option">
-        <div class="btn-return"></div>
+        <div class="btn-return" @click="pageBack"></div>
       </div>
       <div class="title-body">
-        <div class="title">
-          帮豆记录
-        </div>
+        <div class="title">邦豆记录</div>
         <div class="number">
-          {{totalNumber}}
+          {{ totalNumber }}
         </div>
       </div>
-      <div class="totonumber">
-        <div class="guoqitishi">{{invalidTime}}即将过期的积分<span>{{guoqi}}</span></div>
-      </div>
+      <!-- <div class="totonumber" v-if="guoqi != 0">
+        <div class="guoqitishi">
+          {{ invalidTime }}即将过期的积分<span>{{ guoqi }}</span>
+        </div>
+      </div> -->
     </div>
-    <div class="page-body">
+    <div class="page-body" :style="{ height: pageHeight }" v-if="memberId != null">
+      <div class="dataMessage" v-if="showNoData">
+        <div class="icon"></div>
+        <div class="message">暂无邦豆记录</div>
+      </div>
       <div class="task-list-body">
         <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-          <van-list v-model="loading" :finished="finished" :offset="10" finished-text="没有更多了" @load="onLoad">
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            :offset="10"
+            finished-text="没有更多了"
+            @load="onLoad"
+            v-if="!showNoData"
+          >
             <template v-slot:default>
-              <div class="task-node" v-for="(item,index) in dataSource" :key="index">
+              <div class="task-node" v-for="(item, index) in dataSource" :key="index">
                 <div class="task-left">
-                  <div class="title">{{item.clientName}}</div>
-                  <div class="explain">{{item.createTime|timeFormat}}</div>
+                  <div class="title">{{ item.clientName }}</div>
+                  <div class="explain">{{ item.createTime | timeFormat }}</div>
                 </div>
                 <div class="task-right">
-                  <div>{{item.changeType==1?'+':'-'}}{{item.integralChange}}</div>
+                  <div>
+                    {{ item.changeType == 1 ? "+" : "-" }}{{ item.integralChange }}
+                  </div>
                 </div>
               </div>
             </template>
@@ -39,42 +52,65 @@
 </template>
 <script>
 /* eslint-disable */
-import nav from '@zkty-team/x-engine-module-nav'
-import api from '@/api'
-import * as moment from 'moment'
-
+import nav from "@zkty-team/x-engine-module-nav";
+import api from "@/api";
+import * as moment from "moment";
+import localstorage from "@zkty-team/x-engine-module-localstorage";
 export default {
   data() {
     return {
-      memberId: 1,
-      guoqi:0,
-      totalNumber:0,
-      invalidTime: '',
+      showNoData: false,
+      pageHeight: 0,
+      memberId: null,
+      guoqi: 0,
+      totalNumber: 0,
+      invalidTime: "",
       pageIndex: 0,
-      pageSize: 5,
+      pageSize: 10,
       loading: false,
       finished: false,
       refreshing: false,
       dataSource: [],
-    }
+    };
   },
-  created() {
-    this.totalNumber = this.$route.query.totalNumber;
-    this.invalidTime = moment().add(7, 'd').format('YYYY-MM-DD')
+  async created() {
+    // // this.projectId = 2243550298201130566;
+    // this.memberId = "2243550298201130566";
+    await localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
+      // this.projectId = 2243550298201130566;
+      this.memberId = res.result;
+    });
+    this.getMemberDetial();
+    this.invalidTime = moment().add(7, "d").format("YYYY-MM-DD");
     this.overdueIntegral();
   },
   mounted() {
     nav.setNavBarHidden({
       isHidden: true,
       isAnimation: true,
-    })
+    });
+    this.pageHeight = this.$refs.integralRecord.clientHeight + "px";
   },
   filters: {
     timeFormat: function (value) {
-      return moment(value).format('YYYY-MM-DD HH:mm:ss')
+      return moment(value).format("YYYY-MM-DD HH:mm:ss");
     },
   },
   methods: {
+    getMemberDetial: function () {
+      const par = {
+        memberId: this.memberId,
+      };
+      api.memberDetailByMemberID(par).then((res) => {
+        if (res.code == 200) {
+          this.$toast.clear();
+          this.totalNumber = res.data.integral;
+        }
+      });
+    },
+    pageBack: function () {
+      nav.navigatorBack();
+    },
     overdueIntegral: function () {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
@@ -84,13 +120,17 @@ export default {
       const par = {
         invalidTime: this.invalidTime,
         memberId: this.memberId,
-      }
+      };
       api.overdueIntegral(par).then((res) => {
         if (res.code == 200) {
-          this.$toast.clear()
-          this.guoqi = res.data;
+          this.$toast.clear();
+          if (res.data === undefined) {
+            this.guoqi = 0;
+          } else {
+            this.guoqi = res.data;
+          }
         }
-      })
+      });
     },
     onLoad() {
       this.$toast.loading({
@@ -98,74 +138,107 @@ export default {
         forbidClick: true,
         message: "加载中...",
       });
-      this.pageIndex = this.pageIndex + 1
+      this.pageIndex = this.pageIndex + 1;
       const par = {
-        memberId: 1,
+        memberId: this.memberId,
         pageIndex: this.pageIndex,
         pageSize: this.pageSize,
         isInvalid: 0,
         status: 2,
-      }
+      };
 
       if (this.total != null && this.dataSource.length >= this.total) {
-        this.finished = true
-        this.loading = false
-        return false
+        this.finished = true;
+        this.loading = false;
+        return false;
       }
 
       api.integralRecord(par).then((res) => {
         if (res.code == 200) {
-          this.$toast.clear()
-          this.total = res.data.total
+          this.$toast.clear();
+          this.total = res.data.total;
+
+          if (res.data.records > 0) {
+            this.showNoData = false;
+            this.showDataList = true;
+          } else {
+            this.showNoData = true;
+            this.showDataList = false;
+          }
+
           if (this.refreshing) {
-            this.dataSource = []
-            this.refreshing = false
+            this.dataSource = [];
+            this.refreshing = false;
           }
           for (let i = 0; i < res.data.records.length; i++) {
-            this.dataSource.push(res.data.records[i])
+            this.dataSource.push(res.data.records[i]);
           }
-          this.loading = false
+          this.loading = false;
           if (this.dataSource.length >= res.data.total) {
-            this.finished = true
+            this.finished = true;
           }
         }
-      })
+      });
     },
     onRefresh() {
       // 清空列表数据
-      this.dataSource = []
-      this.pageIndex = 0
-      ;(this.total = null), (this.finished = false)
+      this.dataSource = [];
+      this.pageIndex = 0;
+      (this.total = null), (this.finished = false);
 
       // 重新加载数据
       // 将 loading 设置为 true，表示处于加载状态
-      this.loading = true
-      this.onLoad()
+      this.loading = true;
+      this.onLoad();
     },
-    getMemberGrownLogListUsingGET: function (memberId) {
+    getMemberGrownLogListUsingGET: function () {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
         message: "加载中...",
       });
       const par = {
-        memberId: memberId,
+        memberId: this.memberId,
         pageIndex: 1,
         pageSize: 10,
-      }
+      };
       api.getMemberGrownLogListUsingGET(par).then((res) => {
         if (res.code == 200) {
-          this.$toast.clear()
-          this.dataSource = res.data.records
+          this.$toast.clear();
+          this.dataSource = res.data.records;
         }
-      })
+      });
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
+.dataMessage {
+  .icon {
+    width: 100%;
+    height: 200px;
+    margin-top: 10px;
+    background-position: center center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../assets/img/icon-nodata.png");
+  }
+  .message {
+    text-align: center;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: red;
+  }
+}
+.integralRecord {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
 .page-body {
   padding-top: 264px;
+  overflow: auto;
 }
 .page-head {
   position: fixed;
@@ -177,7 +250,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 38px 16px 0px 16px;
-  background-image: url('../assets/img/member/icon-bg-singin.png');
+  background-image: url("../assets/img/member/icon-bg-singin.png");
   .option {
     display: flex;
     justify-content: space-between;
@@ -188,7 +261,7 @@ export default {
       height: 20px;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      background-image: url('../assets/img/member/icon-a-left.png');
+      background-image: url("../assets/img/member/icon-a-left.png");
     }
   }
   .title-body .title {
@@ -261,4 +334,3 @@ export default {
   }
 }
 </style>
-

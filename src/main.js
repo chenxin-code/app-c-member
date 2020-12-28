@@ -8,9 +8,12 @@ import routeHelper from './utils/tools'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 
+import vConsole from 'vconsole/dist/vconsole.min.js';
+new vConsole();
+
 //当期是否为手机端。true是。false不是
-routeHelper.isPhone = false;
-// routeHelper.isPhone = true;
+// routeHelper.isPhone = false;
+routeHelper.isPhone = true;
 Vue.prototype['$routeHelper'] = routeHelper;
 Vue.use(Vant)
 

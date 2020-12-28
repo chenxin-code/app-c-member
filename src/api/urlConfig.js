@@ -14,6 +14,7 @@ export default {
     LOGIN: option.login + '/oauth/token', // 登录
     GET_USER_INFO: option.c_user + '/api-c/v1/user/query', //获取用户基本信息
     MEMBERDETAILBYPHONE: option.isv_member + '/api-c/v1/member/detailByPhone',
+    DETAILBYMEMBERID: option.memberCenter + '/api-c/v1/member/detailByMemberId',
     INTEGRALRECORD: option.isv_member + '/api-c/v1/member/integralRecord/list',
     INTEGRALRECORDRECEIVE: option.isv_integralRecord + '/api-c/v1/integral-record/receive',
     INTEGRALRECORDRECEIVEALL: option.isv_integralRecord + '/api-c/v1/integral-record/receive/all',
