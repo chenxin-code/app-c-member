@@ -6,7 +6,7 @@ import localstorage from "@zkty-team/x-engine-module-localstorage";
 import { Toast } from "vant";
 
 // var BASEURL = ''
-var RERRESH = "";
+var REFRESH = "";
 
 // if (process.env.NODE_ENV === 'development') {
 //   // getBaseURL();
@@ -44,9 +44,9 @@ HTTP.interceptors.request.use(async config => {
     await localstorage
       .get({ key: "LLBRefreshToken", isPublic: true })
       .then(res => {
-        RERRESH = "Bearer " + res.result;
+        REFRESH = "Bearer " + res.result;
       });
-    //tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxODYwMDQ2MzM4MCIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjMwMDY3NDc3MTk4NzIwNDIxNCwiZXhwIjoxNjA5MTgxODIwLCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIl0sImp0aSI6ImIzNTdjMWMyLTJlODYtNDdiZi1iMDBlLTM5Y2Y2NGMyYTI0MiIsImNsaWVudF9pZCI6ImFwcF9jIn0.kpdUqr5lgy3gDWMTEKSS0WXSnFMiEdthEVkELocnU8d-MHV_pd7bVAmeKHxmhizb4VFHWRa7e_bIiFAezUDFbbGtCKBJVFDZ7UgJkO7OarFl0EGKs0A-ZSje0kPg3Dt5wW0VNZKC7mPGV1pVAv9lXidAS2YC3THfeJUQqp0OB3yvBGacrZSQy1cDgNKfSGXoUK413vpb7hk0lGrKFLvbS8cdPV16DX75ymh2n6SsZ6_L0XHo-khWdrKltWML4a0AtqWY3C7GW7VqBWROlurAGzDZD2tHTgvc06xVqNrZkBLcJSlEOSY-NSuWEp-emn0CN4v2izcqi6QIPJBXLRmfaQ`
+    // tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJmYW5qaXVqaXUiLCJzY29wZSI6WyJhbGwiXSwiaWQiOjEsImV4cCI6MTYwNTYxODI5MiwiYXV0aG9yaXRpZXMiOlsiYXBwX2FjdGl2aXR5X2FkbWluIiwiYXBwX3F1YWxpdHlfYWRtaW4iLCJhcHBfaG91c2VfYWRtaW4iLCJhcHBfdmlzaXRvcl9hZG1pbiIsInN5c19hZG1pbiIsImFwcF9hZHZlcnRfYWRtaW4iLCJhcHBfbm90aWNlX2FkbWluIiwiYXBwX21pY3JvX2FkbWluIiwiYXBwX2FyZWFfYWRtaW4iLCJhcHBfZGVjb3JhdGVfYWRtaW4iLCJhcHBfdmVoaWNsZV9hZG1pbiIsImFwcF9hcmVhX2VtcF9hZG1pbiIsImFwcF9wYXNzYWdlX2FkbWluIiwiYW55dGltZXMiLCJhcHBfdXNlcl9hZG1pbiIsImFwcF9zcGFjZV9hZG1pbiIsImFwcF9vd25lcl9hZG1pbiIsImFwcF9jb21wYW55X2xpYl9hZG1pbiIsImFwcF9hZG1pbiJdLCJqdGkiOiJkYTBjYmMzYi1kMjRhLTQxNjktYTAwYy04NThiZDUwNWZmZWUiLCJjbGllbnRfaWQiOiJhcHBfYiJ9.VT4a9c0U-SePRAt75l27AbTANe-pmCPnCF--csIs7AMRU1LcZeJ4yRB-iDH5I6oQ2OWqY3vvBTzQcXhfXQeZH5JaahHBxPAg8QKyAqWCDEZe4v7lbrowoSg45MwfV0BXs_L9u71y6jyXW5FiPnVdll1y3cRr9_qKYUUgV0Hbgvb2KeVHs7n9-6DOVC5WPtcdaugBzHj8IDtD1jbn3-fElDq2FgyKBB2aN-qDbzo08m917DiUk6w2GLm_DsgwXXx9wCK0RVgOyycCPbNCLM1TWhiB-YwaESJd9VaZCZ1jSOEholtccGXE8AOyiN7XH10RnAz9yFu-z_MlXGtlqfDPtg`
     config.headers.Authorization = tokenStr1;
     return config;
   } else {
@@ -56,7 +56,7 @@ HTTP.interceptors.request.use(async config => {
     await localstorage
       .get({ key: "LLBRefreshToken", isPublic: true })
       .then(res => {
-        RERRESH = "Bearer " + res.result;
+        REFRESH = "Bearer " + res.result;
       });
     config.headers.Authorization = tokenStr1;
     return config;
@@ -127,7 +127,7 @@ async function refreshToken() {
     client_id: "app_c",
     client_secret: "times",
     scope: "all",
-    refresh_token: RERRESH
+    refresh_token: REFRESH
   });
   api
     .toLogin(para)
@@ -135,7 +135,7 @@ async function refreshToken() {
       if (res.code === 200) {
         localstorage.set({
           key: "LLBToken",
-          value: res.dta.token,
+          value: res.data.token,
           isPublic: false
         });
         location.reload();
