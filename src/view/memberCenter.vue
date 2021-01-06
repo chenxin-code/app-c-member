@@ -1,6 +1,6 @@
 <template>
   <div>
-    <transition name="plus-icon1">      
+    <transition name="plus-icon1">
       <div class="page-content" v-if="memberObject == null">
         <div class="page-head Lv1" style="opacity: 0.4;">
           <div class="option"></div>
@@ -122,9 +122,9 @@ export default {
   },
 
   activated() {
-    // this.memberId = '2309350880803029654'
+    // this.memberId = '2309350880803029614'
     // localStorage.setItem('memberId', this.memberId)
-    // this.getMemberDetial()
+    this.getMemberDetial()
     if (this.$route.meta.isBack != true) {
       localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
         this.memberId = res.result;
@@ -334,6 +334,25 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.van-dropdown-menu__bar {
+  box-shadow: none;
+  //固定定位
+  position: fixed;
+  width: 100%;
+  // margin-top: 27px;
+}
+
+.van-dropdown-menu__item {
+  flex: inherit;
+}
+.van-dropdown-menu__title {
+  padding: 0 9px 0 16px;
+}
+
+.van-dropdown-menu__title::after {
+  border-color: transparent transparent #333 #333;
+}
+
 .plus-icon1-enter-active {
   transition: opacity 0;
 }
@@ -360,14 +379,13 @@ export default {
   opacity: 0;
 }
 
-.page-content{
+.page-content {
   position: fixed;
   left: 0px;
   top: 0px;
   width: 100%;
   height: 100%;
 }
-
 
 .page-body {
   padding-top: 282px;

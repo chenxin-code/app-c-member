@@ -30,7 +30,7 @@
                   <div class="explain">{{ item.createTime | timeFormat }}</div>
                 </div>
                 <div class="task-right">
-                  <div>+{{ item.growthChange }}</div>
+                  <div>{{ item.changeType == 1 ? "+" : "-" }}{{ item.growthChange }}</div>
                 </div>
               </div>
             </template>
@@ -170,6 +170,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.van-pull-refresh {
+  overflow: visible;
+}
 .dataMessage {
   .icon {
     width: 100%;
@@ -195,6 +198,7 @@ export default {
   // background-color: red;
 }
 .page-body {
+  padding: 0px 16px 16px 16px;
   padding-top: 244px;
   overflow: auto;
 }
@@ -243,7 +247,8 @@ export default {
 }
 
 .task-list-body {
-  padding: 0px 16px 16px 16px;
+  box-sizing: border-box;
+  // padding: 0px 16px 16px 16px;
 }
 
 .task-list-body .task-node {
@@ -261,6 +266,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #e8374a;
+  white-space: nowrap;
 }
 .task-list-body .task-node .title {
   font-size: 16px;
@@ -273,6 +279,6 @@ export default {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #8d8d8d;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 </style>

@@ -38,15 +38,15 @@ export const HTTP = axios.create({
 HTTP.interceptors.request.use(async config => {
   let tokenStr1;
   if (process.env.NODE_ENV === "development") {
-    await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
-      tokenStr1 = "Bearer " + res.result;
-    });
-    await localstorage
-      .get({ key: "LLBRefreshToken", isPublic: true })
-      .then(res => {
-        REFRESH = "Bearer " + res.result;
-      });
-    // tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJmYW5qaXVqaXUiLCJzY29wZSI6WyJhbGwiXSwiaWQiOjEsImV4cCI6MTYwNTYxODI5MiwiYXV0aG9yaXRpZXMiOlsiYXBwX2FjdGl2aXR5X2FkbWluIiwiYXBwX3F1YWxpdHlfYWRtaW4iLCJhcHBfaG91c2VfYWRtaW4iLCJhcHBfdmlzaXRvcl9hZG1pbiIsInN5c19hZG1pbiIsImFwcF9hZHZlcnRfYWRtaW4iLCJhcHBfbm90aWNlX2FkbWluIiwiYXBwX21pY3JvX2FkbWluIiwiYXBwX2FyZWFfYWRtaW4iLCJhcHBfZGVjb3JhdGVfYWRtaW4iLCJhcHBfdmVoaWNsZV9hZG1pbiIsImFwcF9hcmVhX2VtcF9hZG1pbiIsImFwcF9wYXNzYWdlX2FkbWluIiwiYW55dGltZXMiLCJhcHBfdXNlcl9hZG1pbiIsImFwcF9zcGFjZV9hZG1pbiIsImFwcF9vd25lcl9hZG1pbiIsImFwcF9jb21wYW55X2xpYl9hZG1pbiIsImFwcF9hZG1pbiJdLCJqdGkiOiJkYTBjYmMzYi1kMjRhLTQxNjktYTAwYy04NThiZDUwNWZmZWUiLCJjbGllbnRfaWQiOiJhcHBfYiJ9.VT4a9c0U-SePRAt75l27AbTANe-pmCPnCF--csIs7AMRU1LcZeJ4yRB-iDH5I6oQ2OWqY3vvBTzQcXhfXQeZH5JaahHBxPAg8QKyAqWCDEZe4v7lbrowoSg45MwfV0BXs_L9u71y6jyXW5FiPnVdll1y3cRr9_qKYUUgV0Hbgvb2KeVHs7n9-6DOVC5WPtcdaugBzHj8IDtD1jbn3-fElDq2FgyKBB2aN-qDbzo08m917DiUk6w2GLm_DsgwXXx9wCK0RVgOyycCPbNCLM1TWhiB-YwaESJd9VaZCZ1jSOEholtccGXE8AOyiN7XH10RnAz9yFu-z_MlXGtlqfDPtg`
+    // await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
+    //   tokenStr1 = "Bearer " + res.result;
+    // });
+    // await localstorage
+    //   .get({ key: "LLBRefreshToken", isPublic: true })
+    //   .then(res => {
+    //     REFRESH = "Bearer " + res.result;
+    //   });
+    tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTAxMTQ4NTU3NyIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjI1Mjk5NDYzOTIyNzI1NzY3OSwiZXhwIjoxNjA5OTY1NDYyLCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIiwib3duZXIiXSwianRpIjoiOTczMmYwMjMtZjY3OS00ZjI0LTljMjQtZDllZWQ2NzgyZGU4IiwiY2xpZW50X2lkIjoiYXBwX2MifQ.SFxtLMjdFPLajPHvRel7jRT_HkNrOzEHejO1lTDkItL2ldlg5id_6eiTBP53u1zWZQ0xsJO9FurmHnkH3dFnEhhytfBRmb6jhNodGUBgW4UHSgg52RM1dJ7aln8lbWZLB2Tvt-37nwG-8G27IS8GmWwy6Bu38q6ywbRtvygdyQDaXoqSWhVEBLTSDOZo3GztIAGtPyPs3p65DzLzT6IP3t7w3MdBGCFBvsiRZx1GvrriKTw8HxK40zLgvTQbyF6E4ubK9yaFa6LdjpwYb9svI48-1JuXBV3uyEFKT-dS80KBF-F4dfJYpHmS5tEpurmSICS7Zfvc78pHPpkG7Q9A7Q`
     config.headers.Authorization = tokenStr1;
     return config;
   } else {

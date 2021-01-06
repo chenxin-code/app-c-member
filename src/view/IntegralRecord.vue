@@ -59,7 +59,7 @@ export default {
       pageHeight: 0,
       memberId: null,
       guoqi: 0,
-      totalNumber: 0,
+      totalNumber: "",
       invalidTime: "",
       pageIndex: 0,
       pageSize: 10,
@@ -70,8 +70,7 @@ export default {
     };
   },
   async created() {
-    // // this.projectId = 2243550298201130566;
-    // this.memberId = "2243550298201130566";
+    //this.memberId = "2309350880803029939";
     await localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
       this.memberId = res.result;
     });
@@ -203,6 +202,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.van-pull-refresh {
+  overflow: visible;
+}
 .dataMessage {
   .icon {
     width: 100%;
@@ -227,7 +229,8 @@ export default {
   width: 100%;
 }
 .page-body {
-  padding-top: 264px;
+  padding: 0px 16px 16px 16px;
+  padding-top: 244px;
   overflow: auto;
 }
 .page-head {
@@ -279,7 +282,7 @@ export default {
 }
 
 .task-list-body {
-  padding: 0px 16px 16px 16px;
+  box-sizing: border-box;
 }
 
 .task-list-body .task-node {
@@ -287,7 +290,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #ffffff;
   padding: 16px;
   box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
   border-radius: 12px;
@@ -297,6 +299,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #e8374a;
+  white-space: nowrap;
 }
 .task-list-body .task-node .title {
   font-size: 16px;
@@ -309,7 +312,7 @@ export default {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #8d8d8d;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 .guoqitishi {
   font-size: 14px;
