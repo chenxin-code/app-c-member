@@ -1402,7 +1402,7 @@
   resolved "https://registry.npm.taobao.org/@xtuc/long/download/@xtuc/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha1-0pHGpOl5ibXGHZrPOWrk/hM6cY0=
 
-"@zkty-team/x-cli@^1.0.14":
+"@zkty-team/x-cli@^1.0.14", "@zkty-team/x-cli@^1.1.4":
   version "1.1.7"
   resolved "https://registry.npm.taobao.org/@zkty-team/x-cli/download/@zkty-team/x-cli-1.1.7.tgz#9709adaea11ab0437205898bd688098f80138114"
   integrity sha1-lwmtrqEasENyBYmL1ogJj4ATgRQ=
@@ -1416,69 +1416,70 @@
     typescript-parser "^2.6.1"
     yargs "^16.0.3"
 
-"@zkty-team/x-engine-module-engine@^0.0.67":
-  version "0.0.67"
-  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-engine/download/@zkty-team/x-engine-module-engine-0.0.67.tgz#dc4f3ea8874fa1b6df900d2d9185a4bb3d0ea143"
-  integrity sha1-3E8+qIdPobbfkA0tkYWkuz0OoUM=
+"@zkty-team/x-engine-module-engine@^0.1.11", "@zkty-team/x-engine-module-engine@~0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-engine/download/@zkty-team/x-engine-module-engine-0.1.11.tgz#83516d3ea3ecab1309158996b4ffe78d610e46f4"
+  integrity sha1-g1FtPqPsqxMJFYmWtP/njWEORvQ=
 
-"@zkty-team/x-engine-module-geo@0.0.67":
-  version "0.0.67"
-  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-geo/download/@zkty-team/x-engine-module-geo-0.0.67.tgz#4fef06733f75f816fd8a3e0c76365c5476a26524"
-  integrity sha1-T+8Gcz91+Bb9ij4MdjZcVHaiZSQ=
+"@zkty-team/x-engine-module-geo@~0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-geo/download/@zkty-team/x-engine-module-geo-0.1.11.tgz#0ccdc40469044f7b7e4199489408d80b3bbf690b"
+  integrity sha1-DM3EBGkET3t+QZlIlAjYCzu/aQs=
   dependencies:
     "@zkty-team/x-cli" "^1.0.14"
-    "@zkty-team/x-engine-module-engine" "^0.0.67"
+    "@zkty-team/x-engine-module-engine" "^0.1.11"
 
-"@zkty-team/x-engine-module-localstorage@0.0.67":
-  version "0.0.67"
-  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-localstorage/download/@zkty-team/x-engine-module-localstorage-0.0.67.tgz#9efd2a9f39c00903ca12db692945c5d4438d7a36"
-  integrity sha1-nv0qnznACQPKEttpKUXF1EONejY=
+"@zkty-team/x-engine-module-localstorage@~0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-localstorage/download/@zkty-team/x-engine-module-localstorage-0.1.11.tgz#c1387687f049e0a4ab638175e5f203bc005bf344"
+  integrity sha1-wTh2h/BJ4KSrY4F15fIDvABb80Q=
   dependencies:
-    "@zkty-team/x-engine-module-engine" "^0.0.67"
+    "@zkty-team/x-engine-module-engine" "^0.1.11"
 
-"@zkty-team/x-engine-module-nav@^0.0.67":
-  version "0.0.67"
-  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-nav/download/@zkty-team/x-engine-module-nav-0.0.67.tgz#5f6bd069d4b91573c1e4fed50ca701e43c7d8823"
-  integrity sha1-X2vQadS5FXPB5P7VDKcB5Dx9iCM=
+"@zkty-team/x-engine-module-nav@~0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-nav/download/@zkty-team/x-engine-module-nav-0.1.11.tgz#c441d92ace234e2c8b08b5093c3c134a7d0ecdb3"
+  integrity sha1-xEHZKs4jTiyLCLUJPDwTSn0OzbM=
   dependencies:
-    "@zkty-team/x-engine-module-engine" "^0.0.67"
+    "@zkty-team/x-cli" "^1.1.4"
+    "@zkty-team/x-engine-module-engine" "^0.1.11"
 
-"@zkty-team/x-engine-module-network@0.0.67":
-  version "0.0.67"
-  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-network/download/@zkty-team/x-engine-module-network-0.0.67.tgz#db8312de3648a848e27cd2bc98a9699d07683687"
-  integrity sha1-24MS3jZIqEjifNK8mKlpnQdoNoc=
+"@zkty-team/x-engine-module-network@~0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-network/download/@zkty-team/x-engine-module-network-0.1.11.tgz#22ab3ef2266bf15165f25f559d8dfb5f9a957126"
+  integrity sha1-Iqs+8iZr8VFl8l9VnY37X5qVcSY=
   dependencies:
-    "@zkty-team/x-engine-module-engine" "^0.0.67"
-    "@zkty-team/x-engine-module-protocols" "^0.0.67"
+    "@zkty-team/x-engine-module-engine" "^0.1.11"
+    "@zkty-team/x-engine-module-protocols" "^0.1.11"
 
-"@zkty-team/x-engine-module-protocols@^0.0.67":
-  version "0.0.67"
-  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-protocols/download/@zkty-team/x-engine-module-protocols-0.0.67.tgz#e9436c1be281c44a669550278b4f9238b56884b4"
-  integrity sha1-6UNsG+KBxEpmlVAni0+SOLVohLQ=
+"@zkty-team/x-engine-module-protocols@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-protocols/download/@zkty-team/x-engine-module-protocols-0.1.11.tgz#19ef1d19c8918a9e748ba03abba9c0b077c8e1ca"
+  integrity sha1-Ge8dGciRip50i6A6u6nAsHfI4co=
   dependencies:
-    "@zkty-team/x-engine-module-engine" "^0.0.67"
+    "@zkty-team/x-engine-module-engine" "^0.1.11"
 
-"@zkty-team/x-engine-module-router@0.0.67":
-  version "0.0.67"
-  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-router/download/@zkty-team/x-engine-module-router-0.0.67.tgz#e541731070d8c02e28fd69bad8c846df78fbabf5"
-  integrity sha1-5UFzEHDYwC4o/Wm62MhG33j7q/U=
+"@zkty-team/x-engine-module-router@~0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-router/download/@zkty-team/x-engine-module-router-0.1.11.tgz#61342551ccc54af23eaeb82145cbd7444bd9d341"
+  integrity sha1-YTQlUczFSvI+rrghRcvXREvZ00E=
   dependencies:
-    "@zkty-team/x-engine-module-engine" "^0.0.67"
+    "@zkty-team/x-engine-module-engine" "^0.1.11"
 
-"@zkty-team/x-engine-module-ui@0.0.67":
-  version "0.0.67"
-  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-ui/download/@zkty-team/x-engine-module-ui-0.0.67.tgz#27f9ae21bfc1b59b0a6a2111e389eb07bb3be442"
-  integrity sha1-J/muIb/BtZsKaiER44nrB7s75EI=
+"@zkty-team/x-engine-module-ui@~0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-ui/download/@zkty-team/x-engine-module-ui-0.1.11.tgz#95193897071e82c79dd529ffbe2054597f3490fa"
+  integrity sha1-lRk4lwcegsed1Sn/viBUWX80kPo=
   dependencies:
-    "@zkty-team/x-engine-module-engine" "^0.0.67"
+    "@zkty-team/x-engine-module-engine" "^0.1.11"
 
-"@zkty-team/x-engine-module-yjzdbill@^0.0.67":
-  version "0.0.67"
-  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-yjzdbill/download/@zkty-team/x-engine-module-yjzdbill-0.0.67.tgz#e1868226b7393107a9aee9a974915e1f82475b20"
-  integrity sha1-4YaCJrc5MQeprumpdJFeH4JHWyA=
+"@zkty-team/x-engine-module-yjzdbill@~0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npm.taobao.org/@zkty-team/x-engine-module-yjzdbill/download/@zkty-team/x-engine-module-yjzdbill-0.1.11.tgz#d3437565d51d3f3e2d8a5ec616c011ea1a3d1953"
+  integrity sha1-00N1ZdUdPz4til7GFsAR6ho9GVM=
   dependencies:
     "@zkty-team/x-cli" "^1.0.14"
-    "@zkty-team/x-engine-module-engine" "^0.0.67"
+    "@zkty-team/x-engine-module-engine" "^0.1.11"
 
 JSONStream@^1.3.4, JSONStream@^1.3.5:
   version "1.3.5"

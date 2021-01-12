@@ -7,6 +7,7 @@ import routeHelper from "./utils/tools";
 
 import Vant from "vant";
 import "vant/lib/index.css";
+Vue.use(Vant);
 
 // import vConsole from "vconsole/dist/vconsole.min.js";
 // new vConsole();
@@ -15,7 +16,6 @@ import "vant/lib/index.css";
 // routeHelper.isPhone = false;
 routeHelper.isPhone = true;
 Vue.prototype.$routeHelper = routeHelper;
-Vue.use(Vant);
 
 Vue.config.productionTip = false;
 
