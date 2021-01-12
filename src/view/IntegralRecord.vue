@@ -94,9 +94,11 @@ export default {
   methods: {
     async initData() {
       // this.memberId = "2309350880803029614"; //需注释
-      await localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
-        this.memberId = res.result;
-      });
+      await localstorage
+        .get({ key: "LLBMemberId", isPublic: true })
+        .then(res => {
+          this.memberId = res.result;
+        });
       this.getMemberDetail();
       this.invalidTime = moment()
         .add(7, "d")
@@ -104,13 +106,13 @@ export default {
       this.overdueIntegral();
     },
     getMemberDetail: function() {
-      console.log("getMemberDetail gogogo");
+      // console.log("getMemberDetail gogogo");
       const par = {
         memberId: this.memberId
       };
-      console.log("par :>> ", par);
+      // console.log("par :>> ", par);
       api.memberDetailByMemberID(par).then(res => {
-        console.log("res.data :>> ", res.data);
+        // console.log("res.data :>> ", res.data);
         if (res.code == 200) {
           this.$toast.clear();
           this.totalNumber = res.data.integral;
@@ -142,7 +144,7 @@ export default {
       });
     },
     onLoad() {
-      console.log("onLoad...");
+      // console.log("onLoad...");
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
@@ -167,7 +169,7 @@ export default {
         .integralRecord(par)
         .finally(() => this.getMemberDetail())
         .then(res => {
-          console.log("integralRecord res :>> ", res);
+          // console.log("integralRecord res :>> ", res);
           if (res.code == 200) {
             this.$toast.clear();
             this.total = res.data.total;
