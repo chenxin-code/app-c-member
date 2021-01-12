@@ -59,7 +59,7 @@ const vueConfig = {
       .use("file-loader")
       .loader("url-loader")
       .options({
-        limit: 1024000,
+        limit: 10240,
         fallback: {
           loader: "file-loader",
           options: {
