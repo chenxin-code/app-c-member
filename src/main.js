@@ -12,8 +12,8 @@ import "vant/lib/index.css";
 // new vConsole();
 
 //当期是否为手机端。true是。false不是
-routeHelper.isPhone = false;
-// routeHelper.isPhone = true;
+// routeHelper.isPhone = false;
+routeHelper.isPhone = true;
 Vue.prototype.$routeHelper = routeHelper;
 Vue.use(Vant);
 

@@ -55,13 +55,19 @@
                 <div class="jiaozhong">
                   <span>当：</span>成长值等于或大于当前层级最大值时
                 </div>
-                <div  class="jiaozhong">
+                <div class="jiaozhong">
                   <span>则：</span>进入至下一层级。成长值增长超出当前层级最大值的部分计入下一层级
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+    <div class="ndoe">
+      <div class="title">邦豆概述</div>
+      <div>
+        <div>邦豆是用户通过一系列用户行为获得的奖励，可用于邦豆商城的优惠券兑换，并在购物消费中抵用，是名副其实的省钱神器啊！</div>
       </div>
     </div>
     <div class="ndoe">
@@ -94,7 +100,7 @@
             <tr>
               <td>每日签到</td>
               <td></td>
-              <td>
+              <td style="text-align: left;">
                 <div>第1天：10邦豆</div>
                 <div>第2天：20邦豆</div>
                 <div>第3天：神秘宝箱</div>
@@ -125,6 +131,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+
 .pageBody {
   padding: 24px 16px 16px 16px;
   font-size: 14px;
@@ -137,10 +144,10 @@ export default {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #121212;
-  margin: 5px 0px;
+  margin: 0px 0px 16px 0px;
 }
 .ndoe {
-  margin-bottom: 30px;
+  margin-bottom: 32px;
 }
 .pageBody table {
   width: 100%;
@@ -150,13 +157,21 @@ export default {
   border: 1px solid #e1e1e1;
   padding: 5px 3px;
   text-align: center;
+  font-size: 12px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #8d8d8d;
 }
 .pageBody table thead td {
-  background-color: #e1e1e1;
+  background: #f5f5f5;
   color: #121212;
   text-align: center;
+  font-size: 12px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #121212;
 }
-.jiaozhong span{
+.jiaozhong span {
   font-weight: 700;
 }
 </style>
