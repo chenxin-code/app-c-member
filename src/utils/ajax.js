@@ -38,15 +38,18 @@ export const HTTP = axios.create({
 HTTP.interceptors.request.use(async config => {
   let tokenStr1;
   if (process.env.NODE_ENV === "development") {
-    // await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
-    //   tokenStr1 = "Bearer " + res.result;
-    // });
-    // await localstorage
-    //   .get({ key: "LLBRefreshToken", isPublic: true })
-    //   .then(res => {
-    //     REFRESH = "Bearer " + res.result;
-    //   });
-    tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTAxMTQ4NTU3NyIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjI1Mjk5NDYzOTIyNzI1NzY3OSwiZXhwIjoxNjA5OTY1NDYyLCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIiwib3duZXIiXSwianRpIjoiOTczMmYwMjMtZjY3OS00ZjI0LTljMjQtZDllZWQ2NzgyZGU4IiwiY2xpZW50X2lkIjoiYXBwX2MifQ.SFxtLMjdFPLajPHvRel7jRT_HkNrOzEHejO1lTDkItL2ldlg5id_6eiTBP53u1zWZQ0xsJO9FurmHnkH3dFnEhhytfBRmb6jhNodGUBgW4UHSgg52RM1dJ7aln8lbWZLB2Tvt-37nwG-8G27IS8GmWwy6Bu38q6ywbRtvygdyQDaXoqSWhVEBLTSDOZo3GztIAGtPyPs3p65DzLzT6IP3t7w3MdBGCFBvsiRZx1GvrriKTw8HxK40zLgvTQbyF6E4ubK9yaFa6LdjpwYb9svI48-1JuXBV3uyEFKT-dS80KBF-F4dfJYpHmS5tEpurmSICS7Zfvc78pHPpkG7Q9A7Q`
+    //生产环境
+    await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
+      tokenStr1 = "Bearer " + res.result;
+    });
+    await localstorage
+      .get({ key: "LLBRefreshToken", isPublic: true })
+      .then(res => {
+        REFRESH = "Bearer " + res.result;
+      });
+
+    //开发环境
+    // tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJmYW5qaXVqaXUiLCJzY29wZSI6WyJhbGwiXSwiaWQiOjIyNTczMDg0NTI4Mzk3NTE5NzksImV4cCI6MTYxMDQ2MjUwMCwiYXV0aG9yaXRpZXMiOlsidmlzaXRvciJdLCJqdGkiOiJjYzZlMDc2Zi01OTBkLTRhMTktODUwOC0wNzMwYTI3MWJlYzYiLCJjbGllbnRfaWQiOiJhcHBfYyJ9.eXXbNPp--wUmcZJjLdeUzTkCyXcZAsYBIOkBNG4TBxvx9dNeAFJC8pjng4IkhHj-Vd1s-9iic56WPJSzXTNhV44XPM5hDQ4YQud2rAfSuP2FimEQ1bhmzA1boEiTApg9ddab3z88JJa_gUSdSzBvdFknSSFFnfJyx_O1XWGy9PvmnPwDIlJVupUVAOCkYaVslpAoKHgaqLx4KrJdt8TLSLdTx7LIFlIDd8_ObvcrwHCf-nEWKQRy4ffQZTYXVa1edRkj0KAdgFmUGY_PV6cJsXbqwOslUFsOjwxlhKkz1wmtHjyV1UumyLc7_z7N9HEkWT233dGzi_qTlIRhNNnCag`;
     config.headers.Authorization = tokenStr1;
     return config;
   } else {

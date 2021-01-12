@@ -14,7 +14,11 @@
         </div>
       </div>-->
     </div>
-    <div class="page-body" :style="{ height: pageHeight }" v-if="memberId != null">
+    <div
+      class="page-body"
+      :style="{ height: pageHeight }"
+      v-if="memberId != null"
+    >
       <div class="dataMessage" v-if="showNoData">
         <div class="icon"></div>
         <div class="message">暂无邦豆记录</div>
@@ -30,13 +34,20 @@
             v-if="!showNoData"
           >
             <template v-slot:default>
-              <div class="task-node" v-for="(item, index) in dataSource" :key="index">
+              <div
+                class="task-node"
+                v-for="(item, index) in dataSource"
+                :key="index"
+              >
                 <div class="task-left">
                   <div class="title">{{ item.behaviourName }}</div>
-                  <div class="explain">{{ item.createTime | timeFormat }}</div>
+                  <div class="explain">{{ item.updateTime | timeFormat }}</div>
                 </div>
                 <div class="task-right">
-                  <div>{{ item.changeType == 1 ? "+" : "-" }}{{ item.integralChange }}</div>
+                  <div>
+                    {{ item.changeType == 1 ? "+" : "-"
+                    }}{{ item.integralChange }}
+                  </div>
                 </div>
               </div>
             </template>
@@ -66,52 +77,60 @@ export default {
       loading: false,
       finished: false,
       refreshing: false,
-      dataSource: [],
+      dataSource: []
     };
   },
-  async created() {
-    //this.memberId = "2309350880803029939";
-    await localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
-      this.memberId = res.result;
-    });
-    this.getMemberDetial();
-    this.invalidTime = moment().add(7, "d").format("YYYY-MM-DD");
-    this.overdueIntegral();
+  created() {
+    this.initData();
   },
   mounted() {
     this.pageHeight = this.$refs.integralRecord.clientHeight + "px";
   },
   filters: {
-    timeFormat: function (value) {
+    timeFormat: function(value) {
       return moment(value).format("YYYY-MM-DD HH:mm:ss");
-    },
+    }
   },
   methods: {
-    getMemberDetial: function () {
+    async initData() {
+      // this.memberId = "2309350880803029614"; //需注释
+      await localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
+        this.memberId = res.result;
+      });
+      this.getMemberDetail();
+      this.invalidTime = moment()
+        .add(7, "d")
+        .format("YYYY-MM-DD");
+      this.overdueIntegral();
+    },
+    getMemberDetail: function() {
+      console.log("getMemberDetail gogogo");
       const par = {
-        memberId: this.memberId,
+        memberId: this.memberId
       };
-      api.memberDetailByMemberID(par).then((res) => {
+      console.log("par :>> ", par);
+      api.memberDetailByMemberID(par).then(res => {
+        console.log("res.data :>> ", res.data);
         if (res.code == 200) {
           this.$toast.clear();
           this.totalNumber = res.data.integral;
         }
       });
     },
-    pageBack: function () {
+    pageBack: function() {
       nav.navigatorBack();
     },
-    overdueIntegral: function () {
+    overdueIntegral: function() {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中...",
+        message: "加载中..."
       });
       const par = {
         invalidTime: this.invalidTime,
-        memberId: this.memberId,
+        memberId: this.memberId
       };
-      api.overdueIntegral(par).then((res) => {
+      api.overdueIntegral(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           if (res.data === undefined) {
@@ -123,10 +142,11 @@ export default {
       });
     },
     onLoad() {
+      console.log("onLoad...");
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中...",
+        message: "加载中..."
       });
       this.pageIndex = this.pageIndex + 1;
       const par = {
@@ -134,7 +154,7 @@ export default {
         pageIndex: this.pageIndex,
         pageSize: this.pageSize,
         isInvalid: 0,
-        status: 2,
+        status: 2
       };
 
       if (this.total != null && this.dataSource.length >= this.total) {
@@ -143,31 +163,35 @@ export default {
         return false;
       }
 
-      api.integralRecord(par).then((res) => {
-        if (res.code == 200) {
-          this.$toast.clear();
-          this.total = res.data.total;
-          if (res.data.records.length > 0) {
-            this.showNoData = false;
-            this.showDataList = true;
-          } else {
-            this.showNoData = true;
-            this.showDataList = false;
-          }
+      api
+        .integralRecord(par)
+        .finally(() => this.getMemberDetail())
+        .then(res => {
+          console.log("integralRecord res :>> ", res);
+          if (res.code == 200) {
+            this.$toast.clear();
+            this.total = res.data.total;
+            if (res.data.records.length > 0) {
+              this.showNoData = false;
+              this.showDataList = true;
+            } else {
+              this.showNoData = true;
+              this.showDataList = false;
+            }
 
-          if (this.refreshing) {
-            this.dataSource = [];
-            this.refreshing = false;
+            if (this.refreshing) {
+              this.dataSource = [];
+              this.refreshing = false;
+            }
+            for (let i = 0; i < res.data.records.length; i++) {
+              this.dataSource.push(res.data.records[i]);
+            }
+            this.loading = false;
+            if (this.dataSource.length >= res.data.total) {
+              this.finished = true;
+            }
           }
-          for (let i = 0; i < res.data.records.length; i++) {
-            this.dataSource.push(res.data.records[i]);
-          }
-          this.loading = false;
-          if (this.dataSource.length >= res.data.total) {
-            this.finished = true;
-          }
-        }
-      });
+        });
     },
     onRefresh() {
       // 清空列表数据
@@ -180,25 +204,25 @@ export default {
       this.loading = true;
       this.onLoad();
     },
-    getMemberGrownLogListUsingGET: function () {
+    getMemberGrownLogListUsingGET: function() {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中...",
+        message: "加载中..."
       });
       const par = {
         memberId: this.memberId,
         pageIndex: 1,
-        pageSize: 10,
+        pageSize: 10
       };
-      api.getMemberGrownLogListUsingGET(par).then((res) => {
+      api.getMemberGrownLogListUsingGET(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           this.dataSource = res.data.records;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

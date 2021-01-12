@@ -122,14 +122,14 @@ export default {
   },
 
   activated() {
-    // this.memberId = '2309350880803029614'
-    // localStorage.setItem('memberId', this.memberId)
-    this.getMemberDetial()
+    // this.memberId = '2309350880803029614';//需注释
+    // localStorage.setItem('memberId', this.memberId);//需注释
+    // this.getMemberDetail()
     if (this.$route.meta.isBack != true) {
       localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
         this.memberId = res.result;
         localStorage.setItem("memberId", this.memberId);
-        this.getMemberDetial();
+        this.getMemberDetail();
       });
     }
   },
@@ -194,7 +194,7 @@ export default {
       api.integralRecordReceiveAll(par).then((res) => {
         if (res.code == 200) {
           this.$toast.clear();
-          this.getMemberDetial();
+          this.getMemberDetail();
         }
       });
     },
@@ -212,7 +212,7 @@ export default {
       api.integralRecordReceive(par).then((res) => {
         if (res.code == 200) {
           this.$toast.clear();
-          this.getMemberDetial();
+          this.getMemberDetail();
         }
       });
     },
@@ -272,7 +272,7 @@ export default {
       this.$forceUpdate();
     },
     getUserInfo: function () {
-      this.getMemberDetial();
+      this.getMemberDetail();
       // api.getUserInfo().then((res) => {
       //   if (res.code == 200) {
       //     this.$toast.clear()
@@ -318,7 +318,7 @@ export default {
         }
       });
     },
-    getMemberDetial: function () {
+    getMemberDetail: function () {
       const par = {
         memberId: this.memberId,
       };
