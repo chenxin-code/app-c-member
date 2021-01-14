@@ -15,7 +15,13 @@
       <div class="page-content" v-if="memberObject != null">
         <div
           class="page-head"
-          :class="getPageClass(memberObject == null ? '' : memberObject.memberCardRelats[0].levelId)"
+          :class="
+            getPageClass(
+              memberObject == null
+                ? ''
+                : memberObject.memberCardRelats[0].levelId
+            )
+          "
         >
           <div class="option">
             <div class="btn-return" @click="pageBack"></div>
@@ -26,13 +32,20 @@
               <div class="leveName"></div>
               <div class="cz-number-body" @click="goProwthValue">
                 当前成长值
-                <div
-                  class="cz-number"
-                >{{ memberObject == null ? "" : memberObject.memberCardRelats[0].grow }}</div>
+                <div class="cz-number">
+                  {{
+                    memberObject == null
+                      ? ""
+                      : memberObject.memberCardRelats[0].grow
+                  }}
+                </div>
               </div>
               <div class="progressBar">
                 <div class="bg"></div>
-                <div class="progres" :style="{ width: differencePercentage * 100 + '%' }"></div>
+                <div
+                  class="progres"
+                  :style="{ width: differencePercentage * 100 + '%' }"
+                ></div>
               </div>
               <div class="progressBarWord">
                 <span>{{ beginTitle }}</span>
@@ -52,7 +65,9 @@
                 我的邦豆
                 <span class="num">{{ integral }}</span>
               </div>
-              <div v-if="integralRecordData.length > 0" @click="receiveAll">全部领取</div>
+              <div v-if="integralRecordData.length > 0" @click="receiveAll">
+                全部领取
+              </div>
             </div>
           </div>
           <div v-if="integralRecordData.length > 0">
@@ -81,7 +96,11 @@
               <div class="message">暂无任务</div>
             </div>
             <div v-if="taskList.length > 0">
-              <div class="task-node" v-for="(item, index) in taskList" :key="index">
+              <div
+                class="task-node"
+                v-for="(item, index) in taskList"
+                :key="index"
+              >
                 <div class="task-left">
                   <div class="title">{{ item.taskName }}</div>
                   <div class="explain">{{ item.taskCondition }}</div>
@@ -117,48 +136,53 @@ export default {
       phoneArea: "81",
       differencePercentage: 0,
       integralRecordData: [],
-      memberObject: null,
+      memberObject: null
     };
   },
 
   activated() {
-    // this.memberId = '2309350880803029614';//需注释
-    // localStorage.setItem('memberId', this.memberId);//需注释
-    // this.getMemberDetail()
+    this.memberId = "2309350880803029614"; //需注释
+    localStorage.setItem("memberId", this.memberId); //需注释
+    this.getMemberDetail(); //需注释
+
     if (this.$route.meta.isBack != true) {
-      localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
+      localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
         this.memberId = res.result;
         localStorage.setItem("memberId", this.memberId);
         this.getMemberDetail();
       });
     }
   },
-  created() {
-
-  },
-  mounted() {
-
-  },
+  created() {},
+  mounted() {},
   beforeRouteEnter(to, from, next) {
-    if (from.name == "growthValueRecord" || from.name == "IntegralRecord" || from.name == "gradeDescription") {
-      to.meta.isBack = true
+    if (
+      from.name == "growthValueRecord" ||
+      from.name == "IntegralRecord" ||
+      from.name == "gradeDescription"
+    ) {
+      to.meta.isBack = true;
     } else {
-      to.meta.isBack = false
+      to.meta.isBack = false;
     }
-    next()
+    next();
   },
   beforeRouteLeave(to, from, next) {
-    if (to.name == "growthValueRecord" || to.name == "IntegralRecord" || to.name == "gradeDescription") {
+    if (
+      to.name == "growthValueRecord" ||
+      to.name == "IntegralRecord" ||
+      to.name == "gradeDescription"
+    ) {
       next();
     } else {
       nav.navigatorBack({
-        url: "0",
+        url: "0"
       });
       next();
     }
   },
   methods: {
-    getBtnWord: function (state) {
+    getBtnWord: function(state) {
       var reMsg = "未开始";
       switch (state.statues) {
         case 0:
@@ -176,22 +200,22 @@ export default {
       }
       return reMsg;
     },
-    pageBack: function () {
+    pageBack: function() {
       nav.navigatorBack({
-        url: "0",
+        url: "0"
       });
     },
     //领取全部
-    receiveAll: function () {
+    receiveAll: function() {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中...",
+        message: "加载中..."
       });
       const par = {
-        memberId: this.memberId,
+        memberId: this.memberId
       };
-      api.integralRecordReceiveAll(par).then((res) => {
+      api.integralRecordReceiveAll(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           this.getMemberDetail();
@@ -199,33 +223,34 @@ export default {
       });
     },
     //领取一个
-    receive: function (item) {
+    receive: function(item) {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中...",
+        message: "加载中..."
       });
       const par = {
         memberId: this.memberId,
-        recordId: item.id,
+        recordId: item.id
       };
-      api.integralRecordReceive(par).then((res) => {
+      api.integralRecordReceive(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           this.getMemberDetail();
         }
       });
     },
-    goPage: function () {
+    goPage: function() {
       this.$routeHelper.router(this, "/gradeDescription", null, false);
     },
-    IntegralRecord: function () {
+    IntegralRecord: function() {
+      // console.log('this.$routeHelper :>> ', this.$routeHelper);
       this.$routeHelper.router(this, "/IntegralRecord", null, true);
     },
-    goProwthValue: function () {
+    goProwthValue: function() {
       this.$routeHelper.router(this, "/growthValueRecord", null, true);
     },
-    getPageClass: function (currentLeve) {
+    getPageClass: function(currentLeve) {
       let classTypeName = "";
       switch (currentLeve) {
         case 1:
@@ -256,7 +281,7 @@ export default {
       }
       return classTypeName;
     },
-    pageInitial: function (sourceData) {
+    pageInitial: function(sourceData) {
       this.classTypeName = "";
       this.beginTitle = "V1";
       this.endTitle = "V2";
@@ -264,14 +289,16 @@ export default {
       this.memberId = sourceData.memberId;
       this.currentLeve = sourceData.memberCardRelats[0].levelId;
       this.difference =
-        sourceData.memberCardRelats[0].rangeEnd - sourceData.memberCardRelats[0].grow;
+        sourceData.memberCardRelats[0].rangeEnd -
+        sourceData.memberCardRelats[0].grow;
       this.differencePercentage =
-        sourceData.memberCardRelats[0].grow / sourceData.memberCardRelats[0].rangeEnd;
+        sourceData.memberCardRelats[0].grow /
+        sourceData.memberCardRelats[0].rangeEnd;
       this.integralRecord(this.memberId);
       this.getMyTaskListByMember(this.memberId);
       this.$forceUpdate();
     },
-    getUserInfo: function () {
+    getUserInfo: function() {
       this.getMemberDetail();
       // api.getUserInfo().then((res) => {
       //   if (res.code == 200) {
@@ -280,57 +307,57 @@ export default {
       //   }
       // })
     },
-    integralRecord: function (memberID) {
+    integralRecord: function(memberID) {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中...",
+        message: "加载中..."
       });
       const par = {
         memberId: memberID,
         pageIndex: 1,
         pageSize: 3,
         isInvalid: 0,
-        status: 1,
+        status: 1
       };
-      api.integralRecord(par).then((res) => {
+      api.integralRecord(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           this.integralRecordData = res.data.records;
         }
       });
     },
-    getMyTaskListByMember: function (memberID) {
+    getMyTaskListByMember: function(memberID) {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中...",
+        message: "加载中..."
       });
       const par = {
         pageIndex: 1,
         pageSize: 3,
-        memberId: memberID,
+        memberId: memberID
       };
-      api.getMyTaskListByMember(par).then((res) => {
+      api.getMyTaskListByMember(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           this.taskList = res.data.records;
         }
       });
     },
-    getMemberDetail: function () {
+    getMemberDetail: function() {
       const par = {
-        memberId: this.memberId,
+        memberId: this.memberId
       };
-      api.memberDetailByMemberID(par).then((res) => {
+      api.memberDetailByMemberID(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           this.memberObject = res.data;
           this.pageInitial(res.data);
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

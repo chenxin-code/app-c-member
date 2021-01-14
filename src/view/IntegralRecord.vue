@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     async initData() {
-      // this.memberId = "2309350880803029614"; //需注释
+      this.memberId = "2309350880803029614"; //需注释
       await localstorage
         .get({ key: "LLBMemberId", isPublic: true })
         .then(res => {
@@ -120,7 +120,11 @@ export default {
       });
     },
     pageBack: function() {
-      nav.navigatorBack();
+      if(this.$routeHelper.isPhone){
+        nav.navigatorBack();
+      } else{
+        this.$router.go(-1);
+      }
     },
     overdueIntegral: function() {
       this.$toast.loading({
