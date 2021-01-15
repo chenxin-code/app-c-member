@@ -261,7 +261,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 38px 16px 0px 16px;
-  background-image: url("../assets/img/member/icon-bg-singin.png");
+  background-image: url("../../assets/img/member/icon-bg-singin.png");
   .option {
     display: flex;
     justify-content: space-between;
@@ -272,7 +272,7 @@ export default {
       height: 20px;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      background-image: url("../assets/img/member/icon-a-left.png");
+      background-image: url("../../assets/img/member/icon-a-left.png");
     }
   }
   .title-body .title {
@@ -336,7 +336,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("../assets/img/member/icon-bj-sing-1.png");
+  background-image: url("../../assets/img/member/icon-bj-sing-1.png");
   .awardIntegral {
     width: 100%;
     position: absolute;
@@ -366,7 +366,7 @@ export default {
     height: 30px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("../assets/img/member/icon-signln-1.png");
+    background-image: url("../../assets/img/member/icon-signln-1.png");
   }
 }
 
@@ -382,7 +382,7 @@ export default {
     height: 30px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("../assets/img/member/icon-signln-2.png");
+    background-image: url("../../assets/img/member/icon-signln-2.png");
   }
 }
 
@@ -398,14 +398,14 @@ export default {
     height: 30px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("../assets/img/member/icon-signln-3.png");
+    background-image: url("../../assets/img/member/icon-signln-3.png");
   }
 }
 .active {
-  background-image: url("../assets/img/member/icon-bj-sing-2.png");
+  background-image: url("../../assets/img/member/icon-bj-sing-2.png");
 }
 .currentDay {
-  background-image: url("../assets/img/member/icon-bj-sing-3.png");
+  background-image: url("../../assets/img/member/icon-bj-sing-3.png");
   // .awardIntegral {
   //   font-size: 12px;
   //   font-family: PingFangSC-Medium, PingFang SC;
@@ -437,13 +437,13 @@ export default {
   height: 136px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-image: url("../assets/img/member/icon-pop-1.png");
+  background-image: url("../../assets/img/member/icon-pop-1.png");
 }
 .pop3 {
-  background-image: url("../assets/img/member/icon-pop-3.png");
+  background-image: url("../../assets/img/member/icon-pop-3.png");
 }
 .pop7 {
-  background-image: url("../assets/img/member/icon-pop-7.png");
+  background-image: url("../../assets/img/member/icon-pop-7.png");
 }
 .bangdong {
   font-size: 18px;

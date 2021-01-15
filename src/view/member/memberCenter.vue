@@ -439,7 +439,7 @@ export default {
       height: 20px;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      background-image: url("../assets/img/member/icon-a-left.png");
+      background-image: url("../../assets/img/member/icon-a-left.png");
     }
 
     .updataDeital {
@@ -450,7 +450,7 @@ export default {
       color: #ffffff;
       background-size: 12px 12px;
       background-repeat: no-repeat;
-      background-image: url("../assets/img/member/icon-wenhao.png");
+      background-image: url("../../assets/img/member/icon-wenhao.png");
       background-position: 0px center;
     }
   }
@@ -537,10 +537,10 @@ export default {
 }
 
 .page-head.Lv1 {
-  background-image: url("../assets/img/member/icon-member-Lv1.png");
+  background-image: url("../../assets/img/member/icon-member-Lv1.png");
 
   .leveName {
-    background-image: url("../assets/img/member/icon-leve-name-l1.png");
+    background-image: url("../../assets/img/member/icon-leve-name-l1.png");
   }
 
   .cz-number-body {
@@ -548,11 +548,11 @@ export default {
   }
   .cz-number {
     color: #7f86aa;
-    background-image: url("../assets/img/member/icon-chno-l1.png");
+    background-image: url("../../assets/img/member/icon-chno-l1.png");
   }
 
   .leveLogo {
-    background-image: url("../assets/img/member/icon-leve-l1.png");
+    background-image: url("../../assets/img/member/icon-leve-l1.png");
   }
 
   .progressBar {
@@ -570,10 +570,10 @@ export default {
 }
 
 .page-head.Lv2 {
-  background-image: url("../assets/img/member/icon-member-Lv2.png");
+  background-image: url("../../assets/img/member/icon-member-Lv2.png");
 
   .leveName {
-    background-image: url("../assets/img/member/icon-leve-name-l2.png");
+    background-image: url("../../assets/img/member/icon-leve-name-l2.png");
   }
 
   .cz-number-body {
@@ -581,11 +581,11 @@ export default {
   }
   .cz-number {
     color: #b5561a;
-    background-image: url("../assets/img/member/icon-chno-l2.png");
+    background-image: url("../../assets/img/member/icon-chno-l2.png");
   }
 
   .leveLogo {
-    background-image: url("../assets/img/member/icon-leve-l2.png");
+    background-image: url("../../assets/img/member/icon-leve-l2.png");
   }
 
   .progressBar {
@@ -603,21 +603,21 @@ export default {
 }
 
 .page-head.Lv3 {
-  background-image: url("../assets/img/member/icon-member-Lv3.png");
+  background-image: url("../../assets/img/member/icon-member-Lv3.png");
 
   .leveName {
-    background-image: url("../assets/img/member/icon-leve-name-l3.png");
+    background-image: url("../../assets/img/member/icon-leve-name-l3.png");
   }
 
   .cz-number-body {
     color: #434342;
   }
   .cz-number {
-    background-image: url("../assets/img/member/icon-chno-l3.png");
+    background-image: url("../../assets/img/member/icon-chno-l3.png");
   }
 
   .leveLogo {
-    background-image: url("../assets/img/member/icon-leve-l3.png");
+    background-image: url("../../assets/img/member/icon-leve-l3.png");
   }
 
   .progressBar {
@@ -635,21 +635,21 @@ export default {
 }
 
 .page-head.Lv4 {
-  background-image: url("../assets/img/member/icon-member-Lv4.png");
+  background-image: url("../../assets/img/member/icon-member-Lv4.png");
 
   .leveName {
-    background-image: url("../assets/img/member/icon-leve-name-l4.png");
+    background-image: url("../../assets/img/member/icon-leve-name-l4.png");
   }
 
   .cz-number-body {
     color: #986b1b;
   }
   .cz-number {
-    background-image: url("../assets/img/member/icon-chno-l4.png");
+    background-image: url("../../assets/img/member/icon-chno-l4.png");
   }
 
   .leveLogo {
-    background-image: url("../assets/img/member/icon-leve-l4.png");
+    background-image: url("../../assets/img/member/icon-leve-l4.png");
   }
 
   .progressBar {
@@ -667,21 +667,21 @@ export default {
 }
 
 .page-head.Lv5 {
-  background-image: url("../assets/img/member/icon-member-Lv5.png");
+  background-image: url("../../assets/img/member/icon-member-Lv5.png");
 
   .leveName {
-    background-image: url("../assets/img/member/icon-leve-name-l5.png");
+    background-image: url("../../assets/img/member/icon-leve-name-l5.png");
   }
 
   .cz-number-body {
     color: #fff;
   }
   .cz-number {
-    background-image: url("../assets/img/member/icon-chno-l5.png");
+    background-image: url("../../assets/img/member/icon-chno-l5.png");
   }
 
   .leveLogo {
-    background-image: url("../assets/img/member/icon-leve-l5.png");
+    background-image: url("../../assets/img/member/icon-leve-l5.png");
   }
 
   .progressBar {
@@ -719,7 +719,7 @@ export default {
   background-position: right center;
   background-size: 18px 18px;
   background-repeat: no-repeat;
-  background-image: url("../assets/img/member/icon-jt-right.png");
+  background-image: url("../../assets/img/member/icon-jt-right.png");
   .num {
     color: #e8374a;
   }
@@ -737,7 +737,7 @@ export default {
   padding-top: 12px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-image: url("../assets/img/member/icon-getBangDou-bg.png");
+  background-image: url("../../assets/img/member/icon-getBangDou-bg.png");
 }
 .page-body .notReceivedNode .integralChange {
   font-size: 16px;
@@ -773,7 +773,7 @@ export default {
   background-position: right center;
   background-size: 16px 16px;
   background-repeat: no-repeat;
-  background-image: url("../assets/img/member/icon-jt-right.png");
+  background-image: url("../../assets/img/member/icon-jt-right.png");
 }
 
 .task-list-body {
@@ -815,7 +815,7 @@ export default {
   background-position: left center;
   background-size: 16px 16px;
   background-repeat: no-repeat;
-  background-image: url("../assets/img/member/icon-biaoshi.png");
+  background-image: url("../../assets/img/member/icon-biaoshi.png");
   // overflow: hidden;
   // white-space: nowrap;
   // text-overflow: ellipsis;
@@ -854,7 +854,7 @@ export default {
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("../assets/img/icon-nodata.png");
+    background-image: url("../../assets/img/icon-nodata.png");
   }
   .message {
     text-align: center;

@@ -243,7 +243,7 @@ export default {
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("../assets/img/icon-nodata.png");
+    background-image: url("../../assets/img/icon-nodata.png");
   }
   .message {
     text-align: center;
@@ -273,7 +273,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 38px 16px 0px 16px;
-  background-image: url("../assets/img/member/icon-bg-singin.png");
+  background-image: url("../../assets/img/member/icon-bg-singin.png");
   .option {
     display: flex;
     justify-content: space-between;
@@ -284,7 +284,7 @@ export default {
       height: 20px;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      background-image: url("../assets/img/member/icon-a-left.png");
+      background-image: url("../../assets/img/member/icon-a-left.png");
     }
   }
   .title-body .title {
