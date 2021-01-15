@@ -123,6 +123,68 @@
                   </div>
                 </div>
               </div>
+              <div class="bangdou-exchange-card">
+                <div class="exchange-card-item exchange-card-left">
+                  <div class="exchange-card-left-top">
+                    <div class="card-left-top-type">￥</div>
+                    <div class="card-left-top-num">5</div>
+                  </div>
+                  <div class="exchange-card-left-bottom">满100元可用</div>
+                </div>
+                <div class="exchange-card-item exchange-card-right">
+                  <div class="exchange-card-right-left">
+                    <div class="card-right-left-top">超级吃货优惠券</div>
+                    <div class="card-right-left-bottom">
+                      <span class="card-right-left-bottom-left">9</span>
+                      <span class="card-right-left-bottom-right">邦豆</span>
+                    </div>
+                  </div>
+                  <div class="exchange-card-right-right">
+                    <div class="exchange-card-right-right-btn">邦豆兑换</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bangdou-exchange1">
+              <div class="bangdou-exchange-card">
+                <div class="exchange-card-item exchange-card-right">
+                  <div class="exchange-card-right-right">
+                    <div class="exchange-card-right-right-btn"></div>
+                  </div>
+                  <div class="exchange-card-right-left">
+                    <div class="card-right-left-top">
+                      仅可购买邻里商城生鲜区、冷冻区
+                    </div>
+                  </div>
+                </div>
+                <div class="exchange-card-item exchange-card-left">
+                  <div class="exchange-card-left-top">
+                    <div class="card-left-top-type">￥</div>
+                    <div class="card-left-top-num">5</div>
+                  </div>
+                  <div class="exchange-card-left-bottom">满100元可用</div>
+                  <div class="exchange-card-left-btn">立即领取</div>
+                </div>
+              </div>
+              <div class="bangdou-exchange-card">
+                <div class="exchange-card-item exchange-card-right">
+                  <div class="exchange-card-right-right">
+                    <div class="exchange-card-right-right-btn"></div>
+                  </div>
+                  <div class="exchange-card-right-left">
+                    <div class="card-right-left-top">
+                      仅可购买邻里商城生鲜区、冷冻区
+                    </div>
+                  </div>
+                </div>
+                <div class="exchange-card-item exchange-card-left">
+                  <div class="exchange-card-left-top">
+                    <div class="card-left-top-type">￥</div>
+                    <div class="card-left-top-num">5</div>
+                  </div>
+                  <div class="exchange-card-left-bottom">满100元可用</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -752,6 +814,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 16px;
 }
 .page-body .Bangdou-body .Bangdou {
   font-size: 18px;
@@ -779,6 +842,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 16px;
 }
 .page-body .Bangdou-body1 .Bangdou1 {
   font-size: 18px;
@@ -797,9 +861,20 @@ export default {
   .bangdou-exchange {
     width: calc(100% + 16px);
     height: 97px;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin-bottom: 16px;
+
     .bangdou-exchange-card {
-      width: 312px;
       height: 97px;
+      flex-basis: 324px;
+      flex-shrink: 0;
+      white-space: nowrap;
+      padding-right: 12px;
+
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -917,6 +992,154 @@ export default {
           }
         }
       }
+    }
+
+    .bangdou-exchange-card:last-child {
+      flex-basis: 328px;
+      padding-right: 16px;
+    }
+  }
+  .bangdou-exchange1 {
+    width: calc(100% + 16px);
+    height: 106px;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin-bottom: 16px;
+
+    .bangdou-exchange-card {
+      height: 106px;
+      flex-basis: 324px;
+      flex-shrink: 0;
+      white-space: nowrap;
+      padding-right: 12px;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: stretch;
+
+      .exchange-card-left {
+        width: 101px;
+        height: 106px;
+        background-image: url("../../assets/img/coupons/yellow_card.png");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 100% 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .exchange-card-left-top {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 8px;
+          .card-left-top-type {
+            height: 16px;
+            font-size: 16px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #ffffff;
+            line-height: 16px;
+          }
+          .card-left-top-num {
+            height: 28px;
+            font-size: 28px;
+            font-family: PingFangSC-Semibold, PingFang SC;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 28px;
+          }
+        }
+        .exchange-card-left-bottom {
+          height: 12px;
+          font-size: 12px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: #ffffff;
+          line-height: 12px;
+
+          margin-bottom: 10px;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .exchange-card-left-btn {
+          width: 68px;
+          height: 22px;
+          background: #ffffff;
+          border-radius: 15px;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+
+          font-size: 12px;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: 500;
+          color: #ff7709;
+        }
+      }
+
+      .exchange-card-right {
+        // flex: 1;
+        width: 211px;
+        height: 106px;
+        background-color: #fff;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: stretch;
+
+        .exchange-card-right-left {
+          padding: 19px 7px 0 12px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: stretch;
+
+          .card-right-left-top {
+            width: 101px;
+            height: 60px;
+            font-size: 14px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #121212;
+            line-height: 20px;
+            white-space: normal;
+            word-wrap: break-word;
+            word-break: break-all;
+          }
+        }
+        .exchange-card-right-right {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: stretch;
+
+          .exchange-card-right-right-btn {
+            width: 72px;
+            height: 72px;
+            border-radius: 4px;
+            background-image: url("../../assets/img/coupons/food.png");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 100% 100%;
+          }
+        }
+      }
+    }
+
+    .bangdou-exchange-card:last-child {
+      flex-basis: 328px;
+      padding-right: 16px;
     }
   }
 }
