@@ -59,13 +59,18 @@
           </div>
         </div>
         <div class="page-body">
+          <!-- 我的邦豆 -->
           <div>
             <div class="Bangdou-body">
               <div class="Bangdou" @click="IntegralRecord">
                 我的邦豆
                 <span class="num">{{ integral }}</span>
               </div>
-              <div v-if="integralRecordData.length > 0" @click="receiveAll">
+              <div
+                v-if="integralRecordData.length > 0"
+                class="see-more"
+                @click="receiveAll"
+              >
                 全部领取
               </div>
             </div>
@@ -83,6 +88,44 @@
               </div>
             </div>
           </div>
+
+          <!-- 邦豆兑换 -->
+          <div>
+            <div class="Bangdou-body1">
+              <div class="Bangdou1" @click="IntegralRecord">
+                邦豆兑换
+              </div>
+              <div class="see-more1" @click="receiveAll">
+                查看更多
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="bangdou-exchange">
+              <div class="bangdou-exchange-card">
+                <div class="exchange-card-item exchange-card-left">
+                  <div class="exchange-card-left-top">
+                    <div class="card-left-top-type">￥</div>
+                    <div class="card-left-top-num">5</div>
+                  </div>
+                  <div class="exchange-card-left-bottom">满100元可用</div>
+                </div>
+                <div class="exchange-card-item exchange-card-right">
+                  <div class="exchange-card-right-left">
+                    <div class="card-right-left-top">超级吃货优惠券</div>
+                    <div class="card-right-left-bottom">
+                      <span class="card-right-left-bottom-left">9</span>
+                      <span class="card-right-left-bottom-right">邦豆</span>
+                    </div>
+                  </div>
+                  <div class="exchange-card-right-right">
+                    <div class="exchange-card-right-right-btn">邦豆兑换</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="dotask-body">
             <div class="dotask">
               <span style="margin-right: 5px">做任务</span>
@@ -321,7 +364,7 @@ export default {
         status: 1
       };
       api.integralRecord(par).then(res => {
-        console.log('integralRecord res :>> ', res);//测试
+        console.log("integralRecord res :>> ", res); //测试
         if (res.code == 200) {
           this.$toast.clear();
           this.integralRecordData = res.data.records;
@@ -724,6 +767,160 @@ export default {
     color: #e8374a;
   }
 }
+
+.page-body .Bangdou-body .see-more {
+  font-size: 12px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #121212;
+}
+
+.page-body .Bangdou-body1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-body .Bangdou-body1 .Bangdou1 {
+  font-size: 18px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #121212;
+}
+.page-body .Bangdou-body1 .see-more1 {
+  font-size: 12px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #121212;
+}
+
+.page-body {
+  .bangdou-exchange {
+    width: calc(100% + 16px);
+    height: 97px;
+    .bangdou-exchange-card {
+      width: 312px;
+      height: 97px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: stretch;
+
+      .exchange-card-left {
+        width: 101px;
+        height: 97px;
+        // background-color: red;
+        background-image: url("../../assets/img/coupons/red_card.png");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 100% 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+
+        .exchange-card-left-top {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          .card-left-top-type {
+            font-size: 16px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #ffffff;
+          }
+          .card-left-top-num {
+            font-size: 32px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #ffffff;
+          }
+        }
+        .exchange-card-left-bottom {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          font-size: 14px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: #ffffff;
+        }
+      }
+
+      .exchange-card-right {
+        flex: 1;
+        height: 97px;
+        background-color: #fff;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: stretch;
+
+        .exchange-card-right-left {
+          padding: 19px 7px 0 12px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: stretch;
+
+          .card-right-left-top {
+            margin-bottom: 16px;
+            height: 16px;
+            font-size: 16px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #121212;
+            line-height: 16px;
+          }
+
+          .card-right-left-bottom {
+            .card-right-left-bottom-left {
+              padding-right: 4px;
+
+              height: 20px;
+              font-size: 20px;
+              font-family: PingFangSC-Medium, PingFang SC;
+              font-weight: 500;
+              color: #e8374a;
+              line-height: 20px;
+            }
+            .card-right-left-bottom-right {
+              height: 14px;
+              font-size: 14px;
+              font-family: PingFangSC-Medium, PingFang SC;
+              font-weight: 500;
+              color: #e8374a;
+              line-height: 14px;
+            }
+          }
+        }
+        .exchange-card-right-right {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+
+          .exchange-card-right-right-btn {
+            width: 68px;
+            height: 24px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, #ff8381 0%, #e8374a 100%);
+            border-radius: 15px;
+            font-size: 12px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+  }
+}
+
 .page-body .notReceived {
   display: flex;
   margin-top: 27px;
