@@ -321,6 +321,7 @@ export default {
         status: 1
       };
       api.integralRecord(par).then(res => {
+        console.log('integralRecord res :>> ', res);//测试
         if (res.code == 200) {
           this.$toast.clear();
           this.integralRecordData = res.data.records;
