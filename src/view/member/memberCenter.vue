@@ -346,9 +346,6 @@ export default {
       });
     },
     seemoreExchange: function() {
-      // console.log('seemoreExchange...');
-      console.log('this :>> ', this);
-      console.log('this.$routeHelper :>> ', this.$routeHelper);
       this.$routeHelper.router(this, "/bangdouExchange", null, false);
     },
     goPage: function() {
