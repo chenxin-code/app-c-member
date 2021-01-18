@@ -55,6 +55,11 @@ const routes = [
     path: "/couponsMine",
     name: "couponsMine",
     component: resolve => require(["@/view/coupons/mine"], resolve)
+  },
+  {
+    path: "/exchangeCoupon",
+    name: "exchangeCoupon",
+    component: resolve => require(["@/view/coupons/mine/exchangeCoupon"], resolve)
   }
 ];
 
