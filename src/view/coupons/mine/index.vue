@@ -3,7 +3,7 @@
     <div class="exchange-info">
       <div class="exchange-tab-wrap">
         <van-tabs v-model="activeName">
-          <van-tab title="全部" name="1">
+          <van-tab title="全部" :name="1">
             <div class="bangdou-exchange-wrap">
               <div class="bangdou-exchange">
                 <div class="bangdou-exchange-body">
@@ -117,7 +117,7 @@
               </div>
             </div>
           </van-tab>
-          <van-tab title="物业抵扣券" name="2">
+          <van-tab title="物业抵扣券" :name="2">
             <div class="bangdou-exchange-wrap">
               <div class="bangdou-exchange">
                 <div class="bangdou-exchange-body">
@@ -233,7 +233,7 @@
               </div>
             </div>
           </van-tab>
-          <van-tab title="购物券" name="3">
+          <van-tab title="购物券" :name="3">
             <div class="bangdou-exchange-wrap">
               <div class="bangdou-exchange">
                 <div class="bangdou-exchange-body">
@@ -346,7 +346,7 @@
               </div>
             </div>
           </van-tab>
-          <van-tab title="实物券" name="4">
+          <van-tab title="实物券" :name="4">
             <div class="bangdou-exchange-wrap">
               <div class="bangdou-exchange">
                 <div class="bangdou-exchange-body">
@@ -465,7 +465,10 @@
         <null :message="nullMsg" bgicon="pets" :isadd="true" />
       </div>
     </div>
-    <div class="exchange-footer">
+    <div
+      v-show="(isActive && activeName === 1) || (isActive && activeName === 3)"
+      class="exchange-footer"
+    >
       <div class="exchange-footer-left">使用记录</div>
       <div class="exchange-footer-center"></div>
       <div class="exchange-footer-right">兑换优惠券</div>
@@ -482,6 +485,7 @@ import Null from "@/components/null";
 export default {
   data() {
     return {
+      isActive: true,
       activeName: 1,
       loading: false,
       showNull: false,
