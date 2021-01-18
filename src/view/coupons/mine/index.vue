@@ -520,6 +520,16 @@ export default {
     // this.petsQueryInit();
   },
   mounted() {
+    nav.setNavRightBtn({
+      title: "其他卡券",
+      titleColor: "#000000",
+      titleSize: 16,
+      iconSize: ["20", "20"],
+      __event__: () => {
+        this.$router.go(-1);
+      }
+    });
+
     nav.setNavLeftBtn({
       title: "我的卡券",
       titleColor: "#121212",
