@@ -267,14 +267,14 @@ export default {
   created() {
     // this.petsQueryInit();
   },
-  // mounted() {
-  //   nav.setNavLeftBtn({
-  //     title: "帮豆兑换",
-  //     titleColor: "#121212",
-  //     titleSize: 24,
-  //     titleFontName: "PingFangSC-Medium"
-  //   });
-  // }
+  mounted() {
+    nav.setNavLeftBtn({
+      title: "帮豆兑换",
+      titleColor: "#121212",
+      titleSize: 24,
+      titleFontName: "PingFangSC-Medium"
+    });
+  }
 };
 </script>
 
