@@ -38,6 +38,12 @@ const routes = [
     name: "gradeDescription",
     component: resolve => require(["@/view/member/gradeDescription"], resolve)
   },
+  //帮豆兑换
+  {
+    path: "/bangdouExchange",
+    name: "bangdouExchange",
+    component: resolve => require(["@/view/member/bangdouExchange"], resolve)
+  },
   //领券中心
   {
     path: "/couponsClaim",

@@ -9,8 +9,8 @@ import Vant from "vant";
 import "vant/lib/index.css";
 Vue.use(Vant);
 
-// import vConsole from "vconsole/dist/vconsole.min.js";
-// new vConsole();
+import vConsole from "vconsole/dist/vconsole.min.js";
+new vConsole();
 
 //当期是否为手机端。true是。false不是
 routeHelper.isPhone = false;
