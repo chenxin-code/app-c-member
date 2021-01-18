@@ -236,7 +236,6 @@
 </template>
 
 <script>
-
 import api from "@/api";
 import nav from "@zkty-team/x-engine-module-nav";
 import * as moment from "moment";
@@ -267,14 +266,14 @@ export default {
   created() {
     // this.petsQueryInit();
   },
-  // mounted() {
-  //   nav.setNavLeftBtn({
-  //     title: "帮豆兑换",
-  //     titleColor: "#121212",
-  //     titleSize: 24,
-  //     titleFontName: "PingFangSC-Medium"
-  //   });
-  // }
+  mounted() {
+    nav.setNavLeftBtn({
+      title: "帮豆兑换",
+      titleColor: "#121212",
+      titleSize: 24,
+      titleFontName: "PingFangSC-Medium"
+    });
+  }
 };
 </script>
 
@@ -316,6 +315,8 @@ export default {
             justify-content: center;
             align-items: stretch;
             margin-bottom: 20px;
+            box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
+            border-radius: 16px;
 
             .exchange-card-left {
               width: 101px;
@@ -437,9 +438,11 @@ export default {
           .bangdou-exchange-card {
             display: flex;
             flex-direction: row;
-            justify-content: center;
+            justify-content: space-between;
             align-items: stretch;
             margin-bottom: 20px;
+            box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
+            border-radius: 16px;
 
             .exchange-card-left {
               width: 101px;
@@ -509,8 +512,8 @@ export default {
             }
 
             .exchange-card-right {
-              // flex: 1;
-              width: 211px;
+              flex: 1;
+              // width: 211px;
               height: 106px;
               background-color: #fff;
               display: flex;
@@ -526,7 +529,7 @@ export default {
                 align-items: stretch;
 
                 .card-right-left-top {
-                  width: 101px;
+                  // width: 101px;
                   height: 60px;
                   font-size: 14px;
                   font-family: PingFangSC-Medium, PingFang SC;
@@ -566,6 +569,8 @@ export default {
             justify-content: center;
             align-items: stretch;
             margin-bottom: 20px;
+            box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
+            border-radius: 16px;
 
             .exchange-card-left {
               width: 101px;
@@ -635,8 +640,8 @@ export default {
             }
 
             .exchange-card-right {
-              // flex: 1;
-              width: 211px;
+              flex: 1;
+              // width: 211px;
               height: 106px;
               background-color: #fff;
               display: flex;
@@ -652,7 +657,7 @@ export default {
                 align-items: stretch;
 
                 .card-right-left-top {
-                  width: 101px;
+                  // width: 101px;
                   height: 60px;
                   font-size: 14px;
                   font-family: PingFangSC-Medium, PingFang SC;
