@@ -568,7 +568,7 @@ export default {
   .memberDetial {
     display: flex;
     margin-top: 35px;
-    padding: 0px 0px 0px 16px;
+    padding: 0px 0px 0px 32px;
 
     .memberDetial-body {
       flex: 1;
