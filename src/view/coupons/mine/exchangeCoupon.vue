@@ -35,7 +35,7 @@ import router from "@zkty-team/x-engine-module-router";
 export default {
   name:"exchangeCoupon",
   components: {
-    
+
   },
   data () {
     return {
@@ -48,7 +48,7 @@ export default {
   created() {
     // this.toast();
     // this.getCoupon();
-    
+
   },
   methods: {
     toast() {
@@ -103,7 +103,6 @@ export default {
     .btn-return {
       width: 20px;
       height: 20px;
-      display: inline-block;
       float: left;
       margin-top: 6px;
       background-size: 100% 100%;
@@ -113,7 +112,6 @@ export default {
 
     .nav-title{
       float: left;
-      display: inline-block;
       font-size: 24px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
@@ -165,7 +163,7 @@ export default {
           width: 100%;
           height: 48px;
           border-radius: 8px;
-          border: 1px solid #F0F0F0;  
+          border: 1px solid #F0F0F0;
           font-size: 16px;
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 400;
