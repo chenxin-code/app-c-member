@@ -1,6 +1,13 @@
 <template>
   <div class="exchange-container">
-    <div class="exchange-info">
+    <div
+      class="exchange-info"
+      :style="
+        (isActive && activeName === 1) || (isActive && activeName === 3)
+          ? pbStyle
+          : ''
+      "
+    >
       <div class="exchange-tab-wrap">
         <van-tabs v-model="activeName">
           <van-tab title="全部" :name="1">
@@ -487,6 +494,9 @@ export default {
     return {
       isActive: true,
       activeName: 1,
+      pbStyle: {
+        paddingBottom: "164px"
+      },
       loading: false,
       showNull: false,
       nullMsg: "",
@@ -524,7 +534,6 @@ export default {
 .exchange-container {
   .exchange-info {
     font-size: 18px;
-    padding-bottom: 86px;
 
     ::v-deep .van-tab--active {
       color: #121212 !important;
@@ -1031,7 +1040,11 @@ export default {
     }
   }
   .exchange-footer {
+    width: 100%;
     height: 78px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     background: #fafafa;
     display: flex;
     flex-direction: row;
