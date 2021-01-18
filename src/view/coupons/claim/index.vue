@@ -456,7 +456,8 @@ export default {
                   }
                 }
                 .exchange-card-right-right {
-                  width: 68px;
+                  width: 88px;
+                  padding-right: 19px;
                   display: flex;
                   flex-direction: row;
                   justify-content: center;
