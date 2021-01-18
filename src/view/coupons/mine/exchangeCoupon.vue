@@ -14,7 +14,7 @@
         <div class="content-detail-top">
           <p class="title">优惠券兑换</p>
           <van-field v-model="code" type="digit" placeholder="请输入兑换码" @input="fieldChange"></van-field>
-          <div class="submit-btn">立即兑换</div>
+          <div class="submit-btn" @click="submit">立即兑换</div>
         </div>
         <div class="content-detail-bottom">
           <p class="title">什么是兑换码？</p>
@@ -24,6 +24,7 @@
         </div>
       </div>
     </div>
+    <ConfirmPop :showConfirm="showConfirm" :confrimValue="confrimValue" :confrimDetail="confrimDetail" :confirmTime="confirmTime"  />
   </div>
 </template>
 
@@ -31,16 +32,22 @@
 import nav from "@zkty-team/x-engine-module-nav";
 import api from "@/api";
 import router from "@zkty-team/x-engine-module-router";
+import ConfirmPop from "@/components/confirmPopDetail.vue";
+
 
 export default {
   name:"exchangeCoupon",
   components: {
-
+    ConfirmPop
   },
   data () {
     return {
       data: "",
-      code: ""
+      code: "",
+      showConfirm: false,
+      confrimValue: "物业抵扣卷",
+      confrimDetail: "面值：10元代金券",
+      confirmTime: "有效期：2021/11/12"
     }
   },
   mounted() {
@@ -80,7 +87,16 @@ export default {
     },
     fieldChange() {
 
-    }
+    },
+    submit() {
+      this.showConfirm = true;
+    },
+    cancelConfim() {
+      this.showConfirm = false;
+    },
+    confirmBtn() {
+      this.showConfirm = false;
+    },
   }
 }
 </script>
