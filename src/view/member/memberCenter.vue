@@ -264,7 +264,8 @@ export default {
     if (
       from.name == "growthValueRecord" ||
       from.name == "IntegralRecord" ||
-      from.name == "gradeDescription"
+      from.name == "gradeDescription" ||
+      from.name == "bangdouExchange"
     ) {
       to.meta.isBack = true;
     } else {
@@ -276,7 +277,8 @@ export default {
     if (
       to.name == "growthValueRecord" ||
       to.name == "IntegralRecord" ||
-      to.name == "gradeDescription"
+      to.name == "gradeDescription" ||
+      to.name == "bangdouExchange"
     ) {
       next();
     } else {

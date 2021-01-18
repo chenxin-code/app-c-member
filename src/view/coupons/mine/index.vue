@@ -320,7 +320,7 @@ export default {
             .exchange-card-left {
               width: 101px;
               height: 97px;
-              background-image: url("../../assets/img/coupons/red_card.png");
+              background-image: url("../../../assets/img/coupons/red_card.png");
               background-repeat: no-repeat;
               background-position: center center;
               background-size: 100% 100%;
@@ -444,7 +444,7 @@ export default {
             .exchange-card-left {
               width: 101px;
               height: 106px;
-              background-image: url("../../assets/img/coupons/yellow_card.png");
+              background-image: url("../../../assets/img/coupons/yellow_card.png");
               background-repeat: no-repeat;
               background-position: center center;
               background-size: 100% 100%;
@@ -548,7 +548,7 @@ export default {
                   width: 72px;
                   height: 72px;
                   border-radius: 4px;
-                  background-image: url("../../assets/img/coupons/food.png");
+                  background-image: url("../../../assets/img/coupons/food.png");
                   background-repeat: no-repeat;
                   background-position: center center;
                   background-size: 100% 100%;
@@ -570,7 +570,7 @@ export default {
             .exchange-card-left {
               width: 101px;
               height: 106px;
-              background-image: url("../../assets/img/coupons/blue_card.png");
+              background-image: url("../../../assets/img/coupons/blue_card.png");
               background-repeat: no-repeat;
               background-position: center center;
               background-size: 100% 100%;
@@ -674,7 +674,7 @@ export default {
                   width: 72px;
                   height: 72px;
                   border-radius: 4px;
-                  background-image: url("../../assets/img/coupons/food.png");
+                  background-image: url("../../../assets/img/coupons/food.png");
                   background-repeat: no-repeat;
                   background-position: center center;
                   background-size: 100% 100%;
