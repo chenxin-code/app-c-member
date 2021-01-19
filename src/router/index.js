@@ -56,10 +56,18 @@ const routes = [
     name: "couponsMine",
     component: resolve => require(["@/view/coupons/mine"], resolve)
   },
+  //使用记录
+  {
+    path: "/useLog",
+    name: "useLog",
+    component: resolve => require(["@/view/coupons/useLog"], resolve)
+  },
+  //兑换优惠券
   {
     path: "/exchangeCoupon",
     name: "exchangeCoupon",
-    component: resolve => require(["@/view/coupons/mine/exchangeCoupon"], resolve)
+    component: resolve =>
+      require(["@/view/coupons/mine/exchangeCoupon"], resolve)
   }
 ];
 

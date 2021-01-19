@@ -476,7 +476,7 @@
       v-show="(isActive && activeName === 1) || (isActive && activeName === 3)"
       class="exchange-footer"
     >
-      <div class="exchange-footer-left">使用记录</div>
+      <div class="exchange-footer-left" @click="goUseLog">使用记录</div>
       <div class="exchange-footer-center"></div>
       <div class="exchange-footer-right">兑换优惠券</div>
     </div>
@@ -508,7 +508,11 @@ export default {
   components: {
     Null
   },
-  methods: {},
+  methods: {
+    goUseLog: function() {
+      this.$routeHelper.router(this, "/useLog", null, false);
+    },
+  },
   watch: {
     // petsUpdateList: {
     //   handler(newVal) {},
