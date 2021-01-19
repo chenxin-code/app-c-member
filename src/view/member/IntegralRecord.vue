@@ -94,11 +94,11 @@ export default {
   methods: {
     async initData() {
       this.memberId = "2309350880803029614"; //需注释
-      await localstorage
-        .get({ key: "LLBMemberId", isPublic: true })
-        .then(res => {
-          this.memberId = res.result;
-        });
+      // await localstorage
+      //   .get({ key: "LLBMemberId", isPublic: true })
+      //   .then(res => {
+      //     this.memberId = res.result;
+      //   });
       this.getMemberDetail();
       this.invalidTime = moment()
         .add(7, "d")

@@ -250,13 +250,13 @@ export default {
     localStorage.setItem("memberId", this.memberId); //需注释
     this.getMemberDetail(); //需注释
 
-    if (this.$route.meta.isBack != true) {
-      localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-        this.memberId = res.result;
-        localStorage.setItem("memberId", this.memberId);
-        this.getMemberDetail();
-      });
-    }
+    // if (this.$route.meta.isBack != true) {
+    //   localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+    //     this.memberId = res.result;
+    //     localStorage.setItem("memberId", this.memberId);
+    //     this.getMemberDetail();
+    //   });
+    // }
   },
   created() {},
   mounted() {},
