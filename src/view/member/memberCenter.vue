@@ -528,6 +528,8 @@ export default {
 
 .page-body {
   padding-top: 282px;
+  overflow: auto;
+  height: 100%;
 }
 .page-head {
   position: fixed;
