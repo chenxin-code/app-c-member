@@ -2,7 +2,7 @@
   <div class="exchange-container">
     <div class="exchange-info">
       <div class="exchange-tab-wrap">
-        <van-tabs v-model="activeName">
+        <van-tabs v-model="activeName" type="card">
           <van-tab title="已使用" :name="1">
             <div class="bangdou-exchange-wrap">
               <div class="bangdou-exchange">
@@ -14,7 +14,7 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
+                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -49,7 +49,7 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
+                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -84,7 +84,7 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
+                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -123,7 +123,7 @@
                       </div>
                       <div class="exchange-card-item exchange-card-right">
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
+                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
                         </div>
                         <div class="exchange-card-right-right">
                           <div class="exchange-card-right-right-btn">
@@ -148,7 +148,7 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
+                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -183,7 +183,7 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
+                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -218,7 +218,7 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
+                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -257,7 +257,7 @@
                       </div>
                       <div class="exchange-card-item exchange-card-right">
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
+                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
                         </div>
                         <div class="exchange-card-right-right">
                           <div class="exchange-card-right-right-btn">
@@ -327,13 +327,38 @@ export default {
 <style lang="less" scoped>
 .exchange-container {
   .exchange-info {
+    padding-top: 20px;
     font-size: 18px;
 
-    ::v-deep .van-tab--active {
-      color: #121212 !important;
+    ::v-deep .van-tabs__wrap {
+      height: 42px;
     }
-    ::v-deep .van-tabs__line {
-      background-color: #121212 !important;
+
+    ::v-deep .van-tabs__nav--card {
+      height: 42px;
+      border: none;
+      background: #f5f5f7;
+      border-radius: 8px;
+    }
+
+    ::v-deep .van-tab {
+      height: 42px;
+      font-size: 16px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #121212;
+    }
+
+    ::v-deep .van-tabs__nav--card .van-tab.van-tab--active {
+      font-size: 16px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #e8374a;
+      background-color: #fcecee;
+    }
+
+    ::v-deep .van-tabs__nav--card .van-tab {
+      border-right: none;
     }
 
     .exchange-tab-wrap {
@@ -453,7 +478,7 @@ export default {
                   align-items: stretch;
 
                   .exchange-card-right-left {
-                    padding: 19px 7px 0 0;
+                    padding: 14px 7px 0 0;
                     display: flex;
                     flex-direction: column;
                     justify-content: flex-start;
@@ -469,8 +494,8 @@ export default {
                       word-break: break-all;
                     }
                     .card-right-left-middle {
-                      padding-top: 10px;
-                      height: 26px;
+                      padding-top: 6px;
+                      height: 22px;
                       font-size: 12px;
                       font-family: PingFangSC-Regular, PingFang SC;
                       font-weight: 400;
@@ -478,8 +503,8 @@ export default {
                       line-height: 16px;
                     }
                     .card-right-left-bottom {
-                      padding-top: 15px;
-                      height: 12px;
+                      padding-top: 10px;
+                      height: 22px;
                       font-size: 10px;
                       font-family: PingFangSC-Regular, PingFang SC;
                       font-weight: 400;
@@ -585,7 +610,7 @@ export default {
 
                   .exchange-card-right-left {
                     flex: 1;
-                    padding: 19px 7px 0 12px;
+                    padding: 14px 7px 0 12px;
                     display: flex;
                     flex-direction: column;
                     justify-content: flex-start;
