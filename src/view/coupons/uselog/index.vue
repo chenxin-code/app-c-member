@@ -14,7 +14,9 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
+                          <div class="card-right-left-top">
+                            仅可购买邻里商城生鲜区、冷冻区
+                          </div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -26,8 +28,7 @@
                           <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">5</div>
                         </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
+                        <div class="exchange-card-left-bottom">无门槛立减</div>
                       </div>
                     </div>
                     <div class="bangdou-exchange-rules" v-show="!isActive">
@@ -49,7 +50,9 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
+                          <div class="card-right-left-top">
+                            仅可购买邻里商城生鲜区、冷冻区
+                          </div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -61,8 +64,7 @@
                           <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">5</div>
                         </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
+                        <div class="exchange-card-left-bottom">无门槛立减</div>
                       </div>
                     </div>
                     <div class="bangdou-exchange-rules" v-show="!isActive">
@@ -84,7 +86,9 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
+                          <div class="card-right-left-top">
+                            仅可购买邻里商城生鲜区、冷冻区
+                          </div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -96,8 +100,7 @@
                           <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">5</div>
                         </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
+                        <div class="exchange-card-left-bottom">无门槛立减</div>
                       </div>
                     </div>
                     <div class="bangdou-exchange-rules" v-show="!isActive">
@@ -119,11 +122,13 @@
                           <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">5</div>
                         </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
+                        <div class="exchange-card-left-bottom">无门槛立减</div>
                       </div>
                       <div class="exchange-card-item exchange-card-right">
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
+                          <div class="card-right-left-top">
+                            仅可购买邻里商城生鲜区、冷冻区
+                          </div>
                         </div>
                         <div class="exchange-card-right-right">
                           <div class="exchange-card-right-right-btn">
@@ -148,7 +153,9 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
+                          <div class="card-right-left-top">
+                            仅可购买邻里商城生鲜区、冷冻区
+                          </div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -160,8 +167,7 @@
                           <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">5</div>
                         </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
+                        <div class="exchange-card-left-bottom">无门槛立减</div>
                       </div>
                     </div>
                     <div class="bangdou-exchange-rules" v-show="!isActive">
@@ -183,7 +189,9 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
+                          <div class="card-right-left-top">
+                            仅可购买邻里商城生鲜区、冷冻区
+                          </div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -195,8 +203,7 @@
                           <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">5</div>
                         </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
+                        <div class="exchange-card-left-bottom">无门槛立减</div>
                       </div>
                     </div>
                     <div class="bangdou-exchange-rules" v-show="!isActive">
@@ -218,7 +225,9 @@
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
+                          <div class="card-right-left-top">
+                            仅可购买邻里商城生鲜区、冷冻区
+                          </div>
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
@@ -230,8 +239,7 @@
                           <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">5</div>
                         </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
+                        <div class="exchange-card-left-bottom">无门槛立减</div>
                       </div>
                     </div>
                     <div class="bangdou-exchange-rules" v-show="!isActive">
@@ -253,11 +261,13 @@
                           <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">5</div>
                         </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
+                        <div class="exchange-card-left-bottom">无门槛立减</div>
                       </div>
                       <div class="exchange-card-item exchange-card-right">
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">仅可购买邻里商城生鲜区、冷冻区</div>
+                          <div class="card-right-left-top">
+                            仅可购买邻里商城生鲜区、冷冻区
+                          </div>
                         </div>
                         <div class="exchange-card-right-right">
                           <div class="exchange-card-right-right-btn">
@@ -403,7 +413,7 @@ export default {
                 .exchange-card-left {
                   width: 101px;
                   height: 106px;
-                  background-image: url("../../../assets/img/coupons/yellow_card.png");
+                  background-image: url("../../../assets/img/coupons/gray_right.png");
                   background-repeat: no-repeat;
                   background-position: center center;
                   background-size: 100% 100%;
@@ -560,7 +570,7 @@ export default {
                 .exchange-card-left {
                   width: 101px;
                   height: 97px;
-                  background-image: url("../../../assets/img/coupons/red_card.png");
+                  background-image: url("../../../assets/img/coupons/gray_left.png");
                   background-repeat: no-repeat;
                   background-position: center center;
                   background-size: 100% 100%;
