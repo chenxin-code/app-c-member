@@ -30,78 +30,8 @@
                         </div>
                         <div class="exchange-card-left-bottom">无门槛立减</div>
                       </div>
-                    </div>
-                    <div class="bangdou-exchange-rules" v-show="!isActive">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item4">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">
-                            仅可购买邻里商城生鲜区、冷冻区
-                          </div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">无门槛立减</div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules" v-show="!isActive">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item4">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">
-                            仅可购买邻里商城生鲜区、冷冻区
-                          </div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">无门槛立减</div>
-                      </div>
+                      <!-- 已使用图片 -->
+                      <div class="card-used-right"></div>
                     </div>
                     <div class="bangdou-exchange-rules" v-show="!isActive">
                       <div class="bangdou-exchange-rules-item">
@@ -122,20 +52,22 @@
                           <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">5</div>
                         </div>
-                        <div class="exchange-card-left-bottom">无门槛立减</div>
+                        <div class="exchange-card-left-bottom">满100元可用</div>
                       </div>
                       <div class="exchange-card-item exchange-card-right">
                         <div class="exchange-card-right-left">
                           <div class="card-right-left-top">
-                            仅可购买邻里商城生鲜区、冷冻区
+                            物业抵扣券
                           </div>
                         </div>
                         <div class="exchange-card-right-right">
                           <div class="exchange-card-right-right-btn">
-                            邦豆兑换
+                            已领取
                           </div>
                         </div>
                       </div>
+                      <!-- 已使用图片 -->
+                      <div class="card-used-left"></div>
                     </div>
                   </div>
                 </div>
@@ -169,78 +101,8 @@
                         </div>
                         <div class="exchange-card-left-bottom">无门槛立减</div>
                       </div>
-                    </div>
-                    <div class="bangdou-exchange-rules" v-show="!isActive">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item4">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">
-                            仅可购买邻里商城生鲜区、冷冻区
-                          </div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">无门槛立减</div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules" v-show="!isActive">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item4">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">
-                            仅可购买邻里商城生鲜区、冷冻区
-                          </div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">无门槛立减</div>
-                      </div>
+                      <!-- 已过期图片 -->
+                      <div class="card-expired-right"></div>
                     </div>
                     <div class="bangdou-exchange-rules" v-show="!isActive">
                       <div class="bangdou-exchange-rules-item">
@@ -261,20 +123,22 @@
                           <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">5</div>
                         </div>
-                        <div class="exchange-card-left-bottom">无门槛立减</div>
+                        <div class="exchange-card-left-bottom">满100元可用</div>
                       </div>
                       <div class="exchange-card-item exchange-card-right">
                         <div class="exchange-card-right-left">
                           <div class="card-right-left-top">
-                            仅可购买邻里商城生鲜区、冷冻区
+                            物业抵扣券
                           </div>
                         </div>
                         <div class="exchange-card-right-right">
                           <div class="exchange-card-right-right-btn">
-                            邦豆兑换
+                            已领取
                           </div>
                         </div>
                       </div>
+                      <!-- 已过期图片 -->
+                      <div class="card-expired-left"></div>
                     </div>
                   </div>
                 </div>
@@ -404,6 +268,7 @@ export default {
               border-radius: 16px;
 
               .bangdou-exchange-card {
+                position: relative;
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
@@ -561,6 +426,7 @@ export default {
               border-radius: 16px;
 
               .bangdou-exchange-card {
+                position: relative;
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
@@ -602,7 +468,7 @@ export default {
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
-                    font-size: 14px;
+                    font-size: 12px;
                     font-family: PingFangSC-Regular, PingFang SC;
                     font-weight: 400;
                     color: #ffffff;
@@ -620,7 +486,7 @@ export default {
 
                   .exchange-card-right-left {
                     flex: 1;
-                    padding: 14px 7px 0 12px;
+                    padding: 30px 7px 0 12px;
                     display: flex;
                     flex-direction: column;
                     justify-content: flex-start;
@@ -651,16 +517,12 @@ export default {
                       flex-direction: row;
                       justify-content: center;
                       align-items: center;
-                      background: linear-gradient(
-                        180deg,
-                        #ff8381 0%,
-                        #e8374a 100%
-                      );
+                      background: #f5f5f5;
                       border-radius: 15px;
                       font-size: 12px;
                       font-family: PingFangSC-Medium, PingFang SC;
                       font-weight: 500;
-                      color: #ffffff;
+                      color: #d8d8d8;
                     }
                   }
                 }
@@ -682,6 +544,56 @@ export default {
           }
         }
       }
+    }
+
+    .card-used-right {
+      width: 49px;
+      height: 52px;
+      position: absolute;
+      bottom: 0;
+      right: 101px;
+      z-index: 99;
+      background-image: url("../../../assets/img/coupons/has_used.png");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 49px 52px;
+    }
+    .card-used-left {
+      width: 49px;
+      height: 52px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 99;
+      background-image: url("../../../assets/img/coupons/has_used.png");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 49px 52px;
+    }
+
+    .card-expired-right {
+      width: 49px;
+      height: 52px;
+      position: absolute;
+      bottom: 0;
+      right: 101px;
+      z-index: 99;
+      background-image: url("../../../assets/img/coupons/has_expired.png");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 49px 52px;
+    }
+    .card-expired-left {
+      width: 49px;
+      height: 52px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 99;
+      background-image: url("../../../assets/img/coupons/has_expired.png");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 49px 52px;
     }
 
     .exchange-main-null {
