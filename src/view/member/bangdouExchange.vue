@@ -235,7 +235,8 @@
     <!-- 临时跳转 -->
     <div style="padding:0 16px 20px 16px;">
       <button @click="$router.push('/couponsClaim')" style="margin-right:5px;">领券中心</button>
-      <button @click="$router.push('/couponsMine')">我的卡券</button>
+      <button @click="$router.push('/couponsMine')" style="margin-right:5px;">我的卡券</button>
+      <button @click="$router.push('/signIn')">签到</button>
     </div>
   </div>
 </template>
@@ -640,7 +641,7 @@ export default {
                 font-size: 12px;
                 font-family: PingFangSC-Medium, PingFang SC;
                 font-weight: 500;
-                color: #ff7709;
+                color: #1B7BFF;
               }
             }
 

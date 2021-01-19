@@ -688,7 +688,7 @@ export default {
                   font-size: 12px;
                   font-family: PingFangSC-Medium, PingFang SC;
                   font-weight: 500;
-                  color: #ff7709;
+                  color: #1B7BFF;
                 }
               }
 
