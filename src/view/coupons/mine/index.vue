@@ -468,9 +468,10 @@
     <div v-show="isActive" class="exchange-footer">
       <div class="exchange-footer-left" @click="goUseLog">使用记录</div>
       <div class="exchange-footer-center"></div>
-      <div class="exchange-footer-right">兑换优惠券</div>
+      <div class="exchange-footer-right" @click="goExchangeCoupon">兑换优惠券</div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -501,6 +502,9 @@ export default {
   methods: {
     goUseLog: function() {
       this.$routeHelper.router(this, "/useLog", null, false);
+    },
+    goExchangeCoupon: function() {
+      this.$routeHelper.router(this, "/exchangeCoupon", null, true);
     }
   },
   watch: {
@@ -947,7 +951,7 @@ export default {
                     font-size: 12px;
                     font-family: PingFangSC-Medium, PingFang SC;
                     font-weight: 500;
-                    color: #1B7BFF;
+                    color: #1b7bff;
                   }
                 }
 
