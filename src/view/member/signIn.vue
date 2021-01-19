@@ -340,7 +340,7 @@ export default {
 }
 
 .page-body {
-  padding: 0px 16px 16px 16px;
+  padding: 0px 16px 53px 16px;
 }
 
 .form-body {
@@ -359,7 +359,14 @@ export default {
     margin-right: 0px;
   }
 }
-
+.signlnBtn.active{
+  .awardIntegral{
+    color: #e8374a;
+  }
+  .awardIntegral span {
+    color: #e8374a;
+  }
+}
 .signlnBtn {
   position: relative;
   display: flex;
@@ -369,18 +376,18 @@ export default {
   .awardIntegral {
     width: 100%;
     position: absolute;
-    top: 8px;
+    top: 6px;
     text-align: center;
     font-size: 20px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
-    color: #e8374a;
+    color: #121212;
   }
   .awardIntegral span {
     font-size: 10px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #e8374a;
+    color: #121212;
   }
   .today {
     width: 100%;
@@ -393,6 +400,7 @@ export default {
   .node-logo {
     width: 30px;
     height: 30px;
+    margin-top: 6px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-image: url("../../assets/img/member/icon-signln-1.png");
@@ -405,10 +413,12 @@ export default {
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #121212;
+    top: 13px;
   }
   .node-logo {
-    width: 67px;
-    height: 30px;
+    width: 68px;
+    height: 40px;
+    margin-left: calc(50% - 34px);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-image: url("../../assets/img/member/icon-signln-2.png");
@@ -421,10 +431,11 @@ export default {
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #121212;
+    top: 13px;
   }
   .node-logo {
-    width: 67px;
-    height: 30px;
+    width: 56px;
+    height: 40px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-image: url("../../assets/img/member/icon-signln-3.png");
