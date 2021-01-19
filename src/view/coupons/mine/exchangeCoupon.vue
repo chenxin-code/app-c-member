@@ -93,9 +93,13 @@ export default {
         .finally(() => {});
     },
     pageBack: function() {
-      nav.navigatorBack({
-        url: "0"
-      });
+      if (this.$routeHelper.isPhone) {
+        nav.navigatorBack({
+          url: "0"
+        });
+      } else {
+        this.$router.go(-1);
+      }
     },
     fieldChange() {},
     submit() {
