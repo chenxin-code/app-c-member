@@ -162,9 +162,9 @@ export default {
     };
   },
   created() {
-    this.memberId = "2309350880803029939"; //需注释
-    localStorage.setItem("memberId", this.memberId); //需注释
-    this.getSignTasklistUsingget(); //需注释
+    this.memberId = "2309350880803029939"; //生产需注释
+    localStorage.setItem("memberId", this.memberId); //生产需注释
+    this.getSignTasklistUsingget(); //生产需注释
 
     //生产需打开
     // localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
