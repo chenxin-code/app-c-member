@@ -24,13 +24,20 @@
             v-if="!showNoData"
           >
             <template v-slot:default>
-              <div class="task-node" v-for="(item, index) in dataSource" :key="index">
+              <div
+                class="task-node"
+                v-for="(item, index) in dataSource"
+                :key="index"
+              >
                 <div class="task-left">
                   <div class="title">{{ item.behaviourName }}</div>
                   <div class="explain">{{ item.createTime | timeFormat }}</div>
                 </div>
                 <div class="task-right">
-                  <div>{{ item.changeType == 1 ? "+" : "-" }}{{ item.growthChange }}</div>
+                  <div>
+                    {{ item.changeType == 1 ? "+" : "-"
+                    }}{{ item.growthChange }}
+                  </div>
                 </div>
               </div>
             </template>
@@ -58,10 +65,12 @@ export default {
       loading: false,
       finished: false,
       refreshing: false,
-      dataSource: [],
+      dataSource: []
     };
   },
   created() {
+    // this.memberId = "2309350880803029614"; //生产需注释
+    //生产需打开
     this.memberId = localStorage.getItem("memberId");
     this.getMemberDetial();
   },
@@ -69,43 +78,43 @@ export default {
     this.pageHeight = this.$refs.integralRecord.clientHeight + "px";
   },
   filters: {
-    timeFormat: function (value) {
+    timeFormat: function(value) {
       return moment(value).format("YYYY-MM-DD HH:mm:ss");
-    },
+    }
   },
   methods: {
-    getMemberDetial: function () {
+    getMemberDetial: function() {
       const par = {
-        memberId: this.memberId,
+        memberId: this.memberId
       };
-      api.memberDetailByMemberID(par).then((res) => {
+      api.memberDetailByMemberID(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           this.totalNumber = res.data.memberCardRelats[0].grow;
         }
       });
     },
-    pageBack: function () {
+    pageBack: function() {
       nav.navigatorBack();
     },
     onLoad() {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中...",
+        message: "加载中..."
       });
       this.pageIndex = this.pageIndex + 1;
       const par = {
         memberId: this.memberId,
         pageIndex: this.pageIndex,
-        pageSize: this.pageSize,
+        pageSize: this.pageSize
       };
       if (this.total != null && this.dataSource.length >= this.total) {
         this.finished = true;
         this.loading = false;
         return false;
       }
-      api.getMemberGrownLogListUsingGET(par).then((res) => {
+      api.getMemberGrownLogListUsingGET(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           this.total = res.data.total;
@@ -141,18 +150,18 @@ export default {
       this.loading = true;
       this.onLoad();
     },
-    getMemberGrownLogListUsingGET: function () {
+    getMemberGrownLogListUsingGET: function() {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中...",
+        message: "加载中..."
       });
       const par = {
         memberId: this.memberId,
         pageIndex: 1,
-        pageSize: 10,
+        pageSize: 10
       };
-      api.getMemberGrownLogListUsingGET(par).then((res) => {
+      api.getMemberGrownLogListUsingGET(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           if (res.data.records > 0) {
@@ -165,8 +174,8 @@ export default {
           this.dataSource = res.data.records;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -188,7 +197,7 @@ export default {
     font-size: 14px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #8D8D8D;
+    color: #8d8d8d;
   }
 }
 .integralRecord {
