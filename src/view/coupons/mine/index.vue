@@ -1,13 +1,6 @@
 <template>
   <div class="exchange-container">
-    <div
-      class="exchange-info"
-      :style="
-        (isActive && activeName === 1) || (isActive && activeName === 3)
-          ? pbStyle
-          : ''
-      "
-    >
+    <div class="exchange-info" :style="pbStyle">
       <div class="exchange-tab-wrap">
         <van-tabs v-model="activeName">
           <van-tab title="全部" :name="1">
@@ -472,10 +465,7 @@
         <null :message="nullMsg" bgicon="pets" :isadd="true" />
       </div>
     </div>
-    <div
-      v-show="(isActive && activeName === 1) || (isActive && activeName === 3)"
-      class="exchange-footer"
-    >
+    <div v-show="isActive" class="exchange-footer">
       <div class="exchange-footer-left" @click="goUseLog">使用记录</div>
       <div class="exchange-footer-center"></div>
       <div class="exchange-footer-right">兑换优惠券</div>
@@ -511,7 +501,7 @@ export default {
   methods: {
     goUseLog: function() {
       this.$routeHelper.router(this, "/useLog", null, false);
-    },
+    }
   },
   watch: {
     // petsUpdateList: {
