@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-20 10:31:06
- * @LastEditTime: 2021-01-20 17:53:05
+ * @LastEditTime: 2021-01-20 18:24:16
  */
 import Vue from "vue";
 import App from "./App.vue";
@@ -19,9 +19,6 @@ Vue.use(Vant);
 // import vConsole from "vconsole/dist/vconsole.min.js";
 // new vConsole();
 
-//当期是否为手机端。true是。false不是
-routeHelper.isPhone = false;
-// routeHelper.isPhone = true;
 Vue.prototype.$routeHelper = routeHelper;
 
 Object.values(Components).forEach(components => {
