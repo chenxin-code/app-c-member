@@ -90,7 +90,7 @@
           </div>
 
           <!-- 邦豆兑换 -->
-          <div class="bangdou-exchange">
+          <!-- <div class="bangdou-exchange">
             <div class="bangdou-exchange-header">
               <div class="exchange-header-title">
                 邦豆兑换
@@ -186,7 +186,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="dotask-body">
             <div class="dotask">
