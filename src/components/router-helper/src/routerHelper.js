@@ -1,18 +1,15 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-20 16:50:28
- * @LastEditTime: 2021-01-20 17:10:38
+ * @LastEditTime: 2021-01-20 20:08:49
  */
 import nav from "@zkty-team/x-engine-module-nav";
 import router from "../../../router";
 import _ from 'lodash'
 
-let isPhone = true;
-process.env.NODE_ENV === "development" && (isPhone = false);
-
 export default {
   //是否为移动端 false不是，true 是
-  isPhone: isPhone,
+  isPhone: process.env.NODE_ENV === "development" ? false : true,
   formatData: function (data) {
     var returnData = data;
     var paramsStr = "";
@@ -42,7 +39,6 @@ export default {
       par[this.isPhone == true ? "params" : "query"] = this.formatData(data);
     }
     if (this.isPhone && Object.prototype.hasOwnProperty.call(route, 'hideNavbar')) {
-      console.log('has hideNavbar');
       par.hideNavbar = route.hideNavbar
     }
     if (this.isPhone) {

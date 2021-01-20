@@ -83,8 +83,10 @@
                 :key="index"
                 class="notReceivedNode"
               >
-                <div class="integralChange">{{ item.integralChange }}</div>
-                <div class="sourceType">{{ item.behaviourName }}</div>
+                <div>
+                  <div class="integralChange">{{ item.integralChange }}</div>
+                  <div class="sourceType">{{ item.behaviourName }}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -246,7 +248,7 @@ export default {
   },
 
   activated() {
-    // this.memberId = "2309350880803029614"; //生产需注释
+    // this.memberId = "2331048196588962531"; //生产需注释
     // localStorage.setItem("memberId", this.memberId); //生产需注释
     // this.getMemberDetail(); //生产需注释
 
@@ -435,7 +437,7 @@ export default {
         console.log("integralRecord res :>> ", res); //测试
         if (res.code == 200) {
           this.$toast.clear();
-          this.integralRecordData = res.data.records;
+          this.integralRecordData = res.data.records || [];
         }
       });
     },
@@ -1163,12 +1165,14 @@ export default {
   margin-top: 27px;
 }
 .page-body .notReceivedNode {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  // display: inline-block;
   margin-right: 10px;
   width: 33%;
   height: 58px;
   padding-left: 44px;
-  padding-top: 12px;
+  // padding-top: 12px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-image: url("../../assets/img/member/icon-getBangDou-bg.png");
