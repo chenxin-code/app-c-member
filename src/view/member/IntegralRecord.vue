@@ -59,7 +59,6 @@
 </template>
 <script>
 /* eslint-disable */
-import nav from "@zkty-team/x-engine-module-nav";
 import api from "@/api";
 import * as moment from "moment";
 import localstorage from "@zkty-team/x-engine-module-localstorage";
@@ -93,14 +92,14 @@ export default {
   },
   methods: {
     async initData() {
-      this.memberId = "2309350880803029614"; //生产需注释
+      // this.memberId = "2309350880803029614"; //生产需注释
 
       //生产需打开
-      // await localstorage
-      //   .get({ key: "LLBMemberId", isPublic: true })
-      //   .then(res => {
-      //     this.memberId = res.result;
-      //   });
+      await localstorage
+        .get({ key: "LLBMemberId", isPublic: true })
+        .then(res => {
+          this.memberId = res.result;
+        });
       this.getMemberDetail();
       this.invalidTime = moment()
         .add(7, "d")
