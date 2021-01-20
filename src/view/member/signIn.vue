@@ -162,16 +162,16 @@ export default {
     };
   },
   created() {
-    this.memberId = "2309350880803029939"; //生产需注释
-    localStorage.setItem("memberId", this.memberId); //生产需注释
-    this.getSignTasklistUsingget(); //生产需注释
+    // this.memberId = "2309350880803029939"; //生产需注释
+    // localStorage.setItem("memberId", this.memberId); //生产需注释
+    // this.getSignTasklistUsingget(); //生产需注释
 
     //生产需打开
-    // localstorage.get({ key: "LLBMemberId", isPublic: true }).then((res) => {
-    //   // this.projectId = 2248639301870946124;
-    //   this.memberId = res.result;
-    //   this.getSignTasklistUsingget();
-    // });
+    localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+      // this.projectId = 2248639301870946124;
+      this.memberId = res.result;
+      this.getSignTasklistUsingget();
+    });
   },
   mounted() {},
   beforeDestroy() {
@@ -359,8 +359,8 @@ export default {
     margin-right: 0px;
   }
 }
-.signlnBtn.active{
-  .awardIntegral{
+.signlnBtn.active {
+  .awardIntegral {
     color: #e8374a;
   }
   .awardIntegral span {
