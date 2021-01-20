@@ -246,18 +246,18 @@ export default {
   },
 
   activated() {
-    this.memberId = "2309350880803029614"; //生产需注释
-    localStorage.setItem("memberId", this.memberId); //生产需注释
-    this.getMemberDetail(); //生产需注释
+    // this.memberId = "2309350880803029614"; //生产需注释
+    // localStorage.setItem("memberId", this.memberId); //生产需注释
+    // this.getMemberDetail(); //生产需注释
 
     //生产需打开
-    // if (this.$route.meta.isBack != true) {
-    //   localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-    //     this.memberId = res.result;
-    //     localStorage.setItem("memberId", this.memberId);
-    //     this.getMemberDetail();
-    //   });
-    // }
+    if (this.$route.meta.isBack != true) {
+      localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+        this.memberId = res.result;
+        localStorage.setItem("memberId", this.memberId);
+        this.getMemberDetail();
+      });
+    }
   },
   created() {},
   mounted() {},

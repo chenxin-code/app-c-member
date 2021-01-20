@@ -95,7 +95,7 @@ export default {
       });
     },
     pageBack: function() {
-      nav.navigatorBack();
+      this.$routerHelper.back();
     },
     onLoad() {
       this.$toast.loading({

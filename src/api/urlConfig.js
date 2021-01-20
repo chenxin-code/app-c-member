@@ -1,5 +1,11 @@
+/*
+ * @Description: 这是***页面
+ * @Date: 2021-01-20 10:31:06
+ * @LastEditTime: 2021-01-20 16:20:06
+ */
 export let option = {
     login: '/times/auth', // 登录
+    member: '/times/member-bff',
     memberCenter: '/times/member-bff/member',
     isv_member: '/times/member-bff/member',
     isv_member_task: '/times/member-bff/member-task/',
@@ -22,6 +28,8 @@ export default {
     GETMEMBERGROWNLOGLISTUSINGGET: option.isv_member + '/api-c/v1/member/grown_log/list',
     GETMYTASKLISTBYMEMBER: option.isv_member_task + '/api-c/v1/task/getListByMember',
     COLLECTUSINGPOST: option.isv_user_behaviour + '/api-c/v1/user-behaviour/collect',
-    OVERDUEINTEGRAL: option.isv_member + '/api-c/v1/member/overdueIntegral'
+    OVERDUEINTEGRAL: option.isv_member + '/api-c/v1/member/overdueIntegral',
+    COUPON_LIST: option.member + '/coupon/api/v1/coupon/list',//获取卡券列表
+    RECEIVE_COUPON_LIST: option.member + '/coupon/api/v1/receive-coupon/list', // 领券中心
 
 }

@@ -1,3 +1,8 @@
+/*
+ * @Description: 这是***页面
+ * @Date: 2021-01-20 10:31:06
+ * @LastEditTime: 2021-01-20 16:21:47
+ */
 import { fetchApi } from '@/utils/ajax'
 import URL from './urlConfig'
 
@@ -13,3 +18,6 @@ export const getMemberGrownLogListUsingGET = data => fetchApi(URL.GETMEMBERGROWN
 export const getMyTaskListByMember = data => fetchApi(URL.GETMYTASKLISTBYMEMBER, data, "GET") //通过会员ID获取我的任务
 export const collectUsingPOST = data => fetchApi(URL.COLLECTUSINGPOST, data, "POST") //用户签到
 export const overdueIntegral = data => fetchApi(URL.OVERDUEINTEGRAL, data, "GET") //获取即将过期的时间
+export const queryCouponList = data => fetchApi(URL.COUPON_LIST, data, "GET") //获取卡券列表
+export const queryReceiveCouponList = data => fetchApi(URL.RECEIVE_COUPON_LIST, data, "GET") //领券中心
+

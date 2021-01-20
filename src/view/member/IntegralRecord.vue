@@ -122,11 +122,7 @@ export default {
       });
     },
     pageBack: function() {
-      if(this.$routeHelper.isPhone){
-        nav.navigatorBack();
-      } else{
-        this.$router.go(-1);
-      }
+      this.$routerHelper.back();
     },
     overdueIntegral: function() {
       this.$toast.loading({
@@ -252,7 +248,7 @@ export default {
     font-size: 14px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: red;
+    color: #8d8d8d;
   }
 }
 .integralRecord {

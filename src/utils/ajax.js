@@ -28,7 +28,7 @@ export const HTTP = axios.create({
     // }
   },
   transformResponse: [
-    function(data) {
+    function (data) {
       return JSONBigString.parse(data);
     }
   ]
@@ -49,7 +49,7 @@ HTTP.interceptors.request.use(async config => {
     //   });
 
     //开发环境
-    tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxODgxOTMxMDY4OCIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjI0ODYzODQyNTY5NzYxNzMwMywiZXhwIjoxNjExMDgxNTE1LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIiwib3duZXIiXSwianRpIjoiOTM3YWEyMzItODNhNC00YjMzLWE3MTgtNDA1OGEyZTIzMWZhIiwiY2xpZW50X2lkIjoiYXBwX2MifQ.dmF6TCB96LRJAfjy-tpkZXfidFOqq-lExvlVQidk6t3M8Ppw9j8zSnmaNxl62pxLBA7vuq09yz8nojouSs-6cOaFKXX5RkEN0OSXxgau2o2MUmDrO39lgnfgmS_ladpptZtBrfb9LFB0AA7cYkg188t__r2ba5bXMl7s2hItQLEDL2xX0b2cVrbaeHajGgd9hSGYWEQIOVRuOaP_Y9YlIk7rReR_wgvQWIdGw_nIqlr_j-sLlnPk3-AvWXAOGOhSwksv8LoGbX_3crYFKwbXNwmMcI0f3Xf-LMSvgI0c7ROSs7eqmW-5nmcBb5mN6J7d5S2EzahKJ3BSrsY-6TBgmg`;
+    tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTAxMDgzMzkyNSIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjI1Mjk5NDYzOTIyNzI2MzY4NywiZXhwIjoxNjExMTU0MjQxLCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIiwib3duZXIiXSwianRpIjoiZDlmZDZiMGItMTY3Ni00M2NlLTllYjgtNzAzNjFhMGRjMjdkIiwiY2xpZW50X2lkIjoiYXBwX2MifQ.cqaBQV-QuzALQ8GskC2CTSgODwIMzDm3TIXhAhaiH21WT8q3GvxPt6EYnJQHRX-qDfNWluvV13HkMirt9P_aaSampUxBFa2_UahCWasIhGZb-e2sZI377nuFpVKzYer7Noasm6UgtvFQaUu7hk_N07ZkAztFAq4h44OJibJnpArJtWbLWEk49XX-OLZ0qxMWH1uCWUCkygh-FJdYFxB4yYVM2l0AMyeQCy5JjP_b74LRzmN1C5lpGnVlQkqPwvbyVXbgmq2tPsFooYOIBCtH2gGKUapFyUycOlhymD4K18_GjaCow_cqN_6h6N95rSGoKQMYqjx0OeoShdwWdjNHSQ`
     config.headers.Authorization = tokenStr1;
     return config;
   } else {
@@ -66,7 +66,7 @@ HTTP.interceptors.request.use(async config => {
   }
 });
 
-function handleParams(url, rawData, rawMethod) {
+function handleParams (url, rawData, rawMethod) {
   const method = rawMethod.toUpperCase();
   let data = {};
   if (method === "GET") {
@@ -94,7 +94,7 @@ function handleParams(url, rawData, rawMethod) {
   });
 }
 
-async function handleFail(option) {
+async function handleFail (option) {
   console.log(option);
   const { error, reject } = option;
   const { response } = error;
@@ -123,7 +123,7 @@ let defaultHeader = {
 };
 
 let refresh = false;
-async function refreshToken() {
+async function refreshToken () {
   refresh = true;
   const para = QS.stringify({
     grant_type: "refresh_token",
@@ -144,7 +144,7 @@ async function refreshToken() {
         location.reload();
       }
     })
-    .finally(() => {});
+    .finally(() => { });
 }
 var baseurl;
 export const fetchApi = async (
