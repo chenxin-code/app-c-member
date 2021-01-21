@@ -5,7 +5,7 @@
         image="amount"
         v-if="!loading && !propertyList.length && !vouchersList.length"
       ></zk-empty>
-      <!-- 001 -->
+      <!-- 物业 -->
       <div class="bangdou-exchange" v-if="propertyList.length">
         <div class="bangdou-exchange-header">
           <div class="exchange-header-title">
@@ -32,7 +32,9 @@
                 <div class="exchange-card-right-left">
                   <div class="card-right-left-top">{{ item.couponTitle }}</div>
                   <div class="card-right-left-bottom">
-                    <span class="card-right-left-bottom-left">9</span>
+                    <span class="card-right-left-bottom-left">{{
+                      integrealCount
+                    }}</span>
                     <span class="card-right-left-bottom-right">邦豆</span>
                   </div>
                 </div>
