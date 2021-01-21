@@ -1,81 +1,82 @@
+@import "var";
 //cell
-.account-cell{
+.account-cell {
   width: 100%;
-  padding: 18px 16px!important;
-  background: #FFFFFF;
+  padding: 18px 16px !important;
+  background: #ffffff;
   box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
   border-radius: 16px;
   margin-bottom: 12px;
 
-  .van-cell__title{
+  .van-cell__title {
     font-size: 16px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #121212;
   }
-  .van-cell__value{
+  .van-cell__value {
     font-size: 16px;
     font-family: PingFangSC-Regular, PingFang SC;
-    color: #8D8D8D;
+    color: #8d8d8d;
   }
 }
 //按钮
-.subbottom-content{
+.subbottom-content {
   width: calc(100% + 32px);
   height: 98px;
   margin-left: -16px;
   background: #fff;
-  border-top: 1px solid #F5F5F5;
+  border-top: 1px solid #f5f5f5;
   margin-top: 44px;
   padding: 16px 16px 0;
   position: fixed;
   bottom: 0;
   width: 100%;
-  .sub-button{
+  .sub-button {
     width: 100%;
     height: 48px;
     border-radius: 8px;
 
-    .van-button__text{
+    .van-button__text {
       font-size: 18px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
-      color: #D8D8D8;
+      color: #d8d8d8;
     }
   }
-  .sub-button[data-color="true"]{
-    .van-button__text{
+  .sub-button[data-color="true"] {
+    .van-button__text {
       color: #fff;
     }
   }
 }
 //协议
-.van-radio-group{
-  .radio-text{
+.van-radio-group {
+  .radio-text {
     font-size: 12px;
     font-family: PingFangSC-Regular, PingFang SC;
-    color: #9593A4;
+    color: #9593a4;
   }
-  .agreememt{
+  .agreememt {
     font-size: 12px;
     font-family: PingFangSC-Regular, PingFang SC;
-    color: #E8374A;
+    color: #e8374a;
     text-decoration: underline;
   }
 }
 //form表单
-.form-content{
+.form-content {
   width: 100%;
   height: auto;
   padding: 24px 16px;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
   border-radius: 16px;
   margin-bottom: 42px;
 
-  .title-content{
+  .title-content {
     margin-bottom: 18px;
-    .title-icon{
+    .title-icon {
       width: 32px;
       height: 32px;
       display: inline-block;
@@ -83,214 +84,212 @@
       background-size: 100%;
       margin-right: 12px;
     }
-    .title-text{
+    .title-text {
       position: relative;
       top: -11px;
     }
-
   }
-  .sms-content{
-    .van-cell{
+  .sms-content {
+    .van-cell {
       padding: 0;
       border: 0;
     }
-    .van-field__control{
+    .van-field__control {
       width: calc(100% - 138px);
       height: 48px;
       border-radius: 8px;
-      border: 1px solid #F0F0F0;
+      border: 1px solid #f0f0f0;
       margin-right: 10px;
       padding-left: 16px;
     }
-    .van-field__button{
+    .van-field__button {
       width: 128px;
       height: 48px;
       border-radius: 8px;
-      border: 1px solid #F0F0F0;
+      border: 1px solid #f0f0f0;
       padding: 0;
       line-height: 46px;
       text-align: center;
 
-      button{
+      button {
         background-color: #fff;
         border: 0;
       }
-      .van-button__text{
+      .van-button__text {
         font-size: 16px;
         font-family: PingFangSC-Regular, PingFang SC;
         color: #121212;
       }
     }
   }
-  .areaCodeContent{
+  .areaCodeContent {
     display: flex;
 
-    .van-cell{
+    .van-cell {
       padding: 0;
       border: 0;
     }
-    .area-content{
+    .area-content {
       width: 96px;
       margin-right: 10px;
 
-      .van-field__body{
+      .van-field__body {
         width: 96px;
       }
     }
-    .van-field__body{
+    .van-field__body {
       height: 48px;
       border-radius: 8px;
-      border: 1px solid #F0F0F0;
+      border: 1px solid #f0f0f0;
       margin-right: 10px;
       padding: 0 16px;
     }
-    .phone-content{
+    .phone-content {
       width: calc(100% - 106px);
-      .van-field__body{
+      .van-field__body {
         width: 100%;
       }
     }
   }
-  .form-nav-header{
+  .form-nav-header {
     font-size: 14px;
     font-family: PingFangSC-Regular, PingFang SC;
-    color: #8D8D8D;
+    color: #8d8d8d;
   }
-  .idcard-content{
+  .idcard-content {
     width: 100%;
     position: relative;
-    .upload-btn{
+    .upload-btn {
       width: 48px;
       height: 100%;
       position: absolute;
       right: 0;
       top: 0;
       opacity: 0;
-      .van-uploader__wrapper{
+      .van-uploader__wrapper {
         height: 100%;
       }
-      .van-uploader__upload{
+      .van-uploader__upload {
         width: 48px;
         height: 100%;
         background: transparent;
       }
     }
-
   }
-  .van-cell{
+  .van-cell {
     margin: 10px 0;
     padding: 12px 16px;
     border-radius: 8px;
-    border: 1px solid #F0F0F0;
+    border: 1px solid #f0f0f0;
     font-size: 16px;
     font-family: PingFangSC-Regular, PingFang SC;
-    color: #D8D8D8;
+    color: #d8d8d8;
   }
-  .van-cell::after{
+  .van-cell::after {
     border-bottom: 0;
   }
 }
 
 //弹窗
-.van-dialog--round-button .van-dialog__cancel{
+.van-dialog--round-button .van-dialog__cancel {
   border-radius: 8px;
   margin-right: 5px;
-  .van-button__content{
-    color: #8D8D8D;
+  .van-button__content {
+    color: #8d8d8d;
   }
 }
-.van-dialog--round-button .van-dialog__confirm{
+.van-dialog--round-button .van-dialog__confirm {
   border-radius: 8px;
   margin-left: 5px;
-  .van-button__content{
+  .van-button__content {
     color: #fff;
   }
 }
-.van-dialog__content--isolated{
+.van-dialog__content--isolated {
   padding: 27px 16px 34px 16px;
   min-height: none;
 }
-.van-dialog--round-button .van-dialog__message{
+.van-dialog--round-button .van-dialog__message {
   padding: 0;
   line-height: 28px;
-  padding-bottom: 0!important;
+  padding-bottom: 0 !important;
 }
-.van-dialog--round-button .van-dialog__message{
+.van-dialog--round-button .van-dialog__message {
   font-size: 18px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #35343D;
+  color: #35343d;
 }
-.van-dialog--round-button .van-dialog__footer{
-  padding: 0 16px 24px 16px!important;
+.van-dialog--round-button .van-dialog__footer {
+  padding: 0 16px 24px 16px !important;
 }
 
-.van-popup--center{
+.van-popup--center {
   width: 283px;
   height: 250px;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 16px;
   padding: 0 16px;
   position: relative;
 }
-.dia-pop-content{
+.dia-pop-content {
   width: 283px;
   height: 190px;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 16px;
 }
-.van-popup{
-  overflow-y: inherit!important;
+.van-popup {
+  overflow-y: inherit !important;
 }
-.dia-pop-text{
+.dia-pop-text {
   padding: 28px 0 0px 0;
   font-size: 18px;
   height: 128px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #0A0A0A;
+  color: #0a0a0a;
   text-align: center;
-  .pop-text-header{
+  .pop-text-header {
     margin-bottom: 10px;
   }
-  p{
+  p {
     font-size: 12px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #8D8D8D;
+    color: #8d8d8d;
     margin: 0;
     line-height: 18px;
   }
-  .phone-num{
-    color: #E8374A;
+  .phone-num {
+    color: #e8374a;
     font-family: PingFangSC-Medium, PingFang SC;
   }
 }
-.pop-text{
+.pop-text {
   padding: 74px 0 0px 0;
   font-size: 18px;
   height: 187px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #0A0A0A;
+  color: #0a0a0a;
   text-align: center;
-  .pop-text-header{
+  .pop-text-header {
     margin-bottom: 10px;
   }
-  p{
+  p {
     font-size: 12px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #8D8D8D;
+    color: #8d8d8d;
     margin: 0;
     line-height: 18px;
   }
-  .phone-num{
-    color: #E8374A;
+  .phone-num {
+    color: #e8374a;
     font-family: PingFangSC-Medium, PingFang SC;
   }
 }
-.success-pop-icon{
+.success-pop-icon {
   width: 106px;
   height: 106px;
   display: inline-block;
@@ -300,7 +299,7 @@
   top: -53px;
   left: calc(50% - 53px);
 }
-.fail-pop-icon{
+.fail-pop-icon {
   width: 106px;
   height: 106px;
   display: inline-block;
@@ -310,20 +309,20 @@
   top: -53px;
   left: calc(50% - 53px);
 }
-.pop-btn{
+.pop-btn {
   width: 251px;
   height: 38px;
-  background: #F5F5F6;
+  background: #f5f5f6;
   border-radius: 8px;
   font-size: 14px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #8D8D8D;
+  color: #8d8d8d;
   text-align: center;
   padding: 9px 0;
 }
 
-.default-content{
+.default-content {
   width: 100%;
   height: 100%;
   text-align: center;
@@ -333,10 +332,10 @@
   position: absolute;
   left: 0;
   font-size: 14px;
-  color: #8D8D8D;
-  .container{
+  color: #8d8d8d;
+  .container {
     margin-top: -60px;
-    .default-icon{
+    .default-icon {
       width: 375px;
       height: 200px;
       // margin-top: -100px;
@@ -344,7 +343,7 @@
       background: url("../../assets/img/default-icon.png");
       background-size: 100% 100%;
     }
-    .default-icon404{
+    .default-icon404 {
       width: 375px;
       height: 200px;
       // margin-top: -100px;
@@ -352,17 +351,73 @@
       background: url("../../assets/img/404.png");
       background-size: 100% 100%;
     }
-    .add-btn{
+    .add-btn {
       display: inline-block;
       padding: 6px 16px;
       font-size: 14px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
-      color: #FFFFFF;
-      background: #E7334A;
+      color: #ffffff;
+      background: #e7334a;
       border-radius: 8px;
     }
   }
 }
+/**
+ * @description: dialog 弹出框
+ * @param {*}
+ * @return {*}
+ */
 
-
+.van-dialog {
+  padding: 32px 16px 24px;
+  .van-dialog__header {
+    font-size: 18px;
+    color: @title-color;
+    font-weight: 500;
+    padding-top: 0;
+    text-align: left;
+  }
+  .van-dialog__message--has-title {
+    color: @title-color;
+    font-size: 16px;
+  }
+  .van-dialog__message {
+    text-align: left;
+    color: @message-color;
+    padding-left: 0;
+    padding-right: 0;
+    font-weight: 100;
+    font-size: 14px;
+  }
+  .van-dialog__footer {
+    // margin-top: 36px;
+    // padding: 0 20px 24px;
+    &::after {
+      display: none;
+    }
+    justify-content: space-between;
+  }
+  .van-dialog__confirm {
+    color: #fff !important;
+  }
+  .van-button {
+    width: calc(50% - 6px);
+    flex: none;
+    border-radius: 8px;
+    height: 38px;
+    font-size: 14px;
+    &::after {
+      display: none;
+    }
+    &.van-dialog__cancel {
+      background-color: @cancel-color;
+      color: @message-color;
+      // border: 1px solid @border-color;
+    }
+    &.van-dialog__confirm {
+      border: 1px solid @primary-color;
+      background-color: @primary-color !important;
+    }
+  }
+}

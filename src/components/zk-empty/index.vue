@@ -1,3 +1,8 @@
+<!--
+ * @Description: 这是***页面
+ * @Date: 2021-01-20 17:16:34
+ * @LastEditTime: 2021-01-21 18:33:31
+-->
 <template>
   <div class="zk-empty">
     <img class="zk-empty-img" :src="getImg()" alt="" />
@@ -7,7 +12,7 @@
 
 <script>
 export default {
-  name: "empty",
+  name: "zk-empty",
   props: {
     image: {
       type: String,

@@ -1,3 +1,8 @@
+/*
+ * @Description: 这是***页面
+ * @Date: 2021-01-20 10:31:06
+ * @LastEditTime: 2021-01-21 16:39:37
+ */
 import Vue from "vue";
 import VueRouter from "vue-router";
 
@@ -48,7 +53,10 @@ const routes = [
   {
     path: "/couponsClaim",
     name: "couponsClaim",
-    component: resolve => require(["@/view/coupons/claim"], resolve)
+    component: resolve => require(["@/view/coupons/claim"], resolve),
+    meta: {
+      keepAlive: true
+    }
   },
   //我的卡券
   {

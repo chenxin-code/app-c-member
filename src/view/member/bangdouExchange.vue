@@ -1,8 +1,12 @@
 <template>
   <div class="exchange-info">
     <div class="exchange-main-wrap">
+      <zk-empty
+        image="amount"
+        v-if="!loading && !propertyList.length && !vouchersList.length"
+      ></zk-empty>
       <!-- 001 -->
-      <div class="bangdou-exchange">
+      <div class="bangdou-exchange" v-if="propertyList.length">
         <div class="bangdou-exchange-header">
           <div class="exchange-header-title">
             物业抵扣券
@@ -10,70 +14,30 @@
         </div>
         <div class="bangdou-exchange-body">
           <div class="exchange-body-item1">
-            <div class="bangdou-exchange-card">
+            <div
+              class="bangdou-exchange-card"
+              v-for="item in propertyList"
+              :key="item.id"
+            >
               <div class="exchange-card-item exchange-card-left">
                 <div class="exchange-card-left-top">
                   <div class="card-left-top-type">￥</div>
-                  <div class="card-left-top-num">5</div>
+                  <div class="card-left-top-num">{{ item.faceAmount }}</div>
                 </div>
-                <div class="exchange-card-left-bottom">满100元可用</div>
+                <div class="exchange-card-left-bottom">
+                  满{{ item.satisfyAmount }}元可用
+                </div>
               </div>
               <div class="exchange-card-item exchange-card-right">
                 <div class="exchange-card-right-left">
-                  <div class="card-right-left-top">超级吃货优惠券</div>
+                  <div class="card-right-left-top">{{ item.couponTitle }}</div>
                   <div class="card-right-left-bottom">
                     <span class="card-right-left-bottom-left">9</span>
                     <span class="card-right-left-bottom-right">邦豆</span>
                   </div>
                 </div>
                 <div class="exchange-card-right-right">
-                  <div class="exchange-card-right-right-btn">
-                    邦豆兑换
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="bangdou-exchange-card">
-              <div class="exchange-card-item exchange-card-left">
-                <div class="exchange-card-left-top">
-                  <div class="card-left-top-type">￥</div>
-                  <div class="card-left-top-num">5</div>
-                </div>
-                <div class="exchange-card-left-bottom">满100元可用</div>
-              </div>
-              <div class="exchange-card-item exchange-card-right">
-                <div class="exchange-card-right-left">
-                  <div class="card-right-left-top">超级吃货优惠券</div>
-                  <div class="card-right-left-bottom">
-                    <span class="card-right-left-bottom-left">9</span>
-                    <span class="card-right-left-bottom-right">邦豆</span>
-                  </div>
-                </div>
-                <div class="exchange-card-right-right">
-                  <div class="exchange-card-right-right-btn">
-                    邦豆兑换
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="bangdou-exchange-card">
-              <div class="exchange-card-item exchange-card-left">
-                <div class="exchange-card-left-top">
-                  <div class="card-left-top-type">￥</div>
-                  <div class="card-left-top-num">5</div>
-                </div>
-                <div class="exchange-card-left-bottom">满100元可用</div>
-              </div>
-              <div class="exchange-card-item exchange-card-right">
-                <div class="exchange-card-right-left">
-                  <div class="card-right-left-top">超级吃货优惠券</div>
-                  <div class="card-right-left-bottom">
-                    <span class="card-right-left-bottom-left">9</span>
-                    <span class="card-right-left-bottom-right">邦豆</span>
-                  </div>
-                </div>
-                <div class="exchange-card-right-right">
-                  <div class="exchange-card-right-right-btn">
+                  <div class="exchange-card-right-right-btn" @click="exchange">
                     邦豆兑换
                   </div>
                 </div>
@@ -82,7 +46,6 @@
           </div>
         </div>
       </div>
-
       <!-- 002 -->
       <div class="bangdou-exchange">
         <div class="bangdou-exchange-header">
@@ -233,11 +196,15 @@
       <null :message="nullMsg" bgicon="pets" :isadd="true" />
     </div>
     <!-- 临时跳转 -->
-    <div style="padding:0 16px 20px 16px;">
-      <button @click="$router.push('/couponsClaim')" style="margin-right:5px;">领券中心</button>
-      <button @click="$router.push('/couponsMine')" style="margin-right:5px;">我的卡券</button>
+    <!-- <div style="padding:0 16px 20px 16px;">
+      <button @click="$router.push('/couponsClaim')" style="margin-right:5px;">
+        领券中心
+      </button>
+      <button @click="$router.push('/couponsMine')" style="margin-right:5px;">
+        我的卡券
+      </button>
       <button @click="$router.push('/signIn')">签到</button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -246,6 +213,7 @@ import api from "@/api";
 import nav from "@zkty-team/x-engine-module-nav";
 import * as moment from "moment";
 import Null from "@/components/null";
+import _ from "lodash";
 
 export default {
   data() {
@@ -253,6 +221,11 @@ export default {
       loading: false,
       showNull: false,
       nullMsg: "",
+      memberId: "",
+      pageRefresh: true,
+      propertyList: [], //物业券
+      vouchersList: [], // 购物券
+      canLoadMore: true, //解决下拉刷新
       // ---分隔符---
       //宠物信息
       petsUpdateList: []
@@ -261,16 +234,20 @@ export default {
   components: {
     Null
   },
-  methods: {},
-  watch: {
-    // petsUpdateList: {
-    //   handler(newVal) {},
-    //   immediate: true, //刷新加载 立马触发一次handler
-    //   deep: true // 可以深度检测到对象的属性值的变化
-    // }
+  beforeRouteLeave(to, form, next) {
+    next();
   },
+
+  watch: {},
   created() {
-    // this.petsQueryInit();
+    this.memberId = "2331048196588962531";
+    // this.toast();
+    // Promise.all([
+    //   this.queryReceiveCouponList(4014),
+    //   this.queryReceiveCouponList(4005)
+    // ]).then(() => {
+    //   this.$toast.clear();
+    // });
   },
   mounted() {
     nav.setNavLeftBtn({
@@ -279,6 +256,62 @@ export default {
       titleSize: 24,
       titleFontName: "PingFangSC-Medium"
     });
+    this.queryReceiveCouponList();
+  },
+  methods: {
+    toast() {
+      this.$toast.loading({
+        duration: 0,
+        type: "loading",
+        message: "加载中...",
+        forbidClick: true
+      });
+    },
+    queryReceiveCouponList(businessType) {
+      const params = {
+        memberId: this.memberId,
+        pageIndex: 1,
+        pageSize: 9999,
+        businessType: 0,
+        condition: 3
+      };
+      this.loading = true;
+      this.toast();
+      api
+        .queryReceiveCouponList(params)
+        .then(res => {
+          if (res.code === 200) {
+            this.$toast.clear();
+          }
+          const data = res.data || [];
+          const propertyList = [];
+          const vouchersList = [];
+          data.forEach(item => {
+            // 物业
+            if (item.activity == "4014") {
+              propertyList.push(item);
+            } else if (item.activity == "4005") {
+              // 购物券
+              vouchersList.push(item);
+            }
+          });
+          propertyList.length && (this.propertyList = propertyList);
+          vouchersList.length && (this.vouchersList = vouchersList);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    exchange() {
+      this.$dialog
+        .confirm({
+          title: "确认兑换",
+          message: "本次消耗{$邦豆数}\n当前剩余{$邦豆数}\n兑换后剩余{$邦豆数}\n"
+        })
+        .then(() => {
+          console.log("confirm");
+        });
+    }
   }
 };
 </script>
@@ -641,7 +674,7 @@ export default {
                 font-size: 12px;
                 font-family: PingFangSC-Medium, PingFang SC;
                 font-weight: 500;
-                color: #1B7BFF;
+                color: #1b7bff;
               }
             }
 

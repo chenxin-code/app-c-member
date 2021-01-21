@@ -49,7 +49,7 @@ HTTP.interceptors.request.use(async config => {
     //   });
 
     //开发环境
-    tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTIxMjEyMTIxMiIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjMzNjk0NDQzMDc3MjEzMjExMCwiZXhwIjoxNjExMTg0MDA4LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIl0sImp0aSI6IjlhMzlhMDhkLThkYTItNGE5Mi04OGY1LWZjMzQ1Y2Y4MzcwZiIsImNsaWVudF9pZCI6ImFwcF9jIn0.BK8RDFJFP1UwHJ3Fqq0NTSVV-5tnnPbhnNu4UuiU7qc1zB8F7S08i5-CKR0F75-lfmOoNH6m50wmn66_HhFZ8k2hzXWRhaQP37i1ghiz5B1GXXw2YvZatZAru6hkXMUnV8txNFwu7FVt8Ray7yxG8mU7Wb-KOem4ISlh9MIVYwXTfLXtT5MhVjhmWPORoouGubTDdsm17Cihtrt4afAX5b3nkh5YqZddbgCHwuQMDKZBqXHDREHpMj12LqXzCPYmByEfOBPK9bB94uMHkFnOJUyh55aU-LVM82J92ZKxctd4smvlPEptnR4ONRsdikL8Ojc47JghevYupGETfSEDow`
+    tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTIxMjEyMTIxMiIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjMzNjk0NDQzMDc3MjEzMjExMCwiZXhwIjoxNjExMjYxMjkyLCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIl0sImp0aSI6Ijg1NGQ0NWZmLThkOTAtNDgyMS05NjFmLThjY2MzYWFmZGVhZCIsImNsaWVudF9pZCI6ImFwcF9jIn0.jyd1HorBnQXZ34csTGZfKuEhxE0lzJHhKIJ8v1h4u1CUK3I264UMJ9oe9HOyItC5a78k32VfoTJjC25UocYIH_dwaWLOvrgszdzGCqFXmw98CtA-N8SFdeDhriJdNb5JoXGT4jH2FlGCjhxf6jyfbGsbpUL-EGQelrRhgj_W_zrz8zSAmQuBgNcD3L-NvjHiwaEOR1O3E0R7hTZ9nb3f5xvmWqv-iE5ZQJYi4mZwGRqoa-EN5eIMbujJq9uWjUtAz16LtwvmyuaHueNKDQEUk0R6YntBrtEqpuHiD-g2VuGRA9wF-VSt5WXZOfu_H3aMtBWITxs8ZzjEfF9uZyRcTQ`
     config.headers.Authorization = tokenStr1;
     return config;
   } else {
@@ -98,6 +98,7 @@ async function handleFail (option) {
   console.log(option);
   const { error, reject } = option;
   const { response } = error;
+  console.log('error', error);
   if (response) {
     Toast("请求失败");
   } else {
