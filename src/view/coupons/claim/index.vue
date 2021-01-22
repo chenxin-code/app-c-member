@@ -90,9 +90,13 @@
                       <div class="exchange-card-item exchange-card-left">
                         <div class="exchange-card-left-top">
                           <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
+                          <div class="card-left-top-num">
+                            {{ item.faceAmount }}
+                          </div>
                         </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
+                        <div class="exchange-card-left-bottom">
+                          满{{ item.satisfyAmount }}元可用
+                        </div>
                         <div class="exchange-card-left-btn">邦豆兑换</div>
                       </div>
                     </template>
@@ -354,19 +358,18 @@ export default {
 
                 .exchange-card-right-left {
                   flex: 1;
-                  padding-left: 12px;
                   display: flex;
+                  padding-top: 12px;
                   flex-direction: column;
                   justify-content: flex-start;
                   align-items: stretch;
 
                   .card-right-left-top {
-                    padding-top: 11px;
                     font-size: 16px;
                     font-family: PingFangSC-Regular, PingFang SC;
                     font-weight: 400;
                     color: #121212;
-                    line-height: 16px;
+                    line-height: 20px;
                   }
                 }
                 .exchange-card-right-right {
@@ -398,6 +401,10 @@ export default {
               }
             }
             .bangdou-exchange-card.shopping {
+              .exchange-card-right-left {
+                padding-left: 12px;
+                padding-top: 0;
+              }
               .exchange-card-left {
                 background-image: url("../../../assets/img/coupons/yellow_card.png");
               }
