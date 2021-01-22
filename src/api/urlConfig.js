@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-20 10:31:06
- * @LastEditTime: 2021-01-20 16:20:06
+ * @LastEditTime: 2021-01-22 15:57:02
  */
 export let option = {
     login: '/times/auth', // 登录
@@ -31,5 +31,6 @@ export default {
     OVERDUEINTEGRAL: option.isv_member + '/api-c/v1/member/overdueIntegral',
     COUPON_LIST: option.member + '/coupon/api/v1/coupon/list',//获取卡券列表
     RECEIVE_COUPON_LIST: option.member + '/coupon/api/v1/receive-coupon/list', // 领券中心
-
+    RECEIVE_COUPON: option.member + '/times/member-bff/coupon/api/v1/member-id/receiveCoupon',//领取卡券
+    MEMBER_USE_COUPON_LIST: option.member + '/coupon/api/v1/member-use-coupon/list',// 获取会员卡券使用记录
 }

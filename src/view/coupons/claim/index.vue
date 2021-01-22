@@ -1,7 +1,14 @@
 <template>
   <div class="exchange-info">
-    <div class="exchange-tab-wrap">
-      <van-tabs v-model="active" @click="tabChange">
+    <div
+      class="exchange-tab-wrap"
+      v-infinite-scroll="queryReceiveCouponList"
+      :infinite-scroll-immediate-check="true"
+      infinite-scroll-disabled="busy"
+      infinite-scroll-throttle-delay="500"
+      infinite-scroll-distance="30"
+    >
+      <van-tabs v-model="active" :sticky="true" @click="tabChange">
         <van-tab
           v-for="(tab, index) in tabList"
           :key="tab.businessType"
@@ -18,6 +25,9 @@
                 <div class="exchange-body-item">
                   <div
                     class="bangdou-exchange-card"
+                    :class="[
+                      item.activity === '4014' ? 'row-reverse' : 'shopping'
+                    ]"
                     v-for="item in list[index]"
                     :key="item.id"
                   >
@@ -39,14 +49,34 @@
                           <div class="card-right-left-top">物业抵扣券</div>
                         </div>
                         <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn">
-                            邦豆兑换
+                          <div
+                            class="exchange-card-right-right-btn"
+                            @click="getCoupon(item.id)"
+                          >
+                            立即领取
                           </div>
                         </div>
                       </div>
                     </template>
                     <!-- 非物业券 -->
                     <template v-else>
+                      <!-- <div class="exchange-card-item exchange-card-left">
+                        <div class="exchange-card-left-top">
+                          <div class="card-left-top-type">￥</div>
+                          <div class="card-left-top-num">5</div>
+                        </div>
+                        <div class="exchange-card-left-bottom">满100元可用</div>
+                      </div>
+                      <div class="exchange-card-item exchange-card-right">
+                        <div class="exchange-card-right-left">
+                          <div class="card-right-left-top">物业抵扣券</div>
+                        </div>
+                        <div class="exchange-card-right-right">
+                          <div class="exchange-card-right-right-btn">
+                            邦豆兑换
+                          </div>
+                        </div>
+                      </div> -->
                       <div class="exchange-card-item exchange-card-right">
                         <div class="exchange-card-right-right">
                           <div class="exchange-card-right-right-btn"></div>
@@ -57,20 +87,13 @@
                           </div>
                         </div>
                       </div>
-                      <div
-                        class="exchange-card-item exchange-card-left"
-                        :class="[{ 'property-bg': item.activity === '4005' }]"
-                      >
+                      <div class="exchange-card-item exchange-card-left">
                         <div class="exchange-card-left-top">
                           <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">
-                            {{ item.faceAmount }}
-                          </div>
+                          <div class="card-left-top-num">5</div>
                         </div>
-                        <div class="exchange-card-left-bottom">
-                          满{{ item.satisfyAmount }}元可用
-                        </div>
-                        <div class="exchange-card-left-btn">立即领取</div>
+                        <div class="exchange-card-left-bottom">满100元可用</div>
+                        <div class="exchange-card-left-btn">邦豆兑换</div>
                       </div>
                     </template>
                   </div>
@@ -106,6 +129,7 @@ export default {
       petsUpdateList: [],
       //
       memberId: "",
+      busy: false,
       tabList: [
         {
           label: "全部",
@@ -138,7 +162,7 @@ export default {
       localStorage.setItem("memberId", this.memberId);
       this.queryReceiveCouponList();
     });
-    this.memberId = "2331048196588962531";
+    this.memberId = "2309350880803029654";
     this.queryReceiveCouponList();
   },
   mounted() {
@@ -179,16 +203,29 @@ export default {
         this.$refs.scrollContent.scrollTop = 0;
       }
     },
-    queryReceiveCouponList(businessType) {
+    getCoupon(id) {
+      this.toast();
+      api
+        .getReceiveCoupon({
+          couponId: id
+        })
+        .then(res => {
+          if (res.code === 200) {
+            this.$toast("领取成功");
+          }
+        });
+    },
+    queryReceiveCouponList() {
       const tabIndex = this.active;
       const params = {
         memberId: this.memberId,
         pageIndex: this.pageIndex[tabIndex],
-        pageSize: 9999,
+        pageSize: 10,
         businessType: this.tabList[tabIndex].businessType,
-        condition: 3
+        condition: 1
       };
       this.loading = true;
+      this.busy = true;
       this.toast();
       api
         .queryReceiveCouponList(params)
@@ -205,6 +242,7 @@ export default {
           }
         })
         .finally(() => {
+          this.busy = false;
           this.loading = false;
         });
     }
@@ -250,7 +288,7 @@ export default {
         }
 
         .bangdou-exchange-body {
-          .exchange-body-item1 {
+          .exchange-body-item {
             margin-bottom: 20px;
             .bangdou-exchange-card {
               display: flex;
@@ -263,7 +301,7 @@ export default {
 
               .exchange-card-left {
                 width: 101px;
-                height: 97px;
+                height: 106px;
                 background-image: url("../../../assets/img/coupons/red_card.png");
                 background-repeat: no-repeat;
                 background-position: center center;
@@ -271,7 +309,7 @@ export default {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-                align-items: stretch;
+                align-items: center;
 
                 .exchange-card-left-top {
                   display: flex;
@@ -285,7 +323,7 @@ export default {
                     color: #ffffff;
                   }
                   .card-left-top-num {
-                    font-size: 32px;
+                    font-size: 28px;
                     font-family: PingFangSC-Medium, PingFang SC;
                     font-weight: 500;
                     color: #ffffff;
@@ -296,7 +334,7 @@ export default {
                   flex-direction: row;
                   justify-content: center;
                   align-items: center;
-                  font-size: 14px;
+                  font-size: 12px;
                   font-family: PingFangSC-Regular, PingFang SC;
                   font-weight: 400;
                   color: #ffffff;
@@ -311,10 +349,12 @@ export default {
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: stretch;
+                padding: 12px 17px;
+                // padding-left: 12px;
 
                 .exchange-card-right-left {
                   flex: 1;
-                  padding: 19px 7px 0 12px;
+                  padding-left: 12px;
                   display: flex;
                   flex-direction: column;
                   justify-content: flex-start;
@@ -322,7 +362,6 @@ export default {
 
                   .card-right-left-top {
                     padding-top: 11px;
-                    height: 16px;
                     font-size: 16px;
                     font-family: PingFangSC-Regular, PingFang SC;
                     font-weight: 400;
@@ -331,8 +370,7 @@ export default {
                   }
                 }
                 .exchange-card-right-right {
-                  width: 88px;
-                  padding-right: 19px;
+                  // width: 88px;
                   display: flex;
                   flex-direction: row;
                   justify-content: center;
@@ -359,260 +397,33 @@ export default {
                 }
               }
             }
-          }
-          .exchange-body-item2 {
-            margin-bottom: 20px;
-
-            .bangdou-exchange-card {
-              display: flex;
-              flex-direction: row;
-              justify-content: center;
-              align-items: stretch;
-              margin-bottom: 20px;
-              box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
-              border-radius: 16px;
-
+            .bangdou-exchange-card.shopping {
               .exchange-card-left {
-                width: 101px;
-                height: 106px;
                 background-image: url("../../../assets/img/coupons/yellow_card.png");
+              }
+              .exchange-card-right-right .exchange-card-right-right-btn {
+                width: 72px;
+                height: 72px;
+                border-radius: 4px;
+                background-image: url("../../../assets/img/coupons/food.png");
                 background-repeat: no-repeat;
                 background-position: center center;
                 background-size: 100% 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-
-                .exchange-card-left-top {
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: center;
-                  align-items: center;
-                  margin-bottom: 8px;
-                  .card-left-top-type {
-                    height: 16px;
-                    font-size: 16px;
-                    font-family: PingFangSC-Medium, PingFang SC;
-                    font-weight: 500;
-                    color: #ffffff;
-                    line-height: 16px;
-                  }
-                  .card-left-top-num {
-                    height: 28px;
-                    font-size: 28px;
-                    font-family: PingFangSC-Semibold, PingFang SC;
-                    font-weight: 600;
-                    color: #ffffff;
-                    line-height: 28px;
-                  }
-                }
-                .exchange-card-left-bottom {
-                  height: 12px;
-                  font-size: 12px;
-                  font-family: PingFangSC-Regular, PingFang SC;
-                  font-weight: 400;
-                  color: #ffffff;
-                  line-height: 12px;
-
-                  margin-bottom: 10px;
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: center;
-                  align-items: center;
-                }
-
-                .exchange-card-left-btn {
-                  width: 68px;
-                  height: 22px;
-                  background: #ffffff;
-                  border-radius: 15px;
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: center;
-                  align-items: center;
-
-                  font-size: 12px;
-                  font-family: PingFangSC-Medium, PingFang SC;
-                  font-weight: 500;
-                  color: #ff7709;
-                }
               }
-
-              .exchange-card-right {
-                flex: 1;
-                // width: 211px;
-                height: 106px;
-                background-color: #fff;
+              .exchange-card-left-btn {
+                width: 68px;
+                height: 22px;
+                background: #ffffff;
+                border-radius: 15px;
                 display: flex;
                 flex-direction: row;
-                justify-content: flex-start;
-                align-items: stretch;
-
-                .exchange-card-right-left {
-                  padding: 19px 7px 0 12px;
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: flex-start;
-                  align-items: stretch;
-
-                  .card-right-left-top {
-                    // width: 101px;
-                    height: 60px;
-                    font-size: 14px;
-                    font-family: PingFangSC-Medium, PingFang SC;
-                    font-weight: 500;
-                    color: #121212;
-                    line-height: 20px;
-                    white-space: normal;
-                    word-wrap: break-word;
-                    word-break: break-all;
-                  }
-                }
-                .exchange-card-right-right {
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  align-items: stretch;
-
-                  .exchange-card-right-right-btn {
-                    width: 72px;
-                    height: 72px;
-                    border-radius: 4px;
-                    background-image: url("../../../assets/img/coupons/food.png");
-                    background-repeat: no-repeat;
-                    background-position: center center;
-                    background-size: 100% 100%;
-                  }
-                }
-              }
-            }
-          }
-          .exchange-body-item3 {
-            margin-bottom: 20px;
-
-            .bangdou-exchange-card {
-              display: flex;
-              flex-direction: row;
-              justify-content: center;
-              align-items: stretch;
-              margin-bottom: 20px;
-              box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
-              border-radius: 16px;
-
-              .exchange-card-left {
-                width: 101px;
-                height: 106px;
-                background-image: url("../../../assets/img/coupons/blue_card.png");
-                background-repeat: no-repeat;
-                background-position: center center;
-                background-size: 100% 100%;
-                display: flex;
-                flex-direction: column;
                 justify-content: center;
                 align-items: center;
-
-                .exchange-card-left-top {
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: center;
-                  align-items: center;
-                  margin-bottom: 8px;
-                  .card-left-top-type {
-                    height: 16px;
-                    font-size: 16px;
-                    font-family: PingFangSC-Medium, PingFang SC;
-                    font-weight: 500;
-                    color: #ffffff;
-                    line-height: 16px;
-                  }
-                  .card-left-top-num {
-                    height: 28px;
-                    font-size: 28px;
-                    font-family: PingFangSC-Semibold, PingFang SC;
-                    font-weight: 600;
-                    color: #ffffff;
-                    line-height: 28px;
-                  }
-                }
-                .exchange-card-left-bottom {
-                  height: 12px;
-                  font-size: 12px;
-                  font-family: PingFangSC-Regular, PingFang SC;
-                  font-weight: 400;
-                  color: #ffffff;
-                  line-height: 12px;
-
-                  margin-bottom: 10px;
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: center;
-                  align-items: center;
-                }
-
-                .exchange-card-left-btn {
-                  width: 68px;
-                  height: 22px;
-                  background: #ffffff;
-                  border-radius: 15px;
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: center;
-                  align-items: center;
-
-                  font-size: 12px;
-                  font-family: PingFangSC-Medium, PingFang SC;
-                  font-weight: 500;
-                  color: #1b7bff;
-                }
-              }
-
-              .exchange-card-right {
-                flex: 1;
-                // width: 211px;
-                height: 106px;
-                background-color: #fff;
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: stretch;
-
-                .exchange-card-right-left {
-                  padding: 19px 7px 0 12px;
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: flex-start;
-                  align-items: stretch;
-
-                  .card-right-left-top {
-                    // width: 101px;
-                    height: 60px;
-                    font-size: 14px;
-                    font-family: PingFangSC-Medium, PingFang SC;
-                    font-weight: 500;
-                    color: #121212;
-                    line-height: 20px;
-                    white-space: normal;
-                    word-wrap: break-word;
-                    word-break: break-all;
-                  }
-                }
-                .exchange-card-right-right {
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  align-items: stretch;
-
-                  .exchange-card-right-right-btn {
-                    width: 72px;
-                    height: 72px;
-                    border-radius: 4px;
-                    background-image: url("../../../assets/img/coupons/food.png");
-                    background-repeat: no-repeat;
-                    background-position: center center;
-                    background-size: 100% 100%;
-                  }
-                }
+                font-size: 12px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: #ff7709;
+                margin-top: 8px;
               }
             }
           }

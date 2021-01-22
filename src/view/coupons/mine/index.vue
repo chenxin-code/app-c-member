@@ -2,7 +2,7 @@
   <div class="exchange-container">
     <div class="exchange-info" :style="pbStyle">
       <div class="exchange-tab-wrap">
-        <van-tabs v-model="activeName">
+        <van-tabs v-model="activeName" :sticky="true">
           <van-tab title="全部" :name="1">
             <div class="bangdou-exchange-wrap">
               <div class="bangdou-exchange">
@@ -468,10 +468,11 @@
     <div v-show="isActive" class="exchange-footer">
       <div class="exchange-footer-left" @click="goUseLog">使用记录</div>
       <div class="exchange-footer-center"></div>
-      <div class="exchange-footer-right" @click="goExchangeCoupon">兑换优惠券</div>
+      <div class="exchange-footer-right" @click="goExchangeCoupon">
+        兑换优惠券
+      </div>
     </div>
   </div>
-
 </template>
 
 <script>
