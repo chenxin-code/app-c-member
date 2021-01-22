@@ -1,7 +1,7 @@
 <!--
  * @Description: 这是***页面
  * @Date: 2021-01-20 17:16:34
- * @LastEditTime: 2021-01-21 18:33:31
+ * @LastEditTime: 2021-01-22 10:15:49
 -->
 <template>
   <div class="zk-empty">
@@ -35,7 +35,8 @@ export default {
         "default",
         "news",
         "order",
-        "search"
+        "search",
+        "coupon"
       ];
       if (images.includes(this.image)) {
         return require("@/assets/img/empty/empty-" + this.image + ".png");

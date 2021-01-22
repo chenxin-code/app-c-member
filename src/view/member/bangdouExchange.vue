@@ -2,7 +2,8 @@
   <div class="exchange-info">
     <div class="exchange-main-wrap">
       <zk-empty
-        image="amount"
+        image="coupon"
+        description="暂无卡券"
         v-if="!loading && !propertyList.length && !vouchersList.length"
       ></zk-empty>
       <!-- 物业 -->

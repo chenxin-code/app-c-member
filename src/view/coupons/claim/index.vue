@@ -1,285 +1,78 @@
 <template>
   <div class="exchange-info">
     <div class="exchange-tab-wrap">
-      <van-tabs v-model="activeName">
-        <van-tab title="全部" name="1">
+      <van-tabs v-model="active" @click="tabChange">
+        <van-tab
+          v-for="(tab, index) in tabList"
+          :key="tab.businessType"
+          :title="tab.label"
+        >
           <div class="bangdou-exchange-wrap">
             <div class="bangdou-exchange">
               <div class="bangdou-exchange-body">
-                <div class="exchange-body-item1">
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">物业抵扣券</div>
-                      </div>
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn">
-                          邦豆兑换
+                <zk-empty
+                  v-show="!list[index].length && !loading"
+                  image="coupon"
+                  description="暂无卡券"
+                ></zk-empty>
+                <div class="exchange-body-item">
+                  <div
+                    class="bangdou-exchange-card"
+                    v-for="item in list[index]"
+                    :key="item.id"
+                  >
+                    <!-- 物业券 -->
+                    <template v-if="item.activity === '4014'">
+                      <div class="exchange-card-item exchange-card-left">
+                        <div class="exchange-card-left-top">
+                          <div class="card-left-top-type">￥</div>
+                          <div class="card-left-top-num">
+                            {{ item.faceAmount }}
+                          </div>
+                        </div>
+                        <div class="exchange-card-left-bottom">
+                          满{{ item.satisfyAmount }}元可用
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="exchange-body-item2">
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn"></div>
-                      </div>
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">
-                          仅可购买邻里商城生鲜区、冷冻区
+                      <div class="exchange-card-item exchange-card-right">
+                        <div class="exchange-card-right-left">
+                          <div class="card-right-left-top">物业抵扣券</div>
+                        </div>
+                        <div class="exchange-card-right-right">
+                          <div class="exchange-card-right-right-btn">
+                            邦豆兑换
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                      <div class="exchange-card-left-btn">邦豆兑换</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="exchange-body-item3">
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn"></div>
-                      </div>
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">
-                          仅可购买邻里商城生鲜区、冷冻区
+                    </template>
+                    <!-- 非物业券 -->
+                    <template v-else>
+                      <div class="exchange-card-item exchange-card-right">
+                        <div class="exchange-card-right-right">
+                          <div class="exchange-card-right-right-btn"></div>
+                        </div>
+                        <div class="exchange-card-right-left">
+                          <div class="card-right-left-top">
+                            仅可购买邻里商城生鲜区、冷冻区
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                      <div class="exchange-card-left-btn">邦豆兑换</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </van-tab>
-        <van-tab title="物业抵扣券" name="2">
-          <div class="bangdou-exchange-wrap">
-            <div class="bangdou-exchange">
-              <div class="bangdou-exchange-body">
-                <div class="exchange-body-item1">
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">物业抵扣券</div>
-                      </div>
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn">
-                          邦豆兑换
+                      <div
+                        class="exchange-card-item exchange-card-left"
+                        :class="[{ 'property-bg': item.activity === '4005' }]"
+                      >
+                        <div class="exchange-card-left-top">
+                          <div class="card-left-top-type">￥</div>
+                          <div class="card-left-top-num">
+                            {{ item.faceAmount }}
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">
-                          物业抵扣券、物业抵扣券
+                        <div class="exchange-card-left-bottom">
+                          满{{ item.satisfyAmount }}元可用
                         </div>
+                        <div class="exchange-card-left-btn">立即领取</div>
                       </div>
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn">
-                          邦豆兑换
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">
-                          物业抵扣券、物业抵扣券
-                        </div>
-                      </div>
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn">
-                          邦豆兑换
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </van-tab>
-        <van-tab title="购物券" name="3">
-          <div class="bangdou-exchange-wrap">
-            <div class="bangdou-exchange">
-              <div class="bangdou-exchange-body">
-                <div class="exchange-body-item2">
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn"></div>
-                      </div>
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">
-                          仅可购买邻里商城生鲜区、冷冻区
-                        </div>
-                      </div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                      <div class="exchange-card-left-btn">邦豆兑换</div>
-                    </div>
-                  </div>
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn"></div>
-                      </div>
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">
-                          仅可购买邻里商城生鲜区、冷冻区
-                        </div>
-                      </div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                      <div class="exchange-card-left-btn">邦豆兑换</div>
-                    </div>
-                  </div>
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn"></div>
-                      </div>
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">
-                          仅可购买邻里商城生鲜区、冷冻区
-                        </div>
-                      </div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                      <div class="exchange-card-left-btn">邦豆兑换</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </van-tab>
-        <van-tab title="实物券" name="4">
-          <div class="bangdou-exchange-wrap">
-            <div class="bangdou-exchange">
-              <div class="bangdou-exchange-body">
-                <div class="exchange-body-item3">
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn"></div>
-                      </div>
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">
-                          仅可购买邻里商城生鲜区、冷冻区
-                        </div>
-                      </div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                      <div class="exchange-card-left-btn">邦豆兑换</div>
-                    </div>
-                  </div>
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn"></div>
-                      </div>
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">
-                          仅可购买邻里商城生鲜区、冷冻区
-                        </div>
-                      </div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                      <div class="exchange-card-left-btn">邦豆兑换</div>
-                    </div>
-                  </div>
-                  <div class="bangdou-exchange-card">
-                    <div class="exchange-card-item exchange-card-right">
-                      <div class="exchange-card-right-right">
-                        <div class="exchange-card-right-right-btn"></div>
-                      </div>
-                      <div class="exchange-card-right-left">
-                        <div class="card-right-left-top">
-                          仅可购买邻里商城生鲜区、冷冻区
-                        </div>
-                      </div>
-                    </div>
-                    <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
-                        <div class="card-left-top-type">￥</div>
-                        <div class="card-left-top-num">5</div>
-                      </div>
-                      <div class="exchange-card-left-bottom">满100元可用</div>
-                      <div class="exchange-card-left-btn">邦豆兑换</div>
-                    </div>
+                    </template>
                   </div>
                 </div>
               </div>
@@ -297,34 +90,56 @@
 <script>
 import api from "@/api";
 import nav from "@zkty-team/x-engine-module-nav";
+import localstorage from "@zkty-team/x-engine-module-localstorage";
 import * as moment from "moment";
 import Null from "@/components/null";
+import _ from "lodash";
 
 export default {
   data() {
     return {
-      activeName: 1,
+      active: 0,
       loading: false,
       showNull: false,
       nullMsg: "",
       // ---分隔符---
-      //宠物信息
-      petsUpdateList: []
+      petsUpdateList: [],
+      //
+      memberId: "",
+      tabList: [
+        {
+          label: "全部",
+          businessType: "0"
+        },
+        {
+          label: "物业抵扣券",
+          businessType: "4014"
+        },
+        {
+          label: "购物券",
+          businessType: "4005"
+        }
+      ],
+      list: [],
+      pageIndex: [],
+      total: []
     };
   },
   components: {
     Null
   },
-  methods: {},
-  watch: {
-    // petsUpdateList: {
-    //   handler(newVal) {},
-    //   immediate: true, //刷新加载 立马触发一次handler
-    //   deep: true // 可以深度检测到对象的属性值的变化
-    // }
-  },
+  watch: {},
   created() {
-    // this.petsQueryInit();
+    this.paramsList();
+
+    // if (this.$route.meta.isBack != true) {
+    localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+      this.memberId = res.result;
+      localStorage.setItem("memberId", this.memberId);
+      this.queryReceiveCouponList();
+    });
+    this.memberId = "2331048196588962531";
+    this.queryReceiveCouponList();
   },
   mounted() {
     nav.setNavLeftBtn({
@@ -333,6 +148,66 @@ export default {
       titleSize: 24,
       titleFontName: "PingFangSC-Medium"
     });
+  },
+  methods: {
+    paramsList() {
+      const list = [];
+      const pageIndex = [];
+      const total = [];
+      this.tabList.forEach(item => {
+        list.push([]);
+        pageIndex.push(1);
+        total.push(0);
+      });
+      this.list = list;
+      this.pageIndex = pageIndex;
+      this.total = total;
+    },
+    toast() {
+      this.$toast.loading({
+        duration: 0,
+        type: "loading",
+        message: "加载中...",
+        forbidClick: true
+      });
+    },
+    tabChange(index) {
+      if (this.list[index].length === 0) {
+        this.pageIndex[index] = 1;
+        this.queryReceiveCouponList();
+      } else {
+        this.$refs.scrollContent.scrollTop = 0;
+      }
+    },
+    queryReceiveCouponList(businessType) {
+      const tabIndex = this.active;
+      const params = {
+        memberId: this.memberId,
+        pageIndex: this.pageIndex[tabIndex],
+        pageSize: 9999,
+        businessType: this.tabList[tabIndex].businessType,
+        condition: 3
+      };
+      this.loading = true;
+      this.toast();
+      api
+        .queryReceiveCouponList(params)
+        .then(res => {
+          if (res.code === 200) {
+            this.$toast.clear();
+            const list = res.data || [];
+            this.list[tabIndex] =
+              params.pageIndex === 1
+                ? list
+                : _.concat(this.list[tabIndex], list);
+            this.total[tabIndex] = (res.data && res.data.total) || 0;
+            this.pageIndex[tabIndex]++;
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    }
   }
 };
 </script>
@@ -688,7 +563,7 @@ export default {
                   font-size: 12px;
                   font-family: PingFangSC-Medium, PingFang SC;
                   font-weight: 500;
-                  color: #1B7BFF;
+                  color: #1b7bff;
                 }
               }
 
