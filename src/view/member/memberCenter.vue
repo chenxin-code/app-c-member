@@ -315,6 +315,7 @@ export default {
         url: "0"
       });
     },
+    getList() {},
     //领取全部
     receiveAll: function() {
       this.$toast.loading({

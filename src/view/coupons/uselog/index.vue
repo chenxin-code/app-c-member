@@ -92,8 +92,11 @@
                           class="coupon-desc"
                           :ref="`coouponDesc${index}Cont`"
                         >
-                          <div class="coupon-desc-info">
-                            使用说明：平台10元通用优惠券，单笔订单满88元可使用。使用说明：平台10元通用优惠券；
+                          <div class="coupon-desc-li">
+                            使用说明：平台10元通用优惠券，单笔订单满88元可使用。
+                          </div>
+                          <div class="coupon-desc-li">
+                            使用说明：平台10元通用优惠券;
                           </div>
                           <div class="coupon-desc-num">
                             券编号：XCT200708001
@@ -101,17 +104,6 @@
                         </div>
                       </div>
                       <!-- 已使用图片 -->
-                    </div>
-                    <div class="bangdou-exchange-rules" v-show="!isActive">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -224,7 +216,6 @@ export default {
         });
       } else {
         element.style.height = 0;
-
         const elemetCont = this.$refs[`${ref}Cont`][0];
         const Contheight = elemetCont.offsetHeight;
         this.$refs[`${ref}Icon`][0].style.transform = "rotate(0deg)";

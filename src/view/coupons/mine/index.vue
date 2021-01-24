@@ -1,20 +1,46 @@
 <template>
   <div class="exchange-container">
     <div class="exchange-info" :style="pbStyle">
-      <div class="exchange-tab-wrap">
-        <van-tabs v-model="activeName" :sticky="true">
-          <van-tab title="全部" :name="1">
+      <div
+        class="exchange-tab-wrap"
+        style="padding-bottom: 164px"
+        v-infinite-scroll="getList"
+        :infinite-scroll-immediate-check="true"
+        infinite-scroll-disabled="busy"
+        infinite-scroll-throttle-delay="500"
+        infinite-scroll-distance="30"
+      >
+        <van-tabs v-model="active" :sticky="true" @click="tabChange">
+          <van-tab
+            v-for="tab in tabList"
+            :key="tab.businessType"
+            :title="tab.label"
+          >
             <div class="bangdou-exchange-wrap">
               <div class="bangdou-exchange">
                 <div class="bangdou-exchange-body">
-                  <div class="exchange-body-item1">
-                    <div class="bangdou-exchange-card">
+                  <!-- <zk-empty
+                    v-show="!list[index].length && !loading"
+                    image="coupon"
+                    description="暂无卡券"
+                  ></zk-empty> -->
+                  <div class="exchange-body-item">
+                    <div
+                      class="bangdou-exchange-card"
+                      :class="[
+                        { 'row-reverse': item === 2 },
+                        { shopping: item === 2 }
+                      ]"
+                      v-for="(item, index) in 3"
+                      :key="item"
+                    >
                       <div class="exchange-card-item exchange-card-left">
                         <div class="exchange-card-left-top">
                           <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">5</div>
                         </div>
                         <div class="exchange-card-left-bottom">满100元可用</div>
+                        <div class="exchange-card-left-btn">邦豆兑换</div>
                       </div>
                       <div class="exchange-card-item exchange-card-right">
                         <div class="exchange-card-right-left">
@@ -22,436 +48,48 @@
                           <div class="card-right-left-middle">
                             2021.01.01-2021.01.0
                           </div>
-                          <div class="card-right-left-bottom">使用规则</div>
+                          <div
+                            class="card-right-left-bottom"
+                            @click="collapse(`coouponDesc${index}`)"
+                          >
+                            使用规则
+                            <van-icon
+                              name="arrow-down"
+                              size="12"
+                              class="icon-arrow-down"
+                              :ref="`coouponDesc${index}Icon`"
+                            ></van-icon>
+                          </div>
                         </div>
                         <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn">
+                          <img
+                            class="goodsimg"
+                            v-if="item === 2"
+                            src="../../../assets/img/coupons/food.png"
+                          />
+                          <div v-else class="exchange-card-right-right-btn">
                             邦豆兑换
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item2">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
+                      <div
+                        class="coupon-desc-wrap"
+                        :ref="`coouponDesc${index}`"
+                      >
+                        <div
+                          class="coupon-desc"
+                          :ref="`coouponDesc${index}Cont`"
+                        >
+                          <div class="coupon-desc-li">
+                            使用说明：平台10元通用优惠券，单笔订单满88元可使用。
                           </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item3">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
+                          <div class="coupon-desc-li">
+                            使用说明：平台10元通用优惠券;
                           </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </van-tab>
-          <van-tab title="物业抵扣券" :name="2">
-            <div class="bangdou-exchange-wrap">
-              <div class="bangdou-exchange">
-                <div class="bangdou-exchange-body">
-                  <div class="exchange-body-item1">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn">
-                            邦豆兑换
+                          <div class="coupon-desc-num">
+                            券编号：XCT200708001
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item1">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn">
-                            邦豆兑换
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item1">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn">
-                            邦豆兑换
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </van-tab>
-          <van-tab title="购物券" :name="3">
-            <div class="bangdou-exchange-wrap">
-              <div class="bangdou-exchange">
-                <div class="bangdou-exchange-body">
-                  <div class="exchange-body-item2">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item2">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item2">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </van-tab>
-          <van-tab title="实物券" :name="4">
-            <div class="bangdou-exchange-wrap">
-              <div class="bangdou-exchange">
-                <div class="bangdou-exchange-body">
-                  <div class="exchange-body-item3">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item3">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-body-item3">
-                    <div class="bangdou-exchange-card">
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn"></div>
-                        </div>
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                          <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
-                          </div>
-                          <div class="card-right-left-bottom">使用规则</div>
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
-                      </div>
-                    </div>
-                    <div class="bangdou-exchange-rules">
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        使用说明：平台10元通用优惠券；
-                      </div>
-                      <div class="bangdou-exchange-rules-item">
-                        券编号：XCT200708001
                       </div>
                     </div>
                   </div>
@@ -465,7 +103,7 @@
         <null :message="nullMsg" bgicon="pets" :isadd="true" />
       </div>
     </div>
-    <div v-show="isActive" class="exchange-footer">
+    <div class="exchange-footer">
       <div class="exchange-footer-left" @click="goUseLog">使用记录</div>
       <div class="exchange-footer-center"></div>
       <div class="exchange-footer-right" @click="goExchangeCoupon">
@@ -480,11 +118,12 @@ import api from "@/api";
 import nav from "@zkty-team/x-engine-module-nav";
 import * as moment from "moment";
 import Null from "@/components/null";
+import mixin from "../mixin/pageList";
 
 export default {
+  mixins: [mixin],
   data() {
     return {
-      isActive: true,
       activeName: 1,
       pbStyle: {
         paddingBottom: "164px"
@@ -494,28 +133,33 @@ export default {
       nullMsg: "",
       // ---分隔符---
       //宠物信息
-      petsUpdateList: []
+      petsUpdateList: [],
+      // ___________________________________________
+      active: 0,
+      memberId: "",
+      busy: false,
+      tabList: [
+        {
+          label: "全部",
+          businessType: "0"
+        },
+        {
+          label: "物业抵扣券",
+          businessType: "4014"
+        },
+        {
+          label: "购物券",
+          businessType: "4005"
+        }
+      ]
     };
   },
   components: {
     Null
   },
-  methods: {
-    goUseLog: function() {
-      this.$routeHelper.router(this, "/useLog", null, false);
-    },
-    goExchangeCoupon: function() {
-      this.$routeHelper.router(this, "/exchangeCoupon", null, true);
-    }
-  },
-  watch: {
-    // petsUpdateList: {
-    //   handler(newVal) {},
-    //   immediate: true, //刷新加载 立马触发一次handler
-    //   deep: true // 可以深度检测到对象的属性值的变化
-    // }
-  },
+
   created() {
+    this.paramsList();
     // this.petsQueryInit();
   },
   mounted() {
@@ -535,12 +179,24 @@ export default {
       titleSize: 24,
       titleFontName: "PingFangSC-Medium"
     });
+  },
+  methods: {
+    getList() {},
+    goUseLog: function() {
+      this.$routeHelper.router(this, "/useLog", null, false);
+    },
+    goExchangeCoupon: function() {
+      this.$routeHelper.router(this, "/exchangeCoupon", null, true);
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
 .exchange-container {
+  /deep/ .van-tabs__wrap {
+    box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
+  }
   .exchange-info {
     font-size: 18px;
 
@@ -578,21 +234,25 @@ export default {
           }
 
           .bangdou-exchange-body {
-            .exchange-body-item1 {
+            .exchange-body-item {
               margin-bottom: 16px;
-              box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
               border-radius: 16px;
 
               .bangdou-exchange-card {
                 display: flex;
-                flex-direction: row;
+                flex-wrap: wrap;
                 justify-content: center;
                 align-items: stretch;
-                // margin-bottom: 16px;
+                box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
+                border-radius: 16px;
+                overflow: hidden;
+                & + .bangdou-exchange-card {
+                  margin-top: 16px;
+                }
 
                 .exchange-card-left {
                   width: 101px;
-                  height: 97px;
+                  height: 106px;
                   background-image: url("../../../assets/img/coupons/red_card.png");
                   background-repeat: no-repeat;
                   background-position: center center;
@@ -614,7 +274,7 @@ export default {
                       color: #ffffff;
                     }
                     .card-left-top-num {
-                      font-size: 32px;
+                      font-size: 28px;
                       font-family: PingFangSC-Medium, PingFang SC;
                       font-weight: 500;
                       color: #ffffff;
@@ -630,11 +290,28 @@ export default {
                     font-weight: 400;
                     color: #ffffff;
                   }
+                  .exchange-card-left-btn {
+                    display: none;
+                    width: 68px;
+                    height: 22px;
+                    background: #ffffff;
+                    border-radius: 15px;
+                    // display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 8px auto 0;
+
+                    font-size: 12px;
+                    font-family: PingFangSC-Medium, PingFang SC;
+                    font-weight: 500;
+                    color: #ff7709;
+                  }
                 }
 
                 .exchange-card-right {
                   flex: 1;
-                  height: 97px;
+                  height: 106px;
                   background-color: #fff;
                   display: flex;
                   flex-direction: row;
@@ -679,7 +356,6 @@ export default {
                   }
                   .exchange-card-right-right {
                     width: 88px;
-                    padding-right: 19px;
                     display: flex;
                     flex-direction: row;
                     justify-content: center;
@@ -719,319 +395,55 @@ export default {
                   padding-top: 10px;
                 }
               }
-            }
-            .exchange-body-item2 {
-              margin-bottom: 16px;
-              box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
-              border-radius: 16px;
+              .coupon-desc-wrap {
+                height: 0;
+                display: none;
+                overflow: hidden;
+                -webkit-transition: height 0.3s ease-in-out;
+                transition: height 0.3s ease-in-out;
+                will-change: height;
 
-              .bangdou-exchange-card {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: stretch;
-                // margin-bottom: 16px;
-
-                .exchange-card-left {
-                  width: 101px;
-                  height: 106px;
-                  background-image: url("../../../assets/img/coupons/yellow_card.png");
-                  background-repeat: no-repeat;
-                  background-position: center center;
-                  background-size: 100% 100%;
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  align-items: center;
-
-                  .exchange-card-left-top {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-                    margin-bottom: 8px;
-                    .card-left-top-type {
-                      height: 16px;
-                      font-size: 16px;
-                      font-family: PingFangSC-Medium, PingFang SC;
-                      font-weight: 500;
-                      color: #ffffff;
-                      line-height: 16px;
-                    }
-                    .card-left-top-num {
-                      height: 28px;
-                      font-size: 28px;
-                      font-family: PingFangSC-Semibold, PingFang SC;
-                      font-weight: 600;
-                      color: #ffffff;
-                      line-height: 28px;
-                    }
-                  }
-                  .exchange-card-left-bottom {
-                    height: 12px;
-                    font-size: 12px;
-                    font-family: PingFangSC-Regular, PingFang SC;
-                    font-weight: 400;
-                    color: #ffffff;
-                    line-height: 12px;
-
-                    margin-bottom: 10px;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-                  }
-
-                  .exchange-card-left-btn {
-                    width: 68px;
-                    height: 22px;
-                    background: #ffffff;
-                    border-radius: 15px;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-
-                    font-size: 12px;
-                    font-family: PingFangSC-Medium, PingFang SC;
-                    font-weight: 500;
-                    color: #ff7709;
-                  }
-                }
-
-                .exchange-card-right {
-                  flex: 1;
-                  // width: 211px;
-                  height: 106px;
-                  background-color: #fff;
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: flex-start;
-                  align-items: stretch;
-
-                  .exchange-card-right-left {
-                    padding: 19px 7px 0 0;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: stretch;
-
-                    .card-right-left-top {
-                      font-size: 14px;
-                      font-family: PingFangSC-Medium, PingFang SC;
-                      font-weight: 500;
-                      color: #121212;
-                      white-space: normal;
-                      word-wrap: break-word;
-                      word-break: break-all;
-                    }
-                    .card-right-left-middle {
-                      padding-top: 10px;
-                      height: 26px;
-                      font-size: 12px;
-                      font-family: PingFangSC-Regular, PingFang SC;
-                      font-weight: 400;
-                      color: #8d8d8d;
-                      line-height: 16px;
-                    }
-                    .card-right-left-bottom {
-                      padding-top: 15px;
-                      height: 12px;
-                      font-size: 10px;
-                      font-family: PingFangSC-Regular, PingFang SC;
-                      font-weight: 400;
-                      color: #bfbfbf;
-                      line-height: 12px;
-                    }
-                  }
-                  .exchange-card-right-right {
-                    width: 101px;
-                    padding-right: 12px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: flex-end;
-
-                    .exchange-card-right-right-btn {
-                      width: 72px;
-                      height: 72px;
-                      border-radius: 4px;
-                      background-image: url("../../../assets/img/coupons/food.png");
-                      background-repeat: no-repeat;
-                      background-position: center center;
-                      background-size: 100% 100%;
-                    }
-                  }
-                }
-              }
-              .bangdou-exchange-rules {
-                padding: 16px 12px 16px 16px;
-                .bangdou-exchange-rules-item {
+                box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
+                margin-top: 4px;
+                .coupon-desc {
                   font-size: 12px;
-                  font-family: PingFangSC-Regular, PingFang SC;
-                  font-weight: 400;
                   color: #bfbfbf;
-                }
-                .bangdou-exchange-rules-item:last-child {
-                  padding-top: 10px;
+                  padding: 10px 16px;
+                  line-height: 18px;
+                  &-num {
+                    margin-top: 8px;
+                  }
                 }
               }
-            }
-            .exchange-body-item3 {
-              margin-bottom: 16px;
-              box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
-              border-radius: 16px;
 
-              .bangdou-exchange-card {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: stretch;
-                // margin-bottom: 16px;
-
-                .exchange-card-left {
-                  width: 101px;
-                  height: 106px;
-                  background-image: url("../../../assets/img/coupons/blue_card.png");
-                  background-repeat: no-repeat;
-                  background-position: center center;
-                  background-size: 100% 100%;
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  align-items: center;
-
-                  .exchange-card-left-top {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-                    margin-bottom: 8px;
-                    .card-left-top-type {
-                      height: 16px;
-                      font-size: 16px;
-                      font-family: PingFangSC-Medium, PingFang SC;
-                      font-weight: 500;
-                      color: #ffffff;
-                      line-height: 16px;
-                    }
-                    .card-left-top-num {
-                      height: 28px;
-                      font-size: 28px;
-                      font-family: PingFangSC-Semibold, PingFang SC;
-                      font-weight: 600;
-                      color: #ffffff;
-                      line-height: 28px;
-                    }
-                  }
-                  .exchange-card-left-bottom {
-                    height: 12px;
-                    font-size: 12px;
-                    font-family: PingFangSC-Regular, PingFang SC;
-                    font-weight: 400;
-                    color: #ffffff;
-                    line-height: 12px;
-
-                    margin-bottom: 10px;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-                  }
-
-                  .exchange-card-left-btn {
-                    width: 68px;
-                    height: 22px;
-                    background: #ffffff;
-                    border-radius: 15px;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-
-                    font-size: 12px;
-                    font-family: PingFangSC-Medium, PingFang SC;
-                    font-weight: 500;
-                    color: #1b7bff;
-                  }
-                }
-
+              .icon-arrow-down {
+                vertical-align: bottom;
+                transition: all 0.3s;
+              }
+              .goodsimg {
+                width: 72px;
+                height: 72px;
+                border-radius: 4px;
+                overflow: hidden;
+              }
+              .bangdou-exchange-card.row-reverse {
+                flex-flow: row-reverse;
+                flex-wrap: wrap;
                 .exchange-card-right {
-                  flex: 1;
-                  // width: 211px;
-                  height: 106px;
-                  background-color: #fff;
+                  flex-flow: row-reverse;
+                }
+                .exchange-card-right-right {
+                  width: 88px;
+                  // padding-right: 12px;
+                  align-items: flex-end;
+                  flex-direction: column;
+                }
+                .exchange-card-left-btn {
                   display: flex;
-                  flex-direction: row;
-                  justify-content: flex-start;
-                  align-items: stretch;
-
-                  .exchange-card-right-left {
-                    padding: 19px 7px 0 0;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: stretch;
-
-                    .card-right-left-top {
-                      font-size: 14px;
-                      font-family: PingFangSC-Medium, PingFang SC;
-                      font-weight: 500;
-                      color: #121212;
-                      white-space: normal;
-                      word-wrap: break-word;
-                      word-break: break-all;
-                    }
-                    .card-right-left-middle {
-                      padding-top: 10px;
-                      height: 26px;
-                      font-size: 12px;
-                      font-family: PingFangSC-Regular, PingFang SC;
-                      font-weight: 400;
-                      color: #8d8d8d;
-                      line-height: 16px;
-                    }
-                    .card-right-left-bottom {
-                      padding-top: 15px;
-                      height: 12px;
-                      font-size: 10px;
-                      font-family: PingFangSC-Regular, PingFang SC;
-                      font-weight: 400;
-                      color: #bfbfbf;
-                      line-height: 12px;
-                    }
-                  }
-                  .exchange-card-right-right {
-                    width: 101px;
-                    padding-right: 12px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: flex-end;
-
-                    .exchange-card-right-right-btn {
-                      width: 72px;
-                      height: 72px;
-                      border-radius: 4px;
-                      background-image: url("../../../assets/img/coupons/food.png");
-                      background-repeat: no-repeat;
-                      background-position: center center;
-                      background-size: 100% 100%;
-                    }
-                  }
                 }
               }
-              .bangdou-exchange-rules {
-                padding: 16px 12px 16px 16px;
-                .bangdou-exchange-rules-item {
-                  font-size: 12px;
-                  font-family: PingFangSC-Regular, PingFang SC;
-                  font-weight: 400;
-                  color: #bfbfbf;
-                }
-              }
-              .bangdou-exchange-rules-item:last-child {
-                padding-top: 10px;
+              .bangdou-exchange-card.shopping .exchange-card-left {
+                background-image: url("../../../assets/img/coupons/yellow_card.png");
               }
             }
           }
