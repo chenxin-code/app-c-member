@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-20 10:31:06
- * @LastEditTime: 2021-01-21 16:39:37
+ * @LastEditTime: 2021-01-25 10:10:47
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -62,7 +62,10 @@ const routes = [
   {
     path: "/couponsMine",
     name: "couponsMine",
-    component: resolve => require(["@/view/coupons/mine"], resolve)
+    component: resolve => require(["@/view/coupons/mine"], resolve),
+    meta: {
+      keepAlive: true
+    }
   },
   //使用记录
   {

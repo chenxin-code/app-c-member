@@ -34,7 +34,7 @@
                   <div class="card-right-left-top">{{ item.couponTitle }}</div>
                   <div class="card-right-left-bottom">
                     <span class="card-right-left-bottom-left">{{
-                      integrealCount
+                      item.integrealCount
                     }}</span>
                     <span class="card-right-left-bottom-right">邦豆</span>
                   </div>
@@ -49,8 +49,8 @@
           </div>
         </div>
       </div>
-      <!-- 002 -->
-      <div class="bangdou-exchange">
+      <!-- 非物业券 -->
+      <div class="bangdou-exchange" v-if="vouchersList.length">
         <div class="bangdou-exchange-header">
           <div class="exchange-header-title">
             购物券
@@ -58,7 +58,11 @@
         </div>
         <div class="bangdou-exchange-body">
           <div class="exchange-body-item2">
-            <div class="bangdou-exchange-card">
+            <div
+              class="bangdou-exchange-card"
+              v-for="item in vouchersList"
+              :key="item.id"
+            >
               <div class="exchange-card-item exchange-card-right">
                 <div class="exchange-card-right-right">
                   <div class="exchange-card-right-right-btn"></div>
@@ -75,120 +79,9 @@
                   <div class="card-left-top-num">5</div>
                 </div>
                 <div class="exchange-card-left-bottom">满100元可用</div>
-                <div class="exchange-card-left-btn">邦豆兑换</div>
-              </div>
-            </div>
-            <div class="bangdou-exchange-card">
-              <div class="exchange-card-item exchange-card-right">
-                <div class="exchange-card-right-right">
-                  <div class="exchange-card-right-right-btn"></div>
+                <div class="exchange-card-left-btn" @click="exchange">
+                  邦豆兑换
                 </div>
-                <div class="exchange-card-right-left">
-                  <div class="card-right-left-top">
-                    仅可购买邻里商城生鲜区、冷冻区
-                  </div>
-                </div>
-              </div>
-              <div class="exchange-card-item exchange-card-left">
-                <div class="exchange-card-left-top">
-                  <div class="card-left-top-type">￥</div>
-                  <div class="card-left-top-num">5</div>
-                </div>
-                <div class="exchange-card-left-bottom">满100元可用</div>
-                <div class="exchange-card-left-btn">邦豆兑换</div>
-              </div>
-            </div>
-            <div class="bangdou-exchange-card">
-              <div class="exchange-card-item exchange-card-right">
-                <div class="exchange-card-right-right">
-                  <div class="exchange-card-right-right-btn"></div>
-                </div>
-                <div class="exchange-card-right-left">
-                  <div class="card-right-left-top">
-                    仅可购买邻里商城生鲜区、冷冻区
-                  </div>
-                </div>
-              </div>
-              <div class="exchange-card-item exchange-card-left">
-                <div class="exchange-card-left-top">
-                  <div class="card-left-top-type">￥</div>
-                  <div class="card-left-top-num">5</div>
-                </div>
-                <div class="exchange-card-left-bottom">满100元可用</div>
-                <div class="exchange-card-left-btn">邦豆兑换</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 003 -->
-      <div class="bangdou-exchange">
-        <div class="bangdou-exchange-header">
-          <div class="exchange-header-title">
-            实物券
-          </div>
-        </div>
-        <div class="bangdou-exchange-body">
-          <div class="exchange-body-item3">
-            <div class="bangdou-exchange-card">
-              <div class="exchange-card-item exchange-card-right">
-                <div class="exchange-card-right-right">
-                  <div class="exchange-card-right-right-btn"></div>
-                </div>
-                <div class="exchange-card-right-left">
-                  <div class="card-right-left-top">
-                    仅可购买邻里商城生鲜区、冷冻区
-                  </div>
-                </div>
-              </div>
-              <div class="exchange-card-item exchange-card-left">
-                <div class="exchange-card-left-top">
-                  <div class="card-left-top-type">￥</div>
-                  <div class="card-left-top-num">5</div>
-                </div>
-                <div class="exchange-card-left-bottom">满100元可用</div>
-                <div class="exchange-card-left-btn">邦豆兑换</div>
-              </div>
-            </div>
-            <div class="bangdou-exchange-card">
-              <div class="exchange-card-item exchange-card-right">
-                <div class="exchange-card-right-right">
-                  <div class="exchange-card-right-right-btn"></div>
-                </div>
-                <div class="exchange-card-right-left">
-                  <div class="card-right-left-top">
-                    仅可购买邻里商城生鲜区、冷冻区
-                  </div>
-                </div>
-              </div>
-              <div class="exchange-card-item exchange-card-left">
-                <div class="exchange-card-left-top">
-                  <div class="card-left-top-type">￥</div>
-                  <div class="card-left-top-num">5</div>
-                </div>
-                <div class="exchange-card-left-bottom">满100元可用</div>
-                <div class="exchange-card-left-btn">邦豆兑换</div>
-              </div>
-            </div>
-            <div class="bangdou-exchange-card">
-              <div class="exchange-card-item exchange-card-right">
-                <div class="exchange-card-right-right">
-                  <div class="exchange-card-right-right-btn"></div>
-                </div>
-                <div class="exchange-card-right-left">
-                  <div class="card-right-left-top">
-                    仅可购买邻里商城生鲜区、冷冻区
-                  </div>
-                </div>
-              </div>
-              <div class="exchange-card-item exchange-card-left">
-                <div class="exchange-card-left-top">
-                  <div class="card-left-top-type">￥</div>
-                  <div class="card-left-top-num">5</div>
-                </div>
-                <div class="exchange-card-left-bottom">满100元可用</div>
-                <div class="exchange-card-left-btn">邦豆兑换</div>
               </div>
             </div>
           </div>
@@ -253,15 +146,64 @@ export default {
     // });
   },
   mounted() {
+    this.madeData();
     nav.setNavLeftBtn({
       title: "帮豆兑换",
       titleColor: "#121212",
       titleSize: 24,
       titleFontName: "PingFangSC-Medium"
     });
-    this.queryReceiveCouponList();
+    // this.queryReceiveCouponList();
   },
   methods: {
+    madeData() {
+      let list = [];
+      for (let index = 0; index < 3; index++) {
+        let data = {
+          activity: index === 1 ? "4014" : "4005",
+          activityMemo: "",
+          cost: "",
+          couTypeCode: "1",
+          couponStatus: 0,
+          couponSubhead: "1",
+          couponTitle: "1",
+          couponType: 10,
+          discountMaxDeduction: "1",
+          discountRatio: "1",
+          faceAmount: "1",
+          id: `index${index}`,
+          image: "2",
+          memo: "2",
+          operator: "",
+          receiveCondition: "",
+          receiveConditionRule: "",
+          releaseCount: 100,
+          releaseForm: "",
+          releaseRule: "",
+          releaseType: "",
+          satisfyAmount: "1",
+          takeEffectDayNums: 0,
+          validityDayNums: 0,
+          validityEndTime: "2021-01-30",
+          validityStartTime: "2021-01-20"
+        };
+        list.push(data);
+      }
+      let propertyList = [];
+      let vouchersList = [];
+      list.forEach(item => {
+        // 物业
+        if (item.activity == "4014") {
+          propertyList.push(item);
+        } else if (item.activity == "4005") {
+          // 购物券
+          vouchersList.push(item);
+        }
+      });
+
+      propertyList.length && (this.propertyList = propertyList);
+      vouchersList.length && (this.vouchersList = vouchersList);
+    },
     toast() {
       this.$toast.loading({
         duration: 0,
@@ -412,6 +354,7 @@ export default {
               align-items: stretch;
 
               .exchange-card-right-left {
+                flex: 1;
                 padding: 19px 7px 0 12px;
                 display: flex;
                 flex-direction: column;
@@ -450,7 +393,8 @@ export default {
                 }
               }
               .exchange-card-right-right {
-                flex: 1;
+                width: 88px;
+
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
@@ -564,6 +508,7 @@ export default {
               align-items: stretch;
 
               .exchange-card-right-left {
+                flex: 1;
                 padding: 19px 7px 0 12px;
                 display: flex;
                 flex-direction: column;
@@ -584,135 +529,9 @@ export default {
                 }
               }
               .exchange-card-right-right {
+                width: 88px;
                 display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: stretch;
-
-                .exchange-card-right-right-btn {
-                  width: 72px;
-                  height: 72px;
-                  border-radius: 4px;
-                  background-image: url("../../assets/img/coupons/food.png");
-                  background-repeat: no-repeat;
-                  background-position: center center;
-                  background-size: 100% 100%;
-                }
-              }
-            }
-          }
-        }
-        .exchange-body-item3 {
-          margin-bottom: 20px;
-
-          .bangdou-exchange-card {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: stretch;
-            margin-bottom: 20px;
-            box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
-            border-radius: 16px;
-
-            .exchange-card-left {
-              width: 101px;
-              height: 106px;
-              background-image: url("../../assets/img/coupons/blue_card.png");
-              background-repeat: no-repeat;
-              background-position: center center;
-              background-size: 100% 100%;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-
-              .exchange-card-left-top {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                margin-bottom: 8px;
-                .card-left-top-type {
-                  height: 16px;
-                  font-size: 16px;
-                  font-family: PingFangSC-Medium, PingFang SC;
-                  font-weight: 500;
-                  color: #ffffff;
-                  line-height: 16px;
-                }
-                .card-left-top-num {
-                  height: 28px;
-                  font-size: 28px;
-                  font-family: PingFangSC-Semibold, PingFang SC;
-                  font-weight: 600;
-                  color: #ffffff;
-                  line-height: 28px;
-                }
-              }
-              .exchange-card-left-bottom {
-                height: 12px;
-                font-size: 12px;
-                font-family: PingFangSC-Regular, PingFang SC;
-                font-weight: 400;
-                color: #ffffff;
-                line-height: 12px;
-
-                margin-bottom: 10px;
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-              }
-
-              .exchange-card-left-btn {
-                width: 68px;
-                height: 22px;
-                background: #ffffff;
-                border-radius: 15px;
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-
-                font-size: 12px;
-                font-family: PingFangSC-Medium, PingFang SC;
-                font-weight: 500;
-                color: #1b7bff;
-              }
-            }
-
-            .exchange-card-right {
-              flex: 1;
-              // width: 211px;
-              height: 106px;
-              background-color: #fff;
-              display: flex;
-              flex-direction: row;
-              justify-content: flex-start;
-              align-items: stretch;
-
-              .exchange-card-right-left {
-                padding: 19px 7px 0 12px;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: stretch;
-
-                .card-right-left-top {
-                  // width: 101px;
-                  height: 60px;
-                  font-size: 14px;
-                  font-family: PingFangSC-Medium, PingFang SC;
-                  font-weight: 500;
-                  color: #121212;
-                  line-height: 20px;
-                  white-space: normal;
-                  word-wrap: break-word;
-                  word-break: break-all;
-                }
-              }
-              .exchange-card-right-right {
-                display: flex;
+                align-items: flex-end;
                 flex-direction: column;
                 justify-content: center;
                 align-items: stretch;

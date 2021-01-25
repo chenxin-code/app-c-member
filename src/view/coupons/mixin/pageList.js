@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-24 11:02:49
- * @LastEditTime: 2021-01-24 12:37:02
+ * @LastEditTime: 2021-01-25 10:51:39
  */
 export default {
   data () {
@@ -9,7 +9,8 @@ export default {
       loading: false,
       list: [],
       pageIndex: [],
-      total: []
+      total: [],
+      canLoadMore: []
     }
   },
   methods: {
@@ -17,12 +18,15 @@ export default {
       const list = [];
       const pageIndex = [];
       const total = [];
+      const canLoadMore = []
       this.tabList.forEach(item => {
         list.push([]);
+        canLoadMore.push(true)
         pageIndex.push(1);
         total.push(0);
       });
       this.list = list;
+      this.canLoadMore = canLoadMore
       this.pageIndex = pageIndex;
       this.total = total;
     },

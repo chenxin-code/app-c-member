@@ -1,10 +1,10 @@
 <template>
   <div class="exchange-container">
-    <div class="exchange-info" :style="pbStyle">
+    <div class="exchange-info" style="padding-bottom: 264px;">
       <div
         class="exchange-tab-wrap"
-        style="padding-bottom: 164px"
-        v-infinite-scroll="getList"
+        ref="scrollContent"
+        v-infinite-scroll="loadMore"
         :infinite-scroll-immediate-check="true"
         infinite-scroll-disabled="busy"
         infinite-scroll-throttle-delay="500"
@@ -116,9 +116,11 @@
 <script>
 import api from "@/api";
 import nav from "@zkty-team/x-engine-module-nav";
-import * as moment from "moment";
+import localstorage from "@zkty-team/x-engine-module-localstorage";
+// import * as moment from "moment";
 import Null from "@/components/null";
 import mixin from "../mixin/pageList";
+import _ from "lodash";
 
 export default {
   mixins: [mixin],
@@ -151,17 +153,15 @@ export default {
           label: "购物券",
           businessType: "4005"
         }
-      ]
+      ],
+      scroll: 0,
+      pageRefresh: true
     };
   },
   components: {
     Null
   },
-
-  created() {
-    this.paramsList();
-    // this.petsQueryInit();
-  },
+  created() {},
   mounted() {
     nav.setNavRightBtn({
       title: "其他卡券",
@@ -180,9 +180,71 @@ export default {
       titleFontName: "PingFangSC-Medium"
     });
   },
+  activated() {
+    if (this.pageRefresh) {
+      this.paramsList();
+      localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+        this.memberId = res.result;
+        localStorage.setItem("memberId", this.memberId);
+        this.getList();
+      });
+      this.memberId = "2309350880803029654";
+      this.getList();
+    } else {
+      this.$refs.scrollContent.scrollTo(0, this.scroll);
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.name === "useLog") {
+      this.pageRefresh = false;
+    } else {
+      this.pageRefresh = true;
+    }
+    next();
+  },
   methods: {
-    getList() {},
+    loadMore() {
+      const tabIndex = this.active;
+      if (this.canLoadMore[tabIndex]) {
+        this.getList();
+      }
+    },
+    getList() {
+      const tabIndex = this.active;
+      const params = {
+        memberId: this.memberId,
+        pageIndex: this.pageIndex[tabIndex],
+        pageSize: 10,
+        businessType: this.tabList[tabIndex].businessType,
+        condition: 1
+      };
+      this.loading = true;
+      this.busy = true;
+      this.toast();
+      api
+        .queryMemberCouponList(params)
+        .then(res => {
+          if (res.code === 200) {
+            this.$toast.clear();
+            const list = res.data || [];
+            this.list[tabIndex] =
+              params.pageIndex === 1
+                ? list
+                : _.concat(this.list[tabIndex], list);
+            list.length < params.pageSize &&
+              (this.canLoadMore[tabIndex] = false);
+
+            this.total[tabIndex] = (res.data && res.data.total) || 0;
+            this.pageIndex[tabIndex]++;
+          }
+        })
+        .finally(() => {
+          this.busy = false;
+          this.loading = false;
+        });
+    },
     goUseLog: function() {
+      this.scroll = this.$refs.scrollContent.scrollTop;
       this.$routeHelper.router(this, "/useLog", null, false);
     },
     goExchangeCoupon: function() {
@@ -244,7 +306,7 @@ export default {
                 justify-content: center;
                 align-items: stretch;
                 box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
-                border-radius: 16px;
+                border-radius: 12px;
                 overflow: hidden;
                 & + .bangdou-exchange-card {
                   margin-top: 16px;
@@ -285,7 +347,7 @@ export default {
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
-                    font-size: 14px;
+                    font-size: 12px;
                     font-family: PingFangSC-Regular, PingFang SC;
                     font-weight: 400;
                     color: #ffffff;

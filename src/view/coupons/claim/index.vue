@@ -1,8 +1,8 @@
 <template>
-  <div class="exchange-info">
+  <div class="member-coupon exchange-info">
     <div
       class="exchange-tab-wrap"
-      v-infinite-scroll="queryReceiveCouponList"
+      v-infinite-scroll="loadMore"
       :infinite-scroll-immediate-check="true"
       infinite-scroll-disabled="busy"
       infinite-scroll-throttle-delay="500"
@@ -60,23 +60,6 @@
                     </template>
                     <!-- 非物业券 -->
                     <template v-else>
-                      <!-- <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
-                        </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                        </div>
-                        <div class="exchange-card-right-right">
-                          <div class="exchange-card-right-right-btn">
-                            邦豆兑换
-                          </div>
-                        </div>
-                      </div> -->
                       <div class="exchange-card-item exchange-card-right">
                         <div class="exchange-card-right-right">
                           <div class="exchange-card-right-right-btn"></div>
@@ -120,9 +103,11 @@ import nav from "@zkty-team/x-engine-module-nav";
 import localstorage from "@zkty-team/x-engine-module-localstorage";
 import * as moment from "moment";
 import Null from "@/components/null";
+import mixin from "../mixin/pageList";
 import _ from "lodash";
 
 export default {
+  mixins: [mixin],
   data() {
     return {
       active: 0,
@@ -147,10 +132,7 @@ export default {
           label: "购物券",
           businessType: "4005"
         }
-      ],
-      list: [],
-      pageIndex: [],
-      total: []
+      ]
     };
   },
   components: {
@@ -164,10 +146,10 @@ export default {
     localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
       this.memberId = res.result;
       localStorage.setItem("memberId", this.memberId);
-      this.queryReceiveCouponList();
+      this.getList();
     });
     this.memberId = "2309350880803029654";
-    this.queryReceiveCouponList();
+    this.getList();
   },
   mounted() {
     nav.setNavLeftBtn({
@@ -178,35 +160,6 @@ export default {
     });
   },
   methods: {
-    paramsList() {
-      const list = [];
-      const pageIndex = [];
-      const total = [];
-      this.tabList.forEach(item => {
-        list.push([]);
-        pageIndex.push(1);
-        total.push(0);
-      });
-      this.list = list;
-      this.pageIndex = pageIndex;
-      this.total = total;
-    },
-    toast() {
-      this.$toast.loading({
-        duration: 0,
-        type: "loading",
-        message: "加载中...",
-        forbidClick: true
-      });
-    },
-    tabChange(index) {
-      if (this.list[index].length === 0) {
-        this.pageIndex[index] = 1;
-        this.queryReceiveCouponList();
-      } else {
-        this.$refs.scrollContent.scrollTop = 0;
-      }
-    },
     getCoupon(id) {
       this.toast();
       api
@@ -219,7 +172,13 @@ export default {
           }
         });
     },
-    queryReceiveCouponList() {
+    loadMore() {
+      const tabIndex = this.active;
+      if (this.canLoadMore[tabIndex]) {
+        this.getList();
+      }
+    },
+    getList() {
       const tabIndex = this.active;
       const params = {
         memberId: this.memberId,
@@ -241,6 +200,8 @@ export default {
               params.pageIndex === 1
                 ? list
                 : _.concat(this.list[tabIndex], list);
+            list.length < params.pageSize &&
+              (this.canLoadMore[tabIndex] = false);
             this.total[tabIndex] = (res.data && res.data.total) || 0;
             this.pageIndex[tabIndex]++;
           }
@@ -254,10 +215,13 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-.exchange-info {
+<style lang="less">
+.member-coupon {
   font-size: 18px;
 
+  /deep/ .van-tabs__wrap {
+    box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
+  }
   ::v-deep .van-tab--active {
     color: #121212 !important;
   }
@@ -301,7 +265,7 @@ export default {
               align-items: stretch;
               margin-bottom: 20px;
               box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
-              border-radius: 16px;
+              border-radius: 12px;
 
               .exchange-card-left {
                 width: 101px;
@@ -365,7 +329,7 @@ export default {
                   align-items: stretch;
 
                   .card-right-left-top {
-                    font-size: 16px;
+                    font-size: 14px;
                     font-family: PingFangSC-Regular, PingFang SC;
                     font-weight: 400;
                     color: #121212;

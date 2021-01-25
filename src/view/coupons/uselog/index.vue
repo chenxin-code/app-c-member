@@ -3,7 +3,7 @@
     <div class="exchange-info">
       <div
         class="exchange-tab-wrap"
-        v-infinite-scroll="queryMemberUseCouponList"
+        v-infinite-scroll="loadMore"
         :infinite-scroll-immediate-check="true"
         infinite-scroll-disabled="busy"
         infinite-scroll-throttle-delay="500"
@@ -124,9 +124,11 @@ import api from "@/api";
 import nav from "@zkty-team/x-engine-module-nav";
 import * as moment from "moment";
 import _ from "lodash";
+import mixin from "../mixin/pageList";
 import Null from "@/components/null";
 
 export default {
+  mixins: [mixin],
   data() {
     return {
       isActive: true,
@@ -169,39 +171,9 @@ export default {
       titleFontName: "PingFangSC-Medium"
     });
     this.memberId = "2309350880803029654";
-    this.queryMemberUseCouponList();
+    this.getList();
   },
   methods: {
-    paramsList() {
-      const list = [];
-      const pageIndex = [];
-      const total = [];
-      this.tabList.forEach(item => {
-        list.push([]);
-        pageIndex.push(1);
-        total.push(0);
-      });
-      this.list = list;
-      this.pageIndex = pageIndex;
-      this.total = total;
-    },
-    tabChange(index) {
-      if (this.list[index].length === 0) {
-        this.pageIndex[index] = 1;
-        this.queryMemberUseCouponList();
-      } else {
-        this.$refs.scrollContent.scrollTop = 0;
-      }
-    },
-
-    toast() {
-      this.$toast.loading({
-        duration: 0,
-        type: "loading",
-        message: "加载中...",
-        forbidClick: true
-      });
-    },
     collapse(ref) {
       const element = this.$refs[ref][0];
       const height = element.offsetHeight;
@@ -224,7 +196,14 @@ export default {
         }, 300);
       }
     },
-    queryMemberUseCouponList() {
+
+    loadMore() {
+      const tabIndex = this.active;
+      if (this.canLoadMore[tabIndex]) {
+        this.getList();
+      }
+    },
+    getList() {
       const tabIndex = this.active;
       const params = {
         memberId: this.memberId,
@@ -235,7 +214,6 @@ export default {
       this.loading = true;
       this.busy = true;
       this.toast();
-      // api.queryMemberUseCouponList(params).then(res => {});
       api
         .queryMemberUseCouponList(params)
         .then(res => {
@@ -246,6 +224,9 @@ export default {
               params.pageIndex === 1
                 ? list
                 : _.concat(this.list[tabIndex], list);
+
+            list.length < params.pageSize &&
+              (this.canLoadMore[tabIndex] = false);
             this.total[tabIndex] = (res.data && res.data.total) || 0;
             this.pageIndex[tabIndex]++;
           }
@@ -345,7 +326,7 @@ export default {
                 justify-content: center;
                 align-items: stretch;
                 box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
-                border-radius: 16px;
+                border-radius: 12px;
                 overflow: hidden;
 
                 // margin-bottom: 16px;
