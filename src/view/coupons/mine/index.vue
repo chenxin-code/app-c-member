@@ -188,7 +188,7 @@ export default {
         localStorage.setItem("memberId", this.memberId);
         this.getList();
       });
-      this.memberId = "2309350880803029654";
+      this.memberId = "2248629234467607163";
       this.getList();
     } else {
       this.$refs.scrollContent.scrollTo(0, this.scroll);
@@ -215,8 +215,7 @@ export default {
         memberId: this.memberId,
         pageIndex: this.pageIndex[tabIndex],
         pageSize: 10,
-        businessType: this.tabList[tabIndex].businessType,
-        condition: 1
+        activity: 0
       };
       this.loading = true;
       this.busy = true;
@@ -379,10 +378,11 @@ export default {
                   flex-direction: row;
                   justify-content: flex-start;
                   align-items: stretch;
+                  padding: 0 12px;
 
                   .exchange-card-right-left {
                     flex: 1;
-                    padding: 19px 7px 0 12px;
+                    padding: 19px 7px 0 0px;
                     display: flex;
                     flex-direction: column;
                     justify-content: flex-start;
@@ -407,8 +407,7 @@ export default {
                       line-height: 16px;
                     }
                     .card-right-left-bottom {
-                      padding-top: 10px;
-                      height: 12px;
+                      padding-top: 20px;
                       font-size: 10px;
                       font-family: PingFangSC-Regular, PingFang SC;
                       font-weight: 400;
@@ -417,7 +416,6 @@ export default {
                     }
                   }
                   .exchange-card-right-right {
-                    width: 88px;
                     display: flex;
                     flex-direction: row;
                     justify-content: center;
@@ -495,13 +493,15 @@ export default {
                   flex-flow: row-reverse;
                 }
                 .exchange-card-right-right {
-                  width: 88px;
                   // padding-right: 12px;
                   align-items: flex-end;
                   flex-direction: column;
                 }
                 .exchange-card-left-btn {
                   display: flex;
+                }
+                .exchange-card-right-left {
+                  padding-left: 12px;
                 }
               }
               .bangdou-exchange-card.shopping .exchange-card-left {

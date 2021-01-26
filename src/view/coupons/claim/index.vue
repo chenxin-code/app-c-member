@@ -24,49 +24,74 @@
                 ></zk-empty>
                 <div class="exchange-body-item">
                   <div
-                    class="bangdou-exchange-card"
-                    :class="[
-                      item.activity === '4014' ? 'row-reverse' : 'shopping'
-                    ]"
                     v-for="item in list[index]"
                     :key="item.id"
+                    class="bangdou-exchange-card"
+                    :class="[
+                      {
+                        'row-reverse': item.activity !== '4014',
+                        shopping: item.activity !== '4014'
+                      }
+                    ]"
                   >
-                    <!-- 物业券 -->
-                    <template v-if="item.activity === '4014'">
-                      <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
+                    <!-- <template v-if="item.activity === '4014'"> -->
+                    <div class="exchange-card-item exchange-card-left">
+                      <div class="exchange-card-left-top">
+                        <template v-if="item.couponType === 40">
                           <div class="card-left-top-num">
                             {{ item.faceAmount }}
                           </div>
-                        </div>
-                        <div class="exchange-card-left-bottom">
-                          满{{ item.satisfyAmount }}元可用
-                        </div>
-                      </div>
-                      <div class="exchange-card-item exchange-card-right">
-                        <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
-                        </div>
-                        <div class="exchange-card-right-right">
-                          <div
-                            class="exchange-card-right-right-btn"
-                            @click="getCoupon(item.id)"
-                          >
-                            立即领取
+                          折
+                        </template>
+                        <template v-else>
+                          <div class="card-left-top-type">
+                            ￥
                           </div>
+                          <div class="card-left-top-num">
+                            {{ item.faceAmount }}
+                          </div>
+                        </template>
+                      </div>
+                      <div class="exchange-card-left-bottom">
+                        {{ couponType(item) }}
+                      </div>
+                      <div
+                        v-if="item.activity !== '4014'"
+                        class="exchange-card-left-btn"
+                      >
+                        邦豆兑换
+                      </div>
+                    </div>
+                    <div class="exchange-card-item exchange-card-right">
+                      <div class="exchange-card-right-left">
+                        <div class="card-right-left-top">
+                          {{ item.couponTitle }}
                         </div>
                       </div>
-                    </template>
-                    <!-- 非物业券 -->
-                    <template v-else>
+                      <div class="exchange-card-right-right">
+                        <div
+                          class="exchange-card-right-right-btn"
+                          @click="getCoupon(item.id)"
+                          v-if="item.activity === '4014'"
+                        >
+                          立即领取
+                        </div>
+                        <img
+                          v-else
+                          class="goods-img"
+                          src="../../../assets/img/coupons/food.png"
+                        />
+                      </div>
+                    </div>
+                    <!-- </template> -->
+                    <!-- <template v-else>
                       <div class="exchange-card-item exchange-card-right">
                         <div class="exchange-card-right-right">
                           <div class="exchange-card-right-right-btn"></div>
                         </div>
                         <div class="exchange-card-right-left">
                           <div class="card-right-left-top">
-                            仅可购买邻里商城生鲜区、冷冻区
+                            {{ item.couponTitle }}
                           </div>
                         </div>
                       </div>
@@ -82,7 +107,7 @@
                         </div>
                         <div class="exchange-card-left-btn">邦豆兑换</div>
                       </div>
-                    </template>
+                    </template> -->
                   </div>
                 </div>
               </div>
@@ -172,6 +197,15 @@ export default {
           }
         });
     },
+    couponType(item) {
+      if (item.couponType === 10) {
+        return `无门槛立减`;
+      } else if (item.couponType === 20) {
+        return `满￥{item.satisfyAmount}元可用`;
+      } else if (item.couponType === 40) {
+        return `满￥{item.satisfyAmount}元可用`;
+      }
+    },
     loadMore() {
       const tabIndex = this.active;
       if (this.canLoadMore[tabIndex]) {
@@ -215,8 +249,8 @@ export default {
 };
 </script>
 
-<style lang="less">
-.member-coupon {
+<style lang="less" scoped>
+.exchange-info {
   font-size: 18px;
 
   /deep/ .van-tabs__wrap {
@@ -262,7 +296,8 @@ export default {
               display: flex;
               flex-direction: row;
               justify-content: center;
-              align-items: stretch;
+              align-items: center;
+              // align-items: stretch;
               margin-bottom: 20px;
               box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
               border-radius: 12px;
@@ -281,9 +316,10 @@ export default {
 
                 .exchange-card-left-top {
                   display: flex;
-                  flex-direction: row;
                   justify-content: center;
                   align-items: center;
+                  line-height: 1;
+                  color: #fff;
                   .card-left-top-type {
                     font-size: 16px;
                     font-family: PingFangSC-Medium, PingFang SC;
@@ -306,6 +342,7 @@ export default {
                   font-family: PingFangSC-Regular, PingFang SC;
                   font-weight: 400;
                   color: #ffffff;
+                  margin-top: 4px;
                 }
               }
 
@@ -317,7 +354,7 @@ export default {
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: stretch;
-                padding: 12px 17px;
+                padding: 12px;
                 // padding-left: 12px;
 
                 .exchange-card-right-left {
@@ -342,7 +379,6 @@ export default {
                   flex-direction: row;
                   justify-content: center;
                   align-items: center;
-
                   .exchange-card-right-right-btn {
                     width: 68px;
                     height: 24px;
@@ -361,7 +397,18 @@ export default {
                     font-weight: 500;
                     color: #ffffff;
                   }
+                  .goods-img {
+                    width: 72px;
+                    height: 72px;
+                    border-radius: 4px;
+                  }
                 }
+              }
+            }
+            .bangdou-exchange-card.row-reverse {
+              flex-flow: row-reverse;
+              .exchange-card-right {
+                flex-flow: row-reverse;
               }
             }
             .bangdou-exchange-card.shopping {

@@ -351,11 +351,12 @@ export default {
               display: flex;
               flex-direction: row;
               justify-content: flex-start;
-              align-items: stretch;
+              align-items: center;
+              padding: 12px;
 
               .exchange-card-right-left {
                 flex: 1;
-                padding: 19px 7px 0 12px;
+                padding: 19px 7px 0 0px;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
@@ -393,8 +394,6 @@ export default {
                 }
               }
               .exchange-card-right-right {
-                width: 88px;
-
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
@@ -499,17 +498,17 @@ export default {
 
             .exchange-card-right {
               flex: 1;
-              // width: 211px;
               height: 106px;
               background-color: #fff;
               display: flex;
               flex-direction: row;
               justify-content: flex-start;
-              align-items: stretch;
+              align-items: center;
+              padding: 12px;
 
               .exchange-card-right-left {
                 flex: 1;
-                padding: 19px 7px 0 12px;
+                padding: 19px 0px 0 12px;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
@@ -529,7 +528,6 @@ export default {
                 }
               }
               .exchange-card-right-right {
-                width: 88px;
                 display: flex;
                 align-items: flex-end;
                 flex-direction: column;
