@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-24 11:02:49
- * @LastEditTime: 2021-01-25 10:51:39
+ * @LastEditTime: 2021-01-27 12:05:32
  */
 export default {
   data () {
@@ -67,6 +67,15 @@ export default {
         setTimeout(() => {
           element.style.display = "none";
         }, 300);
+      }
+    },
+    couponType (item) {
+      if (item.couponType === 10) {
+        return `无门槛立减`;
+      } else if (item.couponType === 20) {
+        return `满${item.satisfyAmount}元可用`;
+      } else if (item.couponType === 40) {
+        return `满${item.satisfyAmount}元可用`;
       }
     }
   }

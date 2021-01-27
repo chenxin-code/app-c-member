@@ -22,11 +22,23 @@
             >
               <div class="exchange-card-item exchange-card-left">
                 <div class="exchange-card-left-top">
-                  <div class="card-left-top-type">￥</div>
-                  <div class="card-left-top-num">{{ item.faceAmount }}</div>
+                  <template v-if="item.couponType === 40">
+                    <div class="card-left-top-num">
+                      {{ item.faceAmount }}
+                    </div>
+                    折
+                  </template>
+                  <template v-else>
+                    <div class="card-left-top-type">
+                      ￥
+                    </div>
+                    <div class="card-left-top-num">
+                      {{ item.faceAmount }}
+                    </div>
+                  </template>
                 </div>
                 <div class="exchange-card-left-bottom">
-                  满{{ item.satisfyAmount }}元可用
+                  {{ couponType(item) }}
                 </div>
               </div>
               <div class="exchange-card-item exchange-card-right">
@@ -40,7 +52,10 @@
                   </div>
                 </div>
                 <div class="exchange-card-right-right">
-                  <div class="exchange-card-right-right-btn" @click="exchange">
+                  <div
+                    class="exchange-card-right-right-btn"
+                    @click="exchange(item)"
+                  >
                     邦豆兑换
                   </div>
                 </div>
@@ -65,21 +80,41 @@
             >
               <div class="exchange-card-item exchange-card-right">
                 <div class="exchange-card-right-right">
-                  <div class="exchange-card-right-right-btn"></div>
+                  <img class="goods-img" :src="item.image || defaultImg" />
                 </div>
                 <div class="exchange-card-right-left">
                   <div class="card-right-left-top">
-                    仅可购买邻里商城生鲜区、冷冻区
+                    {{ item.couponTitle }}
+                  </div>
+                  <div class="card-right-left-bottom">
+                    <span class="card-right-left-bottom-left">{{
+                      item.integrealCount
+                    }}</span>
+                    <span class="card-right-left-bottom-right">邦豆</span>
                   </div>
                 </div>
               </div>
               <div class="exchange-card-item exchange-card-left">
                 <div class="exchange-card-left-top">
-                  <div class="card-left-top-type">￥</div>
-                  <div class="card-left-top-num">5</div>
+                  <template v-if="item.couponType === 40">
+                    <div class="card-left-top-num">
+                      {{ item.faceAmount }}
+                    </div>
+                    折
+                  </template>
+                  <template v-else>
+                    <div class="card-left-top-type">
+                      ￥
+                    </div>
+                    <div class="card-left-top-num">
+                      {{ item.faceAmount }}
+                    </div>
+                  </template>
                 </div>
-                <div class="exchange-card-left-bottom">满100元可用</div>
-                <div class="exchange-card-left-btn" @click="exchange">
+                <div class="exchange-card-left-bottom">
+                  {{ couponType(item) }}
+                </div>
+                <div class="exchange-card-left-btn" @click="exchange(item)">
                   邦豆兑换
                 </div>
               </div>
@@ -107,14 +142,18 @@
 <script>
 import api from "@/api";
 import nav from "@zkty-team/x-engine-module-nav";
+import localstorage from "@zkty-team/x-engine-module-localstorage";
+
 import * as moment from "moment";
 import Null from "@/components/null";
 import _ from "lodash";
+const defaultImg = require("@/assets/img/coupons/coupon-default.png");
 
 export default {
   data() {
     return {
       loading: false,
+      defaultImg: defaultImg,
       showNull: false,
       nullMsg: "",
       memberId: "",
@@ -123,17 +162,16 @@ export default {
       vouchersList: [], // 购物券
       canLoadMore: true, //解决下拉刷新
       // ---分隔符---
-      //宠物信息
+      userInfo: {},
       petsUpdateList: []
     };
   },
   components: {
     Null
   },
-  beforeRouteLeave(to, form, next) {
-    next();
-  },
-
+  // beforeRouteLeave(to, form, next) {
+  //   next();
+  // },
   watch: {},
   created() {
     this.memberId = "2331048196588962531";
@@ -144,6 +182,13 @@ export default {
     // ]).then(() => {
     //   this.$toast.clear();
     // });
+    localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+      this.memberId = res.result;
+      this.queryReceiveCouponList();
+      this.getUserInfo();
+    });
+    this.queryReceiveCouponList();
+    this.getUserInfo();
   },
   mounted() {
     this.madeData();
@@ -153,7 +198,6 @@ export default {
       titleSize: 24,
       titleFontName: "PingFangSC-Medium"
     });
-    // this.queryReceiveCouponList();
   },
   methods: {
     madeData() {
@@ -172,7 +216,7 @@ export default {
           discountRatio: "1",
           faceAmount: "1",
           id: `index${index}`,
-          image: "2",
+          image: "",
           memo: "2",
           operator: "",
           receiveCondition: "",
@@ -204,6 +248,11 @@ export default {
       propertyList.length && (this.propertyList = propertyList);
       vouchersList.length && (this.vouchersList = vouchersList);
     },
+    getUserInfo() {
+      api.getUserInfo().then(res => {
+        this.userInfo = res.data || {};
+      });
+    },
     toast() {
       this.$toast.loading({
         duration: 0,
@@ -212,7 +261,16 @@ export default {
         forbidClick: true
       });
     },
-    queryReceiveCouponList(businessType) {
+    couponType(item) {
+      if (item.couponType === 10) {
+        return `无门槛立减`;
+      } else if (item.couponType === 20) {
+        return `满${item.satisfyAmount}元可用`;
+      } else if (item.couponType === 40) {
+        return `满${item.satisfyAmount}元可用`;
+      }
+    },
+    queryReceiveCouponList() {
       const params = {
         memberId: this.memberId,
         pageIndex: 1,
@@ -247,14 +305,25 @@ export default {
           this.loading = false;
         });
     },
-    exchange() {
+    exchange(data) {
       this.$dialog
         .confirm({
           title: "确认兑换",
           message: "本次消耗{$邦豆数}\n当前剩余{$邦豆数}\n兑换后剩余{$邦豆数}\n"
         })
         .then(() => {
-          console.log("confirm");
+          const params = {
+            couActivitiesId: data.id,
+            memberId: this.memberId,
+            integral: data.integrealCount,
+            phone: this.userInfo.phone
+          };
+          this.toast();
+          api.integralConversion(params).then(res => {
+            if (res === 200) {
+              this.$toast("兑换成功");
+            }
+          });
         });
     }
   }
@@ -326,7 +395,7 @@ export default {
                   color: #ffffff;
                 }
                 .card-left-top-num {
-                  font-size: 32px;
+                  font-size: 26px;
                   font-family: PingFangSC-Medium, PingFang SC;
                   font-weight: 500;
                   color: #ffffff;
@@ -337,7 +406,7 @@ export default {
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                font-size: 14px;
+                font-size: 12px;
                 font-family: PingFangSC-Regular, PingFang SC;
                 font-weight: 400;
                 color: #ffffff;
@@ -356,35 +425,43 @@ export default {
 
               .exchange-card-right-left {
                 flex: 1;
-                padding: 19px 7px 0 0px;
+                // padding-left: 12px;
+                // padding: 19px 7px 0 0px;
                 display: flex;
                 flex-direction: column;
-                justify-content: flex-start;
-                align-items: stretch;
+                flex-flow: row wrap;
 
                 .card-right-left-top {
-                  margin-bottom: 16px;
-                  height: 16px;
+                  width: 100%;
+                  margin-bottom: 6px;
+                  // height: 16px;
                   font-size: 16px;
                   font-family: PingFangSC-Regular, PingFang SC;
                   font-weight: 400;
                   color: #121212;
                   line-height: 16px;
+                  align-self: flex-start;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 2;
+                  line-clamp: 2;
+                  -webkit-box-orient: vertical;
                 }
 
                 .card-right-left-bottom {
+                  line-height: 1;
+                  align-self: flex-start;
+
                   .card-right-left-bottom-left {
                     padding-right: 4px;
 
-                    height: 20px;
                     font-size: 20px;
                     font-family: PingFangSC-Medium, PingFang SC;
                     font-weight: 500;
                     color: #e8374a;
-                    line-height: 20px;
                   }
                   .card-right-left-bottom-right {
-                    height: 14px;
                     font-size: 14px;
                     font-family: PingFangSC-Medium, PingFang SC;
                     font-weight: 500;
@@ -464,6 +541,7 @@ export default {
                   line-height: 28px;
                 }
               }
+
               .exchange-card-left-bottom {
                 height: 12px;
                 font-size: 12px;
@@ -508,23 +586,28 @@ export default {
 
               .exchange-card-right-left {
                 flex: 1;
-                padding: 19px 0px 0 12px;
+                padding-left: 12px;
                 display: flex;
                 flex-direction: column;
-                justify-content: flex-start;
-                align-items: stretch;
+                flex-flow: row wrap;
 
                 .card-right-left-top {
                   // width: 101px;
-                  height: 60px;
+                  width: 100%;
+                  margin-bottom: 6px;
                   font-size: 14px;
                   font-family: PingFangSC-Medium, PingFang SC;
                   font-weight: 500;
                   color: #121212;
                   line-height: 20px;
-                  white-space: normal;
-                  word-wrap: break-word;
-                  word-break: break-all;
+
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 2;
+                  line-clamp: 2;
+                  -webkit-box-orient: vertical;
+                  align-self: flex-start;
                 }
               }
               .exchange-card-right-right {
@@ -544,6 +627,31 @@ export default {
                   background-size: 100% 100%;
                 }
               }
+            }
+            .card-right-left-bottom {
+              align-self: flex-end;
+              line-height: 1;
+              .card-right-left-bottom-left {
+                padding-right: 4px;
+
+                font-size: 20px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: #e8374a;
+                line-height: 20px;
+              }
+              .card-right-left-bottom-right {
+                font-size: 14px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: #e8374a;
+                line-height: 14px;
+              }
+            }
+            .goods-img {
+              width: 72px;
+              height: 72px;
+              border-radius: 4px;
             }
           }
         }
