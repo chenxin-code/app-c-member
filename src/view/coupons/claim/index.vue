@@ -59,7 +59,7 @@
                         {{ couponType(item) }}
                       </div>
                       <div v-if="item.activity !== '4014'">
-                        {{ item.goUse ? "true" : "false" }}
+                        <!-- {{ item.goUse ? "true" : "false" }} -->
                         <div
                           v-if="item.goUse"
                           class="exchange-card-left-btn"
