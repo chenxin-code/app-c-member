@@ -2,6 +2,7 @@
   <div class="member-coupon exchange-info">
     <div
       class="exchange-tab-wrap"
+      ref="scrollContent"
       v-infinite-scroll="loadMore"
       :infinite-scroll-immediate-check="true"
       infinite-scroll-disabled="busy"
@@ -24,8 +25,8 @@
                 ></zk-empty>
                 <div class="exchange-body-item">
                   <div
-                    v-for="item in list[index]"
-                    :key="item.id"
+                    v-for="(item, cIndex) in list[index]"
+                    :key="`tab${index}${item.id}`"
                     class="bangdou-exchange-card"
                     :class="[
                       {
@@ -41,9 +42,9 @@
                       <div class="exchange-card-left-top">
                         <template v-if="item.couponType === 40">
                           <div class="card-left-top-num">
-                            {{ item.faceAmount }}
+                            {{ +item.discountRatio * 10 }}
                           </div>
-                          折
+                          <span class="coupon-type">折</span>
                         </template>
                         <template v-else>
                           <div class="card-left-top-type">
@@ -57,12 +58,22 @@
                       <div class="exchange-card-left-bottom">
                         {{ couponType(item) }}
                       </div>
-                      <div
-                        v-if="item.activity !== '4014'"
-                        class="exchange-card-left-btn"
-                        @click="getCoupon(item)"
-                      >
-                        立即领取
+                      <div v-if="item.activity !== '4014'">
+                        {{ item.goUse ? "true" : "false" }}
+                        <div
+                          v-if="item.goUse"
+                          class="exchange-card-left-btn"
+                          @click="useCoupon(item)"
+                        >
+                          去使用
+                        </div>
+                        <div
+                          v-else
+                          class="exchange-card-left-btn"
+                          @click="getCoupon(item, index, cIndex)"
+                        >
+                          立即领取
+                        </div>
                       </div>
                     </div>
                     <div class="exchange-card-item exchange-card-right">
@@ -72,12 +83,21 @@
                         </div>
                       </div>
                       <div class="exchange-card-right-right">
-                        <div
-                          class="exchange-card-right-right-btn"
-                          @click="getCoupon(item)"
-                          v-if="item.activity === '4014'"
-                        >
-                          立即领取
+                        <div v-if="item.activity === '4014'">
+                          <div
+                            v-if="item.goUse"
+                            class="exchange-card-right-right-btn"
+                            @click="useCoupon(item)"
+                          >
+                            去使用
+                          </div>
+                          <div
+                            v-else
+                            class="exchange-card-right-right-btn"
+                            @click="getCoupon(item, index, cIndex)"
+                          >
+                            立即领取
+                          </div>
                         </div>
                         <img
                           v-else
@@ -108,10 +128,11 @@ import localstorage from "@zkty-team/x-engine-module-localstorage";
 import Null from "@/components/null";
 import mixin from "../mixin/pageList";
 import _ from "lodash";
+import couponMixin from "../mixin/getCoupon-mixin";
 const defaultImg = require("@/assets/img/coupons/coupon-default.png");
 
 export default {
-  mixins: [mixin],
+  mixins: [mixin, couponMixin],
   data() {
     return {
       active: 0,
@@ -137,7 +158,8 @@ export default {
           label: "购物券",
           businessType: "4005"
         }
-      ]
+      ],
+      list: [[], [], []]
     };
   },
   components: {
@@ -148,11 +170,13 @@ export default {
     this.paramsList();
     localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
       this.memberId = res.result;
+      localStorage.setItem("memberId", this.memberId);
       this.getList();
       this.getUserInfo();
     });
-    this.memberId = "2248629234467607623";
-    this.getList();
+    // this.memberId = "2212946938230210585";
+    // this.getList();
+    // this.getUserInfo();
   },
   mounted() {
     nav.setNavLeftBtn({
@@ -163,7 +187,7 @@ export default {
     });
   },
   methods: {
-    getCoupon(data) {
+    getCoupon(data, index, cIndex) {
       this.toast();
       api
         .getReceiveCoupon({
@@ -172,7 +196,29 @@ export default {
         })
         .then(res => {
           if (res.code === 200) {
-            this.$toast("领取成功");
+            if (res.data.result) {
+              this.$toast("领取成功");
+              // 该券当前人
+              const couponDay =
+                res.data.canCouponDayTotal === res.data.couponDayTotal;
+              const couponPersonDay =
+                res.data.canCouponPersonDayTotal ===
+                res.data.couponPersonDayTotal;
+              const couponPerson =
+                res.data.canCouponPersonTotal === res.data.couponPersonTotal;
+              const couponTotal =
+                res.data.canCouponTotal === res.data.couponTotal;
+              // 存在上限，变更按钮为 '去使用'
+              if (couponDay || couponPersonDay || couponPerson || couponTotal) {
+                this.$set(data, "goUse", true);
+              }
+            } else {
+              this.$toast("领取失败");
+            }
+            // this.list[index][cIndex].goUse = true;
+            // console.log("list", this.list[index][cIndex]);
+            // this.$set(this.list[index][cIndex], "goUse", true);
+            // // console.log("data", data, this.list);
           }
         });
     },
@@ -205,6 +251,7 @@ export default {
           if (res.code === 200) {
             this.$toast.clear();
             const list = res.data || [];
+            // list.map(item => (item.goUse = false));
             this.list[tabIndex] =
               params.pageIndex === 1
                 ? list
@@ -346,6 +393,12 @@ export default {
                     font-weight: 400;
                     color: #121212;
                     line-height: 20px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    line-clamp: 2;
+                    -webkit-box-orient: vertical;
                   }
                 }
                 .exchange-card-right-right {
@@ -378,6 +431,13 @@ export default {
                     border-radius: 4px;
                   }
                 }
+              }
+              .coupon-type {
+                font-size: 14px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: #ffffff;
+                margin-left: 4px;
               }
             }
             .bangdou-exchange-card.row-reverse {

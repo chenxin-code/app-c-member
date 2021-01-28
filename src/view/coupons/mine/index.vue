@@ -27,7 +27,7 @@
                   <div class="exchange-body-item">
                     <div
                       v-for="(item, cindex) in list[index]"
-                      :key="item.id"
+                      :key="`tab${index}${item.id}`"
                       class="bangdou-exchange-card"
                       :class="[
                         {
@@ -42,9 +42,9 @@
                         <div class="exchange-card-left-top">
                           <template v-if="item.couponType === 40">
                             <div class="card-left-top-num">
-                              {{ item.faceAmount }}
+                              {{ +item.discountRatio * 10 }}
                             </div>
-                            折
+                            <span class="coupon-type">折</span>
                           </template>
                           <template v-else>
                             <div class="card-left-top-type">
@@ -82,14 +82,14 @@
                           </div>
                           <div
                             class="card-right-left-bottom"
-                            @click="collapse(`coouponDesc${cindex}`)"
+                            @click="collapse(`tab${index}couponDesc${cindex}`)"
                           >
                             使用规则
                             <van-icon
                               name="arrow-down"
                               size="12"
                               class="icon-arrow-down"
-                              :ref="`coouponDesc${cindex}Icon`"
+                              :ref="`tab${index}couponDesc${cindex}Icon`"
                             ></van-icon>
                           </div>
                         </div>
@@ -110,11 +110,11 @@
                       </div>
                       <div
                         class="coupon-desc-wrap"
-                        :ref="`coouponDesc${cindex}`"
+                        :ref="`tab${index}couponDesc${cindex}`"
                       >
                         <div
                           class="coupon-desc"
-                          :ref="`coouponDesc${cindex}Cont`"
+                          :ref="`tab${index}couponDesc${cindex}Cont`"
                         >
                           <div class="coupon-desc-li">
                             {{ item.memo }}
@@ -183,6 +183,7 @@ export default {
       //宠物信息
       petsUpdateList: [],
       // ___________________________________________
+      devServer: "dev",
       active: 0,
       memberId: "",
       busy: false,
@@ -193,11 +194,11 @@ export default {
         },
         {
           label: "物业抵扣券",
-          businessType: "4014"
+          businessType: "200005"
         },
         {
           label: "购物券",
-          businessType: "4005"
+          businessType: "200001"
         }
       ],
       scroll: 0,
@@ -236,9 +237,9 @@ export default {
         this.getList();
         this.getUserInfo();
       });
-      this.memberId = "2248629234467607163";
-      this.getList();
-      this.getUserInfo();
+      // this.memberId = "2212946938230210585";
+      // this.getList();
+      // this.getUserInfo();
     } else {
       this.$refs.scrollContent.scrollTo(0, this.scroll);
     }
@@ -254,7 +255,7 @@ export default {
   methods: {
     loadMore() {
       const tabIndex = this.active;
-      if (this.canLoadMore[tabIndex]) {
+      if (this.list[tabIndex].length < this.total[tabIndex]) {
         this.getList();
       }
     },
@@ -267,8 +268,27 @@ export default {
         this.openDeital();
         // this.
       } else if (data.activity === "4005") {
-        console.log("打开商城");
+        this.openMall(data);
+        // console.log("打开商城");
       }
+    },
+    async openMall(data) {
+      let uri;
+      if (this.devServer === "dev") {
+        uri = "http://mall-uat-app-linli.timesgroup.cn";
+      } else {
+        uri = "http://mall-prod-app-linli.timesgroup.cn";
+      }
+      const datestr = Number(new Date());
+      let token;
+      await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
+        token = res.result;
+      });
+      const url = `${uri}/app/index?token=${token}&redirect=${uri}/#/mall2/list/${datestr}?pageType=coupon&coupon=${data.couponType}&couThresholdAmount=${data.satisfyAmount}&couFaceValue=${data.faceAmount}&lastPath=%2Fcoupon_list&endTime=${data.validityEndTime}`;
+      router.openTargetRouter({
+        type: "h5",
+        uri: url
+      });
     },
     // 打开账单中心
     openDeital() {
@@ -319,7 +339,8 @@ export default {
         memberId: this.memberId,
         pageIndex: this.pageIndex[tabIndex],
         pageSize: 10,
-        activity: this.tabList[tabIndex].businessType
+        businessType: this.tabList[tabIndex].businessType,
+        state: 20
       };
       this.loading = true;
       this.busy = true;
@@ -351,13 +372,16 @@ export default {
       this.$routeHelper.router(this, "/useLog", null, false);
     },
     linkPropertyCoupon() {
-      // let token;
-      // await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
-      //   token = res.result;
-      // });
-      // test: http://apiv3.linli580.com.cn/coupon/?phone=
-      // prod: http://apiv3.linli580.com/coupon/?phone=
-      const url = `http://apiv3.linli580.com.cn/coupon/?phone=${this.userInfo.phone}`;
+      if (!this.userInfo.phone) {
+        return this.$toast("手机号无效");
+      }
+      let uri;
+      if (this.devServer === "dev") {
+        uri = "http://apiv3.linli580.com.cn";
+      } else {
+        uri = "http://apiv3.linli580.com";
+      }
+      const url = `${uri}/coupon/?phone=${this.userInfo.phone}`;
       router.openTargetRouter({
         type: "h5",
         uri: url
@@ -370,7 +394,13 @@ export default {
       });
       // test: https://dev-mall-linli.timesgroup.cn/H5/#/anitransferMy?token=
       // prod: https://mall-linli.timesgroup.cn/H5/#/anitransferMy?token=
-      const url = `https://dev-mall-linli.timesgroup.cn/H5/#/anitransferMy?token=${token}`;
+      let uri;
+      if (this.devServer === "dev") {
+        uri = "https://dev-mall-linli.timesgroup.cn";
+      } else {
+        uri = "https://mall-linli.timesgroup.cn";
+      }
+      const url = `${uri}/H5/#/anitransferMy?token=${token}`;
       router.openTargetRouter({
         type: "h5",
         uri: url
@@ -457,6 +487,7 @@ export default {
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
+                    color: #fff;
                     .card-left-top-type {
                       font-size: 16px;
                       font-family: PingFangSC-Medium, PingFang SC;
@@ -574,6 +605,13 @@ export default {
                       color: #ffffff;
                     }
                   }
+                }
+                .coupon-type {
+                  font-size: 14px;
+                  font-family: PingFangSC-Medium, PingFang SC;
+                  font-weight: 500;
+                  color: #ffffff;
+                  margin-left: 4px;
                 }
               }
 

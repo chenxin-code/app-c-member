@@ -26,7 +26,7 @@
                     <div class="card-left-top-num">
                       {{ item.faceAmount }}
                     </div>
-                    折
+                    <span class="coupon-type">折</span>
                   </template>
                   <template v-else>
                     <div class="card-left-top-type">
@@ -52,6 +52,13 @@
                   </div>
                 </div>
                 <div class="exchange-card-right-right">
+                  <div
+                    v-if="item.goUse"
+                    class="exchange-card-right-right-btn"
+                    @click="useCoupon(item)"
+                  >
+                    去使用
+                  </div>
                   <div
                     class="exchange-card-right-right-btn"
                     @click="exchange(item)"
@@ -100,7 +107,7 @@
                     <div class="card-left-top-num">
                       {{ item.faceAmount }}
                     </div>
-                    折
+                    <span class="coupon-type">折</span>
                   </template>
                   <template v-else>
                     <div class="card-left-top-type">
@@ -114,7 +121,18 @@
                 <div class="exchange-card-left-bottom">
                   {{ couponType(item) }}
                 </div>
-                <div class="exchange-card-left-btn" @click="exchange(item)">
+                <div
+                  v-if="item.goUse"
+                  class="exchange-card-left-btn"
+                  @click="useCoupon(item)"
+                >
+                  去使用
+                </div>
+                <div
+                  v-else
+                  class="exchange-card-left-btn"
+                  @click="exchange(item)"
+                >
                   邦豆兑换
                 </div>
               </div>
@@ -147,9 +165,11 @@ import localstorage from "@zkty-team/x-engine-module-localstorage";
 import * as moment from "moment";
 import Null from "@/components/null";
 import _ from "lodash";
+import couponMixin from "../coupons/mixin/getCoupon-mixin";
 const defaultImg = require("@/assets/img/coupons/coupon-default.png");
 
 export default {
+  mixins: [couponMixin],
   data() {
     return {
       loading: false,
@@ -162,7 +182,6 @@ export default {
       vouchersList: [], // 购物券
       canLoadMore: true, //解决下拉刷新
       // ---分隔符---
-      userInfo: {},
       petsUpdateList: []
     };
   },
@@ -174,7 +193,6 @@ export default {
   // },
   watch: {},
   created() {
-    this.memberId = "2331048196588962531";
     // this.toast();
     // Promise.all([
     //   this.queryReceiveCouponList(4014),
@@ -184,70 +202,24 @@ export default {
     // });
     localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
       this.memberId = res.result;
+      localStorage.setItem("memberId", this.memberId);
       this.queryReceiveCouponList();
       this.getUserInfo();
     });
-    this.queryReceiveCouponList();
-    this.getUserInfo();
+    // this.memberId = "2212946938230210585";
+    // this.queryReceiveCouponList();
+    // this.getUserInfo();
   },
   mounted() {
-    this.madeData();
+    // this.madeData();
     nav.setNavLeftBtn({
-      title: "帮豆兑换",
+      title: "邦豆兑换",
       titleColor: "#121212",
       titleSize: 24,
       titleFontName: "PingFangSC-Medium"
     });
   },
   methods: {
-    madeData() {
-      let list = [];
-      for (let index = 0; index < 3; index++) {
-        let data = {
-          activity: index === 1 ? "4014" : "4005",
-          activityMemo: "",
-          cost: "",
-          couTypeCode: "1",
-          couponStatus: 0,
-          couponSubhead: "1",
-          couponTitle: "1",
-          couponType: 10,
-          discountMaxDeduction: "1",
-          discountRatio: "1",
-          faceAmount: "1",
-          id: `index${index}`,
-          image: "",
-          memo: "2",
-          operator: "",
-          receiveCondition: "",
-          receiveConditionRule: "",
-          releaseCount: 100,
-          releaseForm: "",
-          releaseRule: "",
-          releaseType: "",
-          satisfyAmount: "1",
-          takeEffectDayNums: 0,
-          validityDayNums: 0,
-          validityEndTime: "2021-01-30",
-          validityStartTime: "2021-01-20"
-        };
-        list.push(data);
-      }
-      let propertyList = [];
-      let vouchersList = [];
-      list.forEach(item => {
-        // 物业
-        if (item.activity == "4014") {
-          propertyList.push(item);
-        } else if (item.activity == "4005") {
-          // 购物券
-          vouchersList.push(item);
-        }
-      });
-
-      propertyList.length && (this.propertyList = propertyList);
-      vouchersList.length && (this.vouchersList = vouchersList);
-    },
     getUserInfo() {
       api.getUserInfo().then(res => {
         this.userInfo = res.data || {};
@@ -306,25 +278,58 @@ export default {
         });
     },
     exchange(data) {
-      this.$dialog
-        .confirm({
-          title: "确认兑换",
-          message: "本次消耗{$邦豆数}\n当前剩余{$邦豆数}\n兑换后剩余{$邦豆数}\n"
-        })
-        .then(() => {
-          const params = {
-            couActivitiesId: data.id,
-            memberId: this.memberId,
-            integral: data.integrealCount,
-            phone: this.userInfo.phone
-          };
-          this.toast();
-          api.integralConversion(params).then(res => {
-            if (res === 200) {
-              this.$toast("兑换成功");
-            }
-          });
-        });
+      this.toast();
+      api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
+        if (res.code === 200) {
+          if (+data.integrealCount > +res.data.integral) {
+            return this.$toast("剩余邦豆不足");
+          }
+          const rest = +res.data.integral - +data.integrealCount;
+          this.$toast.clear();
+          this.$dialog
+            .confirm({
+              title: "确认兑换",
+              message: `本次消耗${data.integrealCount}\n当前剩余${res.data.integral}\n兑换后剩余${rest}`
+            })
+            .then(() => {
+              const params = {
+                couActivitiesId: data.id,
+                memberId: this.memberId,
+                integral: data.integrealCount
+              };
+              this.toast();
+              api.getReceiveCoupon(params).then(res => {
+                if (res === 200) {
+                  if (res.data.result) {
+                    this.$toast("兑换成功");
+                    // 该券当前人
+                    const couponDay =
+                      res.data.canCouponDayTotal === res.data.couponDayTotal;
+                    const couponPersonDay =
+                      res.data.canCouponPersonDayTotal ===
+                      res.data.couponPersonDayTotal;
+                    const couponPerson =
+                      res.data.canCouponPersonTotal ===
+                      res.data.couponPersonTotal;
+                    const couponTotal =
+                      res.data.canCouponTotal === res.data.couponTotal;
+                    // 存在上限，变更按钮为 '去使用'
+                    if (
+                      couponDay ||
+                      couponPersonDay ||
+                      couponPerson ||
+                      couponTotal
+                    ) {
+                      this.$set(data, "goUse", true);
+                    }
+                  } else {
+                    this.$toast("兑换失败");
+                  }
+                }
+              });
+            });
+        }
+      });
     }
   }
 };
@@ -360,6 +365,13 @@ export default {
       }
 
       .bangdou-exchange-body {
+        .coupon-type {
+          font-size: 14px;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: 500;
+          color: #ffffff;
+          margin-left: 4px;
+        }
         .exchange-body-item1 {
           margin-bottom: 20px;
           .bangdou-exchange-card {
@@ -388,6 +400,7 @@ export default {
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
+                color: #fff;
                 .card-left-top-type {
                   font-size: 16px;
                   font-family: PingFangSC-Medium, PingFang SC;

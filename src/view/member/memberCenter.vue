@@ -90,11 +90,10 @@
               </div>
             </div>
           </div>
-
           <!-- 邦豆兑换 -->
           <div
             class="bangdou-exchange"
-            v-if="propertyList.lengt || vouchersList.length"
+            v-if="propertyList.length || vouchersList.length"
           >
             <div class="bangdou-exchange-header">
               <div class="exchange-header-title">
@@ -117,7 +116,7 @@
                         <div class="card-left-top-num">
                           {{ item.faceAmount }}
                         </div>
-                        折
+                        <span class="coupon-type">折</span>
                       </template>
                       <template v-else>
                         <div class="card-left-top-type">
@@ -177,7 +176,7 @@
                         <div class="card-left-top-num">
                           {{ item.faceAmount }}
                         </div>
-                        折
+                        <span class="coupon-type">折</span>
                       </template>
                       <template v-else>
                         <div class="card-left-top-type">
@@ -238,9 +237,11 @@
 import nav from "@zkty-team/x-engine-module-nav";
 import api from "@/api";
 import localstorage from "@zkty-team/x-engine-module-localstorage";
+import couponMixin from "../coupons/mixin/getCoupon-mixin";
 const defaultImg = require("@/assets/img/coupons/coupon-default.png");
 
 export default {
+  mixins: [couponMixin],
   data() {
     return {
       currentLeve: 1,
@@ -262,10 +263,10 @@ export default {
   },
 
   activated() {
-    this.memberId = "2248629234467607163"; //生产需注释
-    localStorage.setItem("memberId", this.memberId); //生产需注释
-    this.getMemberDetail(); //生产需注释
-    this.queryReceiveCouponList();
+    // this.memberId = "2212946938230210585"; //生产需注释
+    // localStorage.setItem("memberId", this.memberId); //生产需注释
+    // this.getMemberDetail(); //生产需注释
+    // this.queryReceiveCouponList();
 
     //生产需打开
     if (this.$route.meta.isBack != true) {
@@ -273,6 +274,7 @@ export default {
         this.memberId = res.result;
         localStorage.setItem("memberId", this.memberId);
         this.getMemberDetail();
+        this.queryReceiveCouponList();
       });
     }
   },
@@ -431,28 +433,58 @@ export default {
       this.$forceUpdate();
     },
     exchange(data) {
-      if (!this.memberObject.phone) {
-        return this.$toast("没有会员手机号");
-      }
-      this.$dialog
-        .confirm({
-          title: "确认兑换",
-          message: "本次消耗{$邦豆数}\n当前剩余{$邦豆数}\n兑换后剩余{$邦豆数}\n"
-        })
-        .then(() => {
-          const params = {
-            couActivitiesId: data.id,
-            memberId: this.memberId,
-            integral: data.integrealCount,
-            phone: this.memberObject.phone
-          };
-          this.toast();
-          api.integralConversion(params).then(res => {
-            if (res === 200) {
-              this.$toast("兑换成功");
-            }
-          });
-        });
+      this.toast();
+      api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
+        if (res.code === 200) {
+          if (+data.integrealCount > +res.data.integral) {
+            return this.$toast("剩余邦豆不足");
+          }
+          const rest = +res.data.integral - +data.integrealCount;
+          this.$toast.clear();
+          this.$dialog
+            .confirm({
+              title: "确认兑换",
+              message: `本次消耗${data.integrealCount}\n当前剩余${res.data.integral}\n兑换后剩余${rest}`
+            })
+            .then(() => {
+              const params = {
+                couActivitiesId: data.id,
+                memberId: this.memberId,
+                integral: data.integrealCount
+              };
+              this.toast();
+              api.integralConversion(params).then(res => {
+                if (res === 200) {
+                  if (res.data.result) {
+                    this.$toast("兑换成功");
+                    // 该券当前人
+                    const couponDay =
+                      res.data.canCouponDayTotal === res.data.couponDayTotal;
+                    const couponPersonDay =
+                      res.data.canCouponPersonDayTotal ===
+                      res.data.couponPersonDayTotal;
+                    const couponPerson =
+                      res.data.canCouponPersonTotal ===
+                      res.data.couponPersonTotal;
+                    const couponTotal =
+                      res.data.canCouponTotal === res.data.couponTotal;
+                    // 存在上限，变更按钮为 '去使用'
+                    if (
+                      couponDay ||
+                      couponPersonDay ||
+                      couponPerson ||
+                      couponTotal
+                    ) {
+                      this.$set(data, "goUse", true);
+                    }
+                  } else {
+                    this.$toast("兑换失败");
+                  }
+                }
+              });
+            });
+        }
+      });
     },
     couponType(item) {
       if (item.couponType === 10) {
@@ -553,6 +585,7 @@ export default {
       api.memberDetailByMemberID(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
+          this.userInfo = res.data;
           this.memberObject = res.data;
           this.pageInitial(res.data);
         }
@@ -959,6 +992,13 @@ export default {
     }
 
     .bangdou-exchange-body {
+      .coupon-type {
+        font-size: 14px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #ffffff;
+        margin-left: 4px;
+      }
       .exchange-body-item1 {
         width: calc(100% + 16px);
         height: 97px;
@@ -974,12 +1014,12 @@ export default {
           flex-basis: 324px;
           flex-shrink: 0;
           white-space: nowrap;
-          padding-right: 12px;
-
+          margin-right: 12px;
           display: flex;
           flex-direction: row;
           justify-content: center;
           align-items: stretch;
+          box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
 
           .exchange-card-left {
             width: 101px;
@@ -1034,6 +1074,7 @@ export default {
             align-items: stretch;
 
             .exchange-card-right-left {
+              flex: 1;
               padding: 19px 7px 0 12px;
               display: flex;
               flex-direction: column;
@@ -1115,12 +1156,12 @@ export default {
           flex-basis: 324px;
           flex-shrink: 0;
           white-space: nowrap;
-          padding-right: 12px;
-
+          margin-right: 12px;
           display: flex;
           flex-direction: row;
           justify-content: center;
           align-items: stretch;
+          box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
 
           .exchange-card-left {
             width: 101px;

@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-20 10:31:06
- * @LastEditTime: 2021-01-27 17:32:00
+ * @LastEditTime: 2021-01-28 17:44:06
  */
 export let option = {
     login: '/times/auth', // 登录
@@ -33,7 +33,7 @@ export default {
     RECEIVE_COUPON_LIST: option.member + '/coupon/api/v1/receive-coupon/list', // 领券中心
     RECEIVE_COUPON: option.member + '/coupon/api/v1/member-id/receiveCoupon',//领取卡券
     MEMBER_USE_COUPON_LIST: option.member + '/coupon/api/v1/member-use-coupon/list',// 获取会员卡券使用记录
-    MEMBER_COUPON_LIST: option.member + '/coupon/api/v1/member-coupon/list', //获取会员可使用卡券列表
+    MEMBER_COUPON_LIST: option.member + '/coupon/api/v1/coupon-member/list', //获取会员可使用卡券列表
     INTEGRALCONVERSION: option.member + '/api/v1/integralConversion', // 邦豆兑换
     GETCUSTOMUSER: option.c_user + '/api-c/v1/customer-room/customer',//获取当前人的人房关系ID
 }
