@@ -145,6 +145,14 @@
                     </div>
                     <div class="exchange-card-right-right">
                       <div
+                        v-if="item.goUse"
+                        class="exchange-card-right-right-btn"
+                        @click="useCoupon(item)"
+                      >
+                        去使用
+                      </div>
+                      <div
+                        v-else
                         class="exchange-card-right-right-btn"
                         @click="exchange(item)"
                       >
@@ -190,7 +198,19 @@
                     <div class="exchange-card-left-bottom">
                       {{ couponType(item) }}
                     </div>
-                    <div class="exchange-card-left-btn" @click="exchange(item)">
+
+                    <div
+                      v-if="item.goUse"
+                      class="exchange-card-left-btn"
+                      @click="useCoupon(item)"
+                    >
+                      去使用
+                    </div>
+                    <div
+                      v-else
+                      class="exchange-card-left-btn"
+                      @click="exchange(item)"
+                    >
                       邦豆兑换
                     </div>
                   </div>

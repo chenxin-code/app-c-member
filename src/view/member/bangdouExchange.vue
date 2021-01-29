@@ -321,6 +321,9 @@ export default {
                       couponTotal
                     ) {
                       this.$set(data, "goUse", true);
+                      // 解决多维数组修改属性无效
+                      this.list.push([]);
+                      this.list.splice(this.list.length - 1, 1);
                     }
                   } else {
                     this.$toast("兑换失败");

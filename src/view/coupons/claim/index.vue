@@ -25,7 +25,7 @@
                 ></zk-empty>
                 <div class="exchange-body-item">
                   <div
-                    v-for="(item, cIndex) in list[index]"
+                    v-for="item in list[index]"
                     :key="`tab${index}${item.id}`"
                     class="bangdou-exchange-card"
                     :class="[
@@ -58,8 +58,7 @@
                       <div class="exchange-card-left-bottom">
                         {{ couponType(item) }}
                       </div>
-                      <div v-if="item.activity !== '4014'">
-                        <!-- {{ item.goUse ? "true" : "false" }} -->
+                      <template v-if="item.activity !== '4014'">
                         <div
                           v-if="item.goUse"
                           class="exchange-card-left-btn"
@@ -70,11 +69,11 @@
                         <div
                           v-else
                           class="exchange-card-left-btn"
-                          @click="getCoupon(item, index, cIndex)"
+                          @click="getCoupon(item)"
                         >
                           立即领取
                         </div>
-                      </div>
+                      </template>
                     </div>
                     <div class="exchange-card-item exchange-card-right">
                       <div class="exchange-card-right-left">
@@ -83,7 +82,7 @@
                         </div>
                       </div>
                       <div class="exchange-card-right-right">
-                        <div v-if="item.activity === '4014'">
+                        <template v-if="item.activity === '4014'">
                           <div
                             v-if="item.goUse"
                             class="exchange-card-right-right-btn"
@@ -94,11 +93,11 @@
                           <div
                             v-else
                             class="exchange-card-right-right-btn"
-                            @click="getCoupon(item, index, cIndex)"
+                            @click="getCoupon(item)"
                           >
                             立即领取
                           </div>
-                        </div>
+                        </template>
                         <img
                           v-else
                           class="goods-img"
@@ -158,8 +157,7 @@ export default {
           label: "购物券",
           businessType: "4005"
         }
-      ],
-      list: [[], [], []]
+      ]
     };
   },
   components: {
@@ -211,14 +209,13 @@ export default {
               // 存在上限，变更按钮为 '去使用'
               if (couponDay || couponPersonDay || couponPerson || couponTotal) {
                 this.$set(data, "goUse", true);
+                // 解决多维数组修改属性无效
+                this.list.push([]);
+                this.list.splice(this.list.length - 1, 1);
               }
             } else {
               this.$toast("领取失败");
             }
-            // this.list[index][cIndex].goUse = true;
-            // console.log("list", this.list[index][cIndex]);
-            // this.$set(this.list[index][cIndex], "goUse", true);
-            // // console.log("data", data, this.list);
           }
         });
     },
@@ -251,7 +248,6 @@ export default {
           if (res.code === 200) {
             this.$toast.clear();
             const list = res.data || [];
-            // list.map(item => (item.goUse = false));
             this.list[tabIndex] =
               params.pageIndex === 1
                 ? list
