@@ -24,7 +24,7 @@
                 <div class="exchange-card-left-top">
                   <template v-if="item.couponType === 40">
                     <div class="card-left-top-num">
-                      {{ item.faceAmount }}
+                      {{ +item.discountRatio * 10 }}
                     </div>
                     <span class="coupon-type">折</span>
                   </template>
@@ -33,7 +33,7 @@
                       ￥
                     </div>
                     <div class="card-left-top-num">
-                      {{ item.faceAmount }}
+                      {{ item.faceAmount | delPoint }}
                     </div>
                   </template>
                 </div>
@@ -105,7 +105,7 @@
                 <div class="exchange-card-left-top">
                   <template v-if="item.couponType === 40">
                     <div class="card-left-top-num">
-                      {{ item.faceAmount }}
+                      {{ +item.discountRatio * 10 }}
                     </div>
                     <span class="coupon-type">折</span>
                   </template>
@@ -114,7 +114,7 @@
                       ￥
                     </div>
                     <div class="card-left-top-num">
-                      {{ item.faceAmount }}
+                      {{ item.faceAmount | delPoint }}
                     </div>
                   </template>
                 </div>

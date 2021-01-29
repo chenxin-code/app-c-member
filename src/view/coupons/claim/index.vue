@@ -51,7 +51,7 @@
                             ￥
                           </div>
                           <div class="card-left-top-num">
-                            {{ item.faceAmount }}
+                            {{ item.faceAmount | delPoint }}
                           </div>
                         </template>
                       </div>
@@ -172,9 +172,9 @@ export default {
       this.getList();
       this.getUserInfo();
     });
-    // this.memberId = "2212946938230210585";
-    // this.getList();
-    // this.getUserInfo();
+    this.memberId = "2212946938230210585";
+    this.getList();
+    this.getUserInfo();
   },
   mounted() {
     nav.setNavLeftBtn({

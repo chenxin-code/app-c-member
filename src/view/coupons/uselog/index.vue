@@ -109,7 +109,7 @@
                               ￥
                             </div>
                             <div class="card-left-top-num">
-                              {{ item.faceAmount }}
+                              {{ item.faceAmount | delPoint }}
                             </div>
                           </template>
                         </div>

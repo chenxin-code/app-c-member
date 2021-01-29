@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-28 23:31:05
- * @LastEditTime: 2021-01-29 00:28:01
+ * @LastEditTime: 2021-01-29 21:05:28
  */
 import api from "@/api";
 import router from "@zkty-team/x-engine-module-router";
@@ -14,7 +14,19 @@ export default {
       userInfo: {}
     }
   },
+  filters: {
+    delPoint (num) {
+      const regexp = /(?:\.0*|(\.\d+?)0+)$/;
+      num = `${num}`;
+      return num.replace(regexp, "$1");
+    }
+  },
   methods: {
+    delPoint (num) {
+      const regexp = /(?:\.0*|(\.\d+?)0+)$/;
+      num = `${num}`;
+      return num.replace(regexp, "$1");
+    },
     useCoupon (data) {
       if (data.activity === "4014") {
         this.openDeital();

@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-24 11:02:49
- * @LastEditTime: 2021-01-27 12:05:32
+ * @LastEditTime: 2021-01-29 21:01:40
  */
 export default {
   data () {
@@ -13,7 +13,20 @@ export default {
       canLoadMore: []
     }
   },
+
+  filters: {
+    delPoint (num) {
+      const regexp = /(?:\.0*|(\.\d+?)0+)$/;
+      num = `${num}`;
+      return num.replace(regexp, "$1");
+    }
+  },
   methods: {
+    delPoint (num) {
+      const regexp = /(?:\.0*|(\.\d+?)0+)$/;
+      num = `${num}`;
+      return num.replace(regexp, "$1");
+    },
     paramsList () {
       const list = [];
       const pageIndex = [];
@@ -73,9 +86,11 @@ export default {
       if (item.couponType === 10) {
         return `无门槛立减`;
       } else if (item.couponType === 20) {
-        return `满${item.satisfyAmount}元可用`;
+        const num = this.delPoint(item.satisfyAmount)
+        return `满${num}元可用`;
       } else if (item.couponType === 40) {
-        return `满${item.satisfyAmount}元可用`;
+        const num = this.delPoint(item.satisfyAmount)
+        return `满${num}元可用`;
       }
     }
   }
