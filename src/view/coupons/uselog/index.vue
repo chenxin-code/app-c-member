@@ -371,7 +371,7 @@ export default {
                       line-height: 16px;
                     }
                     .card-left-top-num {
-                      height: 26px;
+                      height: 24px;
                       font-size: 28px;
                       font-family: PingFangSC-Semibold, PingFang SC;
                       font-weight: 600;

@@ -1066,7 +1066,7 @@ export default {
                 color: #ffffff;
               }
               .card-left-top-num {
-                font-size: 32px;
+                font-size: 24px;
                 font-family: PingFangSC-Medium, PingFang SC;
                 font-weight: 500;
                 color: #ffffff;
@@ -1210,12 +1210,12 @@ export default {
                 line-height: 16px;
               }
               .card-left-top-num {
-                height: 28px;
-                font-size: 28px;
+                height: 24px;
+                font-size: 24px;
                 font-family: PingFangSC-Semibold, PingFang SC;
                 font-weight: 600;
                 color: #ffffff;
-                line-height: 28px;
+                line-height: 24px;
               }
             }
             .exchange-card-left-bottom {

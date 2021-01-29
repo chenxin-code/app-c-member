@@ -345,7 +345,7 @@ export default {
                     color: #ffffff;
                   }
                   .card-left-top-num {
-                    font-size: 26px;
+                    font-size: 24px;
                     font-family: PingFangSC-Medium, PingFang SC;
                     font-weight: 500;
                     color: #ffffff;
