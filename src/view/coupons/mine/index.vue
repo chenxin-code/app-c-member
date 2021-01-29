@@ -238,9 +238,9 @@ export default {
         this.getList();
         this.getUserInfo();
       });
-      this.memberId = "2212946938230210585";
-      this.getList();
-      this.getUserInfo();
+      // this.memberId = "2212946938230210585";
+      // this.getList();
+      // this.getUserInfo();
     } else {
       this.$refs.scrollContent.scrollTo(0, this.scroll);
       !this.outUrlRefresh && (this.outUrlRefresh = true);
