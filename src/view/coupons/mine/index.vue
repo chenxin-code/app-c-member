@@ -187,6 +187,7 @@ export default {
       active: 0,
       memberId: "",
       busy: false,
+      outUrlRefresh: true, //控制跳外部链接刷新
       tabList: [
         {
           label: "全部",
@@ -242,13 +243,19 @@ export default {
       // this.getUserInfo();
     } else {
       this.$refs.scrollContent.scrollTo(0, this.scroll);
+      !this.outUrlRefresh && (this.outUrlRefresh = true);
     }
   },
   beforeRouteLeave(to, from, next) {
     if (to.name === "useLog") {
       this.pageRefresh = false;
     } else {
-      this.pageRefresh = true;
+      // 跳转物业券，其他卡券 不刷新
+      if (!this.outUrlRefresh) {
+        this.pageRefresh = false;
+      } else {
+        this.pageRefresh = true;
+      }
     }
     next();
   },
@@ -382,6 +389,8 @@ export default {
         uri = "http://apiv3.linli580.com";
       }
       const url = `${uri}/coupon/?phone=${this.userInfo.phone}`;
+      this.outUrlRefresh = false;
+      this.scroll = this.$refs.scrollContent.scrollTop;
       router.openTargetRouter({
         type: "h5",
         uri: url
@@ -401,6 +410,8 @@ export default {
         uri = "https://mall-linli.timesgroup.cn";
       }
       const url = `${uri}/H5/#/anitransferMy?token=${token}`;
+      this.outUrlRefresh = false;
+      this.scroll = this.$refs.scrollContent.scrollTop;
       router.openTargetRouter({
         type: "h5",
         uri: url
@@ -603,6 +614,7 @@ export default {
                       font-family: PingFangSC-Medium, PingFang SC;
                       font-weight: 500;
                       color: #ffffff;
+                      margin-left: 7px;
                     }
                   }
                 }

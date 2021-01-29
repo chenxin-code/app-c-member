@@ -299,7 +299,7 @@ export default {
               };
               this.toast();
               api.getReceiveCoupon(params).then(res => {
-                if (res === 200) {
+                if (res.code === 200) {
                   if (res.data.result) {
                     this.$toast("兑换成功");
                     // 该券当前人
@@ -505,6 +505,7 @@ export default {
                   font-family: PingFangSC-Medium, PingFang SC;
                   font-weight: 500;
                   color: #ffffff;
+                  margin-left: 7px;
                 }
               }
             }

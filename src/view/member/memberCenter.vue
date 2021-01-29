@@ -474,7 +474,7 @@ export default {
               };
               this.toast();
               api.integralConversion(params).then(res => {
-                if (res === 200) {
+                if (res.code === 200) {
                   if (res.data.result) {
                     this.$toast("兑换成功");
                     // 该券当前人

@@ -198,7 +198,6 @@ export default {
     });
     // this.memberId = "2212946938230210585";
     // this.getList();
-    // this.petsQueryInit();
   },
   mounted() {
     nav.setNavLeftBtn({

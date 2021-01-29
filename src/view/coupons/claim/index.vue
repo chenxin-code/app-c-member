@@ -420,6 +420,7 @@ export default {
                     font-family: PingFangSC-Medium, PingFang SC;
                     font-weight: 500;
                     color: #ffffff;
+                    margin-left: 7px;
                   }
                   .goods-img {
                     width: 72px;
