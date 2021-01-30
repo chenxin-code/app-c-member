@@ -1,7 +1,7 @@
 <!--
  * @Description: 这是***页面
  * @Date: 2021-01-20 17:16:34
- * @LastEditTime: 2021-01-22 10:15:49
+ * @LastEditTime: 2021-01-28 22:07:24
 -->
 <template>
   <div class="zk-empty">
@@ -57,6 +57,7 @@ export default {
   /* height: 100%; */
 }
 .zk-empty .zk-empty-description {
+  font-size: 14px;
   color: #8d8d8d;
 }
 </style>

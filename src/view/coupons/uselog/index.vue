@@ -3,6 +3,7 @@
     <div class="exchange-info">
       <div
         class="exchange-tab-wrap"
+        ref="scrollContent"
         v-infinite-scroll="loadMore"
         :infinite-scroll-immediate-check="true"
         infinite-scroll-disabled="busy"
@@ -17,51 +18,64 @@
         >
           <van-tab
             :title="tab.label"
-            v-for="tab in tabList"
+            v-for="(tab, index) in tabList"
             :key="`tab${tab.status}`"
           >
-            <!-- <zk-empty
+            <zk-empty
               image="coupon"
-              v-if="!loading && !list[tabindex].length"
+              v-if="!loading && !list[index].length"
               description="暂无优惠券使用"
-            ></zk-empty> -->
+            ></zk-empty>
             <div class="bangdou-exchange-wrap">
+              <!-- {{ list }} -->
               <div class="bangdou-exchange">
                 <div class="bangdou-exchange-body">
                   <div class="exchange-body-item">
                     <div
                       class="bangdou-exchange-card"
-                      :class="{ 'row-reverse': item === 2 }"
-                      v-for="(item, index) in 3"
-                      :key="item"
+                      :class="{ 'row-reverse': item.activity === '4014' }"
+                      v-for="(item, cIndex) in list[index]"
+                      :key="`tab${index}${item.id}`"
                     >
                       <div class="exchange-card-item exchange-card-right">
-                        <template v-if="item !== 2">
-                          <div class="exchange-card-right-right">
-                            <div class="exchange-card-right-right-btn"></div>
+                        <div class="exchange-card-right-right">
+                          <img
+                            class="goodsimg"
+                            v-if="item.activity !== '4014'"
+                            :src="item.image || defaultImg"
+                          />
+                          <div class="disabled-btn" v-else>
+                            已领取
                           </div>
+                          <!-- <div
+                            class="exchange-card-right-right-btn"
+                            v-else
+                          ></div> -->
+                        </div>
 
-                          <div class="exchange-card-right-left">
-                            <div class="card-right-left-top">
-                              仅可购买邻里商城生鲜区、冷冻区
-                            </div>
-                            <div class="card-right-left-middle">
-                              2021.01.01-2021.01.0
-                            </div>
-                            <div
-                              class="card-right-left-bottom"
-                              @click="collapse(`coouponDesc${index}`)"
-                            >
-                              使用规则
-                              <van-icon
-                                name="arrow-down"
-                                size="12"
-                                class="icon-arrow-down"
-                                :ref="`coouponDesc${index}Icon`"
-                              ></van-icon>
-                            </div>
+                        <div class="exchange-card-right-left">
+                          <div class="card-right-left-top">
+                            {{ item.couponTitle }}
                           </div>
-                        </template>
+                          <div class="card-right-left-middle">
+                            {{ getTime(item.validityStartTime) }}-{{
+                              getTime(item.validityEndTime)
+                            }}
+                          </div>
+                          <div
+                            class="card-right-left-bottom"
+                            @click="collapse(`tab${index}couponDesc${cIndex}`)"
+                          >
+                            使用规则
+                            <van-icon
+                              name="arrow-down"
+                              size="12"
+                              class="icon-arrow-down"
+                              :ref="`tab${index}couponDesc${cIndex}Icon`"
+                            ></van-icon>
+                          </div>
+                        </div>
+                        <!-- </template>
                         <template v-else>
                           <div class="exchange-card-right-left">
                             <div class="card-right-left-top">
@@ -73,33 +87,49 @@
                               已领取
                             </div>
                           </div>
-                        </template>
-                        <div class="card-used-right"></div>
+                        </template> -->
+                        <div
+                          class="card-used"
+                          :class="[
+                            { 'used-img': item.couponStatus === 40 },
+                            { 'expired-img': item.couponStatus === 70 }
+                          ]"
+                        ></div>
                       </div>
                       <div class="exchange-card-item exchange-card-left">
                         <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
+                          <template v-if="item.couponType === 40">
+                            <div class="card-left-top-num">
+                              {{ +item.discountRatio * 10 }}
+                            </div>
+                            <span class="coupon-type">折</span>
+                          </template>
+                          <template v-else>
+                            <div class="card-left-top-type">
+                              ￥
+                            </div>
+                            <div class="card-left-top-num">
+                              {{ item.faceAmount | delPoint }}
+                            </div>
+                          </template>
                         </div>
-                        <div class="exchange-card-left-bottom">无门槛立减</div>
+                        <div class="exchange-card-left-bottom">
+                          {{ couponType(item) }}
+                        </div>
                       </div>
                       <div
-                        v-if="item !== 2"
                         class="coupon-desc-wrap"
-                        :ref="`coouponDesc${index}`"
+                        :ref="`tab${index}couponDesc${cIndex}`"
                       >
                         <div
                           class="coupon-desc"
-                          :ref="`coouponDesc${index}Cont`"
+                          :ref="`tab${index}couponDesc${cIndex}Cont`"
                         >
                           <div class="coupon-desc-li">
-                            使用说明：平台10元通用优惠券，单笔订单满88元可使用。
-                          </div>
-                          <div class="coupon-desc-li">
-                            使用说明：平台10元通用优惠券;
+                            {{ item.memo }}
                           </div>
                           <div class="coupon-desc-num">
-                            券编号：XCT200708001
+                            券编号：{{ item.couTypeCode }}
                           </div>
                         </div>
                       </div>
@@ -122,10 +152,12 @@
 <script>
 import api from "@/api";
 import nav from "@zkty-team/x-engine-module-nav";
+import localstorage from "@zkty-team/x-engine-module-localstorage";
 import * as moment from "moment";
 import _ from "lodash";
 import mixin from "../mixin/pageList";
 import Null from "@/components/null";
+const defaultImg = require("@/assets/img/coupons/coupon-default.png");
 
 export default {
   mixins: [mixin],
@@ -133,6 +165,7 @@ export default {
     return {
       isActive: true,
       active: 0,
+      defaultImg: defaultImg,
       loading: false,
       showNull: false,
       nullMsg: "",
@@ -144,16 +177,13 @@ export default {
       tabList: [
         {
           label: "已使用",
-          status: "1"
+          status: "40"
         },
         {
           label: "已过期",
-          status: "2"
+          status: "70"
         }
-      ],
-      list: [],
-      pageIndex: [],
-      total: []
+      ]
     };
   },
   components: {
@@ -161,7 +191,13 @@ export default {
   },
   created() {
     this.paramsList();
-    // this.petsQueryInit();
+    localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+      this.memberId = res.result;
+      localStorage.setItem("memberId", this.memberId);
+      this.getList();
+    });
+    // this.memberId = "2212946938230210585";
+    // this.getList();
   },
   mounted() {
     nav.setNavLeftBtn({
@@ -170,36 +206,16 @@ export default {
       titleSize: 24,
       titleFontName: "PingFangSC-Medium"
     });
-    this.memberId = "2309350880803029654";
-    this.getList();
+    // this.getList();
   },
   methods: {
-    collapse(ref) {
-      const element = this.$refs[ref][0];
-      const height = element.offsetHeight;
-      if (height === 0) {
-        element.style.display = "block";
-        this.$nextTick(() => {
-          const elemetCont = this.$refs[`${ref}Cont`][0];
-          const Contheight = elemetCont.offsetHeight;
-
-          element.style.height = Contheight + "px";
-          this.$refs[`${ref}Icon`][0].style.transform = "rotate(-180deg)";
-        });
-      } else {
-        element.style.height = 0;
-        const elemetCont = this.$refs[`${ref}Cont`][0];
-        const Contheight = elemetCont.offsetHeight;
-        this.$refs[`${ref}Icon`][0].style.transform = "rotate(0deg)";
-        setTimeout(() => {
-          element.style.display = "none";
-        }, 300);
-      }
+    getTime(time) {
+      const date = new Date(+time);
+      return moment(date).format("YYYY.MM.DD");
     },
-
     loadMore() {
       const tabIndex = this.active;
-      if (this.canLoadMore[tabIndex]) {
+      if (this.list[tabIndex].length < this.total[tabIndex]) {
         this.getList();
       }
     },
@@ -207,28 +223,29 @@ export default {
       const tabIndex = this.active;
       const params = {
         memberId: this.memberId,
-        pageIndex: 1,
+        pageIndex: this.pageIndex[tabIndex],
         pageSize: 10,
-        status: 2
+        businessType: 0,
+        state: this.tabList[tabIndex].status
       };
       this.loading = true;
       this.busy = true;
       this.toast();
       api
-        .queryMemberUseCouponList(params)
+        .queryMemberCouponList(params)
         .then(res => {
           if (res.code === 200) {
             this.$toast.clear();
-            const list = res.data || [];
+            let list = [];
+            res.data && (list = res.data.records || []);
             this.list[tabIndex] =
               params.pageIndex === 1
                 ? list
                 : _.concat(this.list[tabIndex], list);
-
             list.length < params.pageSize &&
               (this.canLoadMore[tabIndex] = false);
             this.total[tabIndex] = (res.data && res.data.total) || 0;
-            this.pageIndex[tabIndex]++;
+            list.length && this.pageIndex[tabIndex]++;
           }
         })
         .finally(() => {
@@ -236,13 +253,6 @@ export default {
           this.loading = false;
         });
     }
-  },
-  watch: {
-    // petsUpdateList: {
-    //   handler(newVal) {},
-    //   immediate: true, //刷新加载 立马触发一次handler
-    //   deep: true // 可以深度检测到对象的属性值的变化
-    // }
   }
 };
 </script>
@@ -351,6 +361,7 @@ export default {
                     justify-content: center;
                     align-items: center;
                     margin-bottom: 8px;
+                    color: #fff;
                     .card-left-top-type {
                       height: 16px;
                       font-size: 16px;
@@ -360,7 +371,7 @@ export default {
                       line-height: 16px;
                     }
                     .card-left-top-num {
-                      height: 28px;
+                      height: 24px;
                       font-size: 28px;
                       font-family: PingFangSC-Semibold, PingFang SC;
                       font-weight: 600;
@@ -420,33 +431,38 @@ export default {
                     align-items: stretch;
                     flex: 1;
                     padding-left: 12px;
+                    flex-flow: row wrap;
 
                     .card-right-left-top {
                       font-size: 14px;
                       font-family: PingFangSC-Medium, PingFang SC;
                       font-weight: 500;
                       color: #121212;
-                      white-space: normal;
-                      word-wrap: break-word;
-                      word-break: break-all;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      display: -webkit-box;
+                      -webkit-line-clamp: 2;
+                      line-clamp: 2;
+                      -webkit-box-orient: vertical;
                     }
                     .card-right-left-middle {
-                      padding-top: 6px;
-                      height: 22px;
-                      font-size: 12px;
+                      padding-top: 0.16rem;
+                      font-size: 0.24rem;
                       font-family: PingFangSC-Regular, PingFang SC;
                       font-weight: 400;
                       color: #8d8d8d;
-                      line-height: 16px;
+                      align-self: flex-end;
+                      line-height: 1;
                     }
                     .card-right-left-bottom {
-                      padding-top: 10px;
-                      height: 22px;
-                      font-size: 10px;
+                      padding-top: 0.2rem;
+                      padding-bottom: 0.2rem;
+                      font-size: 0.2rem;
                       font-family: PingFangSC-Regular, PingFang SC;
                       font-weight: 400;
                       color: #bfbfbf;
-                      line-height: 12px;
+                      line-height: 1;
+                      align-self: flex-end;
                     }
                   }
                   .exchange-card-right-right {
@@ -464,6 +480,7 @@ export default {
                       background-position: center center;
                       background-size: 100% 100%;
                     }
+
                     .disabled-btn {
                       width: 68px;
                       height: 24px;
@@ -481,8 +498,16 @@ export default {
                 .icon-arrow-down {
                   vertical-align: bottom;
                   transition: all 0.3s;
+                  bottom: -1px;
+                }
+                .goodsimg {
+                  width: 72px;
+                  height: 72px;
+                  border-radius: 4px;
+                  overflow: hidden;
                 }
                 .coupon-desc-wrap {
+                  width: 100%;
                   height: 0;
                   display: none;
                   overflow: hidden;
@@ -502,11 +527,25 @@ export default {
                     }
                   }
                 }
+                .coupon-type {
+                  font-size: 14px;
+                  font-family: PingFangSC-Medium, PingFang SC;
+                  font-weight: 500;
+                  color: #ffffff;
+                  margin-left: 4px;
+                }
               }
               .row-reverse {
                 flex-flow: row-reverse;
+                flex-wrap: wrap;
                 .exchange-card-left {
                   background-image: url("../../../assets/img/coupons/gray_left.png");
+                }
+                .exchange-card-right .exchange-card-right-left {
+                  padding-left: 0;
+                }
+                .exchange-card-right {
+                  flex-flow: row-reverse;
                 }
               }
               .bangdou-exchange-rules {
@@ -526,55 +565,23 @@ export default {
         }
       }
     }
+    .card-used {
+      width: 49px;
+      height: 52px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 99;
 
-    .card-used-right {
-      width: 49px;
-      height: 52px;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      z-index: 99;
-      background-image: url("../../../assets/img/coupons/has_used.png");
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 49px 52px;
-    }
-    .card-used-left {
-      width: 49px;
-      height: 52px;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      z-index: 99;
-      background-image: url("../../../assets/img/coupons/has_used.png");
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: 49px 52px;
-    }
-
-    .card-expired-right {
-      width: 49px;
-      height: 52px;
-      position: absolute;
-      bottom: 0;
-      right: 101px;
-      z-index: 99;
-      background-image: url("../../../assets/img/coupons/has_expired.png");
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: 49px 52px;
-    }
-    .card-expired-left {
-      width: 49px;
-      height: 52px;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      z-index: 99;
-      background-image: url("../../../assets/img/coupons/has_expired.png");
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: 49px 52px;
+      &.used-img {
+        background-image: url("../../../assets/img/coupons/has_used.png");
+      }
+      &.expired-img {
+        background-image: url("../../../assets/img/coupons/has_expired.png");
+      }
     }
 
     .exchange-main-null {

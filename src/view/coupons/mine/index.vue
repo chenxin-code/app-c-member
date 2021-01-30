@@ -1,6 +1,6 @@
 <template>
   <div class="exchange-container">
-    <div class="exchange-info" style="padding-bottom: 264px;">
+    <div class="exchange-info" style="padding-bottom: 78px;">
       <div
         class="exchange-tab-wrap"
         ref="scrollContent"
@@ -12,82 +12,119 @@
       >
         <van-tabs v-model="active" :sticky="true" @click="tabChange">
           <van-tab
-            v-for="tab in tabList"
+            v-for="(tab, index) in tabList"
             :key="tab.businessType"
             :title="tab.label"
           >
             <div class="bangdou-exchange-wrap">
               <div class="bangdou-exchange">
                 <div class="bangdou-exchange-body">
-                  <!-- <zk-empty
-                    v-show="!list[index].length && !loading"
+                  <zk-empty
+                    v-show="!loading && !list[index].length"
                     image="coupon"
                     description="暂无卡券"
-                  ></zk-empty> -->
+                  ></zk-empty>
                   <div class="exchange-body-item">
                     <div
+                      v-for="(item, cindex) in list[index]"
+                      :key="`tab${index}${item.id}`"
                       class="bangdou-exchange-card"
                       :class="[
-                        { 'row-reverse': item === 2 },
-                        { shopping: item === 2 }
+                        {
+                          'row-reverse': item.activity !== '4014'
+                        },
+                        {
+                          shopping: item.activity !== '4014'
+                        }
                       ]"
-                      v-for="(item, index) in 3"
-                      :key="item"
                     >
                       <div class="exchange-card-item exchange-card-left">
                         <div class="exchange-card-left-top">
-                          <div class="card-left-top-type">￥</div>
-                          <div class="card-left-top-num">5</div>
+                          <template v-if="item.couponType === 40">
+                            <div class="card-left-top-num">
+                              {{ +item.discountRatio * 10 }}
+                            </div>
+                            <span class="coupon-type">折</span>
+                          </template>
+                          <template v-else>
+                            <div class="card-left-top-type">
+                              ￥
+                            </div>
+                            <div class="card-left-top-num">
+                              {{ item.faceAmount | delPoint }}
+                            </div>
+                          </template>
+                          <!-- <div class="card-left-top-type">￥</div>
+                          <div class="card-left-top-num">
+                            {{ item.faceAmount }}
+                          </div> -->
                         </div>
-                        <div class="exchange-card-left-bottom">满100元可用</div>
-                        <div class="exchange-card-left-btn">邦豆兑换</div>
+                        <div class="exchange-card-left-bottom">
+                          {{ couponType(item) }}
+                        </div>
+                        <!-- <div class="exchange-card-left-bottom">满100元可用</div> -->
+                        <div
+                          class="exchange-card-left-btn"
+                          @click="useCoupon(item)"
+                        >
+                          去使用
+                        </div>
                       </div>
                       <div class="exchange-card-item exchange-card-right">
                         <div class="exchange-card-right-left">
-                          <div class="card-right-left-top">物业抵扣券</div>
+                          <div class="card-right-left-top">
+                            {{ item.couponTitle }}
+                          </div>
                           <div class="card-right-left-middle">
-                            2021.01.01-2021.01.0
+                            {{ getTime(item.validityStartTime) }}-{{
+                              getTime(item.validityEndTime)
+                            }}
                           </div>
                           <div
                             class="card-right-left-bottom"
-                            @click="collapse(`coouponDesc${index}`)"
+                            @click="collapse(`tab${index}couponDesc${cindex}`)"
                           >
                             使用规则
                             <van-icon
                               name="arrow-down"
                               size="12"
                               class="icon-arrow-down"
-                              :ref="`coouponDesc${index}Icon`"
+                              :ref="`tab${index}couponDesc${cindex}Icon`"
                             ></van-icon>
                           </div>
                         </div>
                         <div class="exchange-card-right-right">
                           <img
                             class="goodsimg"
-                            v-if="item === 2"
-                            src="../../../assets/img/coupons/food.png"
+                            v-if="item.activity !== '4014'"
+                            :src="item.image || defaultImg"
                           />
-                          <div v-else class="exchange-card-right-right-btn">
-                            邦豆兑换
+                          <div
+                            v-else
+                            class="exchange-card-right-right-btn"
+                            @click="useCoupon(item)"
+                          >
+                            去使用
                           </div>
                         </div>
                       </div>
                       <div
                         class="coupon-desc-wrap"
-                        :ref="`coouponDesc${index}`"
+                        :ref="`tab${index}couponDesc${cindex}`"
                       >
                         <div
                           class="coupon-desc"
-                          :ref="`coouponDesc${index}Cont`"
+                          :ref="`tab${index}couponDesc${cindex}Cont`"
                         >
                           <div class="coupon-desc-li">
-                            使用说明：平台10元通用优惠券，单笔订单满88元可使用。
+                            {{ item.memo }}
+                            <!-- 使用说明：平台10元通用优惠券，单笔订单满88元可使用。 -->
                           </div>
-                          <div class="coupon-desc-li">
+                          <!-- <div class="coupon-desc-li">
                             使用说明：平台10元通用优惠券;
-                          </div>
+                          </div> -->
                           <div class="coupon-desc-num">
-                            券编号：XCT200708001
+                            券编号：{{ item.couTypeCode }}
                           </div>
                         </div>
                       </div>
@@ -104,11 +141,16 @@
       </div>
     </div>
     <div class="exchange-footer">
-      <div class="exchange-footer-left" @click="goUseLog">使用记录</div>
+      <!-- <div class="exchange-footer-left" @click="goUseLog">使用记录</div>
       <div class="exchange-footer-center"></div>
       <div class="exchange-footer-right" @click="goExchangeCoupon">
         兑换优惠券
+      </div> -->
+      <div class="exchange-footer-item" @click="goUseLog">使用记录</div>
+      <div class="exchange-footer-item" @click="linkPropertyCoupon">
+        旧介新物业券
       </div>
+      <div class="exchange-footer-item" @click="linkCoupon">其他卡券</div>
     </div>
   </div>
 </template>
@@ -117,29 +159,35 @@
 import api from "@/api";
 import nav from "@zkty-team/x-engine-module-nav";
 import localstorage from "@zkty-team/x-engine-module-localstorage";
-// import * as moment from "moment";
+import router from "@zkty-team/x-engine-module-router";
+import yjzdbill from "@zkty-team/x-engine-module-yjzdbill";
+import * as moment from "moment";
 import Null from "@/components/null";
 import mixin from "../mixin/pageList";
 import _ from "lodash";
+const defaultImg = require("@/assets/img/coupons/coupon-default.png");
 
 export default {
   mixins: [mixin],
   data() {
     return {
       activeName: 1,
+      userInfo: {},
+      defaultImg: defaultImg,
       pbStyle: {
         paddingBottom: "164px"
       },
-      loading: false,
       showNull: false,
       nullMsg: "",
       // ---分隔符---
       //宠物信息
       petsUpdateList: [],
       // ___________________________________________
+      devServer: "dev",
       active: 0,
       memberId: "",
       busy: false,
+      outUrlRefresh: true, //控制跳外部链接刷新
       tabList: [
         {
           label: "全部",
@@ -147,11 +195,11 @@ export default {
         },
         {
           label: "物业抵扣券",
-          businessType: "4014"
+          businessType: "200005"
         },
         {
           label: "购物券",
-          businessType: "4005"
+          businessType: "200001"
         }
       ],
       scroll: 0,
@@ -161,24 +209,25 @@ export default {
   components: {
     Null
   },
-  created() {},
+  created() {
+    this.paramsList();
+  },
   mounted() {
-    nav.setNavRightBtn({
-      title: "其他卡券",
-      titleColor: "#000000",
-      titleSize: 16,
-      iconSize: ["20", "20"],
-      __event__: () => {
-        this.$router.go(-1);
-      }
-    });
-
     nav.setNavLeftBtn({
       title: "我的卡券",
       titleColor: "#121212",
       titleSize: 24,
       titleFontName: "PingFangSC-Medium"
     });
+    // nav.setNavRightBtn({
+    //   title: "兑换优惠券",
+    //   titleColor: "#000000",
+    //   titleSize: 16,
+    //   iconSize: ["20", "20"],
+    //   __event__: () => {
+    //     this.$routeHelper.router(this, "/exchangeCoupon", null, true);
+    //   }
+    // });
   },
   activated() {
     if (this.pageRefresh) {
@@ -187,27 +236,109 @@ export default {
         this.memberId = res.result;
         localStorage.setItem("memberId", this.memberId);
         this.getList();
+        this.getUserInfo();
       });
-      this.memberId = "2248629234467607163";
-      this.getList();
+      // this.memberId = "2212946938230210585";
+      // this.getList();
+      // this.getUserInfo();
     } else {
       this.$refs.scrollContent.scrollTo(0, this.scroll);
+      !this.outUrlRefresh && (this.outUrlRefresh = true);
     }
   },
   beforeRouteLeave(to, from, next) {
     if (to.name === "useLog") {
       this.pageRefresh = false;
     } else {
-      this.pageRefresh = true;
+      // 跳转物业券，其他卡券 不刷新
+      if (!this.outUrlRefresh) {
+        this.pageRefresh = false;
+      } else {
+        this.pageRefresh = true;
+      }
     }
     next();
   },
   methods: {
     loadMore() {
       const tabIndex = this.active;
-      if (this.canLoadMore[tabIndex]) {
+      if (this.list[tabIndex].length < this.total[tabIndex]) {
         this.getList();
       }
+    },
+    getTime(time) {
+      const date = new Date(+time);
+      return moment(date).format("YYYY.MM.DD");
+    },
+    useCoupon(data) {
+      if (data.activity === "4014") {
+        this.openDeital();
+        // this.
+      } else if (data.activity === "4005") {
+        this.openMall(data);
+        // console.log("打开商城");
+      }
+    },
+    async openMall(data) {
+      let uri;
+      if (this.devServer === "dev") {
+        uri = "http://mall-uat-app-linli.timesgroup.cn";
+      } else {
+        uri = "http://mall-prod-app-linli.timesgroup.cn";
+      }
+      const datestr = Number(new Date());
+      let token;
+      await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
+        token = res.result;
+      });
+      const url = `${uri}/app/index?token=${token}&redirect=${uri}/#/mall2/list/${datestr}?pageType=coupon&coupon=${data.couponType}&couThresholdAmount=${data.satisfyAmount}&couFaceValue=${data.faceAmount}&lastPath=%2Fcoupon_list&endTime=${data.validityEndTime}`;
+      router.openTargetRouter({
+        type: "h5",
+        uri: url
+      });
+    },
+    // 打开账单中心
+    openDeital() {
+      const userId = this.userInfo.phone;
+      api.getCustomUser().then(res => {
+        if (res.code == 200) {
+          this.$toast.clear();
+          if (res.data.length > 0) {
+            var userRoomNo = "";
+            for (var i = 0; i < res.data.length; i++) {
+              userRoomNo = userRoomNo
+                .concat(res.data[i].custRoomId)
+                .concat("|");
+            }
+            userRoomNo = userRoomNo.slice(0, userRoomNo.length - 1);
+            console.log(userRoomNo);
+            yjzdbill.YJBillList({
+              businessCstNo: userId,
+              userRoomNo: userRoomNo,
+              roomNo: "",
+              billStatus: 10,
+              billType: 1,
+              appScheme: "x-engine",
+              payType: false
+            });
+          } else {
+            yjzdbill.YJBillList({
+              businessCstNo: userId,
+              userRoomNo: "",
+              roomNo: "",
+              billStatus: 10,
+              billType: 1,
+              appScheme: "x-engine",
+              payType: false
+            });
+          }
+        }
+      });
+    },
+    getUserInfo() {
+      api.getUserInfo().then(res => {
+        this.userInfo = res.data || {};
+      });
     },
     getList() {
       const tabIndex = this.active;
@@ -215,7 +346,8 @@ export default {
         memberId: this.memberId,
         pageIndex: this.pageIndex[tabIndex],
         pageSize: 10,
-        activity: 0
+        businessType: this.tabList[tabIndex].businessType,
+        state: 20
       };
       this.loading = true;
       this.busy = true;
@@ -225,16 +357,16 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.$toast.clear();
-            const list = res.data || [];
+            let list = [];
+            res.data && (list = res.data.records || []);
             this.list[tabIndex] =
               params.pageIndex === 1
                 ? list
                 : _.concat(this.list[tabIndex], list);
             list.length < params.pageSize &&
               (this.canLoadMore[tabIndex] = false);
-
             this.total[tabIndex] = (res.data && res.data.total) || 0;
-            this.pageIndex[tabIndex]++;
+            list.length && this.pageIndex[tabIndex]++;
           }
         })
         .finally(() => {
@@ -246,6 +378,45 @@ export default {
       this.scroll = this.$refs.scrollContent.scrollTop;
       this.$routeHelper.router(this, "/useLog", null, false);
     },
+    linkPropertyCoupon() {
+      if (!this.userInfo.phone) {
+        return this.$toast("手机号无效");
+      }
+      let uri;
+      if (this.devServer === "dev") {
+        uri = "http://apiv3.linli580.com.cn";
+      } else {
+        uri = "http://apiv3.linli580.com";
+      }
+      const url = `${uri}/coupon/?phone=${this.userInfo.phone}`;
+      this.outUrlRefresh = false;
+      this.scroll = this.$refs.scrollContent.scrollTop;
+      router.openTargetRouter({
+        type: "h5",
+        uri: url
+      });
+    },
+    async linkCoupon() {
+      let token;
+      await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
+        token = res.result;
+      });
+      // test: https://dev-mall-linli.timesgroup.cn/H5/#/anitransferMy?token=
+      // prod: https://mall-linli.timesgroup.cn/H5/#/anitransferMy?token=
+      let uri;
+      if (this.devServer === "dev") {
+        uri = "https://dev-mall-linli.timesgroup.cn";
+      } else {
+        uri = "https://mall-linli.timesgroup.cn";
+      }
+      const url = `${uri}/H5/#/anitransferMy?token=${token}`;
+      this.outUrlRefresh = false;
+      this.scroll = this.$refs.scrollContent.scrollTop;
+      router.openTargetRouter({
+        type: "h5",
+        uri: url
+      });
+    },
     goExchangeCoupon: function() {
       this.$routeHelper.router(this, "/exchangeCoupon", null, true);
     }
@@ -255,12 +426,11 @@ export default {
 
 <style lang="less" scoped>
 .exchange-container {
-  /deep/ .van-tabs__wrap {
-    box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
-  }
   .exchange-info {
     font-size: 18px;
-
+    /deep/ .van-tabs__wrap {
+      box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
+    }
     ::v-deep .van-tab--active {
       color: #121212 !important;
     }
@@ -328,6 +498,7 @@ export default {
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
+                    color: #fff;
                     .card-left-top-type {
                       font-size: 16px;
                       font-family: PingFangSC-Medium, PingFang SC;
@@ -335,7 +506,7 @@ export default {
                       color: #ffffff;
                     }
                     .card-left-top-num {
-                      font-size: 28px;
+                      font-size: 24px;
                       font-family: PingFangSC-Medium, PingFang SC;
                       font-weight: 500;
                       color: #ffffff;
@@ -382,37 +553,42 @@ export default {
 
                   .exchange-card-right-left {
                     flex: 1;
-                    padding: 19px 7px 0 0px;
+                    // padding: 19px 7px 0 0px;
+                    padding-top: 14px;
                     display: flex;
                     flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: stretch;
+                    flex-flow: row wrap;
 
                     .card-right-left-top {
                       font-size: 14px;
                       font-family: PingFangSC-Medium, PingFang SC;
                       font-weight: 500;
                       color: #121212;
-                      white-space: normal;
-                      word-wrap: break-word;
-                      word-break: break-all;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      display: -webkit-box;
+                      -webkit-line-clamp: 2;
+                      line-clamp: 2;
+                      -webkit-box-orient: vertical;
                     }
                     .card-right-left-middle {
-                      padding-top: 10px;
-                      height: 26px;
+                      padding-top: 8px;
                       font-size: 12px;
                       font-family: PingFangSC-Regular, PingFang SC;
                       font-weight: 400;
                       color: #8d8d8d;
-                      line-height: 16px;
+                      align-self: flex-end;
+                      line-height: 1;
                     }
                     .card-right-left-bottom {
-                      padding-top: 20px;
+                      padding-top: 10px;
+                      padding-bottom: 10px;
                       font-size: 10px;
                       font-family: PingFangSC-Regular, PingFang SC;
                       font-weight: 400;
                       color: #bfbfbf;
-                      line-height: 12px;
+                      line-height: 1;
+                      align-self: flex-end;
                     }
                   }
                   .exchange-card-right-right {
@@ -438,8 +614,16 @@ export default {
                       font-family: PingFangSC-Medium, PingFang SC;
                       font-weight: 500;
                       color: #ffffff;
+                      margin-left: 7px;
                     }
                   }
+                }
+                .coupon-type {
+                  font-size: 14px;
+                  font-family: PingFangSC-Medium, PingFang SC;
+                  font-weight: 500;
+                  color: #ffffff;
+                  margin-left: 4px;
                 }
               }
 
@@ -458,6 +642,7 @@ export default {
               .coupon-desc-wrap {
                 height: 0;
                 display: none;
+                width: 100%;
                 overflow: hidden;
                 -webkit-transition: height 0.3s ease-in-out;
                 transition: height 0.3s ease-in-out;
@@ -479,6 +664,7 @@ export default {
               .icon-arrow-down {
                 vertical-align: bottom;
                 transition: all 0.3s;
+                bottom: -1px;
               }
               .goodsimg {
                 width: 72px;
@@ -534,7 +720,7 @@ export default {
     justify-content: center;
     align-items: center;
 
-    .exchange-footer-left {
+    .exchange-footer-item {
       flex: 1;
       height: 14px;
       font-size: 14px;
@@ -542,11 +728,21 @@ export default {
       font-weight: 500;
       color: #121212;
       line-height: 14px;
-
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      position: relative;
+      & + .exchange-footer-item::before {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        height: 14px;
+        background: #d8d8d8;
+      }
     }
     .exchange-footer-center {
       width: 1px;

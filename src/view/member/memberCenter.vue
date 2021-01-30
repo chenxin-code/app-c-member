@@ -90,9 +90,11 @@
               </div>
             </div>
           </div>
-
           <!-- 邦豆兑换 -->
-          <div class="bangdou-exchange">
+          <div
+            class="bangdou-exchange"
+            v-if="propertyList.length || vouchersList.length"
+          >
             <div class="bangdou-exchange-header">
               <div class="exchange-header-title">
                 邦豆兑换
@@ -102,88 +104,115 @@
               </div>
             </div>
             <div class="bangdou-exchange-body">
-              <div class="exchange-body-item1">
-                <div class="bangdou-exchange-card">
+              <div class="exchange-body-item1" v-if="propertyList.length">
+                <div
+                  class="bangdou-exchange-card"
+                  v-for="item in propertyList"
+                  :key="item.id"
+                >
                   <div class="exchange-card-item exchange-card-left">
                     <div class="exchange-card-left-top">
-                      <div class="card-left-top-type">￥</div>
-                      <div class="card-left-top-num">5</div>
+                      <template v-if="item.couponType === 40">
+                        <div class="card-left-top-num">
+                          {{ +item.discountRatio * 10 }}
+                        </div>
+                        <span class="coupon-type">折</span>
+                      </template>
+                      <template v-else>
+                        <div class="card-left-top-type">
+                          ￥
+                        </div>
+                        <div class="card-left-top-num">
+                          {{ item.faceAmount | delPoint }}
+                        </div>
+                      </template>
                     </div>
-                    <div class="exchange-card-left-bottom">满100元可用</div>
+                    <div class="exchange-card-left-bottom">
+                      {{ couponType(item) }}
+                    </div>
                   </div>
                   <div class="exchange-card-item exchange-card-right">
                     <div class="exchange-card-right-left">
-                      <div class="card-right-left-top">超级吃货优惠券</div>
+                      <div class="card-right-left-top">
+                        {{ item.couponTitle }}
+                      </div>
                       <div class="card-right-left-bottom">
-                        <span class="card-right-left-bottom-left">9</span>
+                        <span class="card-right-left-bottom-left">{{
+                          item.integrealCount
+                        }}</span>
                         <span class="card-right-left-bottom-right">邦豆</span>
                       </div>
                     </div>
                     <div class="exchange-card-right-right">
-                      <div class="exchange-card-right-right-btn">邦豆兑换</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="bangdou-exchange-card">
-                  <div class="exchange-card-item exchange-card-left">
-                    <div class="exchange-card-left-top">
-                      <div class="card-left-top-type">￥</div>
-                      <div class="card-left-top-num">5</div>
-                    </div>
-                    <div class="exchange-card-left-bottom">满100元可用</div>
-                  </div>
-                  <div class="exchange-card-item exchange-card-right">
-                    <div class="exchange-card-right-left">
-                      <div class="card-right-left-top">超级吃货优惠券</div>
-                      <div class="card-right-left-bottom">
-                        <span class="card-right-left-bottom-left">9</span>
-                        <span class="card-right-left-bottom-right">邦豆</span>
+                      <div
+                        v-if="item.goUse"
+                        class="exchange-card-right-right-btn"
+                        @click="useCoupon(item)"
+                      >
+                        去使用
                       </div>
-                    </div>
-                    <div class="exchange-card-right-right">
-                      <div class="exchange-card-right-right-btn">邦豆兑换</div>
+                      <div
+                        v-else
+                        class="exchange-card-right-right-btn"
+                        @click="exchange(item)"
+                      >
+                        邦豆兑换
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="exchange-body-item2">
-                <div class="bangdou-exchange-card">
+              <div class="exchange-body-item2" v-if="vouchersList.length">
+                <div
+                  class="bangdou-exchange-card"
+                  v-for="item in vouchersList"
+                  :key="item.id"
+                >
                   <div class="exchange-card-item exchange-card-right">
                     <div class="exchange-card-right-right">
                       <div class="exchange-card-right-right-btn"></div>
                     </div>
                     <div class="exchange-card-right-left">
                       <div class="card-right-left-top">
-                        仅可购买邻里商城生鲜区、冷冻区
+                        {{ item.couponTitle }}
                       </div>
                     </div>
                   </div>
                   <div class="exchange-card-item exchange-card-left">
                     <div class="exchange-card-left-top">
-                      <div class="card-left-top-type">￥</div>
-                      <div class="card-left-top-num">5</div>
+                      <template v-if="item.couponType === 40">
+                        <div class="card-left-top-num">
+                          {{ +item.discountRatio * 10 }}
+                        </div>
+                        <span class="coupon-type">折</span>
+                      </template>
+                      <template v-else>
+                        <div class="card-left-top-type">
+                          ￥
+                        </div>
+                        <div class="card-left-top-num">
+                          {{ item.faceAmount | delPoint }}
+                        </div>
+                      </template>
                     </div>
-                    <div class="exchange-card-left-bottom">满100元可用</div>
-                    <div class="exchange-card-left-btn">邦豆兑换</div>
-                  </div>
-                </div>
-                <div class="bangdou-exchange-card">
-                  <div class="exchange-card-item exchange-card-right">
-                    <div class="exchange-card-right-right">
-                      <div class="exchange-card-right-right-btn"></div>
+                    <div class="exchange-card-left-bottom">
+                      {{ couponType(item) }}
                     </div>
-                    <div class="exchange-card-right-left">
-                      <div class="card-right-left-top">
-                        仅可购买邻里商城生鲜区、冷冻区
-                      </div>
+
+                    <div
+                      v-if="item.goUse"
+                      class="exchange-card-left-btn"
+                      @click="useCoupon(item)"
+                    >
+                      去使用
                     </div>
-                  </div>
-                  <div class="exchange-card-item exchange-card-left">
-                    <div class="exchange-card-left-top">
-                      <div class="card-left-top-type">￥</div>
-                      <div class="card-left-top-num">5</div>
+                    <div
+                      v-else
+                      class="exchange-card-left-btn"
+                      @click="exchange(item)"
+                    >
+                      邦豆兑换
                     </div>
-                    <div class="exchange-card-left-bottom">满100元可用</div>
                   </div>
                 </div>
               </div>
@@ -228,7 +257,11 @@
 import nav from "@zkty-team/x-engine-module-nav";
 import api from "@/api";
 import localstorage from "@zkty-team/x-engine-module-localstorage";
+import couponMixin from "../coupons/mixin/getCoupon-mixin";
+const defaultImg = require("@/assets/img/coupons/coupon-default.png");
+
 export default {
+  mixins: [couponMixin],
   data() {
     return {
       currentLeve: 1,
@@ -243,14 +276,17 @@ export default {
       phoneArea: "81",
       differencePercentage: 0,
       integralRecordData: [],
+      propertyList: [],
+      vouchersList: [],
       memberObject: null
     };
   },
 
   activated() {
-    // this.memberId = "2331048196588962531"; //生产需注释
+    // this.memberId = "2212946938230210585"; //生产需注释
     // localStorage.setItem("memberId", this.memberId); //生产需注释
     // this.getMemberDetail(); //生产需注释
+    // this.queryReceiveCouponList();
 
     //生产需打开
     if (this.$route.meta.isBack != true) {
@@ -258,6 +294,7 @@ export default {
         this.memberId = res.result;
         localStorage.setItem("memberId", this.memberId);
         this.getMemberDetail();
+        this.queryReceiveCouponList();
       });
     }
   },
@@ -351,8 +388,11 @@ export default {
         }
       });
     },
+
     seemoreExchange: function() {
-      this.$routeHelper.router(this, "/bangdouExchange", null, false);
+      this.$routerHelper.push({
+        path: "/bangdouExchange"
+      });
     },
     goPage: function() {
       this.$routeHelper.router(this, "/gradeDescription", null, false);
@@ -412,6 +452,97 @@ export default {
       this.getMyTaskListByMember(this.memberId);
       this.$forceUpdate();
     },
+    exchange(data) {
+      this.toast();
+      api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
+        if (res.code === 200) {
+          if (+data.integrealCount > +res.data.integral) {
+            return this.$toast("剩余邦豆不足");
+          }
+          const rest = +res.data.integral - +data.integrealCount;
+          this.$toast.clear();
+          this.$dialog
+            .confirm({
+              title: "确认兑换",
+              message: `本次消耗${data.integrealCount}\n当前剩余${res.data.integral}\n兑换后剩余${rest}`
+            })
+            .then(() => {
+              const params = {
+                couActivitiesId: data.id,
+                memberId: this.memberId,
+                integral: data.integrealCount
+              };
+              this.toast();
+              api.integralConversion(params).then(res => {
+                if (res.code === 200) {
+                  if (res.data.result) {
+                    this.$toast("兑换成功");
+                    // 该券当前人
+                    const couponDay =
+                      res.data.canCouponDayTotal === res.data.couponDayTotal;
+                    const couponPersonDay =
+                      res.data.canCouponPersonDayTotal ===
+                      res.data.couponPersonDayTotal;
+                    const couponPerson =
+                      res.data.canCouponPersonTotal ===
+                      res.data.couponPersonTotal;
+                    const couponTotal =
+                      res.data.canCouponTotal === res.data.couponTotal;
+                    // 存在上限，变更按钮为 '去使用'
+                    if (
+                      couponDay ||
+                      couponPersonDay ||
+                      couponPerson ||
+                      couponTotal
+                    ) {
+                      this.$set(data, "goUse", true);
+                    }
+                  } else {
+                    this.$toast("兑换失败");
+                  }
+                }
+              });
+            });
+        }
+      });
+    },
+    couponType(item) {
+      if (item.couponType === 10) {
+        return `无门槛立减`;
+      } else if (item.couponType === 20) {
+        return `满${item.satisfyAmount}元可用`;
+      } else if (item.couponType === 40) {
+        return `满${item.satisfyAmount}元可用`;
+      }
+    },
+    queryReceiveCouponList() {
+      const params = {
+        memberId: this.memberId,
+        pageIndex: 1,
+        pageSize: 4,
+        businessType: 0,
+        condition: 3
+      };
+      api.queryReceiveCouponList(params).then(res => {
+        if (res.code === 200) {
+          this.$toast.clear();
+        }
+        const list = res.data || [];
+        const propertyList = [];
+        const vouchersList = [];
+        list.forEach(item => {
+          // 物业
+          if (item.activity == "4014") {
+            propertyList.push(item);
+          } else if (item.activity == "4005") {
+            // 购物券
+            vouchersList.push(item);
+          }
+        });
+        propertyList.length && (this.propertyList = propertyList);
+        vouchersList.length && (this.vouchersList = vouchersList);
+      });
+    },
     getUserInfo: function() {
       this.getMemberDetail();
       // api.getUserInfo().then((res) => {
@@ -420,6 +551,13 @@ export default {
       //     console.log(res);
       //   }
       // })
+    },
+    toast() {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: "加载中..."
+      });
     },
     integralRecord: function(memberID) {
       this.$toast.loading({
@@ -467,6 +605,7 @@ export default {
       api.memberDetailByMemberID(par).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
+          this.userInfo = res.data;
           this.memberObject = res.data;
           this.pageInitial(res.data);
         }
@@ -873,6 +1012,13 @@ export default {
     }
 
     .bangdou-exchange-body {
+      .coupon-type {
+        font-size: 14px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #ffffff;
+        margin-left: 4px;
+      }
       .exchange-body-item1 {
         width: calc(100% + 16px);
         height: 97px;
@@ -888,12 +1034,12 @@ export default {
           flex-basis: 324px;
           flex-shrink: 0;
           white-space: nowrap;
-          padding-right: 12px;
-
+          margin-right: 12px;
           display: flex;
           flex-direction: row;
           justify-content: center;
           align-items: stretch;
+          box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
 
           .exchange-card-left {
             width: 101px;
@@ -920,7 +1066,7 @@ export default {
                 color: #ffffff;
               }
               .card-left-top-num {
-                font-size: 32px;
+                font-size: 24px;
                 font-family: PingFangSC-Medium, PingFang SC;
                 font-weight: 500;
                 color: #ffffff;
@@ -948,6 +1094,7 @@ export default {
             align-items: stretch;
 
             .exchange-card-right-left {
+              flex: 1;
               padding: 19px 7px 0 12px;
               display: flex;
               flex-direction: column;
@@ -1029,12 +1176,12 @@ export default {
           flex-basis: 324px;
           flex-shrink: 0;
           white-space: nowrap;
-          padding-right: 12px;
-
+          margin-right: 12px;
           display: flex;
           flex-direction: row;
           justify-content: center;
           align-items: stretch;
+          box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
 
           .exchange-card-left {
             width: 101px;
@@ -1063,12 +1210,12 @@ export default {
                 line-height: 16px;
               }
               .card-left-top-num {
-                height: 28px;
-                font-size: 28px;
+                height: 24px;
+                font-size: 24px;
                 font-family: PingFangSC-Semibold, PingFang SC;
                 font-weight: 600;
                 color: #ffffff;
-                line-height: 28px;
+                line-height: 24px;
               }
             }
             .exchange-card-left-bottom {

@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-20 10:31:06
- * @LastEditTime: 2021-01-25 10:19:31
+ * @LastEditTime: 2021-01-27 16:25:37
  */
 import { fetchApi } from '@/utils/ajax'
 import URL from './urlConfig'
@@ -23,5 +23,8 @@ export const queryReceiveCouponList = data => fetchApi(URL.RECEIVE_COUPON_LIST, 
 export const getReceiveCoupon = data => fetchApi(URL.RECEIVE_COUPON, data, "POST") //领取领券
 export const queryMemberUseCouponList = data => fetchApi(URL.MEMBER_USE_COUPON_LIST, data, "GET") //获取会员卡券使用记录
 export const queryMemberCouponList = data => fetchApi(URL.MEMBER_COUPON_LIST, data, "GET") //获取会员卡券使用记录
+export const integralConversion = data => fetchApi(URL.INTEGRALCONVERSION, data, "POST") //获取会员卡券使用记录
+
+
 
 
