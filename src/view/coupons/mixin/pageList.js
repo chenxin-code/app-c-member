@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-24 11:02:49
- * @LastEditTime: 2021-01-29 21:01:40
+ * @LastEditTime: 2021-01-31 01:23:54
  */
 export default {
   data () {
@@ -85,10 +85,7 @@ export default {
     couponType (item) {
       if (item.couponType === 10) {
         return `无门槛立减`;
-      } else if (item.couponType === 20) {
-        const num = this.delPoint(item.satisfyAmount)
-        return `满${num}元可用`;
-      } else if (item.couponType === 40) {
+      } else if (item.couponType === 20 || item.couponType === 40) {
         const num = this.delPoint(item.satisfyAmount)
         return `满${num}元可用`;
       }

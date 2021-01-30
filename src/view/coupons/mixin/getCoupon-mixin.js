@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-28 23:31:05
- * @LastEditTime: 2021-01-29 21:05:28
+ * @LastEditTime: 2021-01-31 01:23:43
  */
 import api from "@/api";
 import router from "@zkty-team/x-engine-module-router";
@@ -53,6 +53,14 @@ export default {
         type: "h5",
         uri: url
       });
+    },
+    couponType (item) {
+      if (item.couponType === 10) {
+        return `无门槛立减`;
+      } else if (item.couponType === 20 || item.couponType === 40) {
+        const num = this.delPoint(item.satisfyAmount)
+        return `满${num}元可用`;
+      }
     },
     // 打开账单中心
     openDeital () {

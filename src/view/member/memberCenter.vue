@@ -91,10 +91,7 @@
             </div>
           </div>
           <!-- 邦豆兑换 -->
-          <div
-            class="bangdou-exchange"
-            v-if="propertyList.length || vouchersList.length"
-          >
+          <div class="bangdou-exchange">
             <div class="bangdou-exchange-header">
               <div class="exchange-header-title">
                 邦豆兑换
@@ -322,9 +319,9 @@ export default {
     if (
       to.name == "growthValueRecord" ||
       to.name == "IntegralRecord" ||
-      to.name == "gradeDescription"
+      to.name == "gradeDescription" ||
+      to.name == "bangdouExchange"
     ) {
-      console.log("bangdouExchange");
       next();
     } else {
       nav.navigatorBack({
@@ -494,7 +491,7 @@ export default {
                     this.$toast("兑换成功");
                     setTimeout(() => {
                       this.getMemberDetail();
-                    }, 1500);
+                    }, 500);
 
                     // 存在上限，变更按钮为 '去使用'
                     if (
@@ -542,15 +539,6 @@ export default {
             });
         }
       });
-    },
-    couponType(item) {
-      if (item.couponType === 10) {
-        return `无门槛立减`;
-      } else if (item.couponType === 20) {
-        return `满${item.satisfyAmount}元可用`;
-      } else if (item.couponType === 40) {
-        return `满${item.satisfyAmount}元可用`;
-      }
     },
     queryReceiveCouponList() {
       const params = {

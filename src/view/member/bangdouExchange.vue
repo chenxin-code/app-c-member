@@ -234,15 +234,6 @@ export default {
         forbidClick: true
       });
     },
-    couponType(item) {
-      if (item.couponType === 10) {
-        return `无门槛立减`;
-      } else if (item.couponType === 20) {
-        return `满${item.satisfyAmount}元可用`;
-      } else if (item.couponType === 40) {
-        return `满${item.satisfyAmount}元可用`;
-      }
-    },
     queryReceiveCouponList() {
       const params = {
         memberId: this.memberId,
