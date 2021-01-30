@@ -245,7 +245,7 @@ export default {
             list.length < params.pageSize &&
               (this.canLoadMore[tabIndex] = false);
             this.total[tabIndex] = (res.data && res.data.total) || 0;
-            this.pageIndex[tabIndex]++;
+            list.length && this.pageIndex[tabIndex]++;
           }
         })
         .finally(() => {

@@ -1,14 +1,6 @@
 <template>
   <div class="member-coupon exchange-info">
-    <div
-      class="exchange-tab-wrap"
-      ref="scrollContent"
-      v-infinite-scroll="loadMore"
-      :infinite-scroll-immediate-check="true"
-      infinite-scroll-disabled="busy"
-      infinite-scroll-throttle-delay="500"
-      infinite-scroll-distance="30"
-    >
+    <div class="exchange-tab-wrap" ref="scrollContent">
       <van-tabs v-model="active" :sticky="true" @click="tabChange">
         <van-tab
           v-for="(tab, index) in tabList"
@@ -235,7 +227,7 @@ export default {
       const params = {
         memberId: this.memberId,
         pageIndex: this.pageIndex[tabIndex],
-        pageSize: 10,
+        pageSize: 9999, // 不分页
         businessType: this.tabList[tabIndex].businessType,
         condition: 1
       };
@@ -255,7 +247,7 @@ export default {
             list.length < params.pageSize &&
               (this.canLoadMore[tabIndex] = false);
             this.total[tabIndex] = (res.data && res.data.total) || 0;
-            this.pageIndex[tabIndex]++;
+            list.length && this.pageIndex[tabIndex]++;
           }
         })
         .finally(() => {
