@@ -17,7 +17,7 @@
                 ></zk-empty>
                 <div class="exchange-body-item">
                   <div
-                    v-for="item in list[index]"
+                    v-for="(item, cIndex) in list[index]"
                     :key="`tab${index}${item.id}`"
                     class="bangdou-exchange-card"
                     :class="[
@@ -61,7 +61,7 @@
                         <div
                           v-else
                           class="exchange-card-left-btn"
-                          @click="getCoupon(item)"
+                          @click="getCoupon(item, index, cIndex)"
                         >
                           立即领取
                         </div>
@@ -85,7 +85,7 @@
                           <div
                             v-else
                             class="exchange-card-right-right-btn"
-                            @click="getCoupon(item)"
+                            @click="getCoupon(item, index, cIndex)"
                           >
                             立即领取
                           </div>
@@ -159,14 +159,43 @@ export default {
   created() {
     this.paramsList();
     localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-      this.memberId = res.result;
-      localStorage.setItem("memberId", this.memberId);
-      this.getList();
-      this.getUserInfo();
+      // app首页进入，获取不到会员信息
+      if (res.result) {
+        this.memberId = res.result;
+        localStorage.setItem("memberId", this.memberId);
+        this.getList();
+        this.getUserInfo();
+      } else {
+        this.toast();
+        this.loading = true;
+        this.getUserInfo(() => {
+          const params = {
+            phone: this.userInfo.phone,
+            phoneArea: this.userInfo.phoneAreaCode
+          };
+          api.memberDetailByPhone(params).then(member => {
+            if (member.code === 200) {
+              this.memberId = member.data.memberId;
+              this.getList();
+            }
+          });
+        });
+      }
     });
-    // this.memberId = "2212946938230210585";
-    // this.getList();
-    // this.getUserInfo();
+    // this.toast();
+    // this.loading = true;
+    // this.getUserInfo(() => {
+    //   const params = {
+    //     phone: this.userInfo.phone,
+    //     phoneArea: this.userInfo.phoneAreaCode
+    //   };
+    //   api.memberDetailByPhone(params).then(member => {
+    //     if (member.code === 200) {
+    //       this.memberId = member.data.memberId;
+    //       this.getList();
+    //     }
+    //   });
+    // });
   },
   mounted() {
     nav.setNavLeftBtn({
@@ -186,34 +215,72 @@ export default {
         })
         .then(res => {
           if (res.code === 200) {
+            // 该券
+            const couponDay =
+              res.data.canCouponDayTotal <= res.data.couponDayTotal;
+            const couponPersonDay =
+              res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+            const couponPerson =
+              res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+            const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
+            // 变更按钮为 '去使用'
+
+            // 删除不显示
+
             if (res.data.result) {
               this.$toast("领取成功");
-              // 该券当前人
-              const couponDay =
-                res.data.canCouponDayTotal === res.data.couponDayTotal;
-              const couponPersonDay =
-                res.data.canCouponPersonDayTotal ===
-                res.data.couponPersonDayTotal;
-              const couponPerson =
-                res.data.canCouponPersonTotal === res.data.couponPersonTotal;
-              const couponTotal =
-                res.data.canCouponTotal === res.data.couponTotal;
-              // 存在上限，变更按钮为 '去使用'
-              if (couponDay || couponPersonDay || couponPerson || couponTotal) {
+              if (
+                couponPersonDay ||
+                couponPerson ||
+                couponPerson ||
+                couponTotal
+              ) {
                 this.$set(data, "goUse", true);
                 // 解决多维数组修改属性无效
                 this.list.push([]);
                 this.list.splice(this.list.length - 1, 1);
               }
             } else {
-              this.$toast("领取失败");
+              // 都未达到上限，后台/数据库处理错误
+              if (
+                !couponDay &&
+                !couponPersonDay &&
+                !couponPerson &&
+                !couponTotal
+              ) {
+                console.log("无存在上限，后台/数据库处理错误");
+                this.$toast("领取失败");
+              } else {
+                if (couponTotal) {
+                  this.list[index].splice(cIndex, 1);
+                  this.list.push([]);
+                  this.list.splice(this.list.length - 1, 1);
+                  return this.$toast("该优惠券已领光");
+                }
+                if (couponDay) {
+                  return this.$toast("该惠券今日已领光");
+                }
+                if (couponPersonDay || couponPerson) {
+                  this.$set(data, "goUse", true);
+                  // 解决多维数组修改属性无效
+                  this.list.push([]);
+                  this.list.splice(this.list.length - 1, 1);
+                }
+                if (couponPersonDay) {
+                  return this.$toast("该优惠券您今日已达领取上限");
+                }
+                if (couponPerson) {
+                  return this.$toast("该优惠券您已达领取上限");
+                }
+              }
             }
           }
         });
     },
-    getUserInfo() {
+    getUserInfo(callBack) {
       api.getUserInfo().then(res => {
         this.userInfo = res.data || {};
+        callBack && callBack();
       });
     },
     loadMore() {

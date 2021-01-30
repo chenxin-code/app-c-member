@@ -107,7 +107,7 @@
               <div class="exchange-body-item1" v-if="propertyList.length">
                 <div
                   class="bangdou-exchange-card"
-                  v-for="item in propertyList"
+                  v-for="(item, cIndex) in propertyList"
                   :key="item.id"
                 >
                   <div class="exchange-card-item exchange-card-left">
@@ -154,7 +154,7 @@
                       <div
                         v-else
                         class="exchange-card-right-right-btn"
-                        @click="exchange(item)"
+                        @click="exchange(item, 0, cIndex)"
                       >
                         邦豆兑换
                       </div>
@@ -175,6 +175,12 @@
                     <div class="exchange-card-right-left">
                       <div class="card-right-left-top">
                         {{ item.couponTitle }}
+                      </div>
+                      <div class="card-right-left-bottom">
+                        <span class="card-right-left-bottom-left">{{
+                          item.integrealCount
+                        }}</span>
+                        <span class="card-right-left-bottom-right">邦豆</span>
                       </div>
                     </div>
                   </div>
@@ -209,7 +215,7 @@
                     <div
                       v-else
                       class="exchange-card-left-btn"
-                      @click="exchange(item)"
+                      @click="exchange(item, 1, cIndex)"
                     >
                       邦豆兑换
                     </div>
@@ -304,8 +310,7 @@ export default {
     if (
       from.name == "growthValueRecord" ||
       from.name == "IntegralRecord" ||
-      from.name == "gradeDescription" ||
-      from.name == "bangdouExchange"
+      from.name == "gradeDescription"
     ) {
       to.meta.isBack = true;
     } else {
@@ -317,9 +322,9 @@ export default {
     if (
       to.name == "growthValueRecord" ||
       to.name == "IntegralRecord" ||
-      to.name == "gradeDescription" ||
-      to.name == "bangdouExchange"
+      to.name == "gradeDescription"
     ) {
+      console.log("bangdouExchange");
       next();
     } else {
       nav.navigatorBack({
@@ -452,7 +457,7 @@ export default {
       this.getMyTaskListByMember(this.memberId);
       this.$forceUpdate();
     },
-    exchange(data) {
+    exchange(data, type, index) {
       this.toast();
       api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
         if (res.code === 200) {
@@ -473,21 +478,20 @@ export default {
                 integral: data.integrealCount
               };
               this.toast();
-              api.integralConversion(params).then(res => {
+              api.getReceiveCoupon(params).then(res => {
                 if (res.code === 200) {
+                  const couponDay =
+                    res.data.canCouponDayTotal === res.data.couponDayTotal;
+                  const couponPersonDay =
+                    res.data.canCouponPersonDayTotal ===
+                    res.data.couponPersonDayTotal;
+                  const couponPerson =
+                    res.data.canCouponPersonTotal ===
+                    res.data.couponPersonTotal;
+                  const couponTotal =
+                    res.data.canCouponTotal === res.data.couponTotal;
                   if (res.data.result) {
                     this.$toast("兑换成功");
-                    // 该券当前人
-                    const couponDay =
-                      res.data.canCouponDayTotal === res.data.couponDayTotal;
-                    const couponPersonDay =
-                      res.data.canCouponPersonDayTotal ===
-                      res.data.couponPersonDayTotal;
-                    const couponPerson =
-                      res.data.canCouponPersonTotal ===
-                      res.data.couponPersonTotal;
-                    const couponTotal =
-                      res.data.canCouponTotal === res.data.couponTotal;
                     // 存在上限，变更按钮为 '去使用'
                     if (
                       couponDay ||
@@ -498,7 +502,36 @@ export default {
                       this.$set(data, "goUse", true);
                     }
                   } else {
-                    this.$toast("兑换失败");
+                    if (
+                      !couponDay &&
+                      !couponPersonDay &&
+                      !couponPerson &&
+                      !couponTotal
+                    ) {
+                      console.log("无存在上限，后台/数据库处理错误");
+                      this.$toast("兑换失败");
+                    } else {
+                      if (couponTotal) {
+                        if (type === 0) {
+                          this.propertyList.splice(index, 1);
+                        } else {
+                          this.vouchersList.splice(index, 1);
+                        }
+                        return this.$toast("该优惠券已兑换完");
+                      }
+                      if (couponDay) {
+                        return this.$toast("该惠券今日已兑换完");
+                      }
+                      if (couponPersonDay || couponPerson) {
+                        this.$set(data, "goUse", true);
+                      }
+                      if (couponPersonDay) {
+                        return this.$toast("该优惠券您今日已兑换完");
+                      }
+                      if (couponPerson) {
+                        return this.$toast("该优惠券您已兑换完");
+                      }
+                    }
                   }
                 }
               });
@@ -1095,23 +1128,32 @@ export default {
 
             .exchange-card-right-left {
               flex: 1;
-              padding: 19px 7px 0 12px;
+              padding: 12px 7px 0 12px;
               display: flex;
               flex-direction: column;
+              // flex-flow: row wrap;
               justify-content: flex-start;
               align-items: stretch;
 
               .card-right-left-top {
-                margin-bottom: 16px;
-                height: 16px;
-                font-size: 16px;
+                margin-bottom: 8px;
+                font-size: 14px;
                 font-family: PingFangSC-Regular, PingFang SC;
                 font-weight: 400;
                 color: #121212;
-                line-height: 16px;
+                line-height: 20px;
+                max-height: 40px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                -webkit-box-orient: vertical;
+                white-space: normal;
               }
 
               .card-right-left-bottom {
+                align-self: flex-start;
                 .card-right-left-bottom-left {
                   padding-right: 4px;
 
@@ -1158,6 +1200,7 @@ export default {
 
         .bangdou-exchange-card:last-child {
           flex-basis: 328px;
+          max-width: 328px;
           padding-right: 16px;
         }
       }
@@ -1268,16 +1311,20 @@ export default {
               align-items: stretch;
 
               .card-right-left-top {
-                width: 101px;
-                height: 60px;
+                margin-bottom: 8px;
                 font-size: 14px;
-                font-family: PingFangSC-Medium, PingFang SC;
-                font-weight: 500;
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
                 color: #121212;
                 line-height: 20px;
+                max-height: 40px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                -webkit-box-orient: vertical;
                 white-space: normal;
-                word-wrap: break-word;
-                word-break: break-all;
               }
             }
             .exchange-card-right-right {
@@ -1296,6 +1343,30 @@ export default {
                 background-size: 100% 100%;
               }
             }
+          }
+          .card-right-left-bottom {
+            align-self: flex-start;
+            .card-right-left-bottom-left {
+              padding-right: 4px;
+
+              height: 20px;
+              font-size: 20px;
+              font-family: PingFangSC-Medium, PingFang SC;
+              font-weight: 500;
+              color: #e8374a;
+              line-height: 20px;
+            }
+            .card-right-left-bottom-right {
+              height: 14px;
+              font-size: 14px;
+              font-family: PingFangSC-Medium, PingFang SC;
+              font-weight: 500;
+              color: #e8374a;
+              line-height: 14px;
+            }
+          }
+          & + .bangdou-exchange-card .exchange-card-right-right-btn {
+            margin-left: 12px;
           }
         }
 

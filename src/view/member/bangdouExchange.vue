@@ -17,7 +17,7 @@
           <div class="exchange-body-item1">
             <div
               class="bangdou-exchange-card"
-              v-for="item in propertyList"
+              v-for="(item, cIndex) in propertyList"
               :key="item.id"
             >
               <div class="exchange-card-item exchange-card-left">
@@ -60,8 +60,9 @@
                     去使用
                   </div>
                   <div
+                    v-else
                     class="exchange-card-right-right-btn"
-                    @click="exchange(item)"
+                    @click="exchange(item, 0, cIndex)"
                   >
                     邦豆兑换
                   </div>
@@ -131,7 +132,7 @@
                 <div
                   v-else
                   class="exchange-card-left-btn"
-                  @click="exchange(item)"
+                  @click="exchange(item, 1, cIndex)"
                 >
                   邦豆兑换
                 </div>
@@ -277,7 +278,7 @@ export default {
           this.loading = false;
         });
     },
-    exchange(data) {
+    exchange(data, type, index) {
       this.toast();
       api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
         if (res.code === 200) {
@@ -300,33 +301,59 @@ export default {
               this.toast();
               api.getReceiveCoupon(params).then(res => {
                 if (res.code === 200) {
+                  // 该券当前人
+                  const couponDay =
+                    res.data.canCouponDayTotal === res.data.couponDayTotal;
+                  const couponPersonDay =
+                    res.data.canCouponPersonDayTotal ===
+                    res.data.couponPersonDayTotal;
+                  const couponPerson =
+                    res.data.canCouponPersonTotal ===
+                    res.data.couponPersonTotal;
+                  const couponTotal =
+                    res.data.canCouponTotal === res.data.couponTotal;
+                  // 变更按钮为 '去使用'
                   if (res.data.result) {
                     this.$toast("兑换成功");
-                    // 该券当前人
-                    const couponDay =
-                      res.data.canCouponDayTotal === res.data.couponDayTotal;
-                    const couponPersonDay =
-                      res.data.canCouponPersonDayTotal ===
-                      res.data.couponPersonDayTotal;
-                    const couponPerson =
-                      res.data.canCouponPersonTotal ===
-                      res.data.couponPersonTotal;
-                    const couponTotal =
-                      res.data.canCouponTotal === res.data.couponTotal;
-                    // 存在上限，变更按钮为 '去使用'
                     if (
-                      couponDay ||
                       couponPersonDay ||
+                      couponPerson ||
                       couponPerson ||
                       couponTotal
                     ) {
                       this.$set(data, "goUse", true);
-                      // 解决多维数组修改属性无效
-                      this.list.push([]);
-                      this.list.splice(this.list.length - 1, 1);
                     }
                   } else {
-                    this.$toast("兑换失败");
+                    if (
+                      !couponDay &&
+                      !couponPersonDay &&
+                      !couponPerson &&
+                      !couponTotal
+                    ) {
+                      console.log("无存在上限，后台/数据库处理错误");
+                      this.$toast("兑换失败");
+                    } else {
+                      if (couponTotal) {
+                        if (type === 0) {
+                          this.propertyList.splice(index, 1);
+                        } else {
+                          this.vouchersList.splice(index, 1);
+                        }
+                        return this.$toast("该优惠券已兑换完");
+                      }
+                      if (couponDay) {
+                        return this.$toast("该惠券今日已兑换完");
+                      }
+                      if (couponPersonDay || couponPerson) {
+                        this.$set(data, "goUse", true);
+                      }
+                      if (couponPersonDay) {
+                        return this.$toast("该优惠券您今日已兑换完");
+                      }
+                      if (couponPerson) {
+                        return this.$toast("该优惠券您已兑换完");
+                      }
+                    }
                   }
                 }
               });
@@ -451,11 +478,11 @@ export default {
                   width: 100%;
                   margin-bottom: 6px;
                   // height: 16px;
-                  font-size: 16px;
+                  font-size: 14px;
                   font-family: PingFangSC-Regular, PingFang SC;
                   font-weight: 400;
                   color: #121212;
-                  line-height: 16px;
+                  line-height: 20px;
                   align-self: flex-start;
                   overflow: hidden;
                   text-overflow: ellipsis;
