@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-28 23:31:05
- * @LastEditTime: 2021-01-31 01:23:43
+ * @LastEditTime: 2021-01-31 01:26:43
  */
 import api from "@/api";
 import router from "@zkty-team/x-engine-module-router";
@@ -11,7 +11,8 @@ import localstorage from "@zkty-team/x-engine-module-localstorage";
 export default {
   data () {
     return {
-      userInfo: {}
+      userInfo: {},
+      devServer: 'dev'
     }
   },
   filters: {

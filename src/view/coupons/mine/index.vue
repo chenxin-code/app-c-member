@@ -183,7 +183,6 @@ export default {
       //宠物信息
       petsUpdateList: [],
       // ___________________________________________
-      devServer: "dev",
       active: 0,
       memberId: "",
       busy: false,

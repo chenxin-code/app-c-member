@@ -6,6 +6,7 @@
 export default {
   data () {
     return {
+      devServer: "dev",
       loading: false,
       list: [],
       pageIndex: [],
