@@ -252,13 +252,10 @@ export default {
                 this.$toast("领取失败");
               } else {
                 if (couponTotal) {
-                  this.list[index].splice(cIndex, 1);
-                  this.list.push([]);
-                  this.list.splice(this.list.length - 1, 1);
-                  return this.$toast("该优惠券已领光");
+                  return this.$toast("优惠券已领光");
                 }
                 if (couponDay) {
-                  return this.$toast("该惠券今日已领光");
+                  return this.$toast("优惠券今日已领光");
                 }
                 if (couponPersonDay || couponPerson) {
                   this.$set(data, "goUse", true);
@@ -266,12 +263,12 @@ export default {
                   this.list.push([]);
                   this.list.splice(this.list.length - 1, 1);
                 }
-                if (couponPersonDay) {
-                  return this.$toast("该优惠券您今日已达领取上限");
-                }
-                if (couponPerson) {
-                  return this.$toast("该优惠券您已达领取上限");
-                }
+                // if (couponPersonDay) {
+                //   return this.$toast("该优惠券您今日已达领取上限");
+                // }
+                // if (couponPerson) {
+                //   return this.$toast("该优惠券您已达领取上限");
+                // }
               }
             }
           }

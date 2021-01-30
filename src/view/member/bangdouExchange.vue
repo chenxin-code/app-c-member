@@ -334,25 +334,25 @@ export default {
                       this.$toast("兑换失败");
                     } else {
                       if (couponTotal) {
-                        if (type === 0) {
-                          this.propertyList.splice(index, 1);
-                        } else {
-                          this.vouchersList.splice(index, 1);
-                        }
-                        return this.$toast("该优惠券已兑换完");
+                        // if (type === 0) {
+                        //   this.propertyList.splice(index, 1);
+                        // } else {
+                        //   this.vouchersList.splice(index, 1);
+                        // }
+                        return this.$toast("优惠券已兑换完");
                       }
                       if (couponDay) {
-                        return this.$toast("该惠券今日已兑换完");
+                        return this.$toast("优惠券今日已兑换完");
                       }
                       if (couponPersonDay || couponPerson) {
                         this.$set(data, "goUse", true);
                       }
-                      if (couponPersonDay) {
-                        return this.$toast("该优惠券您今日已兑换完");
-                      }
-                      if (couponPerson) {
-                        return this.$toast("该优惠券您已兑换完");
-                      }
+                      // if (couponPersonDay) {
+                      //   return this.$toast("该优惠券您今日已兑换完");
+                      // }
+                      // if (couponPerson) {
+                      //   return this.$toast("该优惠券您已兑换完");
+                      // }
                     }
                   }
                 }
