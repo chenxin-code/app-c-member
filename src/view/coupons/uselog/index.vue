@@ -444,6 +444,7 @@ export default {
                       -webkit-line-clamp: 2;
                       line-clamp: 2;
                       -webkit-box-orient: vertical;
+                      width: 100%;
                     }
                     .card-right-left-middle {
                       padding-top: 0.16rem;
@@ -453,6 +454,7 @@ export default {
                       color: #8d8d8d;
                       align-self: flex-end;
                       line-height: 1;
+                      width: 100%;
                     }
                     .card-right-left-bottom {
                       padding-top: 0.2rem;
@@ -463,6 +465,7 @@ export default {
                       color: #bfbfbf;
                       line-height: 1;
                       align-self: flex-end;
+                      width: 100%;
                     }
                   }
                   .exchange-card-right-right {

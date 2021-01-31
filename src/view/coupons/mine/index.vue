@@ -64,6 +64,7 @@
                         </div>
                         <!-- <div class="exchange-card-left-bottom">满100元可用</div> -->
                         <div
+                          v-if="item.effective"
                           class="exchange-card-left-btn"
                           @click="useCoupon(item)"
                         >
@@ -100,7 +101,7 @@
                             :src="item.image || defaultImg"
                           />
                           <div
-                            v-else
+                            v-else-if="item.effective"
                             class="exchange-card-right-right-btn"
                             @click="useCoupon(item)"
                           >
@@ -358,6 +359,18 @@ export default {
             this.$toast.clear();
             let list = [];
             res.data && (list = res.data.records || []);
+            let nowTime = new Date();
+            // 是否在有效期
+            list.map(item => {
+              const stareTime = new Date(+item.validityStartTime);
+              const endTime = new Date(+item.validityEndTime);
+              if (nowTime >= stareTime && nowTime <= endTime) {
+                item.effective = true;
+              } else {
+                item.effective = false;
+              }
+              return item;
+            });
             this.list[tabIndex] =
               params.pageIndex === 1
                 ? list
@@ -569,6 +582,7 @@ export default {
                       -webkit-line-clamp: 2;
                       line-clamp: 2;
                       -webkit-box-orient: vertical;
+                      width: 100%;
                     }
                     .card-right-left-middle {
                       padding-top: 8px;
@@ -578,6 +592,7 @@ export default {
                       color: #8d8d8d;
                       align-self: flex-end;
                       line-height: 1;
+                      width: 100%;
                     }
                     .card-right-left-bottom {
                       padding-top: 10px;
@@ -588,6 +603,7 @@ export default {
                       color: #bfbfbf;
                       line-height: 1;
                       align-self: flex-end;
+                      width: 100%;
                     }
                   }
                   .exchange-card-right-right {
