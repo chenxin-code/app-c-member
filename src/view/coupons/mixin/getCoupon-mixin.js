@@ -1,8 +1,9 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-28 23:31:05
- * @LastEditTime: 2021-01-31 01:26:43
+ * @LastEditTime: 2021-01-31 10:21:28
  */
+import { mapGetters } from 'vuex'
 import api from "@/api";
 import router from "@zkty-team/x-engine-module-router";
 import yjzdbill from "@zkty-team/x-engine-module-yjzdbill";
@@ -12,8 +13,11 @@ export default {
   data () {
     return {
       userInfo: {},
-      devServer: 'dev'
+      // devServer: 'dev'
     }
+  },
+  computed: {
+    ...mapGetters(['devServer'])
   },
   filters: {
     delPoint (num) {
@@ -39,7 +43,7 @@ export default {
     },
     async openMall (data) {
       let uri;
-      if (this.devServer === "dev") {
+      if (this.devServer !== "prod") {
         uri = "http://mall-uat-app-linli.timesgroup.cn";
       } else {
         uri = "http://mall-prod-app-linli.timesgroup.cn";

@@ -91,7 +91,10 @@
             </div>
           </div>
           <!-- 邦豆兑换 -->
-          <div class="bangdou-exchange">
+          <div
+            class="bangdou-exchange"
+            v-if="propertyList.length || vouchersList.length"
+          >
             <div class="bangdou-exchange-header">
               <div class="exchange-header-title">
                 邦豆兑换
@@ -167,7 +170,7 @@
                 >
                   <div class="exchange-card-item exchange-card-right">
                     <div class="exchange-card-right-right">
-                      <div class="exchange-card-right-right-btn"></div>
+                      <img class="goods-img" :src="item.image || defaultImg" />
                     </div>
                     <div class="exchange-card-right-left">
                       <div class="card-right-left-top">
@@ -286,7 +289,7 @@ export default {
   },
 
   activated() {
-    // this.memberId = "2212946938230210585"; //生产需注释
+    // this.memberId = "2331048196588962531"; //生产需注释
     // localStorage.setItem("memberId", this.memberId); //生产需注释
     // this.getMemberDetail(); //生产需注释
     // this.queryReceiveCouponList();
@@ -478,15 +481,14 @@ export default {
               api.getReceiveCoupon(params).then(res => {
                 if (res.code === 200) {
                   const couponDay =
-                    res.data.canCouponDayTotal === res.data.couponDayTotal;
+                    res.data.canCouponDayTotal <= res.data.couponDayTotal;
                   const couponPersonDay =
-                    res.data.canCouponPersonDayTotal ===
+                    res.data.canCouponPersonDayTotal <=
                     res.data.couponPersonDayTotal;
                   const couponPerson =
-                    res.data.canCouponPersonTotal ===
-                    res.data.couponPersonTotal;
+                    res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
                   const couponTotal =
-                    res.data.canCouponTotal === res.data.couponTotal;
+                    res.data.canCouponTotal <= res.data.couponTotal;
                   if (res.data.result) {
                     this.$toast("兑换成功");
                     setTimeout(() => {
@@ -518,20 +520,20 @@ export default {
                         // } else {
                         //   this.vouchersList.splice(index, 1);
                         // }
-                        return this.$toast("优惠券已兑换完");
+                        return this.$toast("该优惠券已兑换完");
                       }
                       if (couponDay) {
-                        return this.$toast("优惠券今日已兑换完");
+                        return this.$toast("该优惠券今日已兑换完");
                       }
                       if (couponPersonDay || couponPerson) {
                         this.$set(data, "goUse", true);
                       }
-                      // if (couponPersonDay) {
-                      //   return this.$toast("该优惠券您今日已兑换完");
-                      // }
-                      // if (couponPerson) {
-                      //   return this.$toast("该优惠券您已兑换完");
-                      // }
+                      if (couponPerson) {
+                        return this.$toast("该优惠券您已兑换完");
+                      }
+                      if (couponPersonDay) {
+                        return this.$toast("该优惠券您今日已兑换完");
+                      }
                     }
                   }
                 }
@@ -1359,6 +1361,11 @@ export default {
           }
           & + .bangdou-exchange-card .exchange-card-right-right-btn {
             margin-left: 12px;
+          }
+          .goods-img {
+            width: 72px;
+            height: 72px;
+            border-radius: 4px;
           }
         }
 

@@ -182,20 +182,20 @@ export default {
         });
       }
     });
-    // this.toast();
-    // this.loading = true;
-    // this.getUserInfo(() => {
-    //   const params = {
-    //     phone: this.userInfo.phone,
-    //     phoneArea: this.userInfo.phoneAreaCode
-    //   };
-    //   api.memberDetailByPhone(params).then(member => {
-    //     if (member.code === 200) {
-    //       this.memberId = member.data.memberId;
-    //       this.getList();
-    //     }
-    //   });
-    // });
+    this.toast();
+    this.loading = true;
+    this.getUserInfo(() => {
+      const params = {
+        phone: this.userInfo.phone,
+        phoneArea: this.userInfo.phoneAreaCode
+      };
+      api.memberDetailByPhone(params).then(member => {
+        if (member.code === 200) {
+          this.memberId = member.data.memberId;
+          this.getList();
+        }
+      });
+    });
   },
   mounted() {
     nav.setNavLeftBtn({
@@ -252,10 +252,10 @@ export default {
                 this.$toast("领取失败");
               } else {
                 if (couponTotal) {
-                  return this.$toast("优惠券已领光");
+                  return this.$toast("该优惠券已领光");
                 }
                 if (couponDay) {
-                  return this.$toast("优惠券今日已领光");
+                  return this.$toast("该优惠券今日已领光");
                 }
                 if (couponPersonDay || couponPerson) {
                   this.$set(data, "goUse", true);
@@ -263,12 +263,12 @@ export default {
                   this.list.push([]);
                   this.list.splice(this.list.length - 1, 1);
                 }
-                // if (couponPersonDay) {
-                //   return this.$toast("该优惠券您今日已达领取上限");
-                // }
-                // if (couponPerson) {
-                //   return this.$toast("该优惠券您已达领取上限");
-                // }
+                if (couponPerson) {
+                  return this.$toast("该优惠券您已达领取上限");
+                }
+                if (couponPersonDay) {
+                  return this.$toast("该优惠券您今日已达领取上限");
+                }
               }
             }
           }

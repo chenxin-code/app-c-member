@@ -1,18 +1,21 @@
+/*
+ * @Description: 这是***页面
+ * @Date: 2021-01-20 10:29:28
+ * @LastEditTime: 2021-01-31 10:30:56
+ */
 const user = {
     state: { //存储定义的变量
-        token: ""
+        token: "",
+        devServer: 'prod' //生产： prod
     },
     mutations: { //更改state里面的值定义的一些方法
-        setToken(state, token) => {
+        setToken (state, token) {
             state.token = token
         },
     },
-    getters: {//依赖state里面的值衍生的新的变量
-
-    },
     action: {//提交mutations
-        
+
     }
 }
 
-export default community
+export default user

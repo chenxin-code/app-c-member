@@ -1,12 +1,14 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-24 11:02:49
- * @LastEditTime: 2021-01-31 01:23:54
+ * @LastEditTime: 2021-01-31 10:21:56
  */
+import { mapGetters } from 'vuex'
+
 export default {
   data () {
     return {
-      devServer: "dev",
+      // devServer: "dev",
       loading: false,
       list: [],
       pageIndex: [],
@@ -14,7 +16,9 @@ export default {
       canLoadMore: []
     }
   },
-
+  computed: {
+    ...mapGetters(['devServer'])
+  },
   filters: {
     delPoint (num) {
       const regexp = /(?:\.0*|(\.\d+?)0+)$/;

@@ -294,15 +294,14 @@ export default {
                 if (res.code === 200) {
                   // 该券当前人
                   const couponDay =
-                    res.data.canCouponDayTotal === res.data.couponDayTotal;
+                    res.data.canCouponDayTotal <= res.data.couponDayTotal;
                   const couponPersonDay =
-                    res.data.canCouponPersonDayTotal ===
+                    res.data.canCouponPersonDayTotal <=
                     res.data.couponPersonDayTotal;
                   const couponPerson =
-                    res.data.canCouponPersonTotal ===
-                    res.data.couponPersonTotal;
+                    res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
                   const couponTotal =
-                    res.data.canCouponTotal === res.data.couponTotal;
+                    res.data.canCouponTotal <= res.data.couponTotal;
                   // 变更按钮为 '去使用'
                   if (res.data.result) {
                     this.$toast("兑换成功");
@@ -330,20 +329,20 @@ export default {
                         // } else {
                         //   this.vouchersList.splice(index, 1);
                         // }
-                        return this.$toast("优惠券已兑换完");
+                        return this.$toast("该优惠券已兑换完");
                       }
                       if (couponDay) {
-                        return this.$toast("优惠券今日已兑换完");
+                        return this.$toast("该优惠券今日已兑换完");
                       }
                       if (couponPersonDay || couponPerson) {
                         this.$set(data, "goUse", true);
                       }
-                      // if (couponPersonDay) {
-                      //   return this.$toast("该优惠券您今日已兑换完");
-                      // }
-                      // if (couponPerson) {
-                      //   return this.$toast("该优惠券您已兑换完");
-                      // }
+                      if (couponPerson) {
+                        return this.$toast("该优惠券您已兑换完");
+                      }
+                      if (couponPersonDay) {
+                        return this.$toast("该优惠券您今日已兑换完");
+                      }
                     }
                   }
                 }
