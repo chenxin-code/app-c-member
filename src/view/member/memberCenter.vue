@@ -271,6 +271,7 @@ export default {
   data() {
     return {
       currentLeve: 1,
+      defaultImg: defaultImg,
       beginTitle: "",
       endTitle: "",
       taskList: [],

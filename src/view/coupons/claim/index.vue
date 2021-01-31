@@ -182,20 +182,20 @@ export default {
         });
       }
     });
-    this.toast();
-    this.loading = true;
-    this.getUserInfo(() => {
-      const params = {
-        phone: this.userInfo.phone,
-        phoneArea: this.userInfo.phoneAreaCode
-      };
-      api.memberDetailByPhone(params).then(member => {
-        if (member.code === 200) {
-          this.memberId = member.data.memberId;
-          this.getList();
-        }
-      });
-    });
+    // this.toast();
+    // this.loading = true;
+    // this.getUserInfo(() => {
+    //   const params = {
+    //     phone: this.userInfo.phone,
+    //     phoneArea: this.userInfo.phoneAreaCode
+    //   };
+    //   api.memberDetailByPhone(params).then(member => {
+    //     if (member.code === 200) {
+    //       this.memberId = member.data.memberId;
+    //       this.getList();
+    //     }
+    //   });
+    // });
   },
   mounted() {
     nav.setNavLeftBtn({
