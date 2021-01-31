@@ -1381,7 +1381,7 @@ export default {
 
 .page-body .notReceived {
   display: flex;
-  margin-top: 27px;
+  margin-bottom: 16px;
 }
 .page-body .notReceivedNode {
   display: flex;
