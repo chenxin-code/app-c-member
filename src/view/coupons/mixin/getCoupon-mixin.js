@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-28 23:31:05
- * @LastEditTime: 2021-01-31 10:21:28
+ * @LastEditTime: 2021-02-01 14:05:03
  */
 import { mapGetters } from 'vuex'
 import api from "@/api";
@@ -33,6 +33,9 @@ export default {
       return num.replace(regexp, "$1");
     },
     useCoupon (data) {
+      if (!data.effective) {
+        return false;
+      }
       if (data.activity === "4014") {
         this.openDeital();
         // this.

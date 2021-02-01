@@ -55,6 +55,7 @@
                   <div
                     v-if="item.goUse"
                     class="exchange-card-right-right-btn"
+                    :class="{ ineffective: !item.effective }"
                     @click="useCoupon(item)"
                   >
                     去使用
@@ -125,6 +126,7 @@
                 <div
                   v-if="item.goUse"
                   class="exchange-card-left-btn"
+                  :class="{ ineffective: !item.effective }"
                   @click="useCoupon(item)"
                 >
                   去使用
@@ -253,7 +255,15 @@ export default {
           const data = res.data || [];
           const propertyList = [];
           const vouchersList = [];
-          data.forEach(item => {
+          let nowTime = new Date();
+          data.map(item => {
+            const stareTime = new Date(+item.validityStartTime);
+            const endTime = new Date(+item.validityEndTime);
+            if (nowTime >= stareTime && nowTime <= endTime) {
+              item.effective = true;
+            } else {
+              item.effective = false;
+            }
             // 物业
             if (item.activity == "4014") {
               propertyList.push(item);
@@ -261,6 +271,7 @@ export default {
               // 购物券
               vouchersList.push(item);
             }
+            return item;
           });
           propertyList.length && (this.propertyList = propertyList);
           vouchersList.length && (this.vouchersList = vouchersList);
@@ -391,6 +402,10 @@ export default {
           font-weight: 500;
           color: #ffffff;
           margin-left: 4px;
+          align-self: flex-end;
+        }
+        .ineffective {
+          color: #d4d4d4 !important;
         }
         .exchange-body-item1 {
           margin-bottom: 20px;
@@ -428,7 +443,7 @@ export default {
                   color: #ffffff;
                 }
                 .card-left-top-num {
-                  font-size: 24px;
+                  font-size: 18px;
                   font-family: PingFangSC-Medium, PingFang SC;
                   font-weight: 500;
                   color: #ffffff;
@@ -523,6 +538,9 @@ export default {
                   font-weight: 500;
                   color: #ffffff;
                   margin-left: 7px;
+                  &.ineffective {
+                    background: #f8f8f8;
+                  }
                 }
               }
             }
@@ -567,12 +585,10 @@ export default {
                   line-height: 16px;
                 }
                 .card-left-top-num {
-                  height: 28px;
-                  font-size: 28px;
+                  font-size: 18px;
                   font-family: PingFangSC-Semibold, PingFang SC;
                   font-weight: 600;
                   color: #ffffff;
-                  line-height: 28px;
                 }
               }
 

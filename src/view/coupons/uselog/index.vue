@@ -371,12 +371,10 @@ export default {
                       line-height: 16px;
                     }
                     .card-left-top-num {
-                      height: 24px;
-                      font-size: 28px;
+                      font-size: 18px;
                       font-family: PingFangSC-Semibold, PingFang SC;
                       font-weight: 600;
                       color: #ffffff;
-                      line-height: 28px;
                     }
                   }
                   .exchange-card-left-bottom {
@@ -536,6 +534,7 @@ export default {
                   font-weight: 500;
                   color: #ffffff;
                   margin-left: 4px;
+                  align-self: flex-end;
                 }
               }
               .row-reverse {
@@ -549,6 +548,9 @@ export default {
                 }
                 .exchange-card-right {
                   flex-flow: row-reverse;
+                }
+                .card-left-top-num {
+                  font-weight: 600;
                 }
               }
               .bangdou-exchange-rules {

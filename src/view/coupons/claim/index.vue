@@ -54,6 +54,7 @@
                         <div
                           v-if="item.goUse"
                           class="exchange-card-left-btn"
+                          :class="{ ineffective: !item.effective }"
                           @click="useCoupon(item)"
                         >
                           去使用
@@ -78,6 +79,7 @@
                           <div
                             v-if="item.goUse"
                             class="exchange-card-right-right-btn"
+                            :class="{ ineffective: !item.effective }"
                             @click="useCoupon(item)"
                           >
                             去使用
@@ -304,6 +306,18 @@ export default {
           if (res.code === 200) {
             this.$toast.clear();
             const list = res.data || [];
+            let nowTime = new Date();
+            // 是否在有效期
+            list.map(item => {
+              const stareTime = new Date(+item.validityStartTime);
+              const endTime = new Date(+item.validityEndTime);
+              if (nowTime >= stareTime && nowTime <= endTime) {
+                item.effective = true;
+              } else {
+                item.effective = false;
+              }
+              return item;
+            });
             this.list[tabIndex] =
               params.pageIndex === 1
                 ? list
@@ -401,7 +415,7 @@ export default {
                     color: #ffffff;
                   }
                   .card-left-top-num {
-                    font-size: 24px;
+                    font-size: 18px;
                     font-family: PingFangSC-Medium, PingFang SC;
                     font-weight: 500;
                     color: #ffffff;
@@ -477,6 +491,9 @@ export default {
                     font-weight: 500;
                     color: #ffffff;
                     margin-left: 7px;
+                    &.ineffective {
+                      background: #f8f8f8;
+                    }
                   }
                   .goods-img {
                     width: 72px;
@@ -491,12 +508,19 @@ export default {
                 font-weight: 500;
                 color: #ffffff;
                 margin-left: 4px;
+                align-self: flex-end;
+              }
+              .ineffective {
+                color: #d4d4d4 !important;
               }
             }
             .bangdou-exchange-card.row-reverse {
               flex-flow: row-reverse;
               .exchange-card-right {
                 flex-flow: row-reverse;
+              }
+              .card-left-top-num {
+                font-weight: 600;
               }
             }
             .bangdou-exchange-card.shopping {
