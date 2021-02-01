@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-20 10:31:06
- * @LastEditTime: 2021-01-31 10:10:21
+ * @LastEditTime: 2021-02-01 18:27:02
  */
 import Vue from "vue";
 import App from "./App.vue";
@@ -20,8 +20,8 @@ Vue.use(Vuex)
 Vue.use(Vant);
 Vue.use(infiniteScroll)
 
-import vConsole from "vconsole/dist/vconsole.min.js";
-new vConsole();
+// import vConsole from "vconsole/dist/vconsole.min.js";
+// new vConsole();
 
 Vue.prototype.$routeHelper = routeHelper;
 

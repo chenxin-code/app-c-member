@@ -6,7 +6,7 @@
 const user = {
     state: { //存储定义的变量
         token: "",
-        devServer: 'dev' //生产： prod
+        devServer: 'prod' //生产： prod
     },
     mutations: { //更改state里面的值定义的一些方法
         setToken (state, token) {
