@@ -105,48 +105,117 @@
             </div>
             <div class="bangdou-exchange-body">
               <div class="exchange-body-item1" v-if="propertyList.length">
-                <div
-                  class="bangdou-exchange-card"
-                  v-for="(item, cIndex) in propertyList"
-                  :key="item.id"
-                >
-                  <div class="exchange-card-item exchange-card-left">
-                    <div class="exchange-card-left-top">
-                      <template v-if="item.couponType === 40">
-                        <div class="card-left-top-num">
-                          {{ +item.discountRatio * 10 }}
-                        </div>
-                        <span class="coupon-type">折</span>
-                      </template>
-                      <template v-else>
-                        <div class="card-left-top-type">
-                          ￥
-                        </div>
-                        <div class="card-left-top-num">
-                          {{ item.faceAmount | delPoint }}
-                        </div>
-                      </template>
+                <div class="exchange-swipper">
+                  <div
+                    class="bangdou-exchange-card"
+                    v-for="(item, cIndex) in propertyList"
+                    :key="item.id"
+                  >
+                    <div class="exchange-card-item exchange-card-left">
+                      <div class="exchange-card-left-top">
+                        <template v-if="item.couponType === 40">
+                          <div class="card-left-top-num">
+                            {{ +item.discountRatio * 10 }}
+                          </div>
+                          <span class="coupon-type">折</span>
+                        </template>
+                        <template v-else>
+                          <div class="card-left-top-type">
+                            ￥
+                          </div>
+                          <div class="card-left-top-num">
+                            {{ item.faceAmount | delPoint }}
+                          </div>
+                        </template>
+                      </div>
+                      <div class="exchange-card-left-bottom">
+                        {{ couponType(item) }}
+                      </div>
                     </div>
-                    <div class="exchange-card-left-bottom">
-                      {{ couponType(item) }}
+                    <div class="exchange-card-item exchange-card-right">
+                      <div class="exchange-card-right-left">
+                        <div class="card-right-left-top">
+                          {{ item.couponTitle }}
+                        </div>
+                        <div class="card-right-left-bottom">
+                          <span class="card-right-left-bottom-left">{{
+                            item.integrealCount
+                          }}</span>
+                          <span class="card-right-left-bottom-right">邦豆</span>
+                        </div>
+                      </div>
+                      <div class="exchange-card-right-right">
+                        <div
+                          v-if="item.goUse"
+                          class="exchange-card-right-right-btn"
+                          :class="{ ineffective: !item.effective }"
+                          @click="useCoupon(item)"
+                        >
+                          去使用
+                        </div>
+                        <div
+                          v-else
+                          class="exchange-card-right-right-btn"
+                          @click="exchange(item, 0, cIndex)"
+                        >
+                          邦豆兑换
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="exchange-card-item exchange-card-right">
-                    <div class="exchange-card-right-left">
-                      <div class="card-right-left-top">
-                        {{ item.couponTitle }}
+                </div>
+              </div>
+
+              <div class="exchange-body-item2" v-if="vouchersList.length">
+                <div class="exchange-swipper">
+                  <div
+                    class="bangdou-exchange-card"
+                    v-for="item in vouchersList"
+                    :key="item.id"
+                  >
+                    <div class="exchange-card-item exchange-card-right">
+                      <div class="exchange-card-right-right">
+                        <img
+                          class="goods-img"
+                          :src="item.image || defaultImg"
+                        />
                       </div>
-                      <div class="card-right-left-bottom">
-                        <span class="card-right-left-bottom-left">{{
-                          item.integrealCount
-                        }}</span>
-                        <span class="card-right-left-bottom-right">邦豆</span>
+                      <div class="exchange-card-right-left">
+                        <div class="card-right-left-top">
+                          {{ item.couponTitle }}
+                        </div>
+                        <div class="card-right-left-bottom">
+                          <span class="card-right-left-bottom-left">{{
+                            item.integrealCount
+                          }}</span>
+                          <span class="card-right-left-bottom-right">邦豆</span>
+                        </div>
                       </div>
                     </div>
-                    <div class="exchange-card-right-right">
+                    <div class="exchange-card-item exchange-card-left">
+                      <div class="exchange-card-left-top">
+                        <template v-if="item.couponType === 40">
+                          <div class="card-left-top-num">
+                            {{ +item.discountRatio * 10 }}
+                          </div>
+                          <span class="coupon-type">折</span>
+                        </template>
+                        <template v-else>
+                          <div class="card-left-top-type">
+                            ￥
+                          </div>
+                          <div class="card-left-top-num">
+                            {{ item.faceAmount | delPoint }}
+                          </div>
+                        </template>
+                      </div>
+                      <div class="exchange-card-left-bottom">
+                        {{ couponType(item) }}
+                      </div>
+
                       <div
                         v-if="item.goUse"
-                        class="exchange-card-right-right-btn"
+                        class="exchange-card-left-btn"
                         :class="{ ineffective: !item.effective }"
                         @click="useCoupon(item)"
                       >
@@ -154,72 +223,11 @@
                       </div>
                       <div
                         v-else
-                        class="exchange-card-right-right-btn"
-                        @click="exchange(item, 0, cIndex)"
+                        class="exchange-card-left-btn"
+                        @click="exchange(item, 1, cIndex)"
                       >
                         邦豆兑换
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="exchange-body-item2" v-if="vouchersList.length">
-                <div
-                  class="bangdou-exchange-card"
-                  v-for="item in vouchersList"
-                  :key="item.id"
-                >
-                  <div class="exchange-card-item exchange-card-right">
-                    <div class="exchange-card-right-right">
-                      <img class="goods-img" :src="item.image || defaultImg" />
-                    </div>
-                    <div class="exchange-card-right-left">
-                      <div class="card-right-left-top">
-                        {{ item.couponTitle }}
-                      </div>
-                      <div class="card-right-left-bottom">
-                        <span class="card-right-left-bottom-left">{{
-                          item.integrealCount
-                        }}</span>
-                        <span class="card-right-left-bottom-right">邦豆</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="exchange-card-item exchange-card-left">
-                    <div class="exchange-card-left-top">
-                      <template v-if="item.couponType === 40">
-                        <div class="card-left-top-num">
-                          {{ +item.discountRatio * 10 }}
-                        </div>
-                        <span class="coupon-type">折</span>
-                      </template>
-                      <template v-else>
-                        <div class="card-left-top-type">
-                          ￥
-                        </div>
-                        <div class="card-left-top-num">
-                          {{ item.faceAmount | delPoint }}
-                        </div>
-                      </template>
-                    </div>
-                    <div class="exchange-card-left-bottom">
-                      {{ couponType(item) }}
-                    </div>
-
-                    <div
-                      v-if="item.goUse"
-                      class="exchange-card-left-btn"
-                      :class="{ ineffective: !item.effective }"
-                      @click="useCoupon(item)"
-                    >
-                      去使用
-                    </div>
-                    <div
-                      v-else
-                      class="exchange-card-left-btn"
-                      @click="exchange(item, 1, cIndex)"
-                    >
-                      邦豆兑换
                     </div>
                   </div>
                 </div>
@@ -1034,7 +1042,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 16px;
+      // padding-bottom: 16px;
 
       .exchange-header-title {
         font-size: 18px;
@@ -1063,16 +1071,26 @@ export default {
       .ineffective {
         color: #d4d4d4 !important;
       }
+      .exchange-swipper {
+        width: 100%;
+        display: flex;
+        padding-bottom: 16px;
+      }
       .exchange-body-item1 {
-        width: calc(100% + 16px);
-        height: 97px;
+        // height: 129px;
+        width: calc(100% + 32px);
         overflow-x: auto;
         display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: stretch;
-        margin-bottom: 16px;
-
+        align-items: center;
+        margin-left: -16px;
+        padding-left: 16px;
+        // flex-direction: row;
+        // justify-content: flex-start;
+        // align-items: stretch;
+        // margin-bottom: 16px;
+        .exchange-swipper {
+          padding-top: 16px;
+        }
         .bangdou-exchange-card {
           height: 97px;
           flex-basis: 324px;
@@ -1084,6 +1102,8 @@ export default {
           justify-content: center;
           align-items: stretch;
           box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
+          border-radius: 12px;
+          overflow: hidden;
 
           .exchange-card-left {
             width: 101px;
@@ -1136,6 +1156,7 @@ export default {
             flex-direction: row;
             justify-content: flex-start;
             align-items: stretch;
+            padding-right: 12px;
 
             .exchange-card-right-left {
               flex: 1;
@@ -1219,14 +1240,17 @@ export default {
         }
       }
       .exchange-body-item2 {
-        width: calc(100% + 16px);
-        height: 106px;
+        // height: 126px;
+        width: calc(100% + 32px);
+        margin-left: -16px;
+        padding-left: 16px;
+        // height: 97px;
         overflow-x: auto;
         display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: stretch;
-        margin-bottom: 16px;
+        // align-items: center;
+        // justify-content: flex-start;
+        // align-items: stretch;
+        // margin-bottom: 16px;
 
         .bangdou-exchange-card {
           height: 106px;
@@ -1239,6 +1263,8 @@ export default {
           justify-content: center;
           align-items: stretch;
           box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
+          border-radius: 12px;
+          overflow: hidden;
 
           .exchange-card-left {
             width: 101px;
@@ -1308,8 +1334,8 @@ export default {
           }
 
           .exchange-card-right {
-            // flex: 1;
-            width: 211px;
+            flex: 1;
+            // width: 211px;
             height: 106px;
             background-color: #fff;
             display: flex;
@@ -1346,6 +1372,7 @@ export default {
               flex-direction: column;
               justify-content: center;
               align-items: stretch;
+              padding-left: 12px;
 
               .exchange-card-right-right-btn {
                 width: 72px;
@@ -1379,6 +1406,9 @@ export default {
               line-height: 14px;
             }
           }
+          // &:first-child .exchange-card-right-right {
+          //   padding-left: 0;
+          // }
           & + .bangdou-exchange-card .exchange-card-right-right-btn {
             margin-left: 12px;
           }
@@ -1432,7 +1462,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 0px 16px 0px;
+  // margin: 20px 0px 16px 0px;f
+  margin-bottom: 16px;
 }
 .dotask-body .dotask {
   font-size: 18px;
