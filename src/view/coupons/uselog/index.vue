@@ -434,7 +434,7 @@ export default {
                     .card-right-left-top {
                       font-size: 14px;
                       font-family: PingFangSC-Medium, PingFang SC;
-                      font-weight: 500;
+                      font-weight: 700;
                       color: #121212;
                       overflow: hidden;
                       text-overflow: ellipsis;
