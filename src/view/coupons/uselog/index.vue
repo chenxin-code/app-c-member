@@ -196,7 +196,7 @@ export default {
       localStorage.setItem("memberId", this.memberId);
       this.getList();
     });
-    // this.memberId = "2212946938230210585";
+    // this.memberId = "2331048196588962531";
     // this.getList();
   },
   mounted() {
@@ -576,8 +576,7 @@ export default {
       position: absolute;
       bottom: 0;
       right: 0;
-      z-index: 99;
-
+      z-index: 1;
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 49px 52px;

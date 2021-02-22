@@ -450,6 +450,9 @@ export default {
     }
     ::v-deep .van-tab--active {
       color: #121212 !important;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: PingFangSC-Medium, PingFang SC;
     }
     ::v-deep .van-tabs__line {
       background-color: #121212 !important;
