@@ -12,134 +12,144 @@
         </div>
       </div>
     </div>
-    <div class="page-body" v-if="taskVoList == null">
-      <div class="form-body">
-        <div class="form-body-node signlnBtn"></div>
-        <div class="form-body-node signlnBtn"></div>
-        <div class="form-body-node signlnBtn"></div>
-        <div class="form-body-node signlnBtn"></div>
-      </div>
-      <div class="form-body">
-        <div class="form-body-node signlnBtn"></div>
-        <div class="form-body-node signlnBtn"></div>
-        <div class="form-body-node signlnBtn"></div>
-        <div class="form-body-node signlnBtn" style="visibility: hidden"></div>
-      </div>
-    </div>
-    <div class="page-body" v-if="taskVoList != null">
-      <div class="form-body">
-        <div
-          class="form-body-node signlnBtn"
-          :class="{ active: taskVoList[0].complete }"
-        >
-          <div class="awardIntegral">
-            {{ taskVoList[0].awardIntegral }}
-            <span>邦豆</span>
-          </div>
-          <div class="node-logo"></div>
-          <div class="today">
-            <div v-html="getIsToady(1, taskVoList[0])"></div>
-          </div>
+    <template v-if="taskVoList != null">
+      <div class="page-body" v-if="taskVoList == null">
+        <div class="form-body">
+          <div class="form-body-node signlnBtn"></div>
+          <div class="form-body-node signlnBtn"></div>
+          <div class="form-body-node signlnBtn"></div>
+          <div class="form-body-node signlnBtn"></div>
         </div>
-        <div
-          class="form-body-node signlnBtn"
-          :class="{ active: taskVoList[1].complete }"
-        >
-          <div class="awardIntegral">
-            {{ taskVoList[1].awardIntegral }}
-            <span>邦豆</span>
-          </div>
-          <div class="node-logo"></div>
-          <div class="today">
-            <div v-html="getIsToady(2, taskVoList[1])"></div>
-          </div>
-        </div>
-        <div
-          class="form-body-node signlnBtn day3"
-          :class="{ active: taskVoList[2].complete }"
-        >
-          <div class="awardIntegral">神秘宝箱</div>
-          <div class="node-logo"></div>
-          <div class="today">
-            <div v-html="getIsToady(3, taskVoList[2])"></div>
-          </div>
-        </div>
-        <div
-          class="form-body-node signlnBtn"
-          :class="{ active: taskVoList[3].complete }"
-        >
-          <div class="awardIntegral">
-            {{ taskVoList[3].awardIntegral }}
-            <span>邦豆</span>
-          </div>
-          <div class="node-logo"></div>
-          <div class="today">
-            <div v-html="getIsToady(4, taskVoList[3])"></div>
-          </div>
+        <div class="form-body">
+          <div class="form-body-node signlnBtn"></div>
+          <div class="form-body-node signlnBtn"></div>
+          <div class="form-body-node signlnBtn"></div>
+          <div
+            class="form-body-node signlnBtn"
+            style="visibility: hidden"
+          ></div>
         </div>
       </div>
+      <div class="page-body" v-if="taskVoList != null">
+        <div class="form-body">
+          <div
+            class="form-body-node signlnBtn"
+            :class="{ active: taskVoList[0].complete }"
+          >
+            <div class="awardIntegral">
+              {{ taskVoList[0].awardIntegral }}
+              <span>邦豆</span>
+            </div>
+            <div class="node-logo"></div>
+            <div class="today">
+              <div v-html="getIsToady(1, taskVoList[0])"></div>
+            </div>
+          </div>
+          <div
+            class="form-body-node signlnBtn"
+            :class="{ active: taskVoList[1].complete }"
+          >
+            <div class="awardIntegral">
+              {{ taskVoList[1].awardIntegral }}
+              <span>邦豆</span>
+            </div>
+            <div class="node-logo"></div>
+            <div class="today">
+              <div v-html="getIsToady(2, taskVoList[1])"></div>
+            </div>
+          </div>
+          <div
+            class="form-body-node signlnBtn day3"
+            :class="{ active: taskVoList[2].complete }"
+          >
+            <div class="awardIntegral">神秘宝箱</div>
+            <div class="node-logo"></div>
+            <div class="today">
+              <div v-html="getIsToady(3, taskVoList[2])"></div>
+            </div>
+          </div>
+          <div
+            class="form-body-node signlnBtn"
+            :class="{ active: taskVoList[3].complete }"
+          >
+            <div class="awardIntegral">
+              {{ taskVoList[3].awardIntegral }}
+              <span>邦豆</span>
+            </div>
+            <div class="node-logo"></div>
+            <div class="today">
+              <div v-html="getIsToady(4, taskVoList[3])"></div>
+            </div>
+          </div>
+        </div>
 
-      <div class="form-body">
-        <div
-          class="form-body-node signlnBtn"
-          :class="{ active: taskVoList[4].complete }"
-        >
-          <div class="awardIntegral">
-            {{ taskVoList[4].awardIntegral }}
-            <span>邦豆</span>
+        <div class="form-body">
+          <div
+            class="form-body-node signlnBtn"
+            :class="{ active: taskVoList[4].complete }"
+          >
+            <div class="awardIntegral">
+              {{ taskVoList[4].awardIntegral }}
+              <span>邦豆</span>
+            </div>
+            <div class="node-logo"></div>
+            <div class="today">
+              <div v-html="getIsToady(5, taskVoList[4])"></div>
+            </div>
           </div>
-          <div class="node-logo"></div>
-          <div class="today">
-            <div v-html="getIsToady(5, taskVoList[4])"></div>
+          <div
+            class="form-body-node signlnBtn"
+            :class="{ active: taskVoList[5].complete }"
+          >
+            <div class="awardIntegral">
+              {{ taskVoList[5].awardIntegral }}
+              <span>邦豆</span>
+            </div>
+            <div class="node-logo"></div>
+            <div class="today">
+              <div v-html="getIsToady(6, taskVoList[5])"></div>
+            </div>
           </div>
+          <div
+            class="form-body-node signlnBtn day7"
+            :class="{ active: taskVoList[6].complete }"
+          >
+            <div class="awardIntegral">神秘豪礼</div>
+            <div class="node-logo"></div>
+            <div class="today">
+              <div v-html="getIsToady(7, taskVoList[6])"></div>
+            </div>
+          </div>
+          <div
+            class="form-body-node signlnBtn"
+            style="visibility: hidden"
+          ></div>
         </div>
-        <div
-          class="form-body-node signlnBtn"
-          :class="{ active: taskVoList[5].complete }"
-        >
-          <div class="awardIntegral">
-            {{ taskVoList[5].awardIntegral }}
-            <span>邦豆</span>
-          </div>
-          <div class="node-logo"></div>
-          <div class="today">
-            <div v-html="getIsToady(6, taskVoList[5])"></div>
-          </div>
-        </div>
-        <div
-          class="form-body-node signlnBtn day7"
-          :class="{ active: taskVoList[6].complete }"
-        >
-          <div class="awardIntegral">神秘豪礼</div>
-          <div class="node-logo"></div>
-          <div class="today">
-            <div v-html="getIsToady(7, taskVoList[6])"></div>
-          </div>
-        </div>
-        <div class="form-body-node signlnBtn" style="visibility: hidden"></div>
       </div>
-    </div>
-    <div class="btn-body" v-if="isClick == false">
-      <div class="btn" @click="signln">签到</div>
-    </div>
-    <div class="btn-body" v-if="isClick == true">
-      <div class="btn goPath" @click="goPath">已签到，查看更多会员信息</div>
-    </div>
-    <van-overlay
-      class="van-overlay"
-      :show="showPopup"
-      @click="showPopup = false"
-    >
-      <div class="messageBox">
-        <div
-          class="popImages"
-          :class="{ pop3: currentDay.day == 3, pop7: currentDay.day == 7 }"
-        ></div>
-        <div class="bangdong">恭喜你获得{{ currentDay.awardIntegral }}邦豆</div>
-        <div class="bangdong2">可到邦豆商城兑换免费商品</div>
-        <div class="btn-know">知道了</div>
+      <div class="btn-body" v-if="isClick == false">
+        <div class="btn" @click="signln">签到</div>
       </div>
-    </van-overlay>
+      <div class="btn-body" v-if="isClick == true">
+        <div class="btn goPath" @click="goPath">已签到，查看更多会员信息</div>
+      </div>
+      <van-overlay
+        class="van-overlay"
+        :show="showPopup"
+        @click="showPopup = false"
+      >
+        <div class="messageBox">
+          <div
+            class="popImages"
+            :class="{ pop3: currentDay.day == 3, pop7: currentDay.day == 7 }"
+          ></div>
+          <div class="bangdong">
+            恭喜你获得{{ currentDay.awardIntegral }}邦豆
+          </div>
+          <div class="bangdong2">可到邦豆商城兑换免费商品</div>
+          <div class="btn-know">知道了</div>
+        </div>
+      </van-overlay>
+    </template>
   </div>
 </template>
 <script>
