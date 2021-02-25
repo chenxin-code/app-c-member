@@ -3,7 +3,10 @@
     <transition name="plus-icon1">
       <div class="page-content" v-if="memberObject == null">
         <div class="page-head Lv1" style="opacity: 0.4;">
-          <div class="option"></div>
+          <div class="option">
+            <div class="btn-return" @click="pageBack"></div>
+            <div class="updataDeital" @click="goPage">如何升级</div>
+          </div>
         </div>
         <div class="page-body">
           <div class="Bangdou-body zhanwei"></div>
