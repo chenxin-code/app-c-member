@@ -1,5 +1,5 @@
 <template>
-  <div v-if="taskVoList != null">
+  <div>
     <div class="page-head Lv1">
       <div class="option">
         <div class="btn-return" @click="pageBack"></div>
