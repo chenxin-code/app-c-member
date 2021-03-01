@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const buildDate = JSON.stringify(new Date().toLocaleString());
+const terserPlugin = require('terser-webpack-plugin');
 // const createThemeColorReplacerPlugin = require('./config/plugin.config')
 // const CompressionWebpackPlugin = require("compression-webpack-plugin"); // 开启gzip压缩， 按需引用
 // const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i; // 开启gzip压缩， 按需写入
@@ -61,6 +62,22 @@ const vueConfig = {
   //   // if prod, add externals
   //   // externals: isProd ? assetsCDN.externals : {}
   // },
+  configureWebpack: config => {
+    config.optimization = {
+      minimizer: [
+        new terserPlugin({
+          terserOptions: {
+            compress: {
+              warnings: false,
+              drop_console: true, //去除console
+              drop_debugger: true, //去除debugger
+              pure_funcs: ["console.log"]
+            }
+          }
+        })
+      ]
+    };
+  },
   chainWebpack: config => {
     // 移除prefetch插件，避免加载多余的资源
     config.plugins.delete("prefetch");
