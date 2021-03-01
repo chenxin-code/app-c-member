@@ -259,7 +259,11 @@ export default {
 
 <style lang="less" scoped>
 .exchange-container {
-  /deep/ .van-sticky {
+  // /deep/ .van-sticky {
+  //   padding-top: 20px;
+  //   background-color: #fff;
+  // }
+  ::v-deep .van-sticky {
     padding-top: 20px;
     background-color: #fff;
   }

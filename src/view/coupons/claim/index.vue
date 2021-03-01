@@ -340,9 +340,11 @@ export default {
 <style lang="less" scoped>
 .exchange-info {
   font-size: 18px;
-
-  /deep/ .van-tabs__wrap {
-    box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
+  // /deep/ .van-tabs__wrap {
+  //   box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
+  // }
+  ::v-deep .van-tabs__wrap {
+    box-shadow: 0px 0.12rem 0.6rem 0px red;
   }
   ::v-deep .van-tab--active {
     color: #121212 !important;

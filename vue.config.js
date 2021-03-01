@@ -4,21 +4,19 @@ const buildDate = JSON.stringify(new Date().toLocaleString());
 // const createThemeColorReplacerPlugin = require('./config/plugin.config')
 // const CompressionWebpackPlugin = require("compression-webpack-plugin"); // 开启gzip压缩， 按需引用
 // const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i; // 开启gzip压缩， 按需写入
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir);
 }
 /**
  * 样式预处理器全局变量资源插件
  * @param {String} rule webpack 规则
  */
-function addStyleResource (rule) {
+function addStyleResource(rule) {
   rule
     .use("style-resource")
     .loader("style-resources-loader")
     .options({
-      patterns: [
-        resolve("./src/assets/css/var.less"),
-      ]
+      patterns: [resolve("./src/assets/css/var.less")]
     });
 }
 const isProd = process.env.NODE_ENV === "production";
