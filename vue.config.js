@@ -144,8 +144,8 @@ const vueConfig = {
       "/times/": {
         target: "http://m-center-uat-linli.timesgroup.cn/", //uat后端ip地址及端口
         // target: "http://dev.linli590.cn:16666", //dev
-        ws: true, //是否跨域
-        changeOrigin: true
+        changeOrigin: true, //开启跨域
+        ws: true //是否开启websocket
       }
     }
   },
