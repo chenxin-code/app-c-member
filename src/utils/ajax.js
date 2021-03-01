@@ -175,20 +175,20 @@ export const fetchApi = async (
           // NProgress.done()
           const res = resp.data;
           if (res.code === 0) {
-            resolve(res);
+            return resolve(res);
           } else {
             if (res.code === 401) {
               if (refresh) {
-                resolve(res);
+                return resolve(res);
               } else {
                 refreshToken();
-                resolve(res);
+                return resolve(res);
               }
             } else if (res.code !== 200) {
               Toast(res.message);
-              resolve(res);
+              return resolve(res);
             } else {
-              resolve(res);
+              return resolve(res);
             }
           }
         },
