@@ -344,7 +344,7 @@ export default {
   //   box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
   // }
   ::v-deep .van-tabs__wrap {
-    box-shadow: 0px 0.12rem 0.6rem 0px red;
+    box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
   }
   ::v-deep .van-tab--active {
     color: #121212 !important;

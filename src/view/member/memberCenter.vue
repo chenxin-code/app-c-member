@@ -421,22 +421,22 @@ export default {
   },
 
   activated() {
-    // this.memberId = "2331048196588962531"; //生产需注释
-    // console.log('this.memberId :>> ', this.memberId);
-    // localStorage.setItem("memberId", this.memberId); //生产需注释
-    // this.getMemberDetail(); //生产需注释
-    // this.queryReceiveCouponList();
+    this.memberId = "2331048196588962531"; //生产需注释
+    console.log('this.memberId :>> ', this.memberId);
+    localStorage.setItem("memberId", this.memberId); //生产需注释
+    this.getMemberDetail(); //生产需注释
+    this.queryReceiveCouponList();
 
     //生产需打开
-    if (this.$route.meta.isBack != true) {
-      localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-        this.memberId = res.result;
-        console.log('this.memberId :>> ', this.memberId);
-        localStorage.setItem("memberId", this.memberId);
-        this.getMemberDetail();
-        this.queryReceiveCouponList();
-      });
-    }
+    // if (this.$route.meta.isBack != true) {
+    //   localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+    //     this.memberId = res.result;
+    //     console.log('this.memberId :>> ', this.memberId);
+    //     localStorage.setItem("memberId", this.memberId);
+    //     this.getMemberDetail();
+    //     this.queryReceiveCouponList();
+    //   });
+    // }
   },
   created() {},
   mounted() {},
