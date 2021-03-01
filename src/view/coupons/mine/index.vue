@@ -1,5 +1,9 @@
 <template>
   <div class="exchange-container">
+    <!-- 临时跳转:生产需注释 -->
+    <div style="position:fixed;top:70px;right:20px;z-index:9999;">
+      <button @click="$router.push('/exchangeCoupon')">兑换优惠券</button>
+    </div>
     <div class="exchange-info" style="padding-bottom: 78px;">
       <div
         class="exchange-tab-wrap"
@@ -234,15 +238,19 @@ export default {
   activated() {
     if (this.pageRefresh) {
       this.paramsList();
-      localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-        this.memberId = res.result;
-        localStorage.setItem("memberId", this.memberId);
-        this.getList();
-        this.getUserInfo();
-      });
-      // this.memberId = "2212946938230210585";
-      // this.getList();
-      // this.getUserInfo();
+
+      //生产需注释
+      this.memberId = "2212946938230210585";
+      this.getList();
+      this.getUserInfo();
+
+      //生产需打开
+      // localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+      //   this.memberId = res.result;
+      //   localStorage.setItem("memberId", this.memberId);
+      //   this.getList();
+      //   this.getUserInfo();
+      // });
     } else {
       this.$refs.scrollContent.scrollTo(0, this.scroll);
       !this.outUrlRefresh && (this.outUrlRefresh = true);

@@ -147,15 +147,14 @@
     <div v-show="showNull" class="exchange-main-null">
       <null :message="nullMsg" bgicon="pets" :isadd="true" />
     </div>
-    <!-- 临时跳转 -->
+    <!-- 临时跳转:生产需注释 -->
     <div style="padding:0 16px 20px 16px;">
       <button @click="$router.push('/couponsClaim')" style="margin-right:5px;">
-        领券中心
+        领券中心(金刚区)
       </button>
       <button @click="$router.push('/couponsMine')" style="margin-right:5px;">
-        我的卡券
+        我的卡券(我的/卡券)
       </button>
-      <button @click="$router.push('/exchangeCoupon')">兑换优惠券</button>
     </div>
   </div>
 </template>
