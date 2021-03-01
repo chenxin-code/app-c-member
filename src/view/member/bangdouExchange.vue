@@ -155,7 +155,7 @@
       <button @click="$router.push('/couponsMine')" style="margin-right:5px;">
         我的卡券
       </button>
-      <button @click="$router.push('/signIn')">签到</button>
+      <button @click="$router.push('/exchangeCoupon')">兑换优惠券</button>
     </div>
   </div>
 </template>
