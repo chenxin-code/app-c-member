@@ -71,7 +71,7 @@ const routes = [
   {
     path: "/useLog",
     name: "useLog",
-    component: resolve => require(["@/view/coupons/uselog"], resolve)
+    component: resolve => require(["@/view/coupons/useLog"], resolve)
   },
   //兑换优惠券
   {
