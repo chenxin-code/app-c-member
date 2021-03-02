@@ -148,14 +148,14 @@
       <null :message="nullMsg" bgicon="pets" :isadd="true" />
     </div>
     <!-- 临时跳转:生产需注释 -->
-    <div style="padding:0 16px 20px 16px;">
+    <!-- <div style="padding:0 16px 20px 16px;">
       <button @click="$router.push('/couponsClaim')" style="margin-right:5px;">
         领券中心(金刚区)
       </button>
       <button @click="$router.push('/couponsMine')" style="margin-right:5px;">
         我的卡券(我的/卡券)
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -204,17 +204,17 @@ export default {
     // });
 
     //生产需注释
-    this.memberId = "2212946938230210585";
-    this.queryReceiveCouponList();
-    this.getUserInfo();
+    // this.memberId = "2212946938230210585";
+    // this.queryReceiveCouponList();
+    // this.getUserInfo();
 
     //生产需打开
-    // localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-    //   this.memberId = res.result;
-    //   localStorage.setItem("memberId", this.memberId);
-    //   this.queryReceiveCouponList();
-    //   this.getUserInfo();
-    // });
+    localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+      this.memberId = res.result;
+      localStorage.setItem("memberId", this.memberId);
+      this.queryReceiveCouponList();
+      this.getUserInfo();
+    });
   },
   mounted() {
     // this.madeData();
@@ -295,7 +295,7 @@ export default {
           this.$dialog
             .confirm({
               title: "确认兑换",
-              message: `本次消耗${data.integrealCount}\n当前剩余${res.data.integral}\n兑换后剩余${rest}`
+              message: `<div><span style="padding-right:4px;color:#474D60;">本次消耗</span><span style="color:#1A1A1A;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#474D60;">当前剩余</span><span style="color:#1A1A1A;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#474D60;">兑换后剩余</span><span style="color:#1A1A1A;">${rest}</span></div>`
             })
             .then(() => {
               const params = {

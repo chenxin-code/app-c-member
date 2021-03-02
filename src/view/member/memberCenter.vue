@@ -421,22 +421,22 @@ export default {
   },
 
   activated() {
-    this.memberId = "2331048196588962531"; //生产需注释
-    console.log('this.memberId :>> ', this.memberId);
-    localStorage.setItem("memberId", this.memberId); //生产需注释
-    this.getMemberDetail(); //生产需注释
-    this.queryReceiveCouponList();
+    //生产需注释
+    // this.memberId = "2331048196588962531";
+    // localStorage.setItem("memberId", this.memberId);
+    // this.getMemberDetail();
+    // this.queryReceiveCouponList();
 
     //生产需打开
-    // if (this.$route.meta.isBack != true) {
-    //   localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-    //     this.memberId = res.result;
-    //     console.log('this.memberId :>> ', this.memberId);
-    //     localStorage.setItem("memberId", this.memberId);
-    //     this.getMemberDetail();
-    //     this.queryReceiveCouponList();
-    //   });
-    // }
+    if (this.$route.meta.isBack != true) {
+      localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+        this.memberId = res.result;
+        console.log('this.memberId :>> ', this.memberId);
+        localStorage.setItem("memberId", this.memberId);
+        this.getMemberDetail();
+        this.queryReceiveCouponList();
+      });
+    }
   },
   created() {},
   mounted() {},
@@ -600,10 +600,11 @@ export default {
           }
           const rest = +res.data.integral - +data.integrealCount;
           this.$toast.clear();
+
           this.$dialog
             .confirm({
               title: "确认兑换",
-              message: `本次消耗${data.integrealCount}\n当前剩余${res.data.integral}\n兑换后剩余${rest}`
+              message: `<div><span style="padding-right:4px;color:#474D60;">本次消耗</span><span style="color:#1A1A1A;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#474D60;">当前剩余</span><span style="color:#1A1A1A;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#474D60;">兑换后剩余</span><span style="color:#1A1A1A;">${rest}</span></div>`
             })
             .then(() => {
               const params = {
