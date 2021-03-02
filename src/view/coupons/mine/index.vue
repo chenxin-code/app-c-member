@@ -225,15 +225,15 @@ export default {
       titleSize: 24,
       titleFontName: "PingFangSC-Medium"
     });
-    nav.setNavRightBtn({
-      title: "兑换优惠券",
-      titleColor: "#000000",
-      titleSize: 16,
-      iconSize: ["20", "20"],
-      __event__: () => {
-        this.$routeHelper.router(this, "/exchangeCoupon", null, true);
-      }
-    });
+    // nav.setNavRightBtn({
+    //   title: "兑换优惠券",
+    //   titleColor: "#000000",
+    //   titleSize: 16,
+    //   iconSize: ["20", "20"],
+    //   __event__: () => {
+    //     this.$routeHelper.router(this, "/exchangeCoupon", null, true);
+    //   }
+    // });
   },
   activated() {
     if (this.pageRefresh) {
