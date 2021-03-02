@@ -170,7 +170,7 @@ const vueConfig = {
   // disable source map in production
   productionSourceMap: false,
   lintOnSave: undefined,
-  // babel-loader no-ignore node_modules/*
+  //CLI集成的webpack中的babel-loader默认忽略了node_modules目录，这里是为了二次编译node_modules里的依赖(大部分依赖都会用babel转为es5以下的语法)
   transpileDependencies: [
     "@zkty-team/x-engine-module-engine",
     "@zkty-team/x-engine-module-geo",
