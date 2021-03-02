@@ -5,14 +5,14 @@ const terserPlugin = require('terser-webpack-plugin');
 // const createThemeColorReplacerPlugin = require('./config/plugin.config')
 // const CompressionWebpackPlugin = require("compression-webpack-plugin"); // 开启gzip压缩， 按需引用
 // const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i; // 开启gzip压缩， 按需写入
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, dir);
 }
 /**
  * 样式预处理器全局变量资源插件
  * @param {String} rule webpack 规则
  */
-function addStyleResource(rule) {
+function addStyleResource (rule) {
   rule
     .use("style-resource")
     .loader("style-resources-loader")
@@ -171,7 +171,16 @@ const vueConfig = {
   productionSourceMap: false,
   lintOnSave: undefined,
   // babel-loader no-ignore node_modules/*
-  transpileDependencies: []
+  transpileDependencies: [
+    "@zkty-team/x-engine-module-engine",
+    "@zkty-team/x-engine-module-geo",
+    "@zkty-team/x-engine-module-localstorage",
+    "@zkty-team/x-engine-module-nav",
+    "@zkty-team/x-engine-module-network",
+    "@zkty-team/x-engine-module-router",
+    "@zkty-team/x-engine-module-ui",
+    "@zkty-team/x-engine-module-yjzdbill",
+  ]
 };
 
 // preview.pro.loacg.com only do not use in your production;
