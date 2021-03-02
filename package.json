@@ -40,7 +40,6 @@
     "axios": "^0.19.0",
     "babel-eslint": "^10.1.0",
     "babel-plugin-import": "^1.13.0",
-    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "http-proxy-middleware": "^1.0.5",
@@ -64,7 +63,8 @@
     "rules": {
       "no-console": "off",
       "no-debugger": "off",
-      "no-unused-vars": "off"
+      "no-unused-vars": "off",
+      "no-unreachable": "off"
     }
   },
   "browserslist": [

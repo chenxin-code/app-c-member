@@ -66,7 +66,7 @@ export default {
   mounted() {},
   created() {
     // this.toast();
-    // this.getCoupon();
+    this.getCoupon();
   },
   methods: {
     toast() {
@@ -78,19 +78,22 @@ export default {
       });
     },
     getCoupon() {
-      const that = this;
+      this.$toast.clear();
+      console.log('getCoupon 执行了 。。。。。。');
+      return;
       const para = {
         type: 3
       };
       api
         .getCoupon(para)
+        .finally(() => {
+          this.$toast.clear();
+        })
         .then(res => {
           if (res.code === 200) {
-            that.$toast.clear();
-            that.data = JSON.parse(res.data.content);
+            this.data = JSON.parse(res.data.content);
           }
-        })
-        .finally(() => {});
+        });
     },
     pageBack: function() {
       if (this.$routeHelper.isPhone) {

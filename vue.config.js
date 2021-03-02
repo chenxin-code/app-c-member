@@ -1,24 +1,23 @@
 const path = require("path");
 const webpack = require("webpack");
 const buildDate = JSON.stringify(new Date().toLocaleString());
+const terserPlugin = require('terser-webpack-plugin');
 // const createThemeColorReplacerPlugin = require('./config/plugin.config')
 // const CompressionWebpackPlugin = require("compression-webpack-plugin"); // 开启gzip压缩， 按需引用
 // const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i; // 开启gzip压缩， 按需写入
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir);
 }
 /**
  * 样式预处理器全局变量资源插件
  * @param {String} rule webpack 规则
  */
-function addStyleResource (rule) {
+function addStyleResource(rule) {
   rule
     .use("style-resource")
     .loader("style-resources-loader")
     .options({
-      patterns: [
-        resolve("./src/assets/css/var.less"),
-      ]
+      patterns: [resolve("./src/assets/css/var.less")]
     });
 }
 const isProd = process.env.NODE_ENV === "production";
@@ -63,6 +62,22 @@ const vueConfig = {
   //   // if prod, add externals
   //   // externals: isProd ? assetsCDN.externals : {}
   // },
+  configureWebpack: config => {
+    config.optimization = {
+      minimizer: [
+        new terserPlugin({
+          terserOptions: {
+            compress: {
+              warnings: false,
+              drop_console: true, //去除console
+              drop_debugger: true, //去除debugger
+              pure_funcs: ["console.log"]
+            }
+          }
+        })
+      ]
+    };
+  },
   chainWebpack: config => {
     // 移除prefetch插件，避免加载多余的资源
     config.plugins.delete("prefetch");
@@ -144,10 +159,10 @@ const vueConfig = {
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     proxy: {
       "/times/": {
-        target: "http://m-center-uat-linli.timesgroup.cn/", //后端ip地址及端口
-        // target: 'http://dev.linli590.cn:16666',
-        ws: true, //是否跨域
-        changeOrigin: true
+        target: "http://m-center-uat-linli.timesgroup.cn/", //uat后端ip地址及端口
+        // target: "http://dev.linli590.cn:16666", //dev
+        changeOrigin: true, //开启跨域
+        ws: true //是否开启websocket
       }
     }
   },

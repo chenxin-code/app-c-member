@@ -147,16 +147,15 @@
     <div v-show="showNull" class="exchange-main-null">
       <null :message="nullMsg" bgicon="pets" :isadd="true" />
     </div>
-    <!-- 临时跳转 -->
-    <!-- <div style="padding:0 16px 20px 16px;">
+    <!-- 临时跳转:生产需注释 -->
+    <div style="padding:0 16px 20px 16px;">
       <button @click="$router.push('/couponsClaim')" style="margin-right:5px;">
-        领券中心
+        领券中心(金刚区)
       </button>
       <button @click="$router.push('/couponsMine')" style="margin-right:5px;">
-        我的卡券
+        我的卡券(我的/卡券)
       </button>
-      <button @click="$router.push('/signIn')">签到</button>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -203,15 +202,19 @@ export default {
     // ]).then(() => {
     //   this.$toast.clear();
     // });
-    localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-      this.memberId = res.result;
-      localStorage.setItem("memberId", this.memberId);
-      this.queryReceiveCouponList();
-      this.getUserInfo();
-    });
-    // this.memberId = "2212946938230210585";
-    // this.queryReceiveCouponList();
-    // this.getUserInfo();
+
+    //生产需注释
+    this.memberId = "2212946938230210585";
+    this.queryReceiveCouponList();
+    this.getUserInfo();
+
+    //生产需打开
+    // localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+    //   this.memberId = res.result;
+    //   localStorage.setItem("memberId", this.memberId);
+    //   this.queryReceiveCouponList();
+    //   this.getUserInfo();
+    // });
   },
   mounted() {
     // this.madeData();

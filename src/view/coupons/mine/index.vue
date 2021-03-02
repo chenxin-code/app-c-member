@@ -1,5 +1,9 @@
 <template>
   <div class="exchange-container">
+    <!-- 临时跳转:生产需注释 -->
+    <div style="position:fixed;top:70px;right:20px;z-index:9999;">
+      <button @click="$router.push('/exchangeCoupon')">兑换优惠券</button>
+    </div>
     <div class="exchange-info" style="padding-bottom: 78px;">
       <div
         class="exchange-tab-wrap"
@@ -221,28 +225,32 @@ export default {
       titleSize: 24,
       titleFontName: "PingFangSC-Medium"
     });
-    // nav.setNavRightBtn({
-    //   title: "兑换优惠券",
-    //   titleColor: "#000000",
-    //   titleSize: 16,
-    //   iconSize: ["20", "20"],
-    //   __event__: () => {
-    //     this.$routeHelper.router(this, "/exchangeCoupon", null, true);
-    //   }
-    // });
+    nav.setNavRightBtn({
+      title: "兑换优惠券",
+      titleColor: "#000000",
+      titleSize: 16,
+      iconSize: ["20", "20"],
+      __event__: () => {
+        this.$routeHelper.router(this, "/exchangeCoupon", null, true);
+      }
+    });
   },
   activated() {
     if (this.pageRefresh) {
       this.paramsList();
-      localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-        this.memberId = res.result;
-        localStorage.setItem("memberId", this.memberId);
-        this.getList();
-        this.getUserInfo();
-      });
+
+      //生产需注释
       this.memberId = "2212946938230210585";
       this.getList();
       this.getUserInfo();
+
+      //生产需打开
+      // localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+      //   this.memberId = res.result;
+      //   localStorage.setItem("memberId", this.memberId);
+      //   this.getList();
+      //   this.getUserInfo();
+      // });
     } else {
       this.$refs.scrollContent.scrollTo(0, this.scroll);
       !this.outUrlRefresh && (this.outUrlRefresh = true);
@@ -445,7 +453,7 @@ export default {
 .exchange-container {
   .exchange-info {
     font-size: 18px;
-    /deep/ .van-tabs__wrap {
+    ::v-deep .van-tabs__wrap {
       box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
       height: 56px;
     }
