@@ -295,7 +295,7 @@ export default {
           this.$dialog
             .confirm({
               title: "确认兑换",
-              message: `<div><span style="padding-right:4px;color:#474D60;">本次消耗</span><span style="color:#1A1A1A;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#474D60;">当前剩余</span><span style="color:#1A1A1A;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#474D60;">兑换后剩余</span><span style="color:#1A1A1A;">${rest}</span></div>`
+              message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
             })
             .then(() => {
               const params = {
