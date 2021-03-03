@@ -4,18 +4,21 @@
  * @LastEditTime: 2021-01-31 16:12:26
  */
 const user = {
-    state: { //存储定义的变量
-        token: "",
-        devServer: 'dev' //生产： prod
-    },
-    mutations: { //更改state里面的值定义的一些方法
-        setToken (state, token) {
-            state.token = token
-        },
-    },
-    action: {//提交mutations
-
+  state: {
+    //存储定义的变量
+    token: '',
+    devServer: 'dev', //生产: "prod" || uat和dev还是"dev"
+    isDebugMode: true //只要不是写死会员ID都要改为false
+  },
+  mutations: {
+    //更改state里面的值定义的一些方法
+    setToken(state, token) {
+      state.token = token;
     }
-}
+  },
+  action: {
+    //提交mutations
+  }
+};
 
-export default user
+export default user;

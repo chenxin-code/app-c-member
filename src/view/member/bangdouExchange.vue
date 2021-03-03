@@ -15,11 +15,7 @@
         </div>
         <div class="bangdou-exchange-body">
           <div class="exchange-body-item1">
-            <div
-              class="bangdou-exchange-card"
-              v-for="(item, cIndex) in propertyList"
-              :key="item.id"
-            >
+            <div class="bangdou-exchange-card" v-for="(item, cIndex) in propertyList" :key="item.id">
               <div class="exchange-card-item exchange-card-left">
                 <div class="exchange-card-left-top">
                   <template v-if="item.couponType === 40">
@@ -45,9 +41,7 @@
                 <div class="exchange-card-right-left">
                   <div class="card-right-left-top">{{ item.couponTitle }}</div>
                   <div class="card-right-left-bottom">
-                    <span class="card-right-left-bottom-left">{{
-                      item.integrealCount
-                    }}</span>
+                    <span class="card-right-left-bottom-left">{{ item.integrealCount }}</span>
                     <span class="card-right-left-bottom-right">邦豆</span>
                   </div>
                 </div>
@@ -60,11 +54,7 @@
                   >
                     去使用
                   </div>
-                  <div
-                    v-else
-                    class="exchange-card-right-right-btn"
-                    @click="exchange(item, 0, cIndex)"
-                  >
+                  <div v-else class="exchange-card-right-right-btn" @click="exchange(item, 0, cIndex)">
                     邦豆兑换
                   </div>
                 </div>
@@ -82,11 +72,7 @@
         </div>
         <div class="bangdou-exchange-body">
           <div class="exchange-body-item2">
-            <div
-              class="bangdou-exchange-card"
-              v-for="item in vouchersList"
-              :key="item.id"
-            >
+            <div class="bangdou-exchange-card" v-for="item in vouchersList" :key="item.id">
               <div class="exchange-card-item exchange-card-right">
                 <div class="exchange-card-right-right">
                   <img class="goods-img" :src="item.image || defaultImg" />
@@ -96,9 +82,7 @@
                     {{ item.couponTitle }}
                   </div>
                   <div class="card-right-left-bottom">
-                    <span class="card-right-left-bottom-left">{{
-                      item.integrealCount
-                    }}</span>
+                    <span class="card-right-left-bottom-left">{{ item.integrealCount }}</span>
                     <span class="card-right-left-bottom-right">邦豆</span>
                   </div>
                 </div>
@@ -131,11 +115,7 @@
                 >
                   去使用
                 </div>
-                <div
-                  v-else
-                  class="exchange-card-left-btn"
-                  @click="exchange(item, 1, cIndex)"
-                >
+                <div v-else class="exchange-card-left-btn" @click="exchange(item, 1, cIndex)">
                   邦豆兑换
                 </div>
               </div>
@@ -160,15 +140,15 @@
 </template>
 
 <script>
-import api from "@/api";
-import nav from "@zkty-team/x-engine-module-nav";
-import localstorage from "@zkty-team/x-engine-module-localstorage";
+import api from '@/api';
+import nav from '@zkty-team/x-engine-module-nav';
+import localstorage from '@zkty-team/x-engine-module-localstorage';
 
-import * as moment from "moment";
-import Null from "@/components/null";
-import _ from "lodash";
-import couponMixin from "../coupons/mixin/getCoupon-mixin";
-const defaultImg = require("@/assets/img/coupons/coupon-default.png");
+import * as moment from 'moment';
+import Null from '@/components/null';
+import _ from 'lodash';
+import couponMixin from '../coupons/mixin/getCoupon-mixin';
+const defaultImg = require('@/assets/img/coupons/coupon-default.png');
 
 export default {
   mixins: [couponMixin],
@@ -177,8 +157,8 @@ export default {
       loading: false,
       defaultImg: defaultImg,
       showNull: false,
-      nullMsg: "",
-      memberId: "",
+      nullMsg: '',
+      memberId: '',
       pageRefresh: true,
       propertyList: [], //物业券
       vouchersList: [], // 购物券
@@ -195,6 +175,7 @@ export default {
   // },
   watch: {},
   created() {
+    //本地测试用
     // this.toast();
     // Promise.all([
     //   this.queryReceiveCouponList(4014),
@@ -203,26 +184,28 @@ export default {
     //   this.$toast.clear();
     // });
 
-    //生产需注释
-    // this.memberId = "2212946938230210585";
-    // this.queryReceiveCouponList();
-    // this.getUserInfo();
-
-    //生产需打开
-    localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-      this.memberId = res.result;
-      localStorage.setItem("memberId", this.memberId);
+    if (this.$store.getters.isDebugMode) {
+      //生产需注释
+      this.memberId = '2212946938230210585';
       this.queryReceiveCouponList();
       this.getUserInfo();
-    });
+    } else {
+      //生产需打开
+      localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+        this.memberId = res.result;
+        localStorage.setItem('memberId', this.memberId);
+        this.queryReceiveCouponList();
+        this.getUserInfo();
+      });
+    }
   },
   mounted() {
     // this.madeData();
     nav.setNavLeftBtn({
-      title: "邦豆兑换",
-      titleColor: "#121212",
+      title: '邦豆兑换',
+      titleColor: '#121212',
       titleSize: 24,
-      titleFontName: "PingFangSC-Medium"
+      titleFontName: 'PingFangSC-Medium'
     });
   },
   methods: {
@@ -234,8 +217,8 @@ export default {
     toast() {
       this.$toast.loading({
         duration: 0,
-        type: "loading",
-        message: "加载中...",
+        type: 'loading',
+        message: '加载中...',
         forbidClick: true
       });
     },
@@ -268,9 +251,9 @@ export default {
               item.effective = false;
             }
             // 物业
-            if (item.activity == "4014") {
+            if (item.activity == '4014') {
               propertyList.push(item);
-            } else if (item.activity == "4005") {
+            } else if (item.activity == '4005') {
               // 购物券
               vouchersList.push(item);
             }
@@ -288,13 +271,13 @@ export default {
       api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
         if (res.code === 200) {
           if (+data.integrealCount > +res.data.integral) {
-            return this.$toast("剩余邦豆不足");
+            return this.$toast('剩余邦豆不足');
           }
           const rest = +res.data.integral - +data.integrealCount;
           this.$toast.clear();
           this.$dialog
             .confirm({
-              title: "确认兑换",
+              title: '确认兑换',
               message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
             })
             .then(() => {
@@ -307,35 +290,20 @@ export default {
               api.getReceiveCoupon(params).then(res => {
                 if (res.code === 200) {
                   // 该券当前人
-                  const couponDay =
-                    res.data.canCouponDayTotal <= res.data.couponDayTotal;
-                  const couponPersonDay =
-                    res.data.canCouponPersonDayTotal <=
-                    res.data.couponPersonDayTotal;
-                  const couponPerson =
-                    res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
-                  const couponTotal =
-                    res.data.canCouponTotal <= res.data.couponTotal;
+                  const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+                  const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+                  const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+                  const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
                   // 变更按钮为 '去使用'
                   if (res.data.result) {
-                    this.$toast("兑换成功");
-                    if (
-                      couponPersonDay ||
-                      couponPerson ||
-                      couponPerson ||
-                      couponTotal
-                    ) {
-                      this.$set(data, "goUse", true);
+                    this.$toast('兑换成功');
+                    if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+                      this.$set(data, 'goUse', true);
                     }
                   } else {
-                    if (
-                      !couponDay &&
-                      !couponPersonDay &&
-                      !couponPerson &&
-                      !couponTotal
-                    ) {
-                      console.log("无存在上限，后台/数据库处理错误");
-                      this.$toast("兑换失败");
+                    if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+                      console.log('无存在上限，后台/数据库处理错误');
+                      this.$toast('兑换失败');
                     } else {
                       if (couponTotal) {
                         // if (type === 0) {
@@ -343,19 +311,19 @@ export default {
                         // } else {
                         //   this.vouchersList.splice(index, 1);
                         // }
-                        return this.$toast("该优惠券已兑换完");
+                        return this.$toast('该优惠券已兑换完');
                       }
                       if (couponDay) {
-                        return this.$toast("该优惠券今日已兑换完");
+                        return this.$toast('该优惠券今日已兑换完');
                       }
                       if (couponPersonDay || couponPerson) {
-                        this.$set(data, "goUse", true);
+                        this.$set(data, 'goUse', true);
                       }
                       if (couponPerson) {
-                        return this.$toast("该优惠券您已兑换完");
+                        return this.$toast('该优惠券您已兑换完');
                       }
                       if (couponPersonDay) {
-                        return this.$toast("该优惠券您今日已兑换完");
+                        return this.$toast('该优惠券您今日已兑换完');
                       }
                     }
                   }
@@ -424,7 +392,7 @@ export default {
             .exchange-card-left {
               width: 101px;
               height: 97px;
-              background-image: url("../../assets/img/coupons/red_card.png");
+              background-image: url('../../assets/img/coupons/red_card.png');
               background-repeat: no-repeat;
               background-position: center center;
               background-size: 100% 100%;
@@ -564,7 +532,7 @@ export default {
             .exchange-card-left {
               width: 101px;
               height: 106px;
-              background-image: url("../../assets/img/coupons/yellow_card.png");
+              background-image: url('../../assets/img/coupons/yellow_card.png');
               background-repeat: no-repeat;
               background-position: center center;
               background-size: 100% 100%;
@@ -674,7 +642,7 @@ export default {
                   width: 72px;
                   height: 72px;
                   border-radius: 4px;
-                  background-image: url("../../assets/img/coupons/food.png");
+                  background-image: url('../../assets/img/coupons/food.png');
                   background-repeat: no-repeat;
                   background-position: center center;
                   background-size: 100% 100%;

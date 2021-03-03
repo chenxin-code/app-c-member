@@ -15,19 +15,11 @@
         infinite-scroll-distance="30"
       >
         <van-tabs v-model="active" :sticky="true" @click="tabChange">
-          <van-tab
-            v-for="(tab, index) in tabList"
-            :key="tab.businessType"
-            :title="tab.label"
-          >
+          <van-tab v-for="(tab, index) in tabList" :key="tab.businessType" :title="tab.label">
             <div class="bangdou-exchange-wrap">
               <div class="bangdou-exchange">
                 <div class="bangdou-exchange-body">
-                  <zk-empty
-                    v-show="!loading && !list[index].length"
-                    image="coupon"
-                    description="暂无卡券"
-                  ></zk-empty>
+                  <zk-empty v-show="!loading && !list[index].length" image="coupon" description="暂无卡券"></zk-empty>
                   <div class="exchange-body-item">
                     <div
                       v-for="(item, cindex) in list[index]"
@@ -82,14 +74,9 @@
                             {{ item.couponTitle }}
                           </div>
                           <div class="card-right-left-middle">
-                            {{ getTime(item.validityStartTime) }}-{{
-                              getTime(item.validityEndTime)
-                            }}
+                            {{ getTime(item.validityStartTime) }}-{{ getTime(item.validityEndTime) }}
                           </div>
-                          <div
-                            class="card-right-left-bottom"
-                            @click="collapse(`tab${index}couponDesc${cindex}`)"
-                          >
+                          <div class="card-right-left-bottom" @click="collapse(`tab${index}couponDesc${cindex}`)">
                             使用规则
                             <van-icon
                               name="arrow-down"
@@ -100,11 +87,7 @@
                           </div>
                         </div>
                         <div class="exchange-card-right-right">
-                          <img
-                            class="goodsimg"
-                            v-if="item.activity !== '4014'"
-                            :src="item.image || defaultImg"
-                          />
+                          <img class="goodsimg" v-if="item.activity !== '4014'" :src="item.image || defaultImg" />
                           <div
                             v-else-if="item.effective"
                             class="exchange-card-right-right-btn"
@@ -115,14 +98,8 @@
                           </div>
                         </div>
                       </div>
-                      <div
-                        class="coupon-desc-wrap"
-                        :ref="`tab${index}couponDesc${cindex}`"
-                      >
-                        <div
-                          class="coupon-desc"
-                          :ref="`tab${index}couponDesc${cindex}Cont`"
-                        >
+                      <div class="coupon-desc-wrap" :ref="`tab${index}couponDesc${cindex}`">
+                        <div class="coupon-desc" :ref="`tab${index}couponDesc${cindex}Cont`">
                           <div class="coupon-desc-li">
                             {{ item.memo }}
                             <!-- 使用说明：平台10元通用优惠券，单笔订单满88元可使用。 -->
@@ -130,9 +107,7 @@
                           <!-- <div class="coupon-desc-li">
                             使用说明：平台10元通用优惠券;
                           </div> -->
-                          <div class="coupon-desc-num">
-                            券编号：{{ item.couTypeCode }}
-                          </div>
+                          <div class="coupon-desc-num">券编号：{{ item.couTypeCode }}</div>
                         </div>
                       </div>
                     </div>
@@ -163,16 +138,16 @@
 </template>
 
 <script>
-import api from "@/api";
-import nav from "@zkty-team/x-engine-module-nav";
-import localstorage from "@zkty-team/x-engine-module-localstorage";
-import router from "@zkty-team/x-engine-module-router";
-import yjzdbill from "@zkty-team/x-engine-module-yjzdbill";
-import * as moment from "moment";
-import Null from "@/components/null";
-import mixin from "../mixin/pageList";
-import _ from "lodash";
-const defaultImg = require("@/assets/img/coupons/coupon-default.png");
+import api from '@/api';
+import nav from '@zkty-team/x-engine-module-nav';
+import localstorage from '@zkty-team/x-engine-module-localstorage';
+import router from '@zkty-team/x-engine-module-router';
+import yjzdbill from '@zkty-team/x-engine-module-yjzdbill';
+import * as moment from 'moment';
+import Null from '@/components/null';
+import mixin from '../mixin/pageList';
+import _ from 'lodash';
+const defaultImg = require('@/assets/img/coupons/coupon-default.png');
 
 export default {
   mixins: [mixin],
@@ -182,30 +157,30 @@ export default {
       userInfo: {},
       defaultImg: defaultImg,
       pbStyle: {
-        paddingBottom: "164px"
+        paddingBottom: '164px'
       },
       showNull: false,
-      nullMsg: "",
+      nullMsg: '',
       // ---分隔符---
       //宠物信息
       petsUpdateList: [],
       // ___________________________________________
       active: 0,
-      memberId: "",
+      memberId: '',
       busy: false,
       outUrlRefresh: true, //控制跳外部链接刷新
       tabList: [
         {
-          label: "全部",
-          businessType: "0"
+          label: '全部',
+          businessType: '0'
         },
         {
-          label: "物业抵扣券",
-          businessType: "200005"
+          label: '物业抵扣券',
+          businessType: '200005'
         },
         {
-          label: "购物券",
-          businessType: "200001"
+          label: '购物券',
+          businessType: '200001'
         }
       ],
       scroll: 0,
@@ -220,10 +195,10 @@ export default {
   },
   mounted() {
     nav.setNavLeftBtn({
-      title: "我的卡券",
-      titleColor: "#121212",
+      title: '我的卡券',
+      titleColor: '#121212',
       titleSize: 24,
-      titleFontName: "PingFangSC-Medium"
+      titleFontName: 'PingFangSC-Medium'
     });
     // nav.setNavRightBtn({
     //   title: "兑换优惠券",
@@ -239,25 +214,27 @@ export default {
     if (this.pageRefresh) {
       this.paramsList();
 
-      //生产需注释
-      // this.memberId = "2212946938230210585";
-      // this.getList();
-      // this.getUserInfo();
-
-      //生产需打开
-      localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-        this.memberId = res.result;
-        localStorage.setItem("memberId", this.memberId);
+      if (this.$store.getters.isDebugMode) {
+        //生产需注释
+        this.memberId = '2212946938230210585';
         this.getList();
         this.getUserInfo();
-      });
+      } else {
+        //生产需打开
+        localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+          this.memberId = res.result;
+          localStorage.setItem('memberId', this.memberId);
+          this.getList();
+          this.getUserInfo();
+        });
+      }
     } else {
       this.$refs.scrollContent.scrollTo(0, this.scroll);
       !this.outUrlRefresh && (this.outUrlRefresh = true);
     }
   },
   beforeRouteLeave(to, from, next) {
-    if (to.name === "useLog") {
+    if (to.name === 'useLog') {
       this.pageRefresh = false;
     } else {
       // 跳转物业券，其他卡券 不刷新
@@ -278,35 +255,35 @@ export default {
     },
     getTime(time) {
       const date = new Date(+time);
-      return moment(date).format("YYYY.MM.DD");
+      return moment(date).format('YYYY.MM.DD');
     },
     useCoupon(data) {
       if (!data.effective) {
         return false;
       }
-      if (data.activity === "4014") {
+      if (data.activity === '4014') {
         this.openDeital();
         // this.
-      } else if (data.activity === "4005") {
+      } else if (data.activity === '4005') {
         this.openMall(data);
         // console.log("打开商城");
       }
     },
     async openMall(data) {
       let uri;
-      if (this.devServer !== "prod") {
-        uri = "http://mall-uat-app-linli.timesgroup.cn";
+      if (this.devServer !== 'prod') {
+        uri = 'http://mall-uat-app-linli.timesgroup.cn';
       } else {
-        uri = "http://mall-prod-app-linli.timesgroup.cn";
+        uri = 'http://mall-prod-app-linli.timesgroup.cn';
       }
       const datestr = Number(new Date());
       let token;
-      await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
+      await localstorage.get({ key: 'LLBToken', isPublic: true }).then(res => {
         token = res.result;
       });
       const url = `${uri}/app/index?token=${token}&redirect=${uri}/#/mall2/list/${datestr}?pageType=coupon&coupon=${data.couponType}&couThresholdAmount=${data.satisfyAmount}&couFaceValue=${data.faceAmount}&lastPath=%2Fcoupon_list&endTime=${data.validityEndTime}`;
       router.openTargetRouter({
-        type: "h5",
+        type: 'h5',
         uri: url
       });
     },
@@ -317,31 +294,29 @@ export default {
         if (res.code == 200) {
           this.$toast.clear();
           if (res.data.length > 0) {
-            var userRoomNo = "";
+            var userRoomNo = '';
             for (var i = 0; i < res.data.length; i++) {
-              userRoomNo = userRoomNo
-                .concat(res.data[i].custRoomId)
-                .concat("|");
+              userRoomNo = userRoomNo.concat(res.data[i].custRoomId).concat('|');
             }
             userRoomNo = userRoomNo.slice(0, userRoomNo.length - 1);
             console.log(userRoomNo);
             yjzdbill.YJBillList({
               businessCstNo: userId,
               userRoomNo: userRoomNo,
-              roomNo: "",
+              roomNo: '',
               billStatus: 10,
               billType: 1,
-              appScheme: "x-engine",
+              appScheme: 'x-engine',
               payType: false
             });
           } else {
             yjzdbill.YJBillList({
               businessCstNo: userId,
-              userRoomNo: "",
-              roomNo: "",
+              userRoomNo: '',
+              roomNo: '',
               billStatus: 10,
               billType: 1,
-              appScheme: "x-engine",
+              appScheme: 'x-engine',
               payType: false
             });
           }
@@ -384,12 +359,8 @@ export default {
               }
               return item;
             });
-            this.list[tabIndex] =
-              params.pageIndex === 1
-                ? list
-                : _.concat(this.list[tabIndex], list);
-            list.length < params.pageSize &&
-              (this.canLoadMore[tabIndex] = false);
+            this.list[tabIndex] = params.pageIndex === 1 ? list : _.concat(this.list[tabIndex], list);
+            list.length < params.pageSize && (this.canLoadMore[tabIndex] = false);
             this.total[tabIndex] = (res.data && res.data.total) || 0;
             list.length && this.pageIndex[tabIndex]++;
           }
@@ -401,49 +372,49 @@ export default {
     },
     goUseLog: function() {
       this.scroll = this.$refs.scrollContent.scrollTop;
-      this.$routeHelper.router(this, "/useLog", null, false);
+      this.$routeHelper.router(this, '/useLog', null, false);
     },
     linkPropertyCoupon() {
       if (!this.userInfo.phone) {
-        return this.$toast("手机号无效");
+        return this.$toast('手机号无效');
       }
       let uri;
-      if (this.devServer !== "prod") {
-        uri = "http://apiv3.linli580.com.cn";
+      if (this.devServer !== 'prod') {
+        uri = 'http://apiv3.linli580.com.cn';
       } else {
-        uri = "http://apiv3.linli580.com";
+        uri = 'http://apiv3.linli580.com';
       }
       const url = `${uri}/coupon/?phone=${this.userInfo.phone}`;
       this.outUrlRefresh = false;
       this.scroll = this.$refs.scrollContent.scrollTop;
       router.openTargetRouter({
-        type: "h5",
+        type: 'h5',
         uri: url
       });
     },
     async linkCoupon() {
       let token;
-      await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
+      await localstorage.get({ key: 'LLBToken', isPublic: true }).then(res => {
         token = res.result;
       });
       // test: https://dev-mall-linli.timesgroup.cn/H5/#/anitransferMy?token=
       // prod: https://mall-linli.timesgroup.cn/H5/#/anitransferMy?token=
       let uri;
-      if (this.devServer !== "prod") {
-        uri = "https://dev-mall-linli.timesgroup.cn";
+      if (this.devServer !== 'prod') {
+        uri = 'https://dev-mall-linli.timesgroup.cn';
       } else {
-        uri = "https://mall-linli.timesgroup.cn";
+        uri = 'https://mall-linli.timesgroup.cn';
       }
       const url = `${uri}/H5/#/anitransferMy?token=${token}`;
       this.outUrlRefresh = false;
       this.scroll = this.$refs.scrollContent.scrollTop;
       router.openTargetRouter({
-        type: "h5",
+        type: 'h5',
         uri: url
       });
     },
     goExchangeCoupon: function() {
-      this.$routeHelper.router(this, "/exchangeCoupon", null, true);
+      this.$routeHelper.router(this, '/exchangeCoupon', null, true);
     }
   }
 };
@@ -515,7 +486,7 @@ export default {
                 .exchange-card-left {
                   width: 101px;
                   height: 106px;
-                  background-image: url("../../../assets/img/coupons/red_card.png");
+                  background-image: url('../../../assets/img/coupons/red_card.png');
                   background-repeat: no-repeat;
                   background-position: center center;
                   background-size: 100% 100%;
@@ -638,11 +609,7 @@ export default {
                       flex-direction: row;
                       justify-content: center;
                       align-items: center;
-                      background: linear-gradient(
-                        180deg,
-                        #ff8381 0%,
-                        #e8374a 100%
-                      );
+                      background: linear-gradient(180deg, #ff8381 0%, #e8374a 100%);
                       border-radius: 15px;
                       font-size: 12px;
                       font-family: PingFangSC-Medium, PingFang SC;
@@ -735,7 +702,7 @@ export default {
                 color: #d4d4d4 !important;
               }
               .bangdou-exchange-card.shopping .exchange-card-left {
-                background-image: url("../../../assets/img/coupons/yellow_card.png");
+                background-image: url('../../../assets/img/coupons/yellow_card.png');
               }
             }
           }
@@ -779,7 +746,7 @@ export default {
       position: relative;
       & + .exchange-footer-item::before {
         position: absolute;
-        content: "";
+        content: '';
         left: 0;
         top: 0;
         bottom: 0;

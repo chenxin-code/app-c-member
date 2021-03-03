@@ -14,11 +14,7 @@
         </div>
       </div>-->
     </div>
-    <div
-      class="page-body"
-      :style="{ height: pageHeight }"
-      v-if="memberId != null"
-    >
+    <div class="page-body" :style="{ height: pageHeight }" v-if="memberId != null">
       <div class="dataMessage" v-if="showNoData">
         <div class="icon"></div>
         <div class="message">暂无邦豆记录</div>
@@ -34,20 +30,13 @@
             v-if="!showNoData"
           >
             <template v-slot:default>
-              <div
-                class="task-node"
-                v-for="(item, index) in dataSource"
-                :key="index"
-              >
+              <div class="task-node" v-for="(item, index) in dataSource" :key="index">
                 <div class="task-left">
                   <div class="title">{{ item.behaviourName }}</div>
                   <div class="explain">{{ item.updateTime | timeFormat }}</div>
                 </div>
                 <div class="task-right">
-                  <div>
-                    {{ item.changeType == 1 ? "+" : "-"
-                    }}{{ item.integralChange }}
-                  </div>
+                  <div>{{ item.changeType == 1 ? '+' : '-' }}{{ item.integralChange }}</div>
                 </div>
               </div>
             </template>
@@ -59,9 +48,9 @@
 </template>
 <script>
 /* eslint-disable */
-import api from "@/api";
-import * as moment from "moment";
-import localstorage from "@zkty-team/x-engine-module-localstorage";
+import api from '@/api';
+import * as moment from 'moment';
+import localstorage from '@zkty-team/x-engine-module-localstorage';
 export default {
   data() {
     return {
@@ -69,8 +58,8 @@ export default {
       pageHeight: 0,
       memberId: null,
       guoqi: 0,
-      totalNumber: "",
-      invalidTime: "",
+      totalNumber: '',
+      invalidTime: '',
       pageIndex: 0,
       pageSize: 10,
       loading: false,
@@ -83,28 +72,28 @@ export default {
     this.initData();
   },
   mounted() {
-    this.pageHeight = this.$refs.integralRecord.clientHeight + "px";
+    this.pageHeight = this.$refs.integralRecord.clientHeight + 'px';
   },
   filters: {
     timeFormat: function(value) {
-      return moment(value).format("YYYY-MM-DD HH:mm:ss");
+      return moment(value).format('YYYY-MM-DD HH:mm:ss');
     }
   },
   methods: {
     async initData() {
-      // this.memberId = "2309350880803029614"; //生产需注释
-
-      //生产需打开
-      await localstorage
-        .get({ key: "LLBMemberId", isPublic: true })
-        .then(res => {
+      if (this.$store.getters.isDebugMode) {
+        this.memberId = '2309350880803029614'; //生产需注释
+      } else {
+        //生产需打开
+        await localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
           this.memberId = res.result;
         });
+      }
 
       this.getMemberDetail();
       this.invalidTime = moment()
-        .add(7, "d")
-        .format("YYYY-MM-DD");
+        .add(7, 'd')
+        .format('YYYY-MM-DD');
       this.overdueIntegral();
     },
     getMemberDetail: function() {
@@ -128,7 +117,7 @@ export default {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
       const par = {
         invalidTime: this.invalidTime,
@@ -150,7 +139,7 @@ export default {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
       this.pageIndex = this.pageIndex + 1;
       const par = {
@@ -212,7 +201,7 @@ export default {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
       const par = {
         memberId: this.memberId,
@@ -241,7 +230,7 @@ export default {
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("../../assets/img/icon-nodata.png");
+    background-image: url('../../assets/img/icon-nodata.png');
   }
   .message {
     text-align: center;
@@ -271,7 +260,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 38px 16px 0px 16px;
-  background-image: url("../../assets/img/member/icon-bg-singin.png");
+  background-image: url('../../assets/img/member/icon-bg-singin.png');
   .option {
     display: flex;
     justify-content: space-between;
@@ -282,7 +271,7 @@ export default {
       height: 20px;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      background-image: url("../../assets/img/member/icon-a-left.png");
+      background-image: url('../../assets/img/member/icon-a-left.png');
     }
   }
   .title-body .title {

@@ -16,28 +16,15 @@
       </div>
       <div class="task-list-body">
         <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-          <van-list
-            v-model="loading"
-            :finished="finished"
-            finished-text="没有更多了"
-            @load="onLoad"
-            v-if="!showNoData"
-          >
+          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" v-if="!showNoData">
             <template v-slot:default>
-              <div
-                class="task-node"
-                v-for="(item, index) in dataSource"
-                :key="index"
-              >
+              <div class="task-node" v-for="(item, index) in dataSource" :key="index">
                 <div class="task-left">
                   <div class="title">{{ item.behaviourName }}</div>
                   <div class="explain">{{ item.createTime | timeFormat }}</div>
                 </div>
                 <div class="task-right">
-                  <div>
-                    {{ item.changeType == 1 ? "+" : "-"
-                    }}{{ item.growthChange }}
-                  </div>
+                  <div>{{ item.changeType == 1 ? '+' : '-' }}{{ item.growthChange }}</div>
                 </div>
               </div>
             </template>
@@ -49,9 +36,9 @@
 </template>
 <script>
 /* eslint-disable */
-import nav from "@zkty-team/x-engine-module-nav";
-import api from "@/api";
-import * as moment from "moment";
+import nav from '@zkty-team/x-engine-module-nav';
+import api from '@/api';
+import * as moment from 'moment';
 export default {
   data() {
     return {
@@ -69,18 +56,21 @@ export default {
     };
   },
   created() {
-    // this.memberId = "2309350880803029614"; //生产需注释
-    //生产需打开
-    this.memberId = localStorage.getItem("memberId");
-
+    if (this.$store.getters.isDebugMode) {
+      //生产需注释
+      this.memberId = '2309350880803029614';
+    } else {
+      //生产需打开
+      this.memberId = localStorage.getItem('memberId');
+    }
     this.getMemberDetial();
   },
   mounted() {
-    this.pageHeight = this.$refs.integralRecord.clientHeight + "px";
+    this.pageHeight = this.$refs.integralRecord.clientHeight + 'px';
   },
   filters: {
     timeFormat: function(value) {
-      return moment(value).format("YYYY-MM-DD HH:mm:ss");
+      return moment(value).format('YYYY-MM-DD HH:mm:ss');
     }
   },
   methods: {
@@ -102,7 +92,7 @@ export default {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
       this.pageIndex = this.pageIndex + 1;
       const par = {
@@ -155,7 +145,7 @@ export default {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
       const par = {
         memberId: this.memberId,
@@ -191,7 +181,7 @@ export default {
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("../../assets/img/icon-nodata.png");
+    background-image: url('../../assets/img/icon-nodata.png');
   }
   .message {
     text-align: center;
@@ -222,7 +212,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 38px 16px 0px 16px;
-  background-image: url("../../assets/img/member/icon-bg-singin.png");
+  background-image: url('../../assets/img/member/icon-bg-singin.png');
   .option {
     display: flex;
     justify-content: space-between;
@@ -233,7 +223,7 @@ export default {
       height: 20px;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      background-image: url("../../assets/img/member/icon-a-left.png");
+      background-image: url('../../assets/img/member/icon-a-left.png');
     }
   }
   .title-body .title {

@@ -2,7 +2,7 @@
   <div>
     <transition name="plus-icon1">
       <div class="page-content" v-if="memberObject == null">
-        <div class="page-head Lv1" style="opacity: 0.4;">
+        <div class="page-head Lv1" style="opacity: 0.4">
           <div class="option">
             <div class="btn-return" @click="pageBack"></div>
             <div class="updataDeital" @click="goPage">如何升级</div>
@@ -18,13 +18,7 @@
       <div class="page-content" v-if="memberObject != null">
         <div
           class="page-head"
-          :class="
-            getPageClass(
-              memberObject == null
-                ? ''
-                : memberObject.memberCardRelats[0].levelId
-            )
-          "
+          :class="getPageClass(memberObject == null ? '' : memberObject.memberCardRelats[0].levelId)"
         >
           <div class="option">
             <div class="btn-return" @click="pageBack"></div>
@@ -36,19 +30,12 @@
               <div class="cz-number-body" @click="goProwthValue">
                 当前成长值
                 <div class="cz-number">
-                  {{
-                    memberObject == null
-                      ? ""
-                      : memberObject.memberCardRelats[0].grow
-                  }}
+                  {{ memberObject == null ? '' : memberObject.memberCardRelats[0].grow }}
                 </div>
               </div>
               <div class="progressBar">
                 <div class="bg"></div>
-                <div
-                  class="progres"
-                  :style="{ width: differencePercentage * 100 + '%' }"
-                ></div>
+                <div class="progres" :style="{ width: differencePercentage * 100 + '%' }"></div>
               </div>
               <div class="progressBarWord">
                 <span>{{ beginTitle }}</span>
@@ -69,11 +56,7 @@
                 我的邦豆
                 <span class="num">{{ integral }}</span>
               </div>
-              <div
-                v-if="integralRecordData.length > 0"
-                class="see-more"
-                @click="receiveAll"
-              >
+              <div v-if="integralRecordData.length > 0" class="see-more" @click="receiveAll">
                 全部领取
               </div>
             </div>
@@ -94,14 +77,9 @@
             </div>
           </div>
           <!-- 邦豆兑换 -->
-          <div
-            class="bangdou-exchange"
-            v-if="propertyList.length || vouchersList.length"
-          >
+          <div class="bangdou-exchange" v-if="propertyList.length || vouchersList.length">
             <div class="bangdou-exchange-header">
-              <div class="exchange-header-title">
-                邦豆兑换
-              </div>
+              <div class="exchange-header-title">邦豆兑换</div>
               <div class="exchange-header-seemore" @click="seemoreExchange">
                 查看更多
               </div>
@@ -131,9 +109,7 @@
                           <span class="coupon-type">折</span>
                         </template>
                         <template v-else>
-                          <div class="card-left-top-type">
-                            ￥
-                          </div>
+                          <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">
                             {{ item.faceAmount | delPoint }}
                           </div>
@@ -151,11 +127,7 @@
                         >
                           去使用
                         </div>
-                        <div
-                          v-else
-                          class="exchange-card-left-btn"
-                          @click="exchange(item, 1, cIndex)"
-                        >
+                        <div v-else class="exchange-card-left-btn" @click="exchange(item, 1, cIndex)">
                           邦豆兑换
                         </div>
                       </template>
@@ -166,9 +138,7 @@
                           {{ item.couponTitle }}
                         </div>
                         <div class="card-right-left-bottom">
-                          <span class="card-right-left-bottom-left">{{
-                            item.integrealCount
-                          }}</span>
+                          <span class="card-right-left-bottom-left">{{ item.integrealCount }}</span>
                           <span class="card-right-left-bottom-right">邦豆</span>
                         </div>
                       </div>
@@ -182,19 +152,11 @@
                           >
                             去使用
                           </div>
-                          <div
-                            v-else
-                            class="exchange-card-right-right-btn"
-                            @click="exchange(item, 0, cIndex)"
-                          >
+                          <div v-else class="exchange-card-right-right-btn" @click="exchange(item, 0, cIndex)">
                             邦豆兑换
                           </div>
                         </template>
-                        <img
-                          v-else
-                          class="goods-img"
-                          :src="item.image || defaultImg"
-                        />
+                        <img v-else class="goods-img" :src="item.image || defaultImg" />
                       </div>
                     </div>
                   </div>
@@ -221,9 +183,7 @@
                           <span class="coupon-type">折</span>
                         </template>
                         <template v-else>
-                          <div class="card-left-top-type">
-                            ￥
-                          </div>
+                          <div class="card-left-top-type">￥</div>
                           <div class="card-left-top-num">
                             {{ item.faceAmount | delPoint }}
                           </div>
@@ -241,11 +201,7 @@
                         >
                           去使用
                         </div>
-                        <div
-                          v-else
-                          class="exchange-card-left-btn"
-                          @click="exchange(item, 1, cIndex)"
-                        >
+                        <div v-else class="exchange-card-left-btn" @click="exchange(item, 1, cIndex)">
                           邦豆兑换
                         </div>
                       </template>
@@ -256,9 +212,7 @@
                           {{ item.couponTitle }}
                         </div>
                         <div class="card-right-left-bottom">
-                          <span class="card-right-left-bottom-left">{{
-                            item.integrealCount
-                          }}</span>
+                          <span class="card-right-left-bottom-left">{{ item.integrealCount }}</span>
                           <span class="card-right-left-bottom-right">邦豆</span>
                         </div>
                       </div>
@@ -272,19 +226,11 @@
                           >
                             去使用
                           </div>
-                          <div
-                            v-else
-                            class="exchange-card-right-right-btn"
-                            @click="exchange(item, 0, cIndex)"
-                          >
+                          <div v-else class="exchange-card-right-right-btn" @click="exchange(item, 0, cIndex)">
                             邦豆兑换
                           </div>
                         </template>
-                        <img
-                          v-else
-                          class="goods-img"
-                          :src="item.image || defaultImg"
-                        />
+                        <img v-else class="goods-img" :src="item.image || defaultImg" />
                       </div>
                     </div>
                   </div>
@@ -372,11 +318,7 @@
               <div class="message">暂无任务</div>
             </div>
             <div v-if="taskList.length > 0">
-              <div
-                class="task-node"
-                v-for="(item, index) in taskList"
-                :key="index"
-              >
+              <div class="task-node" v-for="(item, index) in taskList" :key="index">
                 <div class="task-left">
                   <div class="title">{{ item.taskName }}</div>
                   <div class="explain">{{ item.taskCondition }}</div>
@@ -394,11 +336,11 @@
 </template>
 <script>
 /* eslint-disable */
-import nav from "@zkty-team/x-engine-module-nav";
-import api from "@/api";
-import localstorage from "@zkty-team/x-engine-module-localstorage";
-import couponMixin from "../coupons/mixin/getCoupon-mixin";
-const defaultImg = require("@/assets/img/coupons/coupon-default.png");
+import nav from '@zkty-team/x-engine-module-nav';
+import api from '@/api';
+import localstorage from '@zkty-team/x-engine-module-localstorage';
+import couponMixin from '../coupons/mixin/getCoupon-mixin';
+const defaultImg = require('@/assets/img/coupons/coupon-default.png');
 
 export default {
   mixins: [couponMixin],
@@ -406,15 +348,15 @@ export default {
     return {
       currentLeve: 1,
       defaultImg: defaultImg,
-      beginTitle: "",
-      endTitle: "",
+      beginTitle: '',
+      endTitle: '',
       taskList: [],
       difference: 0,
-      classTypeName: "",
+      classTypeName: '',
       integral: 0,
-      memberId: "",
-      userPhone: "13800008888",
-      phoneArea: "81",
+      memberId: '',
+      userPhone: '13800008888',
+      phoneArea: '81',
       differencePercentage: 0,
       integralRecordData: [],
       propertyList: [],
@@ -424,31 +366,30 @@ export default {
   },
 
   activated() {
-    //生产需注释
-    // this.memberId = "2331048196588962531";
-    // localStorage.setItem("memberId", this.memberId);
-    // this.getMemberDetail();
-    // this.queryReceiveCouponList();
-
-    //生产需打开
-    if (this.$route.meta.isBack != true) {
-      localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-        this.memberId = res.result;
-        console.log('this.memberId :>> ', this.memberId);
-        localStorage.setItem("memberId", this.memberId);
-        this.getMemberDetail();
-        this.queryReceiveCouponList();
-      });
+    console.log('$store.getters.isDebugMode :>> ', this.$store.getters.isDebugMode);
+    if (this.$store.getters.isDebugMode) {
+      // 生产需注释
+      this.memberId = '2331048196588962531';
+      localStorage.setItem('memberId', this.memberId);
+      this.getMemberDetail();
+      this.queryReceiveCouponList();
+    } else {
+      // 生产需打开
+      if (this.$route.meta.isBack != true) {
+        localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+          this.memberId = res.result;
+          console.log('this.memberId :>> ', this.memberId);
+          localStorage.setItem('memberId', this.memberId);
+          this.getMemberDetail();
+          this.queryReceiveCouponList();
+        });
+      }
     }
   },
   created() {},
   mounted() {},
   beforeRouteEnter(to, from, next) {
-    if (
-      from.name == "growthValueRecord" ||
-      from.name == "IntegralRecord" ||
-      from.name == "gradeDescription"
-    ) {
+    if (from.name == 'growthValueRecord' || from.name == 'IntegralRecord' || from.name == 'gradeDescription') {
       to.meta.isBack = true;
     } else {
       to.meta.isBack = false;
@@ -457,41 +398,41 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (
-      to.name == "growthValueRecord" ||
-      to.name == "IntegralRecord" ||
-      to.name == "gradeDescription" ||
-      to.name == "bangdouExchange"
+      to.name == 'growthValueRecord' ||
+      to.name == 'IntegralRecord' ||
+      to.name == 'gradeDescription' ||
+      to.name == 'bangdouExchange'
     ) {
       next();
     } else {
       nav.navigatorBack({
-        url: "0"
+        url: '0'
       });
       next();
     }
   },
   methods: {
     getBtnWord: function(state) {
-      var reMsg = "未开始";
+      var reMsg = '未开始';
       switch (state.statues) {
         case 0:
-          reMsg = "未完成";
+          reMsg = '未完成';
           break;
         case 1:
-          reMsg = "已完成";
+          reMsg = '已完成';
           break;
         case 2:
-          reMsg = "已过期";
+          reMsg = '已过期';
           break;
         case 3:
-          reMsg = "领取";
+          reMsg = '领取';
           break;
       }
       return reMsg;
     },
     pageBack: function() {
       nav.navigatorBack({
-        url: "0"
+        url: '0'
       });
     },
     getList() {},
@@ -500,7 +441,7 @@ export default {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
       const par = {
         memberId: this.memberId
@@ -517,7 +458,7 @@ export default {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
       const par = {
         memberId: this.memberId,
@@ -533,63 +474,59 @@ export default {
 
     seemoreExchange: function() {
       this.$routerHelper.push({
-        path: "/bangdouExchange"
+        path: '/bangdouExchange'
       });
     },
     goPage: function() {
-      this.$routeHelper.router(this, "/gradeDescription", null, false);
+      this.$routeHelper.router(this, '/gradeDescription', null, false);
     },
     IntegralRecord: function() {
       // console.log('this.$routeHelper :>> ', this.$routeHelper);
-      this.$routeHelper.router(this, "/IntegralRecord", null, true);
+      this.$routeHelper.router(this, '/IntegralRecord', null, true);
     },
     goProwthValue: function() {
-      this.$routeHelper.router(this, "/growthValueRecord", null, true);
+      this.$routeHelper.router(this, '/growthValueRecord', null, true);
     },
     getPageClass: function(currentLeve) {
-      let classTypeName = "";
+      let classTypeName = '';
       switch (currentLeve) {
         case 1:
-          classTypeName = "Lv1";
-          this.beginTitle = "V1";
-          this.endTitle = "V2";
+          classTypeName = 'Lv1';
+          this.beginTitle = 'V1';
+          this.endTitle = 'V2';
           break;
         case 2:
-          classTypeName = "Lv2";
-          this.beginTitle = "V2";
-          this.endTitle = "V3";
+          classTypeName = 'Lv2';
+          this.beginTitle = 'V2';
+          this.endTitle = 'V3';
           break;
         case 3:
-          classTypeName = "Lv3";
-          this.beginTitle = "V3";
-          this.endTitle = "V4";
+          classTypeName = 'Lv3';
+          this.beginTitle = 'V3';
+          this.endTitle = 'V4';
           break;
         case 4:
-          classTypeName = "Lv4";
-          this.beginTitle = "V4";
-          this.endTitle = "V5";
+          classTypeName = 'Lv4';
+          this.beginTitle = 'V4';
+          this.endTitle = 'V5';
           break;
         case 5:
-          classTypeName = "Lv5";
-          this.beginTitle = "V5";
-          this.endTitle = "V5";
+          classTypeName = 'Lv5';
+          this.beginTitle = 'V5';
+          this.endTitle = 'V5';
           break;
       }
       return classTypeName;
     },
     pageInitial: function(sourceData) {
-      this.classTypeName = "";
-      this.beginTitle = "V1";
-      this.endTitle = "V2";
+      this.classTypeName = '';
+      this.beginTitle = 'V1';
+      this.endTitle = 'V2';
       this.integral = sourceData.integral;
       this.memberId = sourceData.memberId;
       this.currentLeve = sourceData.memberCardRelats[0].levelId;
-      this.difference =
-        sourceData.memberCardRelats[0].rangeEnd -
-        sourceData.memberCardRelats[0].grow;
-      this.differencePercentage =
-        sourceData.memberCardRelats[0].grow /
-        sourceData.memberCardRelats[0].rangeEnd;
+      this.difference = sourceData.memberCardRelats[0].rangeEnd - sourceData.memberCardRelats[0].grow;
+      this.differencePercentage = sourceData.memberCardRelats[0].grow / sourceData.memberCardRelats[0].rangeEnd;
       this.integralRecord(this.memberId);
       this.getMyTaskListByMember(this.memberId);
       this.$forceUpdate();
@@ -599,14 +536,14 @@ export default {
       api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
         if (res.code === 200) {
           if (+data.integrealCount > +res.data.integral) {
-            return this.$toast("剩余邦豆不足");
+            return this.$toast('剩余邦豆不足');
           }
           const rest = +res.data.integral - +data.integrealCount;
           this.$toast.clear();
 
           this.$dialog
             .confirm({
-              title: "确认兑换",
+              title: '确认兑换',
               message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
             })
             .then(() => {
@@ -618,39 +555,24 @@ export default {
               this.toast();
               api.getReceiveCoupon(params).then(res => {
                 if (res.code === 200) {
-                  const couponDay =
-                    res.data.canCouponDayTotal <= res.data.couponDayTotal;
-                  const couponPersonDay =
-                    res.data.canCouponPersonDayTotal <=
-                    res.data.couponPersonDayTotal;
-                  const couponPerson =
-                    res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
-                  const couponTotal =
-                    res.data.canCouponTotal <= res.data.couponTotal;
+                  const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+                  const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+                  const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+                  const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
                   if (res.data.result) {
-                    this.$toast("兑换成功");
+                    this.$toast('兑换成功');
                     setTimeout(() => {
                       this.getMemberDetail();
                     }, 500);
 
                     // 存在上限，变更按钮为 '去使用'
-                    if (
-                      couponDay ||
-                      couponPersonDay ||
-                      couponPerson ||
-                      couponTotal
-                    ) {
-                      this.$set(data, "goUse", true);
+                    if (couponDay || couponPersonDay || couponPerson || couponTotal) {
+                      this.$set(data, 'goUse', true);
                     }
                   } else {
-                    if (
-                      !couponDay &&
-                      !couponPersonDay &&
-                      !couponPerson &&
-                      !couponTotal
-                    ) {
-                      console.log("无存在上限，后台/数据库处理错误");
-                      this.$toast("兑换失败");
+                    if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+                      console.log('无存在上限，后台/数据库处理错误');
+                      this.$toast('兑换失败');
                     } else {
                       if (couponTotal) {
                         // if (type === 0) {
@@ -658,19 +580,19 @@ export default {
                         // } else {
                         //   this.vouchersList.splice(index, 1);
                         // }
-                        return this.$toast("该优惠券已兑换完");
+                        return this.$toast('该优惠券已兑换完');
                       }
                       if (couponDay) {
-                        return this.$toast("该优惠券今日已兑换完");
+                        return this.$toast('该优惠券今日已兑换完');
                       }
                       if (couponPersonDay || couponPerson) {
-                        this.$set(data, "goUse", true);
+                        this.$set(data, 'goUse', true);
                       }
                       if (couponPerson) {
-                        return this.$toast("该优惠券您已兑换完");
+                        return this.$toast('该优惠券您已兑换完');
                       }
                       if (couponPersonDay) {
-                        return this.$toast("该优惠券您今日已兑换完");
+                        return this.$toast('该优惠券您今日已兑换完');
                       }
                     }
                   }
@@ -736,14 +658,14 @@ export default {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
     },
     integralRecord: function(memberID) {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
       const par = {
         memberId: memberID,
@@ -753,7 +675,7 @@ export default {
         status: 1
       };
       api.integralRecord(par).then(res => {
-        console.log("integralRecord res :>> ", res); //测试
+        console.log('integralRecord res :>> ', res); //测试
         if (res.code == 200) {
           this.$toast.clear();
           this.integralRecordData = res.data.records || [];
@@ -764,7 +686,7 @@ export default {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
       const par = {
         pageIndex: 1,
@@ -874,7 +796,7 @@ export default {
       height: 20px;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      background-image: url("../../assets/img/member/icon-a-left.png");
+      background-image: url('../../assets/img/member/icon-a-left.png');
     }
 
     .updataDeital {
@@ -885,7 +807,7 @@ export default {
       color: #ffffff;
       background-size: 12px 12px;
       background-repeat: no-repeat;
-      background-image: url("../../assets/img/member/icon-wenhao.png");
+      background-image: url('../../assets/img/member/icon-wenhao.png');
       background-position: 0px center;
     }
   }
@@ -972,10 +894,10 @@ export default {
 }
 
 .page-head.Lv1 {
-  background-image: url("../../assets/img/member/icon-member-Lv1.png");
+  background-image: url('../../assets/img/member/icon-member-Lv1.png');
 
   .leveName {
-    background-image: url("../../assets/img/member/icon-leve-name-l1.png");
+    background-image: url('../../assets/img/member/icon-leve-name-l1.png');
   }
 
   .cz-number-body {
@@ -983,11 +905,11 @@ export default {
   }
   .cz-number {
     color: #7f86aa;
-    background-image: url("../../assets/img/member/icon-chno-l1.png");
+    background-image: url('../../assets/img/member/icon-chno-l1.png');
   }
 
   .leveLogo {
-    background-image: url("../../assets/img/member/icon-leve-l1.png");
+    background-image: url('../../assets/img/member/icon-leve-l1.png');
   }
 
   .progressBar {
@@ -1005,10 +927,10 @@ export default {
 }
 
 .page-head.Lv2 {
-  background-image: url("../../assets/img/member/icon-member-Lv2.png");
+  background-image: url('../../assets/img/member/icon-member-Lv2.png');
 
   .leveName {
-    background-image: url("../../assets/img/member/icon-leve-name-l2.png");
+    background-image: url('../../assets/img/member/icon-leve-name-l2.png');
   }
 
   .cz-number-body {
@@ -1016,11 +938,11 @@ export default {
   }
   .cz-number {
     color: #b5561a;
-    background-image: url("../../assets/img/member/icon-chno-l2.png");
+    background-image: url('../../assets/img/member/icon-chno-l2.png');
   }
 
   .leveLogo {
-    background-image: url("../../assets/img/member/icon-leve-l2.png");
+    background-image: url('../../assets/img/member/icon-leve-l2.png');
   }
 
   .progressBar {
@@ -1038,21 +960,21 @@ export default {
 }
 
 .page-head.Lv3 {
-  background-image: url("../../assets/img/member/icon-member-Lv3.png");
+  background-image: url('../../assets/img/member/icon-member-Lv3.png');
 
   .leveName {
-    background-image: url("../../assets/img/member/icon-leve-name-l3.png");
+    background-image: url('../../assets/img/member/icon-leve-name-l3.png');
   }
 
   .cz-number-body {
     color: #434342;
   }
   .cz-number {
-    background-image: url("../../assets/img/member/icon-chno-l3.png");
+    background-image: url('../../assets/img/member/icon-chno-l3.png');
   }
 
   .leveLogo {
-    background-image: url("../../assets/img/member/icon-leve-l3.png");
+    background-image: url('../../assets/img/member/icon-leve-l3.png');
   }
 
   .progressBar {
@@ -1070,21 +992,21 @@ export default {
 }
 
 .page-head.Lv4 {
-  background-image: url("../../assets/img/member/icon-member-Lv4.png");
+  background-image: url('../../assets/img/member/icon-member-Lv4.png');
 
   .leveName {
-    background-image: url("../../assets/img/member/icon-leve-name-l4.png");
+    background-image: url('../../assets/img/member/icon-leve-name-l4.png');
   }
 
   .cz-number-body {
     color: #986b1b;
   }
   .cz-number {
-    background-image: url("../../assets/img/member/icon-chno-l4.png");
+    background-image: url('../../assets/img/member/icon-chno-l4.png');
   }
 
   .leveLogo {
-    background-image: url("../../assets/img/member/icon-leve-l4.png");
+    background-image: url('../../assets/img/member/icon-leve-l4.png');
   }
 
   .progressBar {
@@ -1102,21 +1024,21 @@ export default {
 }
 
 .page-head.Lv5 {
-  background-image: url("../../assets/img/member/icon-member-Lv5.png");
+  background-image: url('../../assets/img/member/icon-member-Lv5.png');
 
   .leveName {
-    background-image: url("../../assets/img/member/icon-leve-name-l5.png");
+    background-image: url('../../assets/img/member/icon-leve-name-l5.png');
   }
 
   .cz-number-body {
     color: #fff;
   }
   .cz-number {
-    background-image: url("../../assets/img/member/icon-chno-l5.png");
+    background-image: url('../../assets/img/member/icon-chno-l5.png');
   }
 
   .leveLogo {
-    background-image: url("../../assets/img/member/icon-leve-l5.png");
+    background-image: url('../../assets/img/member/icon-leve-l5.png');
   }
 
   .progressBar {
@@ -1155,7 +1077,7 @@ export default {
   background-position: right center;
   background-size: 18px 18px;
   background-repeat: no-repeat;
-  background-image: url("../../assets/img/member/icon-jt-right.png");
+  background-image: url('../../assets/img/member/icon-jt-right.png');
   .num {
     color: #e8374a;
   }
@@ -1241,7 +1163,7 @@ export default {
             width: 101px;
             height: 106px;
             // background-color: red;
-            background-image: url("../../assets/img/coupons/red_card.png");
+            background-image: url('../../assets/img/coupons/red_card.png');
             background-repeat: no-repeat;
             background-position: center center;
             background-size: 100% 100%;
@@ -1381,13 +1303,13 @@ export default {
             font-weight: 600;
           }
           .exchange-card-left {
-            background-image: url("../../assets/img/coupons/yellow_card.png");
+            background-image: url('../../assets/img/coupons/yellow_card.png');
           }
           .exchange-card-right-right .exchange-card-right-right-btn {
             width: 72px;
             height: 72px;
             border-radius: 4px;
-            background-image: url("../../assets/img/coupons/food.png");
+            background-image: url('../../assets/img/coupons/food.png');
             background-repeat: no-repeat;
             background-position: center center;
             background-size: 100% 100%;
@@ -1433,7 +1355,7 @@ export default {
   // padding-top: 12px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-image: url("../../assets/img/member/icon-getBangDou-bg.png");
+  background-image: url('../../assets/img/member/icon-getBangDou-bg.png');
 }
 .page-body .notReceivedNode .integralChange {
   font-size: 16px;
@@ -1470,7 +1392,7 @@ export default {
   background-position: right center;
   background-size: 16px 16px;
   background-repeat: no-repeat;
-  background-image: url("../../assets/img/member/icon-jt-right.png");
+  background-image: url('../../assets/img/member/icon-jt-right.png');
 }
 
 .task-list-body {
@@ -1512,7 +1434,7 @@ export default {
   background-position: left center;
   background-size: 16px 16px;
   background-repeat: no-repeat;
-  background-image: url("../../assets/img/member/icon-biaoshi.png");
+  background-image: url('../../assets/img/member/icon-biaoshi.png');
   // overflow: hidden;
   // white-space: nowrap;
   // text-overflow: ellipsis;
@@ -1551,7 +1473,7 @@ export default {
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("../../assets/img/icon-nodata.png");
+    background-image: url('../../assets/img/icon-nodata.png');
   }
   .message {
     text-align: center;

@@ -24,18 +24,12 @@
           <div class="form-body-node signlnBtn"></div>
           <div class="form-body-node signlnBtn"></div>
           <div class="form-body-node signlnBtn"></div>
-          <div
-            class="form-body-node signlnBtn"
-            style="visibility: hidden"
-          ></div>
+          <div class="form-body-node signlnBtn" style="visibility: hidden"></div>
         </div>
       </div>
       <div class="page-body" v-if="taskVoList != null">
         <div class="form-body">
-          <div
-            class="form-body-node signlnBtn"
-            :class="{ active: taskVoList[0].complete }"
-          >
+          <div class="form-body-node signlnBtn" :class="{ active: taskVoList[0].complete }">
             <div class="awardIntegral">
               {{ taskVoList[0].awardIntegral }}
               <span>邦豆</span>
@@ -45,10 +39,7 @@
               <div v-html="getIsToady(1, taskVoList[0])"></div>
             </div>
           </div>
-          <div
-            class="form-body-node signlnBtn"
-            :class="{ active: taskVoList[1].complete }"
-          >
+          <div class="form-body-node signlnBtn" :class="{ active: taskVoList[1].complete }">
             <div class="awardIntegral">
               {{ taskVoList[1].awardIntegral }}
               <span>邦豆</span>
@@ -58,20 +49,14 @@
               <div v-html="getIsToady(2, taskVoList[1])"></div>
             </div>
           </div>
-          <div
-            class="form-body-node signlnBtn day3"
-            :class="{ active: taskVoList[2].complete }"
-          >
+          <div class="form-body-node signlnBtn day3" :class="{ active: taskVoList[2].complete }">
             <div class="awardIntegral">神秘宝箱</div>
             <div class="node-logo"></div>
             <div class="today">
               <div v-html="getIsToady(3, taskVoList[2])"></div>
             </div>
           </div>
-          <div
-            class="form-body-node signlnBtn"
-            :class="{ active: taskVoList[3].complete }"
-          >
+          <div class="form-body-node signlnBtn" :class="{ active: taskVoList[3].complete }">
             <div class="awardIntegral">
               {{ taskVoList[3].awardIntegral }}
               <span>邦豆</span>
@@ -84,10 +69,7 @@
         </div>
 
         <div class="form-body">
-          <div
-            class="form-body-node signlnBtn"
-            :class="{ active: taskVoList[4].complete }"
-          >
+          <div class="form-body-node signlnBtn" :class="{ active: taskVoList[4].complete }">
             <div class="awardIntegral">
               {{ taskVoList[4].awardIntegral }}
               <span>邦豆</span>
@@ -97,10 +79,7 @@
               <div v-html="getIsToady(5, taskVoList[4])"></div>
             </div>
           </div>
-          <div
-            class="form-body-node signlnBtn"
-            :class="{ active: taskVoList[5].complete }"
-          >
+          <div class="form-body-node signlnBtn" :class="{ active: taskVoList[5].complete }">
             <div class="awardIntegral">
               {{ taskVoList[5].awardIntegral }}
               <span>邦豆</span>
@@ -110,20 +89,14 @@
               <div v-html="getIsToady(6, taskVoList[5])"></div>
             </div>
           </div>
-          <div
-            class="form-body-node signlnBtn day7"
-            :class="{ active: taskVoList[6].complete }"
-          >
+          <div class="form-body-node signlnBtn day7" :class="{ active: taskVoList[6].complete }">
             <div class="awardIntegral">神秘豪礼</div>
             <div class="node-logo"></div>
             <div class="today">
               <div v-html="getIsToady(7, taskVoList[6])"></div>
             </div>
           </div>
-          <div
-            class="form-body-node signlnBtn"
-            style="visibility: hidden"
-          ></div>
+          <div class="form-body-node signlnBtn" style="visibility: hidden"></div>
         </div>
       </div>
       <div class="btn-body" v-if="isClick == false">
@@ -132,19 +105,10 @@
       <div class="btn-body" v-if="isClick == true">
         <div class="btn goPath" @click="goPath">已签到，查看更多会员信息</div>
       </div>
-      <van-overlay
-        class="van-overlay"
-        :show="showPopup"
-        @click="showPopup = false"
-      >
+      <van-overlay class="van-overlay" :show="showPopup" @click="showPopup = false">
         <div class="messageBox">
-          <div
-            class="popImages"
-            :class="{ pop3: currentDay.day == 3, pop7: currentDay.day == 7 }"
-          ></div>
-          <div class="bangdong">
-            恭喜你获得{{ currentDay.awardIntegral }}邦豆
-          </div>
+          <div class="popImages" :class="{ pop3: currentDay.day == 3, pop7: currentDay.day == 7 }"></div>
+          <div class="bangdong">恭喜你获得{{ currentDay.awardIntegral }}邦豆</div>
           <div class="bangdong2">可到邦豆商城兑换免费商品</div>
           <div class="btn-know">知道了</div>
         </div>
@@ -154,11 +118,11 @@
 </template>
 <script>
 /* eslint-disable */
-import nav from "@zkty-team/x-engine-module-nav";
-import api from "@/api";
-import localstorage from "@zkty-team/x-engine-module-localstorage";
-import * as moment from "moment";
-import nativeRouter from "@zkty-team/x-engine-module-router";
+import nav from '@zkty-team/x-engine-module-nav';
+import api from '@/api';
+import localstorage from '@zkty-team/x-engine-module-localstorage';
+import * as moment from 'moment';
+import nativeRouter from '@zkty-team/x-engine-module-router';
 export default {
   data() {
     return {
@@ -172,68 +136,71 @@ export default {
     };
   },
   created() {
-    //生产需注释
-    // this.memberId = "2309350880803029939";
-    // localStorage.setItem("memberId", this.memberId);
-    // this.getSignTasklistUsingget();
-
-    //生产需打开
-    localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-      // this.projectId = 2248639301870946124;
-      this.memberId = res.result;
+    console.log('$store.getters.isDebugMode :>> ', this.$store.getters.isDebugMode);
+    if (this.$store.getters.isDebugMode) {
+      //生产需注释
+      this.memberId = '2309350880803029939';
+      localStorage.setItem('memberId', this.memberId);
       this.getSignTasklistUsingget();
-    });
+    } else {
+      //生产需打开
+      localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+        // this.projectId = 2248639301870946124;
+        this.memberId = res.result;
+        this.getSignTasklistUsingget();
+      });
+    }
   },
   mounted() {},
   beforeDestroy() {
     nav.navigatorBack({
-      url: "0"
+      url: '0'
     });
   },
   methods: {
     goPath: function() {
       nativeRouter.openTargetRouter({
-        type: "microapp",
-        uri: "com.times.microapp.AppcMember",
+        type: 'microapp',
+        uri: 'com.times.microapp.AppcMember',
         hideNavbar: true,
-        path: encodeURI("/")
+        path: encodeURI('/')
       });
     },
     pageBack: function() {
       nav.navigatorBack({
-        url: "0"
+        url: '0'
       });
     },
     getIsToady: function(index, node) {
       if (this.isClick == false) {
         if (this.count == index - 1) {
           this.currentDay = node;
-          return "今天";
+          return '今天';
         } else {
-          return node.day + "<span>天</span>";
+          return node.day + '<span>天</span>';
         }
       } else {
         if (this.count == index) {
           this.currentDay = node;
-          return "今天";
+          return '今天';
         } else {
-          return node.day + "<span>天</span>";
+          return node.day + '<span>天</span>';
         }
       }
-      return node.day + "<span>天</span>";
+      return node.day + '<span>天</span>';
     },
     signln: function() {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
       const par = {
         behaviourId: 10,
-        clientCode: "sys_linlibang",
-        createTime: moment().format("YYYY-MM-DD HH:mm:ss"),
+        clientCode: 'sys_linlibang',
+        createTime: moment().format('YYYY-MM-DD HH:mm:ss'),
         mapPamater: {
-          sign: moment().format("YYYY-MM-DD HH:mm:ss")
+          sign: moment().format('YYYY-MM-DD HH:mm:ss')
         },
         memberId: this.memberId
       };
@@ -252,7 +219,7 @@ export default {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
-        message: "加载中..."
+        message: '加载中...'
       });
       const par = {
         memberId: this.memberId
@@ -301,7 +268,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 38px 16px 0px 16px;
-  background-image: url("../../assets/img/member/icon-bg-singin.png");
+  background-image: url('../../assets/img/member/icon-bg-singin.png');
   .option {
     display: flex;
     justify-content: space-between;
@@ -312,7 +279,7 @@ export default {
       height: 20px;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      background-image: url("../../assets/img/member/icon-a-left.png");
+      background-image: url('../../assets/img/member/icon-a-left.png');
     }
   }
   .title-body .title {
@@ -383,7 +350,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("../../assets/img/member/icon-bj-sing-1.png");
+  background-image: url('../../assets/img/member/icon-bj-sing-1.png');
   .awardIntegral {
     width: 100%;
     position: absolute;
@@ -414,7 +381,7 @@ export default {
     margin-top: 6px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("../../assets/img/member/icon-signln-1.png");
+    background-image: url('../../assets/img/member/icon-signln-1.png');
   }
 }
 
@@ -432,7 +399,7 @@ export default {
     margin-left: calc(50% - 34px);
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("../../assets/img/member/icon-signln-2.png");
+    background-image: url('../../assets/img/member/icon-signln-2.png');
   }
 }
 
@@ -449,14 +416,14 @@ export default {
     height: 40px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("../../assets/img/member/icon-signln-3.png");
+    background-image: url('../../assets/img/member/icon-signln-3.png');
   }
 }
 .active {
-  background-image: url("../../assets/img/member/icon-bj-sing-2.png");
+  background-image: url('../../assets/img/member/icon-bj-sing-2.png');
 }
 .currentDay {
-  background-image: url("../../assets/img/member/icon-bj-sing-3.png");
+  background-image: url('../../assets/img/member/icon-bj-sing-3.png');
   // .awardIntegral {
   //   font-size: 12px;
   //   font-family: PingFangSC-Medium, PingFang SC;
@@ -488,13 +455,13 @@ export default {
   height: 136px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-image: url("../../assets/img/member/icon-pop-1.png");
+  background-image: url('../../assets/img/member/icon-pop-1.png');
 }
 .pop3 {
-  background-image: url("../../assets/img/member/icon-pop-3.png");
+  background-image: url('../../assets/img/member/icon-pop-3.png');
 }
 .pop7 {
-  background-image: url("../../assets/img/member/icon-pop-7.png");
+  background-image: url('../../assets/img/member/icon-pop-7.png');
 }
 .bangdong {
   font-size: 18px;
