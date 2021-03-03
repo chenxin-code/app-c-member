@@ -1,9 +1,9 @@
 <template>
   <div class="exchange-container">
     <!-- 临时跳转:生产需注释 -->
-    <!-- <div style="position:fixed;top:70px;right:20px;z-index:9999;">
+    <div style="position:fixed;top:70px;right:20px;z-index:9999;" v-if="$store.getters.isDebugMode">
       <button @click="$router.push('/exchangeCoupon')">兑换优惠券</button>
-    </div> -->
+    </div>
     <div class="exchange-info" style="padding-bottom: 78px;">
       <div
         class="exchange-tab-wrap"
@@ -100,7 +100,7 @@
                       </div>
                       <div class="coupon-desc-wrap" :ref="`tab${index}couponDesc${cindex}`">
                         <div class="coupon-desc" :ref="`tab${index}couponDesc${cindex}Cont`">
-                          <div class="coupon-desc-li">
+                          <div class="coupon-desc-li" style="white-space: pre-line;">
                             {{ item.memo }}
                             <!-- 使用说明：平台10元通用优惠券，单笔订单满88元可使用。 -->
                           </div>
@@ -363,6 +363,9 @@ export default {
             list.length < params.pageSize && (this.canLoadMore[tabIndex] = false);
             this.total[tabIndex] = (res.data && res.data.total) || 0;
             list.length && this.pageIndex[tabIndex]++;
+
+            // console.log('queryMemberCouponList list :>> ', list);
+            // list[1].memo = '物业抵扣券邦豆兑换1\n物业抵扣券邦豆兑换2物业抵扣券邦豆兑换3\n物业抵扣券邦豆兑换4';
           }
         })
         .finally(() => {
