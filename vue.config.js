@@ -171,16 +171,17 @@ const vueConfig = {
   productionSourceMap: false,
   lintOnSave: undefined,
   //CLI集成的webpack中的babel-loader默认忽略了node_modules目录，这里是为了二次编译node_modules里的依赖(大部分依赖都会用babel转为es5以下的语法)
-  transpileDependencies: [
-    "@zkty-team/x-engine-module-engine",
-    "@zkty-team/x-engine-module-geo",
-    "@zkty-team/x-engine-module-localstorage",
-    "@zkty-team/x-engine-module-nav",
-    "@zkty-team/x-engine-module-network",
-    "@zkty-team/x-engine-module-router",
-    "@zkty-team/x-engine-module-ui",
-    "@zkty-team/x-engine-module-yjzdbill",
-  ]
+  // transpileDependencies: [
+  //   "@zkty-team/x-engine-module-engine",
+  //   "@zkty-team/x-engine-module-geo",
+  //   "@zkty-team/x-engine-module-localstorage",
+  //   "@zkty-team/x-engine-module-nav",
+  //   "@zkty-team/x-engine-module-network",
+  //   "@zkty-team/x-engine-module-router",
+  //   "@zkty-team/x-engine-module-ui",
+  //   "@zkty-team/x-engine-module-yjzdbill",
+  // ],
+  transpileDependencies: [/@zkty-team/]
 };
 
 // preview.pro.loacg.com only do not use in your production;
