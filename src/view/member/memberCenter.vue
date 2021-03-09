@@ -45,6 +45,10 @@
             </div>
             <div class="leveLogo-body">
               <div class="leveLogo"></div>
+              <div class="member-right" @click="$router.push({path: '/memberRight'})">
+                会员权益
+                <img :src="require('./../../assets/img/member/to-member-right-lv1.png')" alt="" />
+              </div>
             </div>
           </div>
         </div>
@@ -854,6 +858,7 @@ export default {
       flex: 0 auto;
       width: 132px;
       justify-content: center;
+      flex-direction: column;
 
       .leveLogo {
         width: 96px;
@@ -861,6 +866,29 @@ export default {
         background-size: 96px 50px;
         background-repeat: no-repeat;
         background-position: 0px center;
+      }
+      .member-right {
+        margin-top: 25px;
+        margin-left: 15px;
+        padding: 5px 7px;
+        width: 82px;
+        font-size: 12px;
+        font-weight: 600;
+        //height: 24px;
+        //line-height: 24px;
+        border-radius: 25px;
+        background-color: #fff;
+        vertical-align: middle;
+        position: relative;
+        img {
+          height: 14px;
+          width: 14px;
+          vertical-align: middle;
+          position: absolute;
+          right: 8px;
+          top: 50%;
+          margin-top: -7px;
+        }
       }
     }
 
