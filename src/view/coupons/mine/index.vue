@@ -269,6 +269,7 @@ export default {
         // console.log("打开商城");
       }
     },
+    //TODO:这里跳页报ngnix错误
     async openMall(data) {
       let uri;
       if (this.devServer !== 'prod') {
