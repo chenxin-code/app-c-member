@@ -290,10 +290,6 @@ export default {
       );
       const url = `${uri}/app/index?token=${token}&redirect=${tempParam}`;
 
-      console.log('openMall uri :>> ', uri);
-      console.log('openMall tempParam :>> ', tempParam);
-      console.log('openMall url :>> ', url);
-
       router.openTargetRouter({
         type: 'h5',
         uri: url
