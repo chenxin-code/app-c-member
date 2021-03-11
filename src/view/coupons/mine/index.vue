@@ -261,6 +261,7 @@ export default {
       if (!data.effective) {
         return false;
       }
+      // 4005/购物券 -- 4014/物业券
       if (data.activity === '4014') {
         this.openDeital();
         // this.
@@ -277,12 +278,22 @@ export default {
       } else {
         uri = 'http://mall-prod-app-linli.timesgroup.cn';
       }
+
       const datestr = Number(new Date());
       let token;
       await localstorage.get({ key: 'LLBToken', isPublic: true }).then(res => {
         token = res.result;
       });
-      const url = `${uri}/app/index?token=${token}&redirect=${uri}/#/mall2/list/${datestr}?pageType=coupon&coupon=${data.couponType}&couThresholdAmount=${data.satisfyAmount}&couFaceValue=${data.faceAmount}&lastPath=%2Fcoupon_list&endTime=${data.validityEndTime}`;
+
+      const tempParam = encodeURI(
+        `${uri}/app-vue/app/index.htm#/mall2/list/${datestr}?pageType=coupon&coupon=${data.couponType}&couThresholdAmount=${data.satisfyAmount}&couFaceValue=${data.faceAmount}&lastPath=%2Fcoupon_list&endTime=${data.validityEndTime}`
+      );
+      const url = `${uri}/app/index?token=${token}&redirect=${tempParam}`;
+
+      console.log('openMall uri :>> ', uri);
+      console.log('openMall tempParam :>> ', tempParam);
+      console.log('openMall url :>> ', url);
+
       router.openTargetRouter({
         type: 'h5',
         uri: url
