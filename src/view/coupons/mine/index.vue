@@ -217,6 +217,7 @@ export default {
       if (this.$store.getters.isDebugMode) {
         //生产需注释
         this.memberId = '2212946938230210585';
+        localStorage.setItem('memberId', this.memberId);
         this.getList();
         this.getUserInfo();
       } else {
