@@ -7,8 +7,8 @@ const user = {
   state: {
     //存储定义的变量
     token: '',
-    devServer: 'dev', //生产: "prod" || uat和dev还是"dev"
-    isDebugMode: true //只要不是写死会员ID都要改为false
+    devServer: 'dev', //生产: "prod" || uat和dev都是"dev"
+    isDebugMode: false //写死会员ID为 true || 原生ls获取会员ID为 false
   },
   mutations: {
     //更改state里面的值定义的一些方法

@@ -2,19 +2,11 @@
   <div class="member-coupon exchange-info">
     <div class="exchange-tab-wrap" ref="scrollContent">
       <van-tabs v-model="active" :sticky="true" @click="tabChange">
-        <van-tab
-          v-for="(tab, index) in tabList"
-          :key="tab.businessType"
-          :title="tab.label"
-        >
+        <van-tab v-for="(tab, index) in tabList" :key="tab.businessType" :title="tab.label">
           <div class="bangdou-exchange-wrap">
             <div class="bangdou-exchange">
               <div class="bangdou-exchange-body">
-                <zk-empty
-                  v-show="!list[index].length && !loading"
-                  image="coupon"
-                  description="暂无卡券"
-                ></zk-empty>
+                <zk-empty v-show="!list[index].length && !loading" image="coupon" description="暂无卡券"></zk-empty>
                 <div class="exchange-body-item">
                   <div
                     v-for="(item, cIndex) in list[index]"
@@ -59,11 +51,7 @@
                         >
                           去使用
                         </div>
-                        <div
-                          v-else
-                          class="exchange-card-left-btn"
-                          @click="getCoupon(item, index, cIndex)"
-                        >
+                        <div v-else class="exchange-card-left-btn" @click="getCoupon(item, index, cIndex)">
                           立即领取
                         </div>
                       </template>
@@ -84,19 +72,11 @@
                           >
                             去使用
                           </div>
-                          <div
-                            v-else
-                            class="exchange-card-right-right-btn"
-                            @click="getCoupon(item, index, cIndex)"
-                          >
+                          <div v-else class="exchange-card-right-right-btn" @click="getCoupon(item, index, cIndex)">
                             立即领取
                           </div>
                         </template>
-                        <img
-                          v-else
-                          class="goods-img"
-                          :src="item.image || defaultImg"
-                        />
+                        <img v-else class="goods-img" :src="item.image || defaultImg" />
                       </div>
                     </div>
                   </div>
@@ -114,15 +94,15 @@
 </template>
 
 <script>
-import api from "@/api";
-import nav from "@zkty-team/x-engine-module-nav";
-import localstorage from "@zkty-team/x-engine-module-localstorage";
+import api from '@/api';
+import nav from '@zkty-team/x-engine-module-nav';
+import localstorage from '@zkty-team/x-engine-module-localstorage';
 // import * as moment from "moment";
-import Null from "@/components/null";
-import mixin from "../mixin/pageList";
-import _ from "lodash";
-import couponMixin from "../mixin/getCoupon-mixin";
-const defaultImg = require("@/assets/img/coupons/coupon-default.png");
+import Null from '@/components/null';
+import mixin from '../mixin/pageList';
+import _ from 'lodash';
+import couponMixin from '../mixin/getCoupon-mixin';
+const defaultImg = require('@/assets/img/coupons/coupon-default.png');
 
 export default {
   mixins: [mixin, couponMixin],
@@ -132,24 +112,24 @@ export default {
       defaultImg: defaultImg,
       loading: false,
       showNull: false,
-      nullMsg: "",
+      nullMsg: '',
       // ---分隔符---
       petsUpdateList: [],
       //
-      memberId: "",
+      memberId: '',
       busy: false,
       tabList: [
         {
-          label: "全部",
-          businessType: "0"
+          label: '全部',
+          businessType: '0'
         },
         {
-          label: "物业抵扣券",
-          businessType: "4014"
+          label: '物业抵扣券',
+          businessType: '4014'
         },
         {
-          label: "购物券",
-          businessType: "4005"
+          label: '购物券',
+          businessType: '4005'
         }
       ]
     };
@@ -159,52 +139,61 @@ export default {
   },
   watch: {},
   created() {
-    this.paramsList();
-    localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
-      // app首页进入，获取不到会员信息
-      if (res.result) {
-        this.memberId = res.result;
-        localStorage.setItem("memberId", this.memberId);
-        this.getList();
-        this.getUserInfo();
-      } else {
-        this.toast();
-        this.loading = true;
-        this.getUserInfo(() => {
-          const params = {
-            phone: this.userInfo.phone,
-            phoneArea: this.userInfo.phoneAreaCode
-          };
-          api.memberDetailByPhone(params).then(member => {
-            if (member.code === 200) {
-              this.memberId = member.data.memberId;
-              this.getList();
-            }
+    this.paramsList(); //mixin引入公共method
+
+    if (this.$store.getters.isDebugMode) {
+      this.memberId = '2212946938230210585';
+      localStorage.setItem('memberId', this.memberId);
+      this.getList();
+      this.getUserInfo();
+    } else {
+      localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+        // app首页进入，获取不到会员信息
+        if (res.result) {
+          this.memberId = res.result;
+          localStorage.setItem('memberId', this.memberId);
+          this.getList();
+          this.getUserInfo();
+        } else {
+          this.toast();
+          this.loading = true;
+          this.getUserInfo(() => {
+            const params = {
+              phone: this.userInfo.phone,
+              phoneArea: this.userInfo.phoneAreaCode
+            };
+            api.memberDetailByPhone(params).then(member => {
+              if (member.code === 200) {
+                this.memberId = member.data.memberId;
+                this.getList();
+              }
+            });
           });
-        });
-      }
-    });
-    // this.toast();
-    // this.loading = true;
-    // this.getUserInfo(() => {
-    //   const params = {
-    //     phone: this.userInfo.phone,
-    //     phoneArea: this.userInfo.phoneAreaCode
-    //   };
-    //   api.memberDetailByPhone(params).then(member => {
-    //     if (member.code === 200) {
-    //       this.memberId = member.data.memberId;
-    //       this.getList();
-    //     }
-    //   });
-    // });
+        }
+      });
+
+      // this.toast();
+      // this.loading = true;
+      // this.getUserInfo(() => {
+      //   const params = {
+      //     phone: this.userInfo.phone,
+      //     phoneArea: this.userInfo.phoneAreaCode
+      //   };
+      //   api.memberDetailByPhone(params).then(member => {
+      //     if (member.code === 200) {
+      //       this.memberId = member.data.memberId;
+      //       this.getList();
+      //     }
+      //   });
+      // });
+    }
   },
   mounted() {
     nav.setNavLeftBtn({
-      title: "领券中心",
-      titleColor: "#121212",
+      title: '领券中心',
+      titleColor: '#121212',
       titleSize: 24,
-      titleFontName: "PingFangSC-Medium"
+      titleFontName: 'PingFangSC-Medium'
     });
   },
   methods: {
@@ -218,58 +207,45 @@ export default {
         .then(res => {
           if (res.code === 200) {
             // 该券
-            const couponDay =
-              res.data.canCouponDayTotal <= res.data.couponDayTotal;
-            const couponPersonDay =
-              res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
-            const couponPerson =
-              res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+            const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+            const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+            const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
             const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
             // 变更按钮为 '去使用'
 
             // 删除不显示
 
             if (res.data.result) {
-              this.$toast("领取成功");
-              if (
-                couponPersonDay ||
-                couponPerson ||
-                couponPerson ||
-                couponTotal
-              ) {
-                this.$set(data, "goUse", true);
+              this.$toast('领取成功');
+              if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+                this.$set(data, 'goUse', true);
                 // 解决多维数组修改属性无效
                 this.list.push([]);
                 this.list.splice(this.list.length - 1, 1);
               }
             } else {
               // 都未达到上限，后台/数据库处理错误
-              if (
-                !couponDay &&
-                !couponPersonDay &&
-                !couponPerson &&
-                !couponTotal
-              ) {
-                console.log("无存在上限，后台/数据库处理错误");
-                this.$toast("领取失败");
+              if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+                console.log('无存在上限，后台/数据库处理错误');
+                this.$toast('领取失败');
               } else {
                 if (couponTotal) {
-                  return this.$toast("该优惠券已领光");
+                  return this.$toast('该优惠券已领光');
                 }
                 if (couponDay) {
-                  return this.$toast("该优惠券今日已领光");
+                  return this.$toast('该优惠券今日已领光');
                 }
                 if (couponPersonDay || couponPerson) {
-                  this.$set(data, "goUse", true);
+                  this.$set(data, 'goUse', true);
                   // 解决多维数组修改属性无效
                   this.list.push([]);
                   this.list.splice(this.list.length - 1, 1);
                 }
                 if (couponPerson) {
-                  return this.$toast("该优惠券您已达领取上限");
+                  return this.$toast('该优惠券您已达领取上限');
                 }
                 if (couponPersonDay) {
-                  return this.$toast("该优惠券您今日已达领取上限");
+                  return this.$toast('该优惠券您今日已达领取上限');
                 }
               }
             }
@@ -318,12 +294,8 @@ export default {
               }
               return item;
             });
-            this.list[tabIndex] =
-              params.pageIndex === 1
-                ? list
-                : _.concat(this.list[tabIndex], list);
-            list.length < params.pageSize &&
-              (this.canLoadMore[tabIndex] = false);
+            this.list[tabIndex] = params.pageIndex === 1 ? list : _.concat(this.list[tabIndex], list);
+            list.length < params.pageSize && (this.canLoadMore[tabIndex] = false);
             this.total[tabIndex] = (res.data && res.data.total) || 0;
             list.length && this.pageIndex[tabIndex]++;
           }
@@ -398,7 +370,7 @@ export default {
               .exchange-card-left {
                 width: 101px;
                 height: 106px;
-                background-image: url("../../../assets/img/coupons/red_card.png");
+                background-image: url('../../../assets/img/coupons/red_card.png');
                 background-repeat: no-repeat;
                 background-position: center center;
                 background-size: 100% 100%;
@@ -485,11 +457,7 @@ export default {
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
-                    background: linear-gradient(
-                      180deg,
-                      #ff8381 0%,
-                      #e8374a 100%
-                    );
+                    background: linear-gradient(180deg, #ff8381 0%, #e8374a 100%);
                     border-radius: 15px;
                     font-size: 12px;
                     font-family: PingFangSC-Medium, PingFang SC;
@@ -534,13 +502,13 @@ export default {
                 padding-top: 0;
               }
               .exchange-card-left {
-                background-image: url("../../../assets/img/coupons/yellow_card.png");
+                background-image: url('../../../assets/img/coupons/yellow_card.png');
               }
               .exchange-card-right-right .exchange-card-right-right-btn {
                 width: 72px;
                 height: 72px;
                 border-radius: 4px;
-                background-image: url("../../../assets/img/coupons/food.png");
+                background-image: url('../../../assets/img/coupons/food.png');
                 background-repeat: no-repeat;
                 background-position: center center;
                 background-size: 100% 100%;

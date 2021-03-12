@@ -1,9 +1,9 @@
 <template>
   <div class="exchange-container">
     <!-- 临时跳转:生产需注释 -->
-    <!-- <div style="position:fixed;top:70px;right:20px;z-index:9999;">
+    <div style="position:fixed;top:70px;right:20px;z-index:9999;" v-if="$store.getters.isDebugMode">
       <button @click="$router.push('/exchangeCoupon')">兑换优惠券</button>
-    </div> -->
+    </div>
     <div class="exchange-info" style="padding-bottom: 78px;">
       <div
         class="exchange-tab-wrap"
@@ -100,7 +100,7 @@
                       </div>
                       <div class="coupon-desc-wrap" :ref="`tab${index}couponDesc${cindex}`">
                         <div class="coupon-desc" :ref="`tab${index}couponDesc${cindex}Cont`">
-                          <div class="coupon-desc-li">
+                          <div class="coupon-desc-li" style="white-space: pre-line;">
                             {{ item.memo }}
                             <!-- 使用说明：平台10元通用优惠券，单笔订单满88元可使用。 -->
                           </div>
@@ -217,6 +217,7 @@ export default {
       if (this.$store.getters.isDebugMode) {
         //生产需注释
         this.memberId = '2212946938230210585';
+        localStorage.setItem('memberId', this.memberId);
         this.getList();
         this.getUserInfo();
       } else {
@@ -261,6 +262,7 @@ export default {
       if (!data.effective) {
         return false;
       }
+      // 4005/购物券 -- 4014/物业券
       if (data.activity === '4014') {
         this.openDeital();
         // this.
@@ -269,6 +271,7 @@ export default {
         // console.log("打开商城");
       }
     },
+    //TODO:这里跳页报ngnix错误
     async openMall(data) {
       let uri;
       if (this.devServer !== 'prod') {
@@ -276,12 +279,19 @@ export default {
       } else {
         uri = 'http://mall-prod-app-linli.timesgroup.cn';
       }
+
       const datestr = Number(new Date());
       let token;
       await localstorage.get({ key: 'LLBToken', isPublic: true }).then(res => {
         token = res.result;
       });
-      const url = `${uri}/app/index?token=${token}&redirect=${uri}/#/mall2/list/${datestr}?pageType=coupon&coupon=${data.couponType}&couThresholdAmount=${data.satisfyAmount}&couFaceValue=${data.faceAmount}&lastPath=%2Fcoupon_list&endTime=${data.validityEndTime}`;
+
+      const tempParam = encodeURI(
+        `${uri}/app-vue/app/index.htm#/mall2/list/${datestr}?pageType=coupon&coupon=${data.couponType}&couThresholdAmount=${data.satisfyAmount}&couFaceValue=${data.faceAmount}&lastPath=%2Fcoupon_list&endTime=${data.validityEndTime}`
+      );
+      const url = `${uri}/app/index?token=${token}&redirect=${tempParam}`;
+      console.log('openMall url :>> ', url);
+
       router.openTargetRouter({
         type: 'h5',
         uri: url
@@ -363,6 +373,9 @@ export default {
             list.length < params.pageSize && (this.canLoadMore[tabIndex] = false);
             this.total[tabIndex] = (res.data && res.data.total) || 0;
             list.length && this.pageIndex[tabIndex]++;
+
+            // console.log('queryMemberCouponList list :>> ', list);
+            // list[1].memo = '物业抵扣券邦豆兑换1\n物业抵扣券邦豆兑换2物业抵扣券邦豆兑换3\n物业抵扣券邦豆兑换4';
           }
         })
         .finally(() => {
