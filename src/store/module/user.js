@@ -8,7 +8,7 @@ const user = {
     //存储定义的变量
     token: '',
     devServer: 'dev', //生产: "prod" || uat和dev都是"dev"
-    isDebugMode: true //写死会员ID为 true || 原生ls获取会员ID为 false
+    isDebugMode: false //写死会员ID为 true || 原生localStorage获取会员ID为 false
   },
   mutations: {
     //更改state里面的值定义的一些方法

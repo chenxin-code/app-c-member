@@ -44,6 +44,7 @@ export default {
         // console.log("打开商城");
       }
     },
+    //TODO:这里跳页报ngnix错误
     async openMall(data) {
       let uri;
       if (this.devServer !== 'prod') {
@@ -57,8 +58,8 @@ export default {
         token = res.result;
       });
 
-      const tempParam = encodeURI(
-        `${uri}/app-vue/app/index.htm#/mall2/list/${datestr}?pageType=coupon&coupon=${data.couponType}&couThresholdAmount=${data.satisfyAmount}&couFaceValue=${data.faceAmount}&lastPath=%2Fcoupon_list&endTime=${data.validityEndTime}`
+      const tempParam = encodeURIComponent(
+        `${uri}/app-vue/app/index.htm#/mall2/list/${datestr}?pageType=coupon&coupon=${data.couponType}&couThresholdAmount=${data.satisfyAmount}&couFaceValue=${data.faceAmount}&lastPath=%2Fcoupon_list&endTime=${data.validityEndTime}&backApp=true`
       );
       const url = `${uri}/app/index?token=${token}&redirect=${tempParam}`;
       console.log('openMall url :>> ', url);
