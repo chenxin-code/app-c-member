@@ -1,47 +1,47 @@
-const path = require("path");
-const webpack = require("webpack");
+const path = require('path');
+const webpack = require('webpack');
 const buildDate = JSON.stringify(new Date().toLocaleString());
 const terserPlugin = require('terser-webpack-plugin');
 // const createThemeColorReplacerPlugin = require('./config/plugin.config')
 // const CompressionWebpackPlugin = require("compression-webpack-plugin"); // 开启gzip压缩， 按需引用
 // const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i; // 开启gzip压缩， 按需写入
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir);
 }
 /**
  * 样式预处理器全局变量资源插件
  * @param {String} rule webpack 规则
  */
-function addStyleResource (rule) {
+function addStyleResource(rule) {
   rule
-    .use("style-resource")
-    .loader("style-resources-loader")
+    .use('style-resource')
+    .loader('style-resources-loader')
     .options({
-      patterns: [resolve("./src/assets/css/var.less")]
+      patterns: [resolve('./src/assets/css/var.less')]
     });
 }
-const isProd = process.env.NODE_ENV === "production";
+const isProd = process.env.NODE_ENV === 'production';
 const assetsCDN = {
   // webpack build externals
   externals: {
-    vue: "Vue",
-    "vue-router": "VueRouter",
-    Antd: "ant-design-vue",
-    vuex: "Vuex",
-    axios: "axios"
+    vue: 'Vue',
+    'vue-router': 'VueRouter',
+    Antd: 'ant-design-vue',
+    vuex: 'Vuex',
+    axios: 'axios'
   },
   css: [],
   // https://unpkg.com/browse/vue@2.6.10/
   js: [
-    "//cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js",
-    "//cdn.jsdelivr.net/npm/vue-router@3.1.3/dist/vue-router.min.js",
-    "//cdn.jsdelivr.net/npm/vuex@3.1.1/dist/vuex.min.js",
-    "//cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js"
+    '//cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js',
+    '//cdn.jsdelivr.net/npm/vue-router@3.1.3/dist/vue-router.min.js',
+    '//cdn.jsdelivr.net/npm/vuex@3.1.1/dist/vuex.min.js',
+    '//cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js'
   ]
 };
 // vue.config.js
 const vueConfig = {
-  publicPath: "./",
+  publicPath: './',
   // configureWebpack: {
   //   // webpack plugins
   //   plugins: [
@@ -71,7 +71,7 @@ const vueConfig = {
               warnings: false,
               drop_console: true, //去除console
               drop_debugger: true, //去除debugger
-              pure_funcs: ["console.log"]
+              pure_funcs: ['console.log']
             }
           }
         })
@@ -80,19 +80,19 @@ const vueConfig = {
   },
   chainWebpack: config => {
     // 移除prefetch插件，避免加载多余的资源
-    config.plugins.delete("prefetch");
+    config.plugins.delete('prefetch');
     // 压缩图片
-    const imagesRule = config.module.rule("images");
+    const imagesRule = config.module.rule('images');
     imagesRule.uses.clear();
     imagesRule
-      .use("file-loader")
-      .loader("url-loader")
+      .use('file-loader')
+      .loader('url-loader')
       .options({
         limit: 10240,
         fallback: {
-          loader: "file-loader",
+          loader: 'file-loader',
           options: {
-            outputPath: "static/images"
+            outputPath: 'static/images'
           }
         }
       });
@@ -100,28 +100,24 @@ const vueConfig = {
     // 压缩响应的app.json返回的代码压缩
     config.optimization.minimize(true);
 
-    config.resolve.alias
-      .set("@$", resolve("src"))
-      .set("assets", resolve("src/assets"));
-    const types = ["vue-modules", "vue", "normal-modules", "normal"];
-    types.forEach(type =>
-      addStyleResource(config.module.rule("less").oneOf(type))
-    );
+    config.resolve.alias.set('@$', resolve('src')).set('assets', resolve('src/assets'));
+    const types = ['vue-modules', 'vue', 'normal-modules', 'normal'];
+    types.forEach(type => addStyleResource(config.module.rule('less').oneOf(type)));
 
-    const svgRule = config.module.rule("svg");
+    const svgRule = config.module.rule('svg');
     svgRule.uses.clear();
     svgRule
-      .oneOf("inline")
+      .oneOf('inline')
       .resourceQuery(/inline/)
-      .use("vue-svg-icon-loader")
-      .loader("vue-svg-icon-loader")
+      .use('vue-svg-icon-loader')
+      .loader('vue-svg-icon-loader')
       .end()
       .end()
-      .oneOf("external")
-      .use("file-loader")
-      .loader("file-loader")
+      .oneOf('external')
+      .use('file-loader')
+      .loader('file-loader')
       .options({
-        name: "assets/[name].[hash:8].[ext]"
+        name: 'assets/[name].[hash:8].[ext]'
       });
 
     // if prod is on
@@ -139,12 +135,12 @@ const vueConfig = {
       less: {
         lessOptions: {
           modifyVars: {
-            "primary-color": "#4B7AFB",
-            "layout-trigger-background": "#3A3F48",
-            "menu-dark-submenu-bg": "#303e51",
-            "layout-header-background": "#414751",
-            "link-color": "#4B7AFB",
-            "border-radius-base": "2px"
+            'primary-color': '#4B7AFB',
+            'layout-trigger-background': '#3A3F48',
+            'menu-dark-submenu-bg': '#303e51',
+            'layout-header-background': '#414751',
+            'link-color': '#4B7AFB',
+            'border-radius-base': '2px'
           },
           javascriptEnabled: true
         }
@@ -158,9 +154,8 @@ const vueConfig = {
     open: true,
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     proxy: {
-      "/times/": {
-        target: "http://m-center-uat-linli.timesgroup.cn/", //uat后端ip地址及端口
-        // target: "http://dev.linli590.cn:16666", //dev
+      '/times/': {
+        target: 'http://dev.linli590.cn:16666', //一体化dev后端ip地址及端口
         changeOrigin: true, //开启跨域
         ws: true //是否开启websocket
       }
@@ -185,8 +180,8 @@ const vueConfig = {
 };
 
 // preview.pro.loacg.com only do not use in your production;
-if (process.env.VUE_APP_PREVIEW === "true") {
-  console.log("VUE_APP_PREVIEW", true);
+if (process.env.VUE_APP_PREVIEW === 'true') {
+  console.log('VUE_APP_PREVIEW', true);
   // add `ThemeColorReplacer` plugin to webpack plugins
   // vueConfig.configureWebpack.plugins.push(createThemeColorReplacerPlugin())
 }
