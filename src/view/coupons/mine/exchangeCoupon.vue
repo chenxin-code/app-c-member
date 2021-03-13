@@ -13,13 +13,8 @@
         <div class="content-bottom-right-bg"></div>
         <div class="content-detail-top">
           <p class="title">优惠券兑换</p>
-          <van-field
-            v-model="code"
-            type="digit"
-            placeholder="请输入兑换码"
-            @input="fieldChange"
-          ></van-field>
-          <div class="submit-btn" @click="submit">立即兑换</div>
+          <van-field v-model="exchangeCode" type="text" placeholder="请输入兑换码"></van-field>
+          <div class="submit-btn" @click="exchangeSubmit">立即兑换</div>
         </div>
         <div class="content-detail-bottom">
           <p class="title">什么是兑换码？</p>
@@ -34,6 +29,7 @@
       </div>
     </div>
     <ConfirmPop
+      :showLoading="showLoading"
       :showConfirm="showConfirm"
       :confrimValue="confrimValue"
       :confrimDetail="confrimDetail"
@@ -43,82 +39,127 @@
 </template>
 
 <script>
-import nav from "@zkty-team/x-engine-module-nav";
-import api from "@/api";
-import router from "@zkty-team/x-engine-module-router";
-import ConfirmPop from "@/components/confirmPopDetail.vue";
+import nav from '@zkty-team/x-engine-module-nav';
+import api from '@/api';
+import router from '@zkty-team/x-engine-module-router';
+import ConfirmPop from '@/components/confirmPopDetail.vue';
 
 export default {
-  name: "exchangeCoupon",
+  name: 'exchangeCoupon',
   components: {
     ConfirmPop
   },
   data() {
     return {
-      data: "",
-      code: "",
+      showLoading: false,
       showConfirm: false,
-      confrimValue: "物业抵扣卷",
-      confrimDetail: "面值：10元代金券",
-      confirmTime: "有效期：2021/11/12"
+      confrimValue: '', //卡券标题
+      confrimDetail: '', //卡券面值
+      confirmTime: '', //卡券有效期
+      exchangeCode: 'd51cf8c38fc245fc'
     };
   },
   mounted() {},
-  created() {
-    // this.toast();
-    this.getCoupon();
-  },
+  created() {},
   methods: {
     toast() {
       this.$toast.loading({
         duration: 0,
-        type: "loading",
-        message: "加载中...",
+        type: 'loading',
+        message: '加载中...',
         forbidClick: true
       });
     },
-    getCoupon() {
-      this.$toast.clear();
-      console.log('getCoupon 执行了 。。。。。。');
-      return;
+    getCamiloExchangeDetail() {
+      console.log('getCamiloExchangeDetail 执行了......');
       const para = {
-        type: 3
+        camiloId: this.exchangeCode
       };
+      console.log('getCamiloExchangeDetail para :>> ', para);
+
+      this.toast();
       api
-        .getCoupon(para)
+        .getUserInfo()
         .finally(() => {
           this.$toast.clear();
         })
         .then(res => {
+          console.log('getCamiloExchangeDetail res :>> ', res);
+          res.code = 200;
+
           if (res.code === 200) {
-            this.data = JSON.parse(res.data.content);
+            res.data = {
+              confrimValue: '物业抵扣卷', //卡券标题
+              confrimDetail: '面值：10元代金券', //卡券面值
+              confirmTime: '有效期：2021/11/12' //卡券有效期
+            };
+            this.showConfirm = true;
+            this.confrimValue = res.data.confrimValue; //卡券标题
+            this.confrimDetail = res.data.confrimDetail; //卡券面值
+            this.confirmTime = res.data.confirmTime; //卡券有效期
+          } else if (res.code === 500) {
+            this.$dialog.alert({
+              confirmButtonText: '确认',
+              title: '兑换码错误，请您核对后重新输入',
+              closeOnPopstate: true
+            });
+          }
+        });
+    },
+
+    confirmExchange() {
+      console.log('confirmExchange 执行了......');
+      const para = {
+        camiloId: this.exchangeCode,
+        couponActivityId: this.couponActivityId,
+        couponId: this.couponId,
+        memberId: this.memberId
+      };
+      console.log('confirmExchange para :>> ', para);
+
+      this.toast();
+      this.showLoading = true;
+      api
+        .getUserInfo()
+        .finally(() => {
+          this.$toast.clear();
+        })
+        .then(res => {
+          console.log('confirmExchange res :>> ', res);
+          if (res.code === 200) {
+            this.$toast('恭喜您, 优惠券兑换成功');
+            this.showConfirm = false;
           }
         });
     },
     pageBack: function() {
       if (this.$routeHelper.isPhone) {
         nav.navigatorBack({
-          url: "0"
+          url: '0'
         });
       } else {
         this.$router.go(-1);
       }
     },
-    fieldChange() {},
-    submit() {
-      this.showConfirm = true;
+    exchangeSubmit() {
+      this.getCamiloExchangeDetail();
     },
     cancelConfim() {
       this.showConfirm = false;
     },
     confirmBtn() {
-      this.showConfirm = false;
+      //这里是异步
+      this.confirmExchange();
     }
   }
 };
 </script>
 
 <style lang="less" scope>
+.van-dialog .van-button {
+  width: calc(100% - 0.12rem);
+}
+
 .exchangeCoupon {
   width: 100%;
   height: 100%;
@@ -126,6 +167,7 @@ export default {
   padding: 20px 13px;
   overflow: scroll;
   background: linear-gradient(148deg, #fecf6f 0%, #fb853b 51%, #ffad49 100%);
+
   .option {
     position: fixed;
     overflow: hidden;
@@ -139,7 +181,7 @@ export default {
       margin-top: 6px;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      background-image: url("../../../assets/img/member/icon-a-left.png");
+      background-image: url('../../../assets/img/member/icon-a-left.png');
     }
 
     .nav-title {
@@ -159,7 +201,7 @@ export default {
       color: #ffffff;
       background-size: 12px 12px;
       background-repeat: no-repeat;
-      background-image: url("../../../assets/img/member/icon-wenhao.png");
+      background-image: url('../../../assets/img/member/icon-wenhao.png');
       background-position: 0px center;
     }
   }
@@ -239,11 +281,7 @@ export default {
       .content-top-left-bg {
         width: 51%;
         height: 273px;
-        background: radial-gradient(
-          30px at left bottom,
-          transparent 50%,
-          #fff 50%
-        );
+        background: radial-gradient(30px at left bottom, transparent 50%, #fff 50%);
         border-radius: 15px 0 0 0;
         // float: left;
         position: absolute;
@@ -253,11 +291,7 @@ export default {
       .content-top-right-bg {
         width: 51%;
         height: 273px;
-        background: radial-gradient(
-          30px at right bottom,
-          transparent 50%,
-          #fff 50%
-        );
+        background: radial-gradient(30px at right bottom, transparent 50%, #fff 50%);
         border-radius: 0 15px 0 0;
         // float: left;
         position: absolute;
@@ -279,11 +313,7 @@ export default {
       .content-bottom-left-bg {
         width: 51%;
         height: 354px;
-        background: radial-gradient(
-          30px at left top,
-          transparent 50%,
-          #fff 50%
-        );
+        background: radial-gradient(30px at left top, transparent 50%, #fff 50%);
         border-radius: 0px 0 0 15px;
         // float: left;
         position: absolute;
@@ -293,11 +323,7 @@ export default {
       .content-bottom-right-bg {
         width: 51%;
         height: 354px;
-        background: radial-gradient(
-          30px at right top,
-          transparent 50%,
-          #fff 50%
-        );
+        background: radial-gradient(30px at right top, transparent 50%, #fff 50%);
         border-radius: 0px 0 15px 0;
         // float: left;
         position: absolute;

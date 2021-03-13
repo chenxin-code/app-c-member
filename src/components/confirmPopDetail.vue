@@ -14,14 +14,11 @@
 
 <script>
 export default {
-  name:'ConfirmPopDetail',
-  props: ['showConfirm', 'confrimValue', 'confrimDetail', 'confirmTime'],
-  components: {
-
-  },
-  data () {
-    return {
-    }
+  name: 'ConfirmPopDetail',
+  props: ['showLoading', 'showConfirm', 'confrimValue', 'confrimDetail', 'confirmTime'],
+  components: {},
+  data() {
+    return {};
   },
   methods: {
     cancelConfim() {
@@ -29,46 +26,44 @@ export default {
     },
     confirmBtn() {
       this.$parent.confirmBtn();
-      
-    },
+    }
   }
-}
+};
 </script>
 
-
 <style lang="less" scope>
-.van-popup.van-popup--center{
+.van-popup.van-popup--center {
   width: 283px;
-  height: auto!important;
-  background: #FFFFFF;
+  height: auto !important;
+  background: #ffffff;
   border-radius: 16px;
   padding: 28px 16px 24px 16px;
   position: fixed;
-  p{
+  p {
     margin: 0;
   }
-  .title{
+  .title {
     font-size: 18px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #121212;
     margin-bottom: 8px;
   }
-  .detail{
+  .detail {
     font-size: 16px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #121212;
     margin-bottom: 8px;
   }
-  .time{
+  .time {
     font-size: 16px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #8D8D8D;
+    color: #8d8d8d;
     margin-bottom: 40px;
   }
-  .btn span{
+  .btn span {
     width: 120px;
     padding: 10px 0;
     display: inline-block;
@@ -78,13 +73,13 @@ export default {
     font-weight: 500;
     text-align: center;
   }
-  .btn span:nth-child(1){
-    background: #F5F5F6;
-    color: #8D8D8D;
+  .btn span:nth-child(1) {
+    background: #f5f5f6;
+    color: #8d8d8d;
     margin-right: 11px;
   }
-  .btn span:nth-child(2){
-    background: #E8374A;
+  .btn span:nth-child(2) {
+    background: #e8374a;
     color: #fff;
   }
 }
