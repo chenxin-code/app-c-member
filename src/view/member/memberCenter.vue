@@ -45,6 +45,16 @@
             </div>
             <div class="leveLogo-body">
               <div class="leveLogo"></div>
+              <div class="member-right"
+                   :class="getPageClass(memberObject == null ? '' : memberObject.memberCardRelats[0].levelId)"
+                   @click="$router.push({path: '/memberRight'})">
+                会员权益
+                <img :src="require('./../../assets/img/member/to-member-right-lv1.png')" alt="" v-if="memberObject.memberCardRelats[0].levelId === 1" />
+                <img :src="require('./../../assets/img/member/to-member-right-lv2.png')" alt="" v-else-if="memberObject.memberCardRelats[0].levelId === 2" />
+                <img :src="require('./../../assets/img/member/to-member-right-lv3.png')" alt="" v-else-if="memberObject.memberCardRelats[0].levelId === 3" />
+                <img :src="require('./../../assets/img/member/to-member-right-lv4.png')" alt="" v-else-if="memberObject.memberCardRelats[0].levelId === 4" />
+                <img :src="require('./../../assets/img/member/to-member-right-lv5.png')" alt="" v-else-if="memberObject.memberCardRelats[0].levelId === 5" />
+              </div>
             </div>
           </div>
         </div>
@@ -711,6 +721,11 @@ export default {
           this.$toast.clear();
           this.userInfo = res.data;
           this.memberObject = res.data;
+          //this.memberObject = {memberCardRelats: [{levelId: 1}]};
+          //this.memberObject = {memberCardRelats: [{levelId: 2}]};
+          //this.memberObject = {memberCardRelats: [{levelId: 3}]};
+          //this.memberObject = {memberCardRelats: [{levelId: 4}]};
+          //this.memberObject = {memberCardRelats: [{levelId: 5}]};
           this.pageInitial(res.data);
         }
       });
@@ -783,7 +798,7 @@ export default {
   left: 0px;
   z-index: 6666;
   width: 100%;
-  height: 282px;
+  //height: 282px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 38px 16px 16px 16px;
@@ -856,6 +871,7 @@ export default {
       flex: 0 auto;
       width: 132px;
       justify-content: center;
+      flex-direction: column;
 
       .leveLogo {
         width: 96px;
@@ -863,6 +879,50 @@ export default {
         background-size: 96px 50px;
         background-repeat: no-repeat;
         background-position: 0px center;
+      }
+      .member-right {
+        margin-top: 25px;
+        margin-left: 15px;
+        padding: 5px 7px;
+        width: 82px;
+        font-size: 12px;
+        font-weight: 600;
+        //height: 24px;
+        //line-height: 24px;
+        border-radius: 25px;
+        background-color: #fff;
+        vertical-align: middle;
+        position: relative;
+        cursor: pointer;
+        img {
+          height: 14px;
+          width: 14px;
+          vertical-align: middle;
+          position: absolute;
+          right: 8px;
+          top: 50%;
+          margin-top: -7px;
+        }
+        &.Lv1 {
+          color: #7F86AA;
+          background-color: #fff;
+        }
+        &.Lv2 {
+          color: #B5561A;
+          background-color: #fff;
+        }
+        &.Lv3 {
+          color: #434342;
+          background-color: #fff;
+        }
+        &.Lv4 {
+          color: #B68843;
+          background-color: #fff;
+        }
+        &.Lv5 {
+          color: #121212;
+          background-color: #F1D8B0;
+        }
       }
     }
 
@@ -896,7 +956,7 @@ export default {
 }
 
 .page-head.Lv1 {
-  background-image: url('../../assets/img/member/icon-member-Lv1.png');
+  background-image: url('../../assets/img/member/icon-member-Lv11.png');
 
   .leveName {
     background-image: url('../../assets/img/member/icon-leve-name-l1.png');
@@ -929,7 +989,7 @@ export default {
 }
 
 .page-head.Lv2 {
-  background-image: url('../../assets/img/member/icon-member-Lv2.png');
+  background-image: url('../../assets/img/member/icon-member-Lv22.png');
 
   .leveName {
     background-image: url('../../assets/img/member/icon-leve-name-l2.png');
@@ -962,7 +1022,7 @@ export default {
 }
 
 .page-head.Lv3 {
-  background-image: url('../../assets/img/member/icon-member-Lv3.png');
+  background-image: url('../../assets/img/member/icon-member-Lv33.png');
 
   .leveName {
     background-image: url('../../assets/img/member/icon-leve-name-l3.png');
@@ -994,7 +1054,7 @@ export default {
 }
 
 .page-head.Lv4 {
-  background-image: url('../../assets/img/member/icon-member-Lv4.png');
+  background-image: url('../../assets/img/member/icon-member-Lv44.png');
 
   .leveName {
     background-image: url('../../assets/img/member/icon-leve-name-l4.png');
@@ -1026,7 +1086,7 @@ export default {
 }
 
 .page-head.Lv5 {
-  background-image: url('../../assets/img/member/icon-member-Lv5.png');
+  background-image: url('../../assets/img/member/icon-member-Lv55.png');
 
   .leveName {
     background-image: url('../../assets/img/member/icon-leve-name-l5.png');
@@ -1062,7 +1122,7 @@ export default {
 }
 
 .page-body {
-  padding: 282px 16px 16px 16px;
+  padding: 240px 16px 16px 16px;
 }
 .page-body .Bangdou-body {
   display: flex;

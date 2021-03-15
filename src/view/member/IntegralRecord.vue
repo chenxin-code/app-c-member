@@ -260,7 +260,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 38px 16px 0px 16px;
-  background-image: url('../../assets/img/member/icon-bg-singin.png');
+  background-image: url('../../assets/img/member/icon-bg-singin-2.png');
   .option {
     display: flex;
     justify-content: space-between;
