@@ -186,6 +186,7 @@ export default {
           if (res.code === 200) {
             this.$toast('恭喜您, 优惠券兑换成功');
             this.showConfirm = false;
+            this.exchangeCode = '';
           }
         });
     },
