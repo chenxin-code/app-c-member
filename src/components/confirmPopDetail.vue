@@ -15,7 +15,7 @@
 <script>
 export default {
   name: 'ConfirmPopDetail',
-  props: ['showLoading', 'showConfirm', 'confrimValue', 'confrimDetail', 'confirmTime'],
+  props: ['showConfirm', 'confrimValue', 'confrimDetail', 'confirmTime'],
   components: {},
   data() {
     return {};

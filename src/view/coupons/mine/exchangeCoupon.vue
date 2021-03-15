@@ -29,7 +29,6 @@
       </div>
     </div>
     <ConfirmPop
-      :showLoading="showLoading"
       :showConfirm="showConfirm"
       :confrimValue="confrimValue"
       :confrimDetail="confrimDetail"
@@ -40,6 +39,7 @@
 
 <script>
 import nav from '@zkty-team/x-engine-module-nav';
+import localstorage from '@zkty-team/x-engine-module-localstorage';
 import api from '@/api';
 import router from '@zkty-team/x-engine-module-router';
 import ConfirmPop from '@/components/confirmPopDetail.vue';
@@ -51,16 +51,30 @@ export default {
   },
   data() {
     return {
-      showLoading: false,
       showConfirm: false,
+      exchangeCode: '09d1ab739b8a47cf', //卡密Id
+      couponActivityId: '', //派发id
+      couponId: '', //卡券id
+      memberId: '', //会员id
       confrimValue: '', //卡券标题
       confrimDetail: '', //卡券面值
-      confirmTime: '', //卡券有效期
-      exchangeCode: 'd51cf8c38fc245fc'
+      confirmTime: '' //卡券有效期
     };
   },
   mounted() {},
-  created() {},
+  created() {
+    if (this.$store.getters.isDebugMode) {
+      //生产需注释
+      this.memberId = '2332445899206164529';
+      localStorage.setItem('memberId', this.memberId);
+    } else {
+      //生产需打开
+      localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+        this.memberId = res.result;
+        localStorage.setItem('memberId', this.memberId);
+      });
+    }
+  },
   methods: {
     toast() {
       this.$toast.loading({
@@ -71,29 +85,26 @@ export default {
       });
     },
     getCamiloExchangeDetail() {
-      console.log('getCamiloExchangeDetail 执行了......');
+      console.log('getCamiloExchangeDetail this.memberId :>> ', this.memberId);
       const para = {
-        camiloId: this.exchangeCode
+        camiolId: this.exchangeCode
       };
       console.log('getCamiloExchangeDetail para :>> ', para);
 
       this.toast();
       api
-        .getUserInfo()
+        .getCamiloExchangeDetail()
         .finally(() => {
           this.$toast.clear();
         })
         .then(res => {
           console.log('getCamiloExchangeDetail res :>> ', res);
-          res.code = 200;
+          // return;
 
           if (res.code === 200) {
-            res.data = {
-              confrimValue: '物业抵扣卷', //卡券标题
-              confrimDetail: '面值：10元代金券', //卡券面值
-              confirmTime: '有效期：2021/11/12' //卡券有效期
-            };
             this.showConfirm = true;
+            this.couponActivityId = res.data.couponActivityId; //派发id
+            this.couponId = res.data.couponId; //卡券id
             this.confrimValue = res.data.confrimValue; //卡券标题
             this.confrimDetail = res.data.confrimDetail; //卡券面值
             this.confirmTime = res.data.confirmTime; //卡券有效期
@@ -108,19 +119,18 @@ export default {
     },
 
     confirmExchange() {
-      console.log('confirmExchange 执行了......');
+      console.log('confirmExchange this.memberId :>> ', this.memberId);
       const para = {
-        camiloId: this.exchangeCode,
-        couponActivityId: this.couponActivityId,
-        couponId: this.couponId,
-        memberId: this.memberId
+        camiloId: this.exchangeCode, //卡密Id
+        couponActivityId: this.couponActivityId, //派发id
+        couponId: this.couponId, //卡券id
+        memberId: this.memberId //会员id
       };
       console.log('confirmExchange para :>> ', para);
 
       this.toast();
-      this.showLoading = true;
       api
-        .getUserInfo()
+        .confirmCamiloExchange()
         .finally(() => {
           this.$toast.clear();
         })
