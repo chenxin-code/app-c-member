@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       showConfirm: false,
-      exchangeCode: '', //卡密Id
+      exchangeCode: '3e2b7548e819465e', //卡密Id
       couponActivityId: '', //卡券活动派发id
       couponId: '', //卡券id
       memberId: '', //会员id
@@ -102,7 +102,7 @@ export default {
       // console.log('getCamiloExchangeDetail this.memberId :>> ', this.memberId);
 
       const para = {
-        camiolId: this.exchangeCode
+        camiloId: this.exchangeCode
       };
       console.log('getCamiloExchangeDetail para :>> ', para);
 
@@ -110,7 +110,7 @@ export default {
       // getCamiloExchangeDetail   被替换api
       this.toast();
       api
-        .getUserInfo(para)
+        .getCamiloExchangeDetail(para)
         .finally(() => {
           this.$toast.clear();
         })
@@ -118,21 +118,23 @@ export default {
           console.log('getCamiloExchangeDetail res :>> ', res);
 
           if (res.code === 200) {
-            res.data = {
-              activityId: 123456789,
-              couponId: '123456789',
-              couponName: '物业50元代金券',
-              couponType: 10,
-              faceAmount: 50,
-              discountRatio: '',
-              expirationType: 3,
-              startTime: 1615782418758,
-              expirationTime: 1615782488758,
-              valiDays: '7',
-              offsetDays: '1'
-            };
+            // ////////mock////////
+            // res.data = {
+            //   activityId: 123456789,
+            //   couponId: '123456789',
+            //   couponName: '物业50元代金券',
+            //   couponType: 10,
+            //   faceAmount: 50,
+            //   discountRatio: '',
+            //   expirationType: 3,
+            //   startTime: 1615782418758,
+            //   expirationTime: 1615782488758,
+            //   valiDays: '7',
+            //   offsetDays: '1'
+            // };
+            // ////////mock////////
             this.showConfirm = true;
-            this.couponActivityId = res.data.activityId; //活动卡券活动派发id
+            this.couponActivityId = res.data.id; //活动卡券活动派发id
             this.couponId = res.data.couponId; //卡券id
             this.confrimValue = res.data.couponName; //卡券标题
 
@@ -172,12 +174,13 @@ export default {
         memberId: this.memberId //会员id
       };
       console.log('confirmExchange para :>> ', para);
+      // return;
 
       // getUserInfo
       // confirmCamiloExchange   被替换api
       this.toast();
       api
-        .getUserInfo(para)
+        .confirmCamiloExchange(para)
         .finally(() => {
           this.$toast.clear();
         })
@@ -187,6 +190,9 @@ export default {
             this.$toast('恭喜您, 优惠券兑换成功');
             this.showConfirm = false;
             this.exchangeCode = '';
+          } else if (res.code === 500) {
+            this.$toast(res.message);
+            this.showConfirm = false;
           }
         });
     },
