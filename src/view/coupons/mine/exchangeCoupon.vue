@@ -119,15 +119,17 @@ export default {
 
           if (res.code === 200) {
             res.data = {
-              activityId: 666,
-              couponId: '999',
-              couponName: '物业10元代金券',
+              activityId: 123456789,
+              couponId: '123456789',
+              couponName: '物业50元代金券',
               couponType: 10,
-              faceAmount: 10,
-              discountRatio: 0.7,
-              expirationType: 1,
+              faceAmount: 50,
+              discountRatio: '',
+              expirationType: 3,
               startTime: 1615782418758,
-              expirationTime: 1615782488758
+              expirationTime: 1615782488758,
+              valiDays: '7',
+              offsetDays: '1'
             };
             this.showConfirm = true;
             this.couponActivityId = res.data.activityId; //活动卡券活动派发id
@@ -148,7 +150,7 @@ export default {
               this.confirmTime = this.momentStr(res.data.startTime) + ' ~ ' + this.momentStr(res.data.expirationTime); //卡券有效期
             }
             if (res.data.expirationType === 3) {
-              this.confirmTime = '相对有效期: ' + res.data.valiDays + '天，领取后' + res.data.offsetDays + '天生效'; //卡券有效期
+              this.confirmTime = '相对有效期, ' + res.data.valiDays + '天, 领取后' + res.data.offsetDays + '天生效'; //卡券有效期
             }
           } else if (res.code === 500) {
             this.$dialog.alert({
