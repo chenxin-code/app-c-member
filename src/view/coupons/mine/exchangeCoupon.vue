@@ -53,7 +53,7 @@ export default {
     return {
       showConfirm: false,
       exchangeCode: '09d1ab739b8a47cf', //卡密Id
-      couponActivityId: '', //派发id
+      couponActivityId: '', //卡券活动派发id
       couponId: '', //卡券id
       memberId: '', //会员id
       confrimValue: '', //卡券标题
@@ -103,7 +103,7 @@ export default {
 
           if (res.code === 200) {
             this.showConfirm = true;
-            this.couponActivityId = res.data.couponActivityId; //派发id
+            this.couponActivityId = res.data.activityId; //活动卡券活动派发id
             this.couponId = res.data.couponId; //卡券id
             this.confrimValue = res.data.confrimValue; //卡券标题
             this.confrimDetail = res.data.confrimDetail; //卡券面值
@@ -122,7 +122,7 @@ export default {
       console.log('confirmExchange this.memberId :>> ', this.memberId);
       const para = {
         camiloId: this.exchangeCode, //卡密Id
-        couponActivityId: this.couponActivityId, //派发id
+        couponActivityId: this.couponActivityId, //卡券活动派发id
         couponId: this.couponId, //卡券id
         memberId: this.memberId //会员id
       };
