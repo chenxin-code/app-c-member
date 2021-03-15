@@ -186,7 +186,7 @@ export default {
 
     if (this.$store.getters.isDebugMode) {
       //生产需注释
-      this.memberId = '2212946938230210585';
+      this.memberId = '2332445899206164529';
       this.queryReceiveCouponList();
       this.getUserInfo();
     } else {
@@ -227,6 +227,7 @@ export default {
         memberId: this.memberId,
         pageIndex: 1,
         pageSize: 9999,
+        activityType: '',
         businessType: 0,
         condition: 3
       };

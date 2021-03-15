@@ -156,7 +156,7 @@ const vueConfig = {
     proxy: {
       '/times/': {
         target: 'http://8.129.64.205:16666', //一体化dev后端ip地址及端口
-        // target: "http://m-center-uat-linli.timesgroup.cn/", //uat后端ip地址及端口
+        // target: "http://m-center-uat-linli.timesgroup.cn",
         changeOrigin: true, //开启跨域
         ws: true //是否开启websocket
       }
