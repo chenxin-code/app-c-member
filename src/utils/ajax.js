@@ -1,12 +1,12 @@
-import axios from "axios";
-import JSONbig from "json-bigint";
-import api from "@/api";
-import QS from "qs";
-import localstorage from "@zkty-team/x-engine-module-localstorage";
-import { Toast } from "vant";
+import axios from 'axios';
+import JSONbig from 'json-bigint';
+import api from '@/api';
+import QS from 'qs';
+import localstorage from '@zkty-team/x-engine-module-localstorage';
+import { Toast } from 'vant';
 
 // var BASEURL = ''
-var REFRESH = "";
+var REFRESH = '';
 
 // if (process.env.NODE_ENV === 'development') {
 //   // getBaseURL();
@@ -28,7 +28,7 @@ export const HTTP = axios.create({
     // }
   },
   transformResponse: [
-    function (data) {
+    function(data) {
       return JSONBigString.parse(data);
     }
   ]
@@ -37,7 +37,7 @@ export const HTTP = axios.create({
 //请求拦截
 HTTP.interceptors.request.use(async config => {
   let tokenStr1;
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === 'development') {
     //生产环境
     // await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
     //   tokenStr1 = "Bearer " + res.result;
@@ -49,37 +49,35 @@ HTTP.interceptors.request.use(async config => {
     //   });
 
     //开发环境
-    tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxODgxOTMxMDY4OCIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjQwNTU0OTAwODU0MzAyNjExNiwiZXhwIjoxNjE1NjUzMDg5LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIl0sImp0aSI6ImNhM2U2MTVhLTk4ZWQtNGUyZi1iZGRiLTQ0OGViNWM0NDRiNCIsImNsaWVudF9pZCI6ImFwcF9jIn0.M_nD5qnlYYc_szHvckitknceeOQgGxIktOegIy1EGU6BzaU2byB1JVxSVbtQerd8S1qHa0pKLHbOy96d7ZXnDP3BsQ57PmYrRU4JrUSVYOqf-OEQH8rCIJnlVR_7WFuEt0PbtSEsnX6WxI7v8_QO9eT99CF3ZhRZ7JKl2PDc8MnLpRHWpIAUk8AaVuJVRiCy-OCG-J5JZzWivTHIxXH-dyxD6YqBxcitqTXNZuBPbuFeLxTZpLEGPhECoOQvfw2K2G3ButQ7kgen9E4nGvKnbMUvvHMAKcC9mtYBLGHai3uuFwVIqxT600EUgr4EfPPVe6T1KqlEDZnVCAMMCUYmSg`
+    tokenStr1 = `Bearer "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxODgxOTMxMDY4OCIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjQwNTU0OTAwODU0MzAyNjExNiwiZXhwIjoxNjE1ODE1NDU3LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIl0sImp0aSI6IjUxNjlmMjY2LTRhZjUtNGY5Ni04Y2NkLTNhMWY2NjJlOTkyZSIsImNsaWVudF9pZCI6ImFwcF9jIn0.SBM0E0s0_60YiQyHgsuf5qTwkFO8An5XfhKUtCnm-DNBzifRK6EUvSnWKh9kkRttFopp_rXgP8FTaFB-L1Z-94_J7h4HPPklDtEjDRrDXgplQRz9HZf1U816IatJ2ILj7n4yw11owec2UimUJGpMtubwzcjul1aCuySVPql99DjJLi9wnbdbPS8Mm9iQINkqrIqguiyj8B4`;
     config.headers.Authorization = tokenStr1;
     return config;
   } else {
-    await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
-      tokenStr1 = "Bearer " + res.result;
+    await localstorage.get({ key: 'LLBToken', isPublic: true }).then(res => {
+      tokenStr1 = 'Bearer ' + res.result;
     });
-    await localstorage
-      .get({ key: "LLBRefreshToken", isPublic: true })
-      .then(res => {
-        REFRESH = "Bearer " + res.result;
-      });
+    await localstorage.get({ key: 'LLBRefreshToken', isPublic: true }).then(res => {
+      REFRESH = 'Bearer ' + res.result;
+    });
     config.headers.Authorization = tokenStr1;
     return config;
   }
 });
 
-function handleParams (url, rawData, rawMethod) {
+function handleParams(url, rawData, rawMethod) {
   const method = rawMethod.toUpperCase();
   let data = {};
-  if (method === "GET") {
+  if (method === 'GET') {
     data = { params: rawData };
   }
   switch (method) {
-    case "GET":
+    case 'GET':
       data = { params: rawData };
       break;
-    case "POST":
-    case "PUT":
-    case "PATCH":
-    case "DELETE":
+    case 'POST':
+    case 'PUT':
+    case 'PATCH':
+    case 'DELETE':
       data = { data: rawData };
       break;
     default:
@@ -94,22 +92,18 @@ function handleParams (url, rawData, rawMethod) {
   });
 }
 
-async function handleFail (option) {
+async function handleFail(option) {
   console.log(option);
   const { error, reject } = option;
   const { response } = error;
   console.log('error', error);
   if (response) {
-    Toast("请求失败");
+    Toast('请求失败');
   } else {
     var originalRequest = error.config;
-    if (
-      error.code == "ECONNABORTED" &&
-      error.message.indexOf("timeout") != -1 &&
-      !originalRequest._retry
-    ) {
+    if (error.code == 'ECONNABORTED' && error.message.indexOf('timeout') != -1 && !originalRequest._retry) {
       originalRequest._retry = true;
-      Toast("请求超时");
+      Toast('请求超时');
     }
   }
   reject(error);
@@ -117,20 +111,20 @@ async function handleFail (option) {
 
 let defaultHeader = {
   timezoneoffset: Math.abs(new Date().getTimezoneOffset() / 60),
-  locale: "zh_CN",
+  locale: 'zh_CN',
   get: {
-    "Content-Type": "application/x-www-form-urlencoded"
+    'Content-Type': 'application/x-www-form-urlencoded'
   }
 };
 
 let refresh = false;
-async function refreshToken () {
+async function refreshToken() {
   refresh = true;
   const para = QS.stringify({
-    grant_type: "refresh_token",
-    client_id: "app_c",
-    client_secret: "times",
-    scope: "all",
+    grant_type: 'refresh_token',
+    client_id: 'app_c',
+    client_secret: 'times',
+    scope: 'all',
     refresh_token: REFRESH
   });
   api
@@ -138,28 +132,23 @@ async function refreshToken () {
     .then(res => {
       if (res.code === 200) {
         localstorage.set({
-          key: "LLBToken",
+          key: 'LLBToken',
           value: res.data.token,
           isPublic: false
         });
         location.reload();
       }
     })
-    .finally(() => { });
+    .finally(() => {});
 }
 var baseurl;
-export const fetchApi = async (
-  api,
-  rawData = {},
-  method = "GET",
-  headers = {}
-) => {
-  if (process.env.NODE_ENV !== "development") {
-    await localstorage.get({ key: "LLBOrigin", isPublic: true }).then(res => {
-      baseurl = res.result + "/";
+export const fetchApi = async (api, rawData = {}, method = 'GET', headers = {}) => {
+  if (process.env.NODE_ENV !== 'development') {
+    await localstorage.get({ key: 'LLBOrigin', isPublic: true }).then(res => {
+      baseurl = res.result + '/';
     });
   } else {
-    baseurl = "/";
+    baseurl = '/';
   }
   return handleParams(api, rawData, method, headers).then(options => {
     return new Promise((resolve, reject) => {
