@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       showConfirm: false,
-      exchangeCode: '09d1ab739b8a47cf', //卡密Id
+      exchangeCode: '898d22e65f864139', //卡密Id
       couponActivityId: '', //卡券活动派发id
       couponId: '', //卡券id
       memberId: '', //会员id
@@ -85,7 +85,8 @@ export default {
       });
     },
     getCamiloExchangeDetail() {
-      console.log('getCamiloExchangeDetail this.memberId :>> ', this.memberId);
+      // console.log('getCamiloExchangeDetail this.memberId :>> ', this.memberId);
+
       const para = {
         camiolId: this.exchangeCode
       };
@@ -93,25 +94,34 @@ export default {
 
       this.toast();
       api
-        .getCamiloExchangeDetail()
+        .getCamiloExchangeDetail(para)
         .finally(() => {
           this.$toast.clear();
         })
         .then(res => {
           console.log('getCamiloExchangeDetail res :>> ', res);
-          // return;
 
           if (res.code === 200) {
             this.showConfirm = true;
             this.couponActivityId = res.data.activityId; //活动卡券活动派发id
             this.couponId = res.data.couponId; //卡券id
-            this.confrimValue = res.data.confrimValue; //卡券标题
-            this.confrimDetail = res.data.confrimDetail; //卡券面值
-            this.confirmTime = res.data.confirmTime; //卡券有效期
+            this.confrimValue = res.data.couponName; //卡券标题
+            if (res.data.couponType === 10 || res.data.couponType === 20) {
+              this.confrimDetail = res.data.faceAmount; //卡券面值
+            }
+            if (res.data.couponType === 40) {
+              this.confrimDetail = res.data.discountRatio * 10 + '折'; //卡券面值
+            }
+            if (res.data.expirationType === 1) {
+              this.confirmTime = res.data.startTime + ' ~ ' + res.data.expirationTime; //卡券有效期
+            }
+            if (res.data.expirationType === 3) {
+              this.confirmTime = '相对有效期: ' + res.data.valiDays + '天，领取后' + res.data.offsetDays + '天生效' //卡券有效期
+            }
           } else if (res.code === 500) {
             this.$dialog.alert({
               confirmButtonText: '确认',
-              title: '兑换码错误，请您核对后重新输入',
+              title: res.message,
               closeOnPopstate: true
             });
           }
@@ -119,7 +129,8 @@ export default {
     },
 
     confirmExchange() {
-      console.log('confirmExchange this.memberId :>> ', this.memberId);
+      // console.log('confirmExchange this.memberId :>> ', this.memberId);
+
       const para = {
         camiloId: this.exchangeCode, //卡密Id
         couponActivityId: this.couponActivityId, //卡券活动派发id
@@ -130,7 +141,7 @@ export default {
 
       this.toast();
       api
-        .confirmCamiloExchange()
+        .confirmCamiloExchange(para)
         .finally(() => {
           this.$toast.clear();
         })
