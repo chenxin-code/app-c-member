@@ -87,7 +87,8 @@
             </div>
           </div>
           <!-- 邦豆兑换 -->
-          <div class="bangdou-exchange" v-if="propertyList.length || vouchersList.length">
+          <div class="bangdou-exchange">
+          <!-- <div class="bangdou-exchange" v-if="propertyList.length || vouchersList.length"> -->
             <div class="bangdou-exchange-header">
               <div class="exchange-header-title">邦豆兑换</div>
               <div class="exchange-header-seemore" @click="seemoreExchange">
@@ -380,7 +381,6 @@ export default {
     if (this.$store.getters.isDebugMode) {
       // 生产需注释
       this.memberId = '2332445899206164529';
-      alert(`memberId: ${this.memberId}`)
       localStorage.setItem('memberId', this.memberId);
       this.getMemberDetail();
       this.queryReceiveCouponList();
@@ -618,6 +618,7 @@ export default {
         memberId: this.memberId,
         pageIndex: 1,
         pageSize: 4,
+        activityType: '',
         businessType: 0,
         condition: 3
       };

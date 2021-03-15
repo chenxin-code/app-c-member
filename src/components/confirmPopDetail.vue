@@ -2,8 +2,8 @@
   <van-popup class="confirm-pop" v-model="showConfirm">
     <div class="content">
       <p class="title">{{ confrimValue }}</p>
-      <p class="detail">{{ confrimDetail }}</p>
-      <p class="time">{{ confirmTime }}</p>
+      <p class="detail">面值: {{ confrimDetail }}</p>
+      <p class="time">有效期: {{ confirmTime }}</p>
       <p class="btn">
         <span @click="cancelConfim">取消</span>
         <span @click="confirmBtn">确认兑换</span>
@@ -15,7 +15,7 @@
 <script>
 export default {
   name: 'ConfirmPopDetail',
-  props: ['showLoading', 'showConfirm', 'confrimValue', 'confrimDetail', 'confirmTime'],
+  props: ['showConfirm', 'confrimValue', 'confrimDetail', 'confirmTime'],
   components: {},
   data() {
     return {};

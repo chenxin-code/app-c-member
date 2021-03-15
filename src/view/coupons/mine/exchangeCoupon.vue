@@ -29,7 +29,6 @@
       </div>
     </div>
     <ConfirmPop
-      :showLoading="showLoading"
       :showConfirm="showConfirm"
       :confrimValue="confrimValue"
       :confrimDetail="confrimDetail"
@@ -39,7 +38,9 @@
 </template>
 
 <script>
+import moment from 'moment';
 import nav from '@zkty-team/x-engine-module-nav';
+import localstorage from '@zkty-team/x-engine-module-localstorage';
 import api from '@/api';
 import router from '@zkty-team/x-engine-module-router';
 import ConfirmPop from '@/components/confirmPopDetail.vue';
@@ -51,17 +52,44 @@ export default {
   },
   data() {
     return {
-      showLoading: false,
       showConfirm: false,
+      exchangeCode: '', //卡密Id
+      couponActivityId: '', //卡券活动派发id
+      couponId: '', //卡券id
+      memberId: '', //会员id
       confrimValue: '', //卡券标题
       confrimDetail: '', //卡券面值
-      confirmTime: '', //卡券有效期
-      exchangeCode: 'd51cf8c38fc245fc'
+      confirmTime: '' //卡券有效期
     };
   },
+
+  created() {
+    if (this.$store.getters.isDebugMode) {
+      //生产需注释
+      this.memberId = '2332445899206164529';
+      localStorage.setItem('memberId', this.memberId);
+    } else {
+      //生产需打开
+      localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+        this.memberId = res.result;
+        localStorage.setItem('memberId', this.memberId);
+      });
+    }
+  },
   mounted() {},
-  created() {},
+  computed: {
+    momentStr() {
+      return param => {
+        if (!param) {
+          return '';
+        } else {
+          return moment(param).format('YYYY/MM/DD');
+        }
+      };
+    }
+  },
   methods: {
+    moment,
     toast() {
       this.$toast.loading({
         duration: 0,
@@ -71,36 +99,63 @@ export default {
       });
     },
     getCamiloExchangeDetail() {
-      console.log('getCamiloExchangeDetail 执行了......');
+      // console.log('getCamiloExchangeDetail this.memberId :>> ', this.memberId);
+
       const para = {
-        camiloId: this.exchangeCode
+        camiolId: this.exchangeCode
       };
       console.log('getCamiloExchangeDetail para :>> ', para);
 
+      // getUserInfo
+      // getCamiloExchangeDetail   被替换api
       this.toast();
       api
-        .getUserInfo()
+        .getUserInfo(para)
         .finally(() => {
           this.$toast.clear();
         })
         .then(res => {
           console.log('getCamiloExchangeDetail res :>> ', res);
-          res.code = 200;
 
           if (res.code === 200) {
             res.data = {
-              confrimValue: '物业抵扣卷', //卡券标题
-              confrimDetail: '面值：10元代金券', //卡券面值
-              confirmTime: '有效期：2021/11/12' //卡券有效期
+              activityId: 123456789,
+              couponId: '123456789',
+              couponName: '物业50元代金券',
+              couponType: 10,
+              faceAmount: 50,
+              discountRatio: '',
+              expirationType: 3,
+              startTime: 1615782418758,
+              expirationTime: 1615782488758,
+              valiDays: '7',
+              offsetDays: '1'
             };
             this.showConfirm = true;
-            this.confrimValue = res.data.confrimValue; //卡券标题
-            this.confrimDetail = res.data.confrimDetail; //卡券面值
-            this.confirmTime = res.data.confirmTime; //卡券有效期
+            this.couponActivityId = res.data.activityId; //活动卡券活动派发id
+            this.couponId = res.data.couponId; //卡券id
+            this.confrimValue = res.data.couponName; //卡券标题
+
+            if (res.data.couponType === 10) {
+              this.confrimDetail = res.data.faceAmount + '元代金券'; //卡券面值
+            }
+            if (res.data.couponType === 20) {
+              this.confrimDetail = res.data.faceAmount + '元满减券'; //卡券面值
+            }
+            if (res.data.couponType === 40) {
+              this.confrimDetail = res.data.discountRatio * 10 + '折' + '折扣券'; //卡券面值
+            }
+
+            if (res.data.expirationType === 1) {
+              this.confirmTime = this.momentStr(res.data.startTime) + ' ~ ' + this.momentStr(res.data.expirationTime); //卡券有效期
+            }
+            if (res.data.expirationType === 3) {
+              this.confirmTime = '相对有效期, ' + res.data.valiDays + '天, 领取后' + res.data.offsetDays + '天生效'; //卡券有效期
+            }
           } else if (res.code === 500) {
             this.$dialog.alert({
               confirmButtonText: '确认',
-              title: '兑换码错误，请您核对后重新输入',
+              title: res.message,
               closeOnPopstate: true
             });
           }
@@ -108,19 +163,21 @@ export default {
     },
 
     confirmExchange() {
-      console.log('confirmExchange 执行了......');
+      // console.log('confirmExchange this.memberId :>> ', this.memberId);
+
       const para = {
-        camiloId: this.exchangeCode,
-        couponActivityId: this.couponActivityId,
-        couponId: this.couponId,
-        memberId: this.memberId
+        camiloId: this.exchangeCode, //卡密Id
+        couponActivityId: this.couponActivityId, //卡券活动派发id
+        couponId: this.couponId, //卡券id
+        memberId: this.memberId //会员id
       };
       console.log('confirmExchange para :>> ', para);
 
+      // getUserInfo
+      // confirmCamiloExchange   被替换api
       this.toast();
-      this.showLoading = true;
       api
-        .getUserInfo()
+        .getUserInfo(para)
         .finally(() => {
           this.$toast.clear();
         })
@@ -129,6 +186,7 @@ export default {
           if (res.code === 200) {
             this.$toast('恭喜您, 优惠券兑换成功');
             this.showConfirm = false;
+            this.exchangeCode = '';
           }
         });
     },

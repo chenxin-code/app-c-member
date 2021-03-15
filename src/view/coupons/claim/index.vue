@@ -142,7 +142,7 @@ export default {
     this.paramsList(); //mixin引入公共method
 
     if (this.$store.getters.isDebugMode) {
-      this.memberId = '2212946938230210585';
+      this.memberId = '2332445899206164529';
       localStorage.setItem('memberId', this.memberId);
       this.getList();
       this.getUserInfo();
@@ -270,6 +270,7 @@ export default {
         memberId: this.memberId,
         pageIndex: this.pageIndex[tabIndex],
         pageSize: 9999, // 不分页
+        activityType: '',
         businessType: this.tabList[tabIndex].businessType,
         condition: 1
       };

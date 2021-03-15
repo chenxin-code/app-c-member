@@ -139,7 +139,7 @@ export default {
     console.log('$store.getters.isDebugMode :>> ', this.$store.getters.isDebugMode);
     if (this.$store.getters.isDebugMode) {
       //生产需注释
-      this.memberId = '2309350880803029939';
+      this.memberId = '2332445899206164529';
       localStorage.setItem('memberId', this.memberId);
       this.getSignTasklistUsingget();
     } else {

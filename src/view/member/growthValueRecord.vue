@@ -58,7 +58,7 @@ export default {
   created() {
     if (this.$store.getters.isDebugMode) {
       //生产需注释
-      this.memberId = '2309350880803029614';
+      this.memberId = '2332445899206164529';
     } else {
       //生产需打开
       this.memberId = localStorage.getItem('memberId');

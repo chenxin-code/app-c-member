@@ -36,6 +36,6 @@ export default {
     MEMBER_COUPON_LIST: option.member + '/coupon/api/v1/coupon-member/list', //获取会员可使用卡券列表
     INTEGRALCONVERSION: option.member + '/api/v1/integralConversion', // 邦豆兑换
     GETCUSTOMUSER: option.c_user + '/api-c/v1/customer-room/customer',//获取当前人的人房关系ID
-    CAMILO_EXCHANGE_DETAIL:'/times/member-center/coupon/api/v1/assgin-member/selectCamilo',//卡密对应的优惠卷详情展示
-    CAMILO_EXCHANGE:'/times/member-center/coupon/api/v1/assgin-member/exchangeCamilo',//卡密确认兑换
+    CAMILO_EXCHANGE_DETAIL:'/times/member-bff/member/api-c/v1/member/selectCamilo',//卡密对应的优惠卷详情展示
+    CAMILO_EXCHANGE:'/times/member-bff/member/api-c/v1/member/exchangeCamilo',//卡密确认兑换
 }
