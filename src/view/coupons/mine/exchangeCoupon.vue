@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import nav from '@zkty-team/x-engine-module-nav';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
 import api from '@/api';
@@ -52,7 +53,7 @@ export default {
   data() {
     return {
       showConfirm: false,
-      exchangeCode: '898d22e65f864139', //卡密Id
+      exchangeCode: '', //卡密Id
       couponActivityId: '', //卡券活动派发id
       couponId: '', //卡券id
       memberId: '', //会员id
@@ -61,7 +62,7 @@ export default {
       confirmTime: '' //卡券有效期
     };
   },
-  mounted() {},
+
   created() {
     if (this.$store.getters.isDebugMode) {
       //生产需注释
@@ -75,7 +76,20 @@ export default {
       });
     }
   },
+  mounted() {},
+  computed: {
+    momentStr() {
+      return param => {
+        if (!param) {
+          return '';
+        } else {
+          return moment(param).format('YYYY/MM/DD');
+        }
+      };
+    }
+  },
   methods: {
+    moment,
     toast() {
       this.$toast.loading({
         duration: 0,
@@ -92,9 +106,11 @@ export default {
       };
       console.log('getCamiloExchangeDetail para :>> ', para);
 
+      // getUserInfo
+      // getCamiloExchangeDetail   被替换api
       this.toast();
       api
-        .getCamiloExchangeDetail(para)
+        .getUserInfo(para)
         .finally(() => {
           this.$toast.clear();
         })
@@ -102,21 +118,37 @@ export default {
           console.log('getCamiloExchangeDetail res :>> ', res);
 
           if (res.code === 200) {
+            res.data = {
+              activityId: 666,
+              couponId: '999',
+              couponName: '物业10元代金券',
+              couponType: 10,
+              faceAmount: 10,
+              discountRatio: 0.7,
+              expirationType: 1,
+              startTime: 1615782418758,
+              expirationTime: 1615782488758
+            };
             this.showConfirm = true;
             this.couponActivityId = res.data.activityId; //活动卡券活动派发id
             this.couponId = res.data.couponId; //卡券id
             this.confrimValue = res.data.couponName; //卡券标题
-            if (res.data.couponType === 10 || res.data.couponType === 20) {
-              this.confrimDetail = res.data.faceAmount; //卡券面值
+
+            if (res.data.couponType === 10) {
+              this.confrimDetail = res.data.faceAmount + '元代金券'; //卡券面值
+            }
+            if (res.data.couponType === 20) {
+              this.confrimDetail = res.data.faceAmount + '元满减券'; //卡券面值
             }
             if (res.data.couponType === 40) {
-              this.confrimDetail = res.data.discountRatio * 10 + '折'; //卡券面值
+              this.confrimDetail = res.data.discountRatio * 10 + '折' + '折扣券'; //卡券面值
             }
+
             if (res.data.expirationType === 1) {
-              this.confirmTime = res.data.startTime + ' ~ ' + res.data.expirationTime; //卡券有效期
+              this.confirmTime = this.momentStr(res.data.startTime) + ' ~ ' + this.momentStr(res.data.expirationTime); //卡券有效期
             }
             if (res.data.expirationType === 3) {
-              this.confirmTime = '相对有效期: ' + res.data.valiDays + '天，领取后' + res.data.offsetDays + '天生效' //卡券有效期
+              this.confirmTime = '相对有效期: ' + res.data.valiDays + '天，领取后' + res.data.offsetDays + '天生效'; //卡券有效期
             }
           } else if (res.code === 500) {
             this.$dialog.alert({
@@ -139,9 +171,11 @@ export default {
       };
       console.log('confirmExchange para :>> ', para);
 
+      // getUserInfo
+      // confirmCamiloExchange   被替换api
       this.toast();
       api
-        .confirmCamiloExchange(para)
+        .getUserInfo(para)
         .finally(() => {
           this.$toast.clear();
         })
