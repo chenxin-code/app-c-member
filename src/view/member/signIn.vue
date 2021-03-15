@@ -206,13 +206,17 @@ export default {
       };
 
       console.log(JSON.stringify(par));
-      api.collectUsingPOST(par).then(res => {
-        if (res.code == 200) {
+      api
+        .collectUsingPOST(par)
+        .finally(() => {
           this.$toast.clear();
-          this.showPopup = true;
-          this.getSignTasklistUsingget();
-        }
-      });
+        })
+        .then(res => {
+          if (res.code == 200) {
+            this.showPopup = true;
+            this.getSignTasklistUsingget();
+          }
+        });
     },
     getSignTasklistUsingget: function() {
       var self = this;
@@ -224,16 +228,20 @@ export default {
       const par = {
         memberId: this.memberId
       };
-      api.getSignTasklistUsingget(par).then(res => {
-        if (res.code == 200) {
+      api
+        .getSignTasklistUsingget(par)
+        .finally(() => {
           self.$toast.clear();
-          console.log(res);
-          self.taskVoList = res.data.taskVoList;
-          self.isClick = res.data.sign;
-          var number = parseInt(res.data.count / 7);
-          self.count = res.data.count - number * 7;
-        }
-      });
+        })
+        .then(res => {
+          if (res.code == 200) {
+            console.log(res);
+            self.taskVoList = res.data.taskVoList;
+            self.isClick = res.data.sign;
+            var number = parseInt(res.data.count / 7);
+            self.count = res.data.count - number * 7;
+          }
+        });
     }
   }
 };
