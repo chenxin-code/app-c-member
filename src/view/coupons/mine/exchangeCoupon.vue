@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       showConfirm: false,
-      exchangeCode: '3e2b7548e819465e', //卡密Id
+      exchangeCode: '', //卡密Id
       couponActivityId: '', //卡券活动派发id
       couponId: '', //卡券id
       memberId: '', //会员id
