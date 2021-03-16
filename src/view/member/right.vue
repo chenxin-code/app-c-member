@@ -6,39 +6,53 @@
     </div>
     <div class="containter">
       <p class="title">会员礼券</p>
-      <div class="bangdou-exchange-card" v-for="(v,k) in 3" :key="k">
-        <div class="exchange-card-item exchange-card-left">
-          <div class="exchange-card-left-top">
-            <template >
-              <div class="card-left-top-type">￥</div>
-              <div class="card-left-top-num">50</div>
+      <div class="empty" v-if="cardList.length === 0">
+        <img class="empty-img" :src="require('@/assets/img/empty/empty-coupon.png')" alt="" />
+        <p class="empty-description">敬请期待</p>
+      </div>
+      <div v-else>
+        <div class="bangdou-exchange-card" v-for="(v,k) in cardList" :key="k">
+          <div class="exchange-card-item exchange-card-left">
+            <div class="exchange-card-left-top">
+              <template >
+                <div class="card-left-top-type">￥</div>
+                <div class="card-left-top-num">{{parseInt(v.faceAmount)}}</div>
+              </template>
+            </div>
+            <template>
+              <div class="exchange-card-left-btn">满{{v.satisfyAmount}}元可用</div>
             </template>
           </div>
-          <template>
-            <div class="exchange-card-left-btn">满100元可用</div>
-          </template>
-        </div>
-        <div class="exchange-card-item exchange-card-right">
-          <div class="exchange-card-right-left">
-            <div class="card-right-left-top">
-              10元生鲜满减券
-            </div>
-            <div class="card-right-left-middle">
-              领取后3天有效
-            </div>
-            <div class="card-right-left-bottom">
-              每月10日领取
-            </div>
-          </div>
-          <div class="exchange-card-right-right">
-            <template >
-              <div class="aaaaa">
-                <span class="aaaaa-left">300</span>
-                <span class="aaaaa-right">邦豆</span>
+          <div class="exchange-card-item exchange-card-right">
+            <div class="exchange-card-right-left">
+              <div class="card-right-left-top">
+                {{v.couponTitle}}
               </div>
-              <div class="exchange-card-right-bottom-btn" v-if="k === 0">帮豆兑换</div>
-              <div class="exchange-card-right-bottom-btn use" v-else>去使用</div>
-            </template>
+              <div class="card-right-left-middle">
+                领取后{{v.takeEffectDayNums}}天有效
+              </div>
+              <div class="card-right-left-bottom" v-if="v.monthGetDay">
+                每月{{v.monthGetDay}}日领取
+              </div>
+              <div class="card-right-left-bottom" v-else-if="v.weekGetDay">
+                每周{{v.weekGetDay}}领取
+              </div>
+            </div>
+            <div class="exchange-card-right-right">
+              <template >
+                <div class="aaaaa">
+                  <span class="aaaaa-left">{{v.integrealCount}}</span>
+                  <span class="aaaaa-right">邦豆</span>
+                </div>
+                <div class="exchange-card-right-bottom-btn" @click="getCoupon(v)" v-if="v.isPeriodic === 0 && v.condition === 1">立即领取</div>
+                <div class="exchange-card-right-bottom-btn" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 1">去使用</div>
+                <div class="exchange-card-right-bottom-btn" @click="exchange(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3">邦豆兑换</div>
+                <div class="exchange-card-right-bottom-btn" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3">去使用</div>
+                <div class="exchange-card-right-bottom-btn" @click="getCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay)">立即领取</div>
+                <div class="exchange-card-right-bottom-btn" @click="useCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay)">去使用</div>
+                <div class="exchange-card-right-bottom-btn kongxin" v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay,v.weekGetDay)">未生效</div>
+              </template>
+            </div>
           </div>
         </div>
       </div>
@@ -75,8 +89,277 @@
 </template>
 
 <script>
+import api from '@/api';
+import localstorage from '@zkty-team/x-engine-module-localstorage';
+import yjzdbill from '@zkty-team/x-engine-module-yjzdbill';
+import router from '@zkty-team/x-engine-module-router';
 export default {
-name: "right"
+  name: "right",
+  data() {
+    return {
+      memberId: null,
+      cardList: []
+    };
+  },
+  components: {
+
+  },
+  methods: {
+    // 打开账单中心
+    openDeital() {
+      const userId = this.userInfo.phone;
+      api.getCustomUser().then(res => {
+        if (res.code == 200) {
+          this.$toast.clear();
+          if (res.data.length > 0) {
+            var userRoomNo = '';
+            for (var i = 0; i < res.data.length; i++) {
+              userRoomNo = userRoomNo.concat(res.data[i].custRoomId).concat('|');
+            }
+            userRoomNo = userRoomNo.slice(0, userRoomNo.length - 1);
+            console.log(userRoomNo);
+            yjzdbill.YJBillList({
+              businessCstNo: userId,
+              userRoomNo: userRoomNo,
+              roomNo: '',
+              billStatus: 10,
+              billType: 1,
+              appScheme: 'x-engine',
+              payType: false
+            });
+          } else {
+            yjzdbill.YJBillList({
+              businessCstNo: userId,
+              userRoomNo: '',
+              roomNo: '',
+              billStatus: 10,
+              billType: 1,
+              appScheme: 'x-engine',
+              payType: false
+            });
+          }
+        }
+      });
+    },
+    //TODO:这里跳页报ngnix错误
+    async openMall(data) {
+      let uri;
+      if (this.devServer !== 'prod') {
+        uri = 'http://mall-uat-app-linli.timesgroup.cn';
+      } else {
+        uri = 'http://mall-prod-app-linli.timesgroup.cn';
+      }
+
+      const datestr = Number(new Date());
+      let token;
+      await localstorage.get({ key: 'LLBToken', isPublic: true }).then(res => {
+        token = res.result;
+      });
+
+      const tempParam = encodeURIComponent(
+        `${uri}/app-vue/app/index.htm#/mall2/list/${datestr}?pageType=coupon&coupon=${data.couponType}&couThresholdAmount=${data.satisfyAmount}&couFaceValue=${data.faceAmount}&lastPath=%2Fcoupon_list&endTime=${data.validityEndTime}&backApp=true`
+      );
+      const url = `${uri}/app/index?token=${token}&redirect=${tempParam}`;
+      console.log('openMall url :>> ', url);
+
+      router.openTargetRouter({
+        type: 'h5',
+        uri: url
+      });
+    },
+    //去使用
+    useCoupon(data) {
+      if (!data.effective) {
+        return false;
+      }
+      // 4005/购物券 -- 4014/物业券
+      if (data.activity === '4014') {
+        this.openDeital();
+        // this.
+      } else if (data.activity === '4005') {
+        this.openMall(data);
+        // console.log("打开商城");
+      }
+    },
+    //立即领取
+    getCoupon(data) {
+      this.$toast();
+      api
+        .getReceiveCoupon({
+          couActivitiesId: data.id,
+          memberId: this.memberId
+        })
+        .then(res => {
+          if (res.code === 200) {
+            // 该券
+            const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+            const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+            const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+            const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
+            // 变更按钮为 '去使用'
+
+            // 删除不显示
+
+            if (res.data.result) {
+              this.$toast('领取成功');
+              if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+                this.$set(data, 'goUse', true);
+                // 解决多维数组修改属性无效
+                this.list.push([]);
+                this.list.splice(this.list.length - 1, 1);
+              }
+            } else {
+              // 都未达到上限，后台/数据库处理错误
+              if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+                console.log('无存在上限，后台/数据库处理错误');
+                this.$toast('领取失败');
+              } else {
+                if (couponTotal) {
+                  return this.$toast('该优惠券已领光');
+                }
+                if (couponDay) {
+                  return this.$toast('该优惠券今日已领光');
+                }
+                if (couponPersonDay || couponPerson) {
+                  this.$set(data, 'goUse', true);
+                  // 解决多维数组修改属性无效
+                  this.list.push([]);
+                  this.list.splice(this.list.length - 1, 1);
+                }
+                if (couponPerson) {
+                  return this.$toast('该优惠券您已达领取上限');
+                }
+                if (couponPersonDay) {
+                  return this.$toast('该优惠券您今日已达领取上限');
+                }
+              }
+            }
+          }
+        });
+    },
+    //邦豆兑换
+    exchange(data) {
+      this.toast();
+      api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
+        if (res.code === 200) {
+          if (+data.integrealCount > +res.data.integral) {
+            return this.$toast('剩余邦豆不足');
+          }
+          const rest = +res.data.integral - +data.integrealCount;
+          this.$toast.clear();
+          this.$dialog
+            .confirm({
+              title: '确认兑换',
+              message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
+            })
+            .then(() => {
+              const params = {
+                couActivitiesId: data.id,
+                memberId: this.memberId,
+                integral: data.integrealCount
+              };
+              this.toast();
+              api.getReceiveCoupon(params).then(res => {
+                if (res.code === 200) {
+                  // 该券当前人
+                  const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+                  const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+                  const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+                  const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
+                  // 变更按钮为 '去使用'
+                  if (res.data.result) {
+                    this.$toast('兑换成功');
+                    if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+                      this.$set(data, 'goUse', true);
+                    }
+                  } else {
+                    if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+                      console.log('无存在上限，后台/数据库处理错误');
+                      this.$toast('兑换失败');
+                    } else {
+                      if (couponTotal) {
+                        // if (type === 0) {
+                        //   this.propertyList.splice(index, 1);
+                        // } else {
+                        //   this.vouchersList.splice(index, 1);
+                        // }
+                        return this.$toast('该优惠券已兑换完');
+                      }
+                      if (couponDay) {
+                        return this.$toast('该优惠券今日已兑换完');
+                      }
+                      if (couponPersonDay || couponPerson) {
+                        this.$set(data, 'goUse', true);
+                      }
+                      if (couponPerson) {
+                        return this.$toast('该优惠券您已兑换完');
+                      }
+                      if (couponPersonDay) {
+                        return this.$toast('该优惠券您今日已兑换完');
+                      }
+                    }
+                  }
+                }
+              });
+            });
+        }
+      });
+    },
+    checkTimeOK(monthGetDay,weekGetDay){
+      if(monthGetDay){
+        return new Date().getDate() === monthGetDay//获取当前日(1-31)
+      }else if(weekGetDay){
+        return new Date().getDay() === weekGetDay//获取当前星期X(0-6,0代表星期天)
+      }
+    },
+    queryReceiveCouponList(){
+      const params = {
+        memberId: this.memberId,
+        pageIndex: 1,
+        pageSize: 9999,
+        activityType: 2,//会员权益
+        businessType: 0,
+        condition: 0
+      };
+      //this.loading = true;
+      //this.toast();
+      api
+        .queryReceiveCouponList(params)
+        .then(res => {
+          if (res.code === 200) {
+            //this.$toast.clear();
+          }
+          const data = res.data || [];
+          const cardList = [];
+          let nowTime = new Date();
+          data.map(item => {
+            const stareTime = new Date(+item.validityStartTime);
+            const endTime = new Date(+item.validityEndTime);
+            item.effective = nowTime >= stareTime && nowTime <= endTime;
+            cardList.push(item);
+            return item;
+          });
+          this.cardList = cardList;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+  },
+  created() {
+    if (this.$store.getters.isDebugMode) {
+      //生产需注释
+      this.memberId = '2332445899206164529';
+      this.queryReceiveCouponList();
+    } else {
+      //生产需打开
+      localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+        this.memberId = res.result;
+        localStorage.setItem('memberId', this.memberId);
+        this.queryReceiveCouponList();
+      });
+    }
+  }
 }
 </script>
 
@@ -117,6 +400,16 @@ name: "right"
 .containter {
   margin-top: 55px;
   padding: 6px 12px;
+  .empty {
+    text-align: center;
+    .empty-img {
+      width: 100%;
+    }
+    .empty-description {
+      font-size: 14px;
+      color: #8d8d8d;
+    }
+  }
   .bangdou-exchange-card {
     height: 97px;
     // flex-basis: 324px;
@@ -240,6 +533,7 @@ name: "right"
           padding: 5px 2px;
           border-radius: 3px;
           float: left;
+          width: 73px;
         }
 
       }
@@ -287,7 +581,7 @@ name: "right"
           &.ineffective {
             background: #f8f8f8;
           }
-          &.use {
+          &.kongxin {
             background: #fff;
             color: #989ebd;
             border: 1px solid #989ebd;
