@@ -6,12 +6,14 @@
     </div>
     <div class="containter">
       <p class="title">会员礼券</p>
-      <div class="empty" v-if="cardList.length === 0">
+      <div class="empty" v-if="!loading && cardList.length === 0">
         <img class="empty-img" :src="require('@/assets/img/empty/empty-coupon.png')" alt="" />
         <p class="empty-description">敬请期待</p>
       </div>
       <div v-else>
-        <div class="bangdou-exchange-card" v-for="(v,k) in cardList" :key="k">
+        <div class="bangdou-exchange-card"
+             :class="getPageClass(levelId)"
+             v-for="(v,k) in cardList" :key="k">
           <div class="exchange-card-item exchange-card-left">
             <div class="exchange-card-left-top">
               <template >
@@ -31,6 +33,9 @@
               <div class="card-right-left-middle">
                 领取后{{v.takeEffectDayNums}}天有效
               </div>
+              <!--<div class="card-right-left-bottom">
+                每月11日领取
+              </div>-->
               <div class="card-right-left-bottom" v-if="v.monthGetDay">
                 每月{{v.monthGetDay}}日领取
               </div>
@@ -39,18 +44,18 @@
               </div>
             </div>
             <div class="exchange-card-right-right">
-              <template >
+              <template>
                 <div class="aaaaa">
                   <span class="aaaaa-left">{{v.integrealCount}}</span>
                   <span class="aaaaa-right">邦豆</span>
                 </div>
-                <div class="exchange-card-right-bottom-btn" @click="getCoupon(v)" v-if="v.isPeriodic === 0 && v.condition === 1">立即领取</div>
-                <div class="exchange-card-right-bottom-btn" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 1">去使用</div>
-                <div class="exchange-card-right-bottom-btn" @click="exchange(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3">邦豆兑换</div>
-                <div class="exchange-card-right-bottom-btn" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3">去使用</div>
-                <div class="exchange-card-right-bottom-btn" @click="getCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay)">立即领取</div>
-                <div class="exchange-card-right-bottom-btn" @click="useCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay)">去使用</div>
-                <div class="exchange-card-right-bottom-btn kongxin" v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay,v.weekGetDay)">未生效</div>
+                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="getCoupon(v)" v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse">立即领取</div>
+                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 1 && v.goUse">去使用</div>
+                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="exchangeBD(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse">邦豆兑换</div>
+                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && v.goUse">去使用</div>
+                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="getCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && !v.goUse">立即领取</div>
+                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && v.goUse">去使用</div>
+                <div class="exchange-card-right-bottom-btn kongxin" :class="getPageClass(levelId)" v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay,v.weekGetDay)">未生效</div>
               </template>
             </div>
           </div>
@@ -98,7 +103,9 @@ export default {
   data() {
     return {
       memberId: null,
-      cardList: []
+      levelId: null,
+      cardList: [],
+      loading: false,
     };
   },
   components: {
@@ -107,7 +114,11 @@ export default {
   methods: {
     // 打开账单中心
     openDeital() {
-      const userId = this.userInfo.phone;
+      this.$toast.loading({
+        duration: 0,
+        forbidClick: true,
+        message: '加载中...'
+      });
       api.getCustomUser().then(res => {
         if (res.code == 200) {
           this.$toast.clear();
@@ -119,7 +130,7 @@ export default {
             userRoomNo = userRoomNo.slice(0, userRoomNo.length - 1);
             console.log(userRoomNo);
             yjzdbill.YJBillList({
-              businessCstNo: userId,
+              businessCstNo: this.userInfo.phone,
               userRoomNo: userRoomNo,
               roomNo: '',
               billStatus: 10,
@@ -129,7 +140,7 @@ export default {
             });
           } else {
             yjzdbill.YJBillList({
-              businessCstNo: userId,
+              businessCstNo: this.userInfo.phone,
               userRoomNo: '',
               roomNo: '',
               billStatus: 10,
@@ -183,63 +194,58 @@ export default {
     },
     //立即领取
     getCoupon(data) {
-      this.$toast();
-      api
-        .getReceiveCoupon({
-          couActivitiesId: data.id,
-          memberId: this.memberId
-        })
-        .then(res => {
-          if (res.code === 200) {
-            // 该券
-            const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
-            const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
-            const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
-            const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
-            // 变更按钮为 '去使用'
-
-            // 删除不显示
-
-            if (res.data.result) {
-              this.$toast('领取成功');
-              if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+      api.getReceiveCoupon({
+        couActivitiesId: data.id,
+        memberId: this.memberId
+      }).then(res => {
+        if (res.code === 200) {
+          // 该券
+          const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+          const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+          const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+          const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
+          // 变更按钮为 '去使用'
+          // 删除不显示
+          if (res.data.result) {
+            this.$toast('领取成功');
+            if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+              this.$set(data, 'goUse', true);
+              // 解决多维数组修改属性无效
+              this.list.push([]);
+              this.list.splice(this.list.length - 1, 1);
+            }
+          } else {
+            // 都未达到上限，后台/数据库处理错误
+            if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+              console.log('无存在上限，后台/数据库处理错误');
+              this.$toast('领取失败');
+            } else {
+              if (couponTotal) {
+                return this.$toast('该优惠券已领光');
+              }
+              if (couponDay) {
+                return this.$toast('该优惠券今日已领光');
+              }
+              if (couponPersonDay || couponPerson) {
                 this.$set(data, 'goUse', true);
                 // 解决多维数组修改属性无效
                 this.list.push([]);
                 this.list.splice(this.list.length - 1, 1);
               }
-            } else {
-              // 都未达到上限，后台/数据库处理错误
-              if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
-                console.log('无存在上限，后台/数据库处理错误');
-                this.$toast('领取失败');
-              } else {
-                if (couponTotal) {
-                  return this.$toast('该优惠券已领光');
-                }
-                if (couponDay) {
-                  return this.$toast('该优惠券今日已领光');
-                }
-                if (couponPersonDay || couponPerson) {
-                  this.$set(data, 'goUse', true);
-                  // 解决多维数组修改属性无效
-                  this.list.push([]);
-                  this.list.splice(this.list.length - 1, 1);
-                }
-                if (couponPerson) {
-                  return this.$toast('该优惠券您已达领取上限');
-                }
-                if (couponPersonDay) {
-                  return this.$toast('该优惠券您今日已达领取上限');
-                }
+              if (couponPerson) {
+                return this.$toast('该优惠券您已达领取上限');
+              }
+              if (couponPersonDay) {
+                return this.$toast('该优惠券您今日已达领取上限');
               }
             }
           }
-        });
+        }
+      });
     },
     //邦豆兑换
-    exchange(data) {
-      this.toast();
+    exchangeBD(data) {
+      //this.toast();
       api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
         if (res.code === 200) {
           if (+data.integrealCount > +res.data.integral) {
@@ -247,19 +253,16 @@ export default {
           }
           const rest = +res.data.integral - +data.integrealCount;
           this.$toast.clear();
-          this.$dialog
-            .confirm({
+          this.$dialog.confirm({
               title: '确认兑换',
               message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
-            })
-            .then(() => {
-              const params = {
+            }).then(() => {
+              //this.toast();
+              api.getReceiveCoupon({
                 couActivitiesId: data.id,
                 memberId: this.memberId,
                 integral: data.integrealCount
-              };
-              this.toast();
-              api.getReceiveCoupon(params).then(res => {
+              }).then(res => {
                 if (res.code === 200) {
                   // 该券当前人
                   const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
@@ -312,22 +315,184 @@ export default {
         return new Date().getDay() === weekGetDay//获取当前星期X(0-6,0代表星期天)
       }
     },
+    getMemberDetail() {
+      api.memberDetailByMemberID({memberId: this.memberId}).then(res => {
+        if (res.code === 200) {
+          this.levelId = res.data.memberCardRelats[0].levelId;
+          // this.levelId = 1;
+          // this.levelId = 2;
+          // this.levelId = 3;
+          // this.levelId = 4;
+          // this.levelId = 5;
+        }
+      });
+    },
+    getPageClass(currentLeve) {
+      let classTypeName = '';
+      switch (currentLeve) {
+        case 1:
+          classTypeName = 'lv1';
+          break;
+        case 2:
+          classTypeName = 'lv2';
+          break;
+        case 3:
+          classTypeName = 'lv3';
+          break;
+        case 4:
+          classTypeName = 'lv4';
+          break;
+        case 5:
+          classTypeName = 'lv5';
+          break;
+      }
+      return classTypeName;
+    },
     queryReceiveCouponList(){
-      const params = {
+      this.loading = true;
+      this.$toast.loading({
+        duration: 0,
+        forbidClick: true,
+        message: '加载中...'
+      });
+      api.queryReceiveCouponList({
         memberId: this.memberId,
         pageIndex: 1,
         pageSize: 9999,
         activityType: 2,//会员权益
         businessType: 0,
         condition: 0
-      };
-      //this.loading = true;
-      //this.toast();
-      api
-        .queryReceiveCouponList(params)
-        .then(res => {
+      })
+        .then(res1 => {
+          //模拟数据
+          let res = {
+            "code":200,
+            "data":[
+              {
+                "activity":"4014",
+                "activityMemo":"",
+                "cost":"",
+                "couTypeCode":"20WY000236",
+                "couponStatus":0,
+                "couponSubhead":"相对满减1元001",
+                "couponTitle":"相对满减1元001",
+                "couponType":20,
+                "discountMaxDeduction":"",
+                "discountRatio":"0.9",
+                "faceAmount":"0.9",
+                "id":2372760729989154407,
+                "image":"",
+                "integrealCount":0,
+                "memo":"",
+                "operator":"",
+                "receiveCondition":"",
+                "receiveConditionRule":"",
+                "releaseCount":44,
+                "releaseForm":"",
+                "releaseRule":"",
+                "releaseType":"",
+                "satisfyAmount":"1.0",
+                "takeEffectDayNums":1,
+                "validityDayNums":1,
+                "isPeriodic":0,
+                "condition": 1,
+              },
+              {
+                "activity":"4014",
+                "activityMemo":"",
+                "cost":"",
+                "couTypeCode":"10WY000260",
+                "couponStatus":0,
+                "couponSubhead":"",
+                "couponTitle":"卡券44",
+                "couponType":10,
+                "discountMaxDeduction":"",
+                "discountRatio":"0.9",
+                "faceAmount":"0.03",
+                "id":2372760729989154469,
+                "image":"",
+                "integrealCount":10,
+                "memo":"",
+                "operator":"",
+                "receiveCondition":"",
+                "receiveConditionRule":"",
+                "releaseCount":100,
+                "releaseForm":"",
+                "releaseRule":"",
+                "releaseType":"",
+                "satisfyAmount":"",
+                "takeEffectDayNums":0,
+                "validityDayNums":0,
+                "validityEndTime":"1619712000000",
+                "validityStartTime":"1614700800000",
+                "isPeriodic":1,
+                "condition": 3,
+              },
+              {
+                "activity":"4014",
+                "activityMemo":"",
+                "cost":"",
+                "couTypeCode":"20WY000263",
+                "couponStatus":0,
+                "couponSubhead":"",
+                "couponTitle":"会员活动LV1送5元物业券",
+                "couponType":20,
+                "discountMaxDeduction":"",
+                "discountRatio":"0.9",
+                "faceAmount":"5.0",
+                "id":2372760729989154581,
+                "image":"",
+                "integrealCount":0,
+                "memo":"",
+                "operator":"",
+                "receiveCondition":"",
+                "receiveConditionRule":"",
+                "releaseCount":3,
+                "releaseForm":"",
+                "releaseRule":"",
+                "releaseType":"",
+                "satisfyAmount":"100.0",
+                "takeEffectDayNums":0,
+                "validityDayNums":0,
+                "validityEndTime":"1617465600000",
+                "validityStartTime":"1614787200000",
+                "isPeriodic":1,
+                "condition": 2,
+              },
+              {
+                "activity":"4014",
+                "activityMemo":"",
+                "cost":"",
+                "couTypeCode":"20WY000287",
+                "couponStatus":0,
+                "couponSubhead":"限时优惠券，800邦豆可兑！",
+                "couponTitle":"物业缴费10元券",
+                "couponType":20,
+                "discountMaxDeduction":"",
+                "discountRatio":"0.9",
+                "faceAmount":"10.0",
+                "id":2372760729989154835,
+                "image":"",
+                "integrealCount":0,
+                "memo":"",
+                "operator":"",
+                "receiveCondition":"",
+                "receiveConditionRule":"",
+                "releaseCount":500,
+                "releaseForm":"",
+                "releaseRule":"",
+                "releaseType":"",
+                "satisfyAmount":"200.0",
+                "takeEffectDayNums":30,
+                "validityDayNums":30,
+                "isPeriodic":0,
+                "condition": 3,
+              }
+            ],
+            "message":"success"
+          };
           if (res.code === 200) {
-            //this.$toast.clear();
+            this.$toast.clear();
           }
           const data = res.data || [];
           const cardList = [];
@@ -351,12 +516,14 @@ export default {
       //生产需注释
       this.memberId = '2332445899206164529';
       this.queryReceiveCouponList();
+      this.getMemberDetail();
     } else {
       //生产需打开
       localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
         this.memberId = res.result;
         localStorage.setItem('memberId', this.memberId);
         this.queryReceiveCouponList();
+        this.getMemberDetail();
       });
     }
   }
@@ -380,7 +547,7 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 8px;
+    height: 1px;
     background-color: #f5f5f7;
   }
   .btn-return {
@@ -428,7 +595,6 @@ export default {
       width: 101px;
       height: 97px;
       // background-color: red;
-      background-image: url("../../assets/img/coupons/new_gray_left.png");
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 100% 100%;
@@ -525,9 +691,7 @@ export default {
           line-height: 12px;
         }
         .card-right-left-bottom {
-          color: #7F86AA;
           font-size: 11px;
-          background-color: #f5f5f7;
           line-height: 10px;
           margin-top: 15px;
           padding: 5px 2px;
@@ -543,15 +707,13 @@ export default {
         justify-content: center;
         align-items: center;
         .aaaaa {
-          align-self: flex-start;
+          //align-self: flex-start;
           .aaaaa-left {
             padding-right: 4px;
-
             height: 20px;
             font-size: 20px;
             font-family: PingFangSC-Medium, PingFang SC;
             font-weight: 500;
-            color: #989ebd;
             line-height: 20px;
           }
           .aaaaa-right {
@@ -559,11 +721,9 @@ export default {
             font-size: 14px;
             font-family: PingFangSC-Medium, PingFang SC;
             font-weight: 500;
-            color: #989ebd;
             line-height: 14px;
           }
         }
-
         .exchange-card-right-bottom-btn {
           margin-top: 8px;
           width: 68px;
@@ -572,19 +732,155 @@ export default {
           flex-direction: row;
           justify-content: center;
           align-items: center;
-          background: linear-gradient(180deg, #C8CCDF 0%, #989ebd 100%);
           border-radius: 15px;
           font-size: 12px;
           font-family: PingFangSC-Medium, PingFang SC;
           font-weight: 500;
           color: #ffffff;
-          &.ineffective {
-            background: #f8f8f8;
-          }
+        }
+        .exchange-card-right-bottom-btn.lv1 {
+          background: linear-gradient(to right, #C8CCDF 0%, #989ebd 100%);
           &.kongxin {
             background: #fff;
             color: #989ebd;
             border: 1px solid #989ebd;
+          }
+        }
+        .exchange-card-right-bottom-btn.lv2 {
+          background: linear-gradient(to right, #E2B490 0%, #FFD5B5 50%, #A56D4C 100%);
+          &.kongxin {
+            background: #fff;
+            color: #B5561A;
+            border: 1px solid #B5561A;
+          }
+        }
+        .exchange-card-right-bottom-btn.lv3 {
+          background: linear-gradient(to right, #C8C7C7 0%, #7E807D 100%);
+          &.kongxin {
+            background: #fff;
+            color: #8D8D8D;
+            border: 1px solid #8D8D8D;
+          }
+        }
+        .exchange-card-right-bottom-btn.lv4 {
+          background: linear-gradient(to right, #FFDAA5 0%, #E5A23A 100%);
+          &.kongxin {
+            background: #fff;
+            color: #F7BF65;
+            border: 1px solid #F7BF65;
+          }
+        }
+        .exchange-card-right-bottom-btn.lv5 {
+          background: linear-gradient(to right, #B8C2F3 0%, #262877 100%);
+          &.kongxin {
+            background: #fff;
+            color: #7F88A7;
+            border: 1px solid #7F88A7;
+          }
+        }
+      }
+    }
+  }
+  .bangdou-exchange-card.lv1 {
+    .exchange-card-left {
+      background-image: url("../../assets/img/coupons/new_gray_left_lv1.png");
+    }
+    .exchange-card-right {
+      .exchange-card-right-left {
+        .card-right-left-bottom {
+          color: #7F86AA;
+          background-color: #f5f5f7;
+        }
+      }
+      .exchange-card-right-right {
+        .aaaaa {
+          .aaaaa-left,
+          .aaaaa-right {
+            color: #989ebd;
+          }
+        }
+      }
+    }
+  }
+  .bangdou-exchange-card.lv2 {
+    .exchange-card-left {
+      background-image: url("../../assets/img/coupons/new_gray_left_lv2.png");
+    }
+    .exchange-card-right {
+      .exchange-card-right-left {
+        .card-right-left-bottom {
+          color: #B5561A;
+          background-color: #f5f5f7;
+        }
+      }
+      .exchange-card-right-right {
+        .aaaaa {
+          .aaaaa-left,
+          .aaaaa-right {
+            color: #B5561A;
+          }
+        }
+      }
+    }
+  }
+  .bangdou-exchange-card.lv3 {
+    .exchange-card-left {
+      background-image: url("../../assets/img/coupons/new_gray_left_lv3.png");
+    }
+    .exchange-card-right {
+      .exchange-card-right-left {
+        .card-right-left-bottom {
+          color: #8D8D8D;
+          background-color: #f5f5f7;
+        }
+      }
+      .exchange-card-right-right {
+        .aaaaa {
+          .aaaaa-left,
+          .aaaaa-right {
+            color: #8D8D8D;
+          }
+        }
+      }
+    }
+  }
+  .bangdou-exchange-card.lv4 {
+    .exchange-card-left {
+      background-image: url("../../assets/img/coupons/new_gray_left_lv4.png");
+    }
+    .exchange-card-right {
+      .exchange-card-right-left {
+        .card-right-left-bottom {
+          color: #F7BF65;
+          background-color: #f5f5f7;
+        }
+      }
+      .exchange-card-right-right {
+        .aaaaa {
+          .aaaaa-left,
+          .aaaaa-right {
+            color: #F7BF65;
+          }
+        }
+      }
+    }
+  }
+  .bangdou-exchange-card.lv5 {
+    .exchange-card-left {
+      background-image: url("../../assets/img/coupons/new_gray_left_lv5.png");
+    }
+    .exchange-card-right {
+      .exchange-card-right-left {
+        .card-right-left-bottom {
+          color: #7F86AA;
+          background-color: #f5f5f7;
+        }
+      }
+      .exchange-card-right-right {
+        .aaaaa {
+          .aaaaa-left,
+          .aaaaa-right {
+            color: #7F88A7;
           }
         }
       }
