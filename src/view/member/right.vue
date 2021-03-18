@@ -98,8 +98,11 @@ import api from '@/api';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
 import yjzdbill from '@zkty-team/x-engine-module-yjzdbill';
 import router from '@zkty-team/x-engine-module-router';
+import mixin from './../coupons/mixin/pageList';
+import couponMixin from './../coupons/mixin/getCoupon-mixin';
 export default {
   name: "right",
+  mixins: [mixin, couponMixin],
   data() {
     return {
       memberId: null,
