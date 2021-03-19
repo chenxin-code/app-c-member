@@ -227,12 +227,16 @@ export default {
   width: calc(100% - 0.12rem);
 }
 
+.van-cell::after {
+  border: none;
+}
+
 .exchangeCoupon {
   width: 100%;
   height: 100%;
   position: fixed;
   // padding: 20px 13px;
-  padding: 50px 13px 20px;
+  padding: 60px 13px 20px;
   overflow: scroll;
   background: linear-gradient(148deg, #fecf6f 0%, #fb853b 51%, #ffad49 100%);
 
