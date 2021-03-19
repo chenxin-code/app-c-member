@@ -83,7 +83,7 @@ const routes = [
   {
     path: "/memberRight",
     name: "memberRight",
-    component: resolve => require(["./../view/member/right"], resolve)
+    component: resolve => require(["@/view/member/memberRight"], resolve)
   }
 ];
 

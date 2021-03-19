@@ -47,7 +47,7 @@
               <div class="leveLogo"></div>
               <div class="member-right"
                    :class="getPageClass(memberObject == null ? '' : memberObject.memberCardRelats[0].levelId)"
-                   @click="$router.push({path: '/memberRight'})">
+                   @click="toMemberRight()">
                 会员权益
                 <img :src="require('./../../assets/img/member/to-member-right-lv1.png')" alt="" v-if="memberObject.memberCardRelats[0].levelId === 1" />
                 <img :src="require('./../../assets/img/member/to-member-right-lv2.png')" alt="" v-else-if="memberObject.memberCardRelats[0].levelId === 2" />
@@ -412,7 +412,8 @@ export default {
       to.name == 'growthValueRecord' ||
       to.name == 'IntegralRecord' ||
       to.name == 'gradeDescription' ||
-      to.name == 'bangdouExchange'
+      to.name == 'bangdouExchange' ||
+      to.name == 'memberRight'
     ) {
       next();
     } else {
@@ -528,6 +529,9 @@ export default {
           break;
       }
       return classTypeName;
+    },
+    toMemberRight(){
+      this.$routerHelper.push({path: '/memberRight'})
     },
     pageInitial: function(sourceData) {
       this.classTypeName = '';

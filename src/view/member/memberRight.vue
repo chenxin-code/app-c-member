@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="top-header">
+    <!--<div class="top-header">
       <div class="btn-return" @click="$router.go(-1)"></div>
       会员特权
-    </div>
+    </div>-->
     <div class="containter">
       <p class="title">会员礼券</p>
       <div class="empty" v-if="!loading && cardList.length === 0">
@@ -101,7 +101,7 @@ import router from '@zkty-team/x-engine-module-router';
 import mixin from './../coupons/mixin/pageList';
 import couponMixin from './../coupons/mixin/getCoupon-mixin';
 export default {
-  name: "right",
+  name: "memberRight",
   mixins: [mixin, couponMixin],
   components: {},
   data() {
@@ -532,41 +532,41 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.top-header {
-  padding: 6px 35px;
-  font-size: 20px;
-  font-weight: bold;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  height: 55px;
-  line-height: 35px;
-  background-color: #fff;
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background-color: #f5f5f7;
-  }
-  .btn-return {
-    content: ' ';
-    height: 11px;
-    width: 11px;
-    border-width: 0 0 2px 2px;
-    border-color: #000;
-    border-style: solid;
-    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
-    margin-top: -10px;
-    position: absolute;
-    top: 50%;
-    left: 15px;
-  }
-}
+//.top-header {
+//  padding: 6px 35px;
+//  font-size: 20px;
+//  font-weight: bold;
+//  position: fixed;
+//  width: 100%;
+//  top: 0;
+//  height: 55px;
+//  line-height: 35px;
+//  background-color: #fff;
+//  &:after {
+//    content: '';
+//    position: absolute;
+//    bottom: 0;
+//    left: 0;
+//    right: 0;
+//    height: 1px;
+//    background-color: #f5f5f7;
+//  }
+//  .btn-return {
+//    content: ' ';
+//    height: 11px;
+//    width: 11px;
+//    border-width: 0 0 2px 2px;
+//    border-color: #000;
+//    border-style: solid;
+//    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+//    margin-top: -10px;
+//    position: absolute;
+//    top: 50%;
+//    left: 15px;
+//  }
+//}
 .containter {
-  margin-top: 55px;
+  //margin-top: 55px;
   padding: 6px 12px;
   .empty {
     text-align: center;
