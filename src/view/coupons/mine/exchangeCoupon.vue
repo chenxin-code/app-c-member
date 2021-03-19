@@ -23,7 +23,7 @@
           </p>
           <p class="title">兑换码的使用规则？</p>
           <p class="details">
-            请在有效期内完成兑换，怄气自动失效。一个兑换码只能兑换一次，不可重复使用。兑换完成后，优惠券具体的使用规则以券面信息为准。优惠券兑换成功后自动发放至当前登录的用户卡券账户中。
+            请在有效期内完成兑换，过期自动失效。一个兑换码只能兑换一次，不可重复使用。兑换完成后，优惠券具体的使用规则以券面信息为准。优惠券兑换成功后自动发放至当前登录的用户卡券账户中。
           </p>
         </div>
       </div>
@@ -197,14 +197,17 @@ export default {
         });
     },
     pageBack: function() {
-      if (this.$routeHelper.isPhone) {
-        nav.navigatorBack({
-          url: '0'
-        });
-      } else {
-        this.$router.go(-1);
-      }
+      this.$routerHelper.back();
     },
+    // pageBack: function() {
+    //   if (this.$routeHelper.isPhone) {
+    //     nav.navigatorBack({
+    //       url: '0'
+    //     });
+    //   } else {
+    //     this.$router.go(-1);
+    //   }
+    // },
     exchangeSubmit() {
       this.getCamiloExchangeDetail();
     },
@@ -224,11 +227,16 @@ export default {
   width: calc(100% - 0.12rem);
 }
 
+.van-cell::after {
+  border: none;
+}
+
 .exchangeCoupon {
   width: 100%;
   height: 100%;
   position: fixed;
-  padding: 20px 13px;
+  // padding: 20px 13px;
+  padding: 60px 13px 20px;
   overflow: scroll;
   background: linear-gradient(148deg, #fecf6f 0%, #fb853b 51%, #ffad49 100%);
 
@@ -279,7 +287,8 @@ export default {
     position: relative;
     .content {
       width: 100%;
-      height: 627px;
+      height: 100%;
+      // height: 627px;
       position: relative;
       // box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
       .content-detail-top {
@@ -322,7 +331,8 @@ export default {
       .content-detail-bottom {
         position: absolute;
         width: 100%;
-        top: 273px;
+        // top: 273px;
+        top: 44%;
         left: 0;
         z-index: 10;
         padding: 28px 30px 0 30px;
@@ -344,7 +354,8 @@ export default {
       }
       .content-top-left-bg {
         width: 51%;
-        height: 273px;
+        height: 44%;
+        // height: 273px;
         background: radial-gradient(30px at left bottom, transparent 50%, #fff 50%);
         border-radius: 15px 0 0 0;
         // float: left;
@@ -354,7 +365,8 @@ export default {
       }
       .content-top-right-bg {
         width: 51%;
-        height: 273px;
+        height: 44%;
+        // height: 273px;
         background: radial-gradient(30px at right bottom, transparent 50%, #fff 50%);
         border-radius: 0 15px 0 0;
         // float: left;
@@ -367,7 +379,8 @@ export default {
         height: 1px;
         position: absolute;
         left: 24px;
-        top: 273px;
+        top: 44%;
+        // top: 273px;
         color: #f0f0f0;
         margin: 0;
         display: inline-block;
@@ -376,7 +389,8 @@ export default {
       }
       .content-bottom-left-bg {
         width: 51%;
-        height: 354px;
+        height: 56%;
+        // height: 354px;
         background: radial-gradient(30px at left top, transparent 50%, #fff 50%);
         border-radius: 0px 0 0 15px;
         // float: left;
@@ -386,7 +400,8 @@ export default {
       }
       .content-bottom-right-bg {
         width: 51%;
-        height: 354px;
+        height: 56%;
+        // height: 354px;
         background: radial-gradient(30px at right top, transparent 50%, #fff 50%);
         border-radius: 0px 0 15px 0;
         // float: left;
