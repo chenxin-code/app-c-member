@@ -313,9 +313,9 @@ export default {
     },
     checkTimeOK(monthGetDay,weekGetDay){
       if(monthGetDay){
-        return new Date().getDate() === monthGetDay//获取当前日(1-31)
+        return new Date().getDate() == monthGetDay//获取当前日(1-31)
       }else if(weekGetDay){
-        return new Date().getDay() === weekGetDay - 1//获取当前星期X(0-6,0代表星期天)
+        return new Date().getDay() == weekGetDay - 1//获取当前星期X(0-6,0代表星期天)
       }
     },
     getMemberDetail() {
@@ -514,19 +514,19 @@ export default {
         });
     },
     parseWeek(weekGetDay){
-      if(weekGetDay === 1){
+      if(weekGetDay == 1){
         return '一'
-      }else if(weekGetDay === 2){
+      }else if(weekGetDay == 2){
         return '二'
-      }else if(weekGetDay === 3){
+      }else if(weekGetDay == 3){
         return '三'
-      }else if(weekGetDay === 4){
+      }else if(weekGetDay == 4){
         return '四'
-      }else if(weekGetDay === 5){
+      }else if(weekGetDay == 5){
         return '五'
-      }else if(weekGetDay === 6){
+      }else if(weekGetDay == 6){
         return '六'
-      }else if(weekGetDay === 7){
+      }else if(weekGetDay == 7){
         return '日'
       }
     }
