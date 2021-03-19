@@ -1,94 +1,96 @@
 <template>
-  <div>
-    <!--<div class="top-header">
-      <div class="btn-return" @click="$router.go(-1)"></div>
-      会员特权
-    </div>-->
-    <div class="containter">
-      <p class="title">会员礼券</p>
-      <div class="empty" v-if="!loading && cardList.length === 0">
-        <img class="empty-img" :src="require('@/assets/img/empty/empty-coupon.png')" alt="" />
-        <p class="empty-description">敬请期待</p>
-      </div>
-      <div v-else>
-        <div class="bangdou-exchange-card"
-             :class="getPageClass(levelId)"
-             v-for="(v,k) in cardList" :key="k">
-          <div class="exchange-card-item exchange-card-left">
-            <div class="exchange-card-left-top">
-              <template >
-                <div class="card-left-top-type">￥</div>
-                <div class="card-left-top-num">{{parseInt(v.faceAmount)}}</div>
-              </template>
-            </div>
-            <template>
-              <div class="exchange-card-left-btn">满{{parseInt(v.satisfyAmount)}}元可用</div>
+  <div class="containter">
+    <p class="title">会员礼券</p>
+    <div class="empty" v-if="!loading && cardList.length === 0">
+      <img class="empty-img" :src="require('@/assets/img/empty/empty-coupon.png')" alt="" />
+      <p class="empty-description">敬请期待</p>
+    </div>
+    <div v-else>
+      <div class="bangdou-exchange-card"
+           :class="getPageClass(levelId)"
+           v-for="(v,k) in cardList"
+           :key="k">
+        <div class="exchange-card-item exchange-card-left">
+          <div class="exchange-card-left-top">
+            <template v-if="v.couponType === 40">
+              <div class="card-left-top-num">
+                {{ +v.discountRatio * 10 }}
+              </div>
+              <span class="coupon-type">折</span>
+            </template>
+            <template v-else>
+              <div class="card-left-top-type">￥</div>
+              <div class="card-left-top-num">
+                {{ v.faceAmount | delPoint }}
+              </div>
             </template>
           </div>
-          <div class="exchange-card-item exchange-card-right">
-            <div class="exchange-card-right-left">
-              <div class="card-right-left-top">
-                {{v.couponTitle}}
-              </div>
-              <div class="card-right-left-middle">
-                领取后{{v.takeEffectDayNums}}天有效
-              </div>
-              <!--<div class="card-right-left-bottom">
-                每月11日领取
-              </div>-->
-              <div class="card-right-left-bottom" v-if="v.monthGetDay">
-                每月{{v.monthGetDay}}日领取
-              </div>
-              <div class="card-right-left-bottom" v-else-if="v.weekGetDay">
-                每周{{v.weekGetDay}}领取
-              </div>
+          <template>
+            <div class="exchange-card-left-btn">
+              {{ couponType(v) }}
             </div>
-            <div class="exchange-card-right-right">
-              <template>
-                <div class="aaaaa">
-                  <span class="aaaaa-left">{{v.integrealCount}}</span>
-                  <span class="aaaaa-right">邦豆</span>
-                </div>
-                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="getCoupon(v)" v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse">立即领取</div>
-                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 1 && v.goUse">去使用</div>
-                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="exchangeBD(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse">邦豆兑换</div>
-                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && v.goUse">去使用</div>
-                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="getCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && !v.goUse">立即领取</div>
-                <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && v.goUse">去使用</div>
-                <div class="exchange-card-right-bottom-btn kongxin" :class="getPageClass(levelId)" v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay,v.weekGetDay)">未生效</div>
-              </template>
+          </template>
+        </div>
+        <div class="exchange-card-item exchange-card-right">
+          <div class="exchange-card-right-left">
+            <div class="card-right-left-top">
+              {{v.couponTitle}}
             </div>
+            <div class="card-right-left-middle">
+              领取后{{v.takeEffectDayNums}}天有效
+            </div>
+            <div class="card-right-left-bottom" v-if="v.monthGetDay">
+              每月{{v.monthGetDay}}日领取
+            </div>
+            <div class="card-right-left-bottom" style="width: 65px;" v-else-if="v.weekGetDay">
+              每周{{parseWeek(v.weekGetDay)}}领取
+            </div>
+          </div>
+          <div class="exchange-card-right-right">
+            <template>
+              <div class="aaaaa">
+                <span class="aaaaa-left">{{v.integrealCount}}</span>
+                <span class="aaaaa-right">邦豆</span>
+              </div>
+              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="getCoupon(v)" v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse">立即领取</div>
+              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 1 && v.goUse">去使用</div>
+              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="exchangeBD(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse">邦豆兑换</div>
+              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && v.goUse">去使用</div>
+              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="getCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && !v.goUse">立即领取</div>
+              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && v.goUse">去使用</div>
+              <div class="exchange-card-right-bottom-btn kongxin" :class="getPageClass(levelId)" v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay,v.weekGetDay)">未生效</div>
+            </template>
           </div>
         </div>
       </div>
-      <p class="title">各等级特权</p>
-      <table>
-        <tr>
-          <td><img src="./../../assets/img/member/icon-leve-l1.png" alt="" />普通会员</td>
-          <td>每月领<span style="color: deeppink">60元</span>会员礼券</td>
-        </tr>
-        <tr>
-          <td><img src="./../../assets/img/member/icon-leve-l2.png" alt="" />铜牌会员</td>
-          <td>每月领<span style="color: deeppink">330元</span>会员礼券</td>
-        </tr>
-        <tr>
-          <td><img src="./../../assets/img/member/icon-leve-l3.png" alt="" />银牌会员</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td><img src="./../../assets/img/member/icon-leve-l4.png" alt="" />金牌会员</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td><img src="./../../assets/img/member/icon-leve-l5.png" alt="" />钻石会员</td>
-          <td>无</td>
-        </tr>
-      </table>
-      <p class="title">特权说明</p>
-      <div class="descr">
-        1、普通会员、铜牌会员专项此特权，每月可领取一次（限每个月1号、10号、20号至当月末可分批领取）；领取的券包以活动页面信息为准，券包会不定期调整，领取后请在有效期内使用，过期未使用将不再补发改券包；
-        2、如存在违规行为（包括但不限于恶意刷单、套取资金、机器作弊、虚假交易等违反诚实信用原则行为），主办方有权拒绝向您发送奖励、撤销相关违规交易、追回已发送的奖励，必要时追究法律责任。
-      </div>
+    </div>
+    <p class="title">各等级特权</p>
+    <table>
+      <tr>
+        <td><img src="./../../assets/img/member/icon-leve-l1.png" alt="" />普通会员</td>
+        <td>每月领<span style="color: deeppink">60元</span>会员礼券</td>
+      </tr>
+      <tr>
+        <td><img src="./../../assets/img/member/icon-leve-l2.png" alt="" />铜牌会员</td>
+        <td>每月领<span style="color: deeppink">330元</span>会员礼券</td>
+      </tr>
+      <tr>
+        <td><img src="./../../assets/img/member/icon-leve-l3.png" alt="" />银牌会员</td>
+        <td>无</td>
+      </tr>
+      <tr>
+        <td><img src="./../../assets/img/member/icon-leve-l4.png" alt="" />金牌会员</td>
+        <td>无</td>
+      </tr>
+      <tr>
+        <td><img src="./../../assets/img/member/icon-leve-l5.png" alt="" />钻石会员</td>
+        <td>无</td>
+      </tr>
+    </table>
+    <p class="title">特权说明</p>
+    <div class="descr">
+      1、普通会员、铜牌会员专项此特权，每月可领取一次（限每个月1号、10号、20号至当月末可分批领取）；领取的券包以活动页面信息为准，券包会不定期调整，领取后请在有效期内使用，过期未使用将不再补发改券包；
+      2、如存在违规行为（包括但不限于恶意刷单、套取资金、机器作弊、虚假交易等违反诚实信用原则行为），主办方有权拒绝向您发送奖励、撤销相关违规交易、追回已发送的奖励，必要时追究法律责任。
     </div>
   </div>
 </template>
@@ -313,7 +315,7 @@ export default {
       if(monthGetDay){
         return new Date().getDate() === monthGetDay//获取当前日(1-31)
       }else if(weekGetDay){
-        return new Date().getDay() === weekGetDay//获取当前星期X(0-6,0代表星期天)
+        return new Date().getDay() === weekGetDay - 1//获取当前星期X(0-6,0代表星期天)
       }
     },
     getMemberDetail() {
@@ -511,6 +513,23 @@ export default {
           this.loading = false;
         });
     },
+    parseWeek(weekGetDay){
+      if(weekGetDay === 1){
+        return '一'
+      }else if(weekGetDay === 2){
+        return '二'
+      }else if(weekGetDay === 3){
+        return '三'
+      }else if(weekGetDay === 4){
+        return '四'
+      }else if(weekGetDay === 5){
+        return '五'
+      }else if(weekGetDay === 6){
+        return '六'
+      }else if(weekGetDay === 7){
+        return '日'
+      }
+    }
   },
   created() {
     if (this.$store.getters.isDebugMode) {
@@ -532,41 +551,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-//.top-header {
-//  padding: 6px 35px;
-//  font-size: 20px;
-//  font-weight: bold;
-//  position: fixed;
-//  width: 100%;
-//  top: 0;
-//  height: 55px;
-//  line-height: 35px;
-//  background-color: #fff;
-//  &:after {
-//    content: '';
-//    position: absolute;
-//    bottom: 0;
-//    left: 0;
-//    right: 0;
-//    height: 1px;
-//    background-color: #f5f5f7;
-//  }
-//  .btn-return {
-//    content: ' ';
-//    height: 11px;
-//    width: 11px;
-//    border-width: 0 0 2px 2px;
-//    border-color: #000;
-//    border-style: solid;
-//    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
-//    margin-top: -10px;
-//    position: absolute;
-//    top: 50%;
-//    left: 15px;
-//  }
-//}
 .containter {
-  //margin-top: 55px;
+  //margin-top: 0;
   padding: 6px 12px;
   .empty {
     text-align: center;
@@ -591,7 +577,6 @@ export default {
     box-shadow: 0 0.12rem 0.6rem 0 rgba(71, 77, 96, 0.06);
     border-radius: 12px;
     overflow: hidden;
-
     .exchange-card-left {
       width: 101px;
       height: 97px;
@@ -603,7 +588,6 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-
       .exchange-card-left-top {
         display: flex;
         flex-direction: row;
@@ -616,7 +600,7 @@ export default {
           color: #ffffff;
         }
         .card-left-top-num {
-          font-size: 28px;
+          font-size: 18px;
           font-family: PingFangSC-Medium, PingFang SC;
           font-weight: 500;
           color: #ffffff;
@@ -648,7 +632,6 @@ export default {
         color: #ffffff;
       }
     }
-
     .exchange-card-right {
       flex: 1;
       height: 97px;
@@ -658,24 +641,20 @@ export default {
       justify-content: flex-start;
       align-items: stretch;
       padding-right: 12px;
-
       .exchange-card-right-left {
         flex: 1;
-        padding: 12px 7px 0 12px;
+        padding: 8px 7px 0 12px;
         display: flex;
         flex-direction: column;
         // flex-flow: row wrap;
         justify-content: flex-start;
         align-items: stretch;
-
         .card-right-left-top {
           margin-bottom: 3px;
           font-size: 14px;
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 700;
           color: #121212;
-          line-height: 20px;
-          max-height: 40px;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
@@ -684,23 +663,21 @@ export default {
           -webkit-box-orient: vertical;
           white-space: normal;
         }
-
         .card-right-left-middle {
           color: #999999;
           font-size: 12px;
           font-weight: 500;
           line-height: 12px;
+          margin-top: 5px;
         }
         .card-right-left-bottom {
           font-size: 11px;
           line-height: 10px;
-          margin-top: 15px;
+          margin-top: 8px;
           padding: 5px 2px;
           border-radius: 3px;
-          float: left;
           width: 73px;
         }
-
       }
       .exchange-card-right-right {
         display: flex;
@@ -780,6 +757,14 @@ export default {
           }
         }
       }
+    }
+    .coupon-type {
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #ffffff;
+      margin-left: 4px;
+      align-self: flex-end;
     }
   }
   .bangdou-exchange-card.lv1 {
