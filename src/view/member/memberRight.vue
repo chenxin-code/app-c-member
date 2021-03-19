@@ -101,7 +101,7 @@ import router from '@zkty-team/x-engine-module-router';
 import mixin from './../coupons/mixin/pageList';
 import couponMixin from './../coupons/mixin/getCoupon-mixin';
 export default {
-  name: "right",
+  name: "memberRight",
   mixins: [mixin, couponMixin],
   components: {},
   data() {
