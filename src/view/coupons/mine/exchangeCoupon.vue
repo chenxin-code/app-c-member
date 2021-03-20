@@ -235,8 +235,7 @@ export default {
   width: 100%;
   height: 100%;
   position: fixed;
-  // padding: 20px 13px;
-  padding: 60px 13px 20px;
+  padding: 40px 13px 20px;
   overflow: scroll;
   background: linear-gradient(148deg, #fecf6f 0%, #fb853b 51%, #ffad49 100%);
 
@@ -281,10 +280,10 @@ export default {
     width: 100%;
     height: calc(100% - 40px);
     padding: 0 0.06rem 0 0.06rem;
-    overflow: scroll;
-    top: 40px;
-    padding-top: 30px;
+    overflow: auto;
+    padding-top: 20px;
     position: relative;
+    top: 30px;
     .content {
       width: 100%;
       height: 100%;
