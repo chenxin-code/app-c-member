@@ -61,6 +61,18 @@
                         <div class="card-right-left-top">
                           {{ item.couponTitle }}
                         </div>
+                        <div class="card-right-left-middle">
+                          {{ getTime(item.validityStartTime) }}-{{ getTime(item.validityEndTime) }}
+                        </div>
+                        <div class="card-right-left-bottom" @click="collapse(`tab${index}couponDesc${cIndex}`)">
+                          使用规则
+                          <van-icon
+                            name="arrow-down"
+                            size="12"
+                            class="icon-arrow-down"
+                            :ref="`tab${index}couponDesc${cIndex}Icon`"
+                          ></van-icon>
+                        </div>
                       </div>
                       <div class="exchange-card-right-right">
                         <template v-if="item.activity === '4014'">
@@ -77,6 +89,18 @@
                           </div>
                         </template>
                         <img v-else class="goods-img" :src="item.image || defaultImg" />
+                      </div>
+                    </div>
+                    <div class="coupon-desc-wrap" :ref="`tab${index}couponDesc${cIndex}`">
+                      <div class="coupon-desc" :ref="`tab${index}couponDesc${cIndex}Cont`">
+                        <div class="coupon-desc-li" style="white-space: pre-line;">
+                          {{ item.memo }}
+                          <!-- 使用说明：平台10元通用优惠券，单笔订单满88元可使用。 -->
+                        </div>
+                        <!-- <div class="coupon-desc-li">
+                          使用说明：平台10元通用优惠券;
+                        </div> -->
+                        <div class="coupon-desc-num">券编号：{{ item.couTypeCode }}</div>
                       </div>
                     </div>
                   </div>
@@ -97,7 +121,7 @@
 import api from '@/api';
 import nav from '@zkty-team/x-engine-module-nav';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
-// import * as moment from "moment";
+import * as moment from "moment";
 import Null from '@/components/null';
 import mixin from '../mixin/pageList';
 import _ from 'lodash';
@@ -197,6 +221,10 @@ export default {
     });
   },
   methods: {
+    getTime(time) {
+      const date = new Date(+time);
+      return moment(date).format('YYYY.MM.DD');
+    },
     getCoupon(data, index, cIndex) {
       this.toast();
       api
@@ -367,6 +395,7 @@ export default {
               margin-bottom: 20px;
               box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
               border-radius: 12px;
+              flex-wrap: wrap;
 
               .exchange-card-left {
                 width: 101px;
@@ -430,6 +459,7 @@ export default {
                   flex-direction: column;
                   justify-content: flex-start;
                   align-items: stretch;
+                  flex-flow: row wrap;
 
                   .card-right-left-top {
                     font-size: 14px;
@@ -443,6 +473,27 @@ export default {
                     -webkit-line-clamp: 2;
                     line-clamp: 2;
                     -webkit-box-orient: vertical;
+                  }
+                  .card-right-left-middle {
+                    padding-top: 8px;
+                    font-size: 12px;
+                    font-family: PingFangSC-Regular, PingFang SC;
+                    font-weight: 400;
+                    color: #8d8d8d;
+                    align-self: flex-end;
+                    line-height: 1;
+                    width: 100%;
+                  }
+                  .card-right-left-bottom {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    font-size: 10px;
+                    font-family: PingFangSC-Regular, PingFang SC;
+                    font-weight: 400;
+                    color: #bfbfbf;
+                    line-height: 1;
+                    align-self: flex-end;
+                    width: 100%;
                   }
                 }
                 .exchange-card-right-right {
@@ -529,6 +580,32 @@ export default {
                 color: #ff7709;
                 margin-top: 8px;
               }
+            }
+            .coupon-desc-wrap {
+              height: 0;
+              display: none;
+              width: 100%;
+              overflow: hidden;
+              -webkit-transition: height 0.3s ease-in-out;
+              transition: height 0.3s ease-in-out;
+              will-change: height;
+
+              box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
+              margin-top: 4px;
+              .coupon-desc {
+                font-size: 12px;
+                color: #bfbfbf;
+                padding: 10px 16px;
+                line-height: 18px;
+                &-num {
+                  margin-top: 8px;
+                }
+              }
+            }
+            .icon-arrow-down {
+              vertical-align: bottom;
+              transition: all 0.3s;
+              bottom: -1px;
             }
           }
         }
