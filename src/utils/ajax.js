@@ -49,7 +49,7 @@ HTTP.interceptors.request.use(async config => {
     //   });
 
     //开发环境
-    tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxODgxOTMxMDY4OCIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjQwNTU0OTAwODU0MzAyNjExNiwiZXhwIjoxNjE2NDIxMzI2LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIl0sImp0aSI6IjA0ZTY1ZDViLWRlODktNGIwNi05N2FiLTJiMTM3NGE0ZjM3MiIsImNsaWVudF9pZCI6ImFwcF9jIn0.kR_ziuWDPCPNGM2uhZq0SBid3X_MU6th4y4BvoNt35mQGoCXnHGzEavTUk5XAc0QZd2KD4LwJJygaSvHxo9KFBc7Y_W3t23zYTcLOF5uc9x66s6zgdhiu-7zBSxFAuv_mjP0MJzJEsMTyQ3LN9zZrO3omlke4m30LwK10Fv5AOtardmy5rkcLogoquoInNpIjpvdO1oqlbJnd60FZVeKnJx5zKV8-uFXT4ZYwWgznAQog5gymDWeuoMqzocHkrHb7r76UafA0meoFdCFUX_ounsN5NPjwfwH6tHE6VsiYFSK0RLoe9CoyVUs63vAlREaWsFOc6Azg9WqLOyf6Z9h_A`;
+    tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxODgxOTMxMDY4OCIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjQwNTU0OTAwODU0MzAyNjExNiwiZXhwIjoxNjE2NDI1MjA2LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIl0sImp0aSI6IjZlMTliODNkLWY4OGYtNDc2Zi1hMmMwLWQzZDA4NTk3NGNhMyIsImNsaWVudF9pZCI6ImFwcF9jIn0.EWqXdRivAKaNYNEGvjOllHSDK53HQioPGSpuork-jL3k_-k40JB_6oH3oEnTXlqzprIQluD7uLhz4fHs1W4XDrM14HAQBcDrCycNfc8pinnEKt7Y1rFba1C--HyAW0OLEAou1pZNL7NnDH7JUl6AHjpbyIKOD4kc6p-uREDyjhFmKJ5UMMTw1QoHx0Z1tEPYUdTgl3F3Chbmtsai8R57NqkA0oXEjWnOm33MaHzv7i9e95Ah4_aDvlyW0zAyr9ZIAONxh9yOw5CPFn5-sgwCJVUv9EnhuZqvwoZrOx1QcQ6sIgTNLEDL8r-FvRrHXpYXwa3oO_Ibm_OmdyPZBhisfQ`;
     config.headers.Authorization = tokenStr1;
     return config;
   } else {
@@ -145,6 +145,7 @@ var baseurl;
 export const fetchApi = async (api, rawData = {}, method = 'GET', headers = {}) => {
   if (process.env.NODE_ENV !== 'development') {
     await localstorage.get({ key: 'LLBOrigin', isPublic: true }).then(res => {
+      //如果需要写死服务器环境可以在这里处理
       baseurl = res.result + '/';
     });
   } else {
