@@ -2,7 +2,7 @@
   <div class="exchangeCoupon">
     <div class="option">
       <span class="btn-return" @click="pageBack"></span>
-      <span class="nav-title">我的优惠券</span>
+      <span class="nav-title">优惠券兑换</span>
     </div>
     <div class="container">
       <div class="content">
