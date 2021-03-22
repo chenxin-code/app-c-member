@@ -97,6 +97,7 @@
 
 <script>
 import api from '@/api';
+import nav from '@zkty-team/x-engine-module-nav';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
 import yjzdbill from '@zkty-team/x-engine-module-yjzdbill';
 import router from '@zkty-team/x-engine-module-router';
@@ -417,7 +418,15 @@ export default {
         this.getMemberDetail();
       });
     }
-  }
+  },
+  mounted() {
+    nav.setNavLeftBtn({
+      title: '会员特权',
+      titleColor: '#121212',
+      titleSize: 24,
+      titleFontName: 'PingFangSC-Medium'
+    });
+  },
 }
 </script>
 
