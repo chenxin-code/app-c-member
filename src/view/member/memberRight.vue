@@ -37,7 +37,7 @@
               {{v.couponTitle}}
             </div>
             <div class="card-right-left-middle">
-              领取后{{v.takeEffectDayNums}}天有效
+              领取后{{v.takeEffectDayNums}}天内有效
             </div>
             <div class="card-right-left-bottom" v-if="v.monthGetDay">
               每月{{v.monthGetDay}}日领取
@@ -257,57 +257,57 @@ export default {
           const rest = +res.data.integral - +data.integrealCount;
           this.$toast.clear();
           this.$dialog.confirm({
-              title: '确认兑换',
-              message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
-            }).then(() => {
-              //this.toast();
-              api.getReceiveCoupon({
-                couActivitiesId: data.id,
-                memberId: this.memberId,
-                integral: data.integrealCount
-              }).then(res => {
-                if (res.code === 200) {
-                  // 该券当前人
-                  const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
-                  const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
-                  const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
-                  const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
-                  // 变更按钮为 '去使用'
-                  if (res.data.result) {
-                    this.$toast('兑换成功');
-                    if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+            title: '确认兑换',
+            message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
+          }).then(() => {
+            //this.toast();
+            api.getReceiveCoupon({
+              couActivitiesId: data.id,
+              memberId: this.memberId,
+              integral: data.integrealCount
+            }).then(res => {
+              if (res.code === 200) {
+                // 该券当前人
+                const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+                const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+                const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+                const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
+                // 变更按钮为 '去使用'
+                if (res.data.result) {
+                  this.$toast('兑换成功');
+                  if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+                    this.$set(data, 'goUse', true);
+                  }
+                } else {
+                  if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+                    console.log('无存在上限，后台/数据库处理错误');
+                    this.$toast('兑换失败');
+                  } else {
+                    if (couponTotal) {
+                      // if (type === 0) {
+                      //   this.propertyList.splice(index, 1);
+                      // } else {
+                      //   this.vouchersList.splice(index, 1);
+                      // }
+                      return this.$toast('该优惠券已兑换完');
+                    }
+                    if (couponDay) {
+                      return this.$toast('该优惠券今日已兑换完');
+                    }
+                    if (couponPersonDay || couponPerson) {
                       this.$set(data, 'goUse', true);
                     }
-                  } else {
-                    if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
-                      console.log('无存在上限，后台/数据库处理错误');
-                      this.$toast('兑换失败');
-                    } else {
-                      if (couponTotal) {
-                        // if (type === 0) {
-                        //   this.propertyList.splice(index, 1);
-                        // } else {
-                        //   this.vouchersList.splice(index, 1);
-                        // }
-                        return this.$toast('该优惠券已兑换完');
-                      }
-                      if (couponDay) {
-                        return this.$toast('该优惠券今日已兑换完');
-                      }
-                      if (couponPersonDay || couponPerson) {
-                        this.$set(data, 'goUse', true);
-                      }
-                      if (couponPerson) {
-                        return this.$toast('该优惠券您已兑换完');
-                      }
-                      if (couponPersonDay) {
-                        return this.$toast('该优惠券您今日已兑换完');
-                      }
+                    if (couponPerson) {
+                      return this.$toast('该优惠券您已兑换完');
+                    }
+                    if (couponPersonDay) {
+                      return this.$toast('该优惠券您今日已兑换完');
                     }
                   }
                 }
-              });
+              }
             });
+          });
         }
       });
     },
@@ -365,153 +365,24 @@ export default {
         activityType: 2,//会员权益
         businessType: 0,
         condition: 0
-      })
-        .then(res => {
-          //模拟数据
-          // let res = {
-          //   "code":200,
-          //   "data":[
-          //     {
-          //       "activity":"4014",
-          //       "activityMemo":"",
-          //       "cost":"",
-          //       "couTypeCode":"20WY000236",
-          //       "couponStatus":0,
-          //       "couponSubhead":"相对满减1元001",
-          //       "couponTitle":"相对满减1元001",
-          //       "couponType":20,
-          //       "discountMaxDeduction":"",
-          //       "discountRatio":"0.9",
-          //       "faceAmount":"0.9",
-          //       "id":2372760729989154407,
-          //       "image":"",
-          //       "integrealCount":0,
-          //       "memo":"",
-          //       "operator":"",
-          //       "receiveCondition":"",
-          //       "receiveConditionRule":"",
-          //       "releaseCount":44,
-          //       "releaseForm":"",
-          //       "releaseRule":"",
-          //       "releaseType":"",
-          //       "satisfyAmount":"1.0",
-          //       "takeEffectDayNums":1,
-          //       "validityDayNums":1,
-          //       "isPeriodic":0,
-          //       "condition": 1,
-          //     },
-          //     {
-          //       "activity":"4014",
-          //       "activityMemo":"",
-          //       "cost":"",
-          //       "couTypeCode":"10WY000260",
-          //       "couponStatus":0,
-          //       "couponSubhead":"",
-          //       "couponTitle":"卡券44",
-          //       "couponType":10,
-          //       "discountMaxDeduction":"",
-          //       "discountRatio":"0.9",
-          //       "faceAmount":"0.03",
-          //       "id":2372760729989154469,
-          //       "image":"",
-          //       "integrealCount":10,
-          //       "memo":"",
-          //       "operator":"",
-          //       "receiveCondition":"",
-          //       "receiveConditionRule":"",
-          //       "releaseCount":100,
-          //       "releaseForm":"",
-          //       "releaseRule":"",
-          //       "releaseType":"",
-          //       "satisfyAmount":"",
-          //       "takeEffectDayNums":0,
-          //       "validityDayNums":0,
-          //       "validityEndTime":"1619712000000",
-          //       "validityStartTime":"1614700800000",
-          //       "isPeriodic":1,
-          //       "condition": 3,
-          //     },
-          //     {
-          //       "activity":"4014",
-          //       "activityMemo":"",
-          //       "cost":"",
-          //       "couTypeCode":"20WY000263",
-          //       "couponStatus":0,
-          //       "couponSubhead":"",
-          //       "couponTitle":"会员活动LV1送5元物业券",
-          //       "couponType":20,
-          //       "discountMaxDeduction":"",
-          //       "discountRatio":"0.9",
-          //       "faceAmount":"5.0",
-          //       "id":2372760729989154581,
-          //       "image":"",
-          //       "integrealCount":0,
-          //       "memo":"",
-          //       "operator":"",
-          //       "receiveCondition":"",
-          //       "receiveConditionRule":"",
-          //       "releaseCount":3,
-          //       "releaseForm":"",
-          //       "releaseRule":"",
-          //       "releaseType":"",
-          //       "satisfyAmount":"100.0",
-          //       "takeEffectDayNums":0,
-          //       "validityDayNums":0,
-          //       "validityEndTime":"1617465600000",
-          //       "validityStartTime":"1614787200000",
-          //       "isPeriodic":1,
-          //       "condition": 2,
-          //     },
-          //     {
-          //       "activity":"4014",
-          //       "activityMemo":"",
-          //       "cost":"",
-          //       "couTypeCode":"20WY000287",
-          //       "couponStatus":0,
-          //       "couponSubhead":"限时优惠券，800邦豆可兑！",
-          //       "couponTitle":"物业缴费10元券",
-          //       "couponType":20,
-          //       "discountMaxDeduction":"",
-          //       "discountRatio":"0.9",
-          //       "faceAmount":"10.0",
-          //       "id":2372760729989154835,
-          //       "image":"",
-          //       "integrealCount":0,
-          //       "memo":"",
-          //       "operator":"",
-          //       "receiveCondition":"",
-          //       "receiveConditionRule":"",
-          //       "releaseCount":500,
-          //       "releaseForm":"",
-          //       "releaseRule":"",
-          //       "releaseType":"",
-          //       "satisfyAmount":"200.0",
-          //       "takeEffectDayNums":30,
-          //       "validityDayNums":30,
-          //       "isPeriodic":0,
-          //       "condition": 3,
-          //     }
-          //   ],
-          //   "message":"success"
-          // };
-          if (res.code === 200) {
-            this.$toast.clear();
-          }
-          const data = res.data || [];
-          const cardList = [];
-          let nowTime = new Date();
-          data.map(item => {
-            const stareTime = new Date(+item.validityStartTime);
-            const endTime = new Date(+item.validityEndTime);
-            item.effective = nowTime >= stareTime && nowTime <= endTime;
-            cardList.push(item);
-            return item;
-          });
-          this.cardList = cardList;
-        })
-        .finally(() => {
-          this.loading = false;
+      }).then(res => {
+        if (res.code === 200) {
+          this.$toast.clear();
+        }
+        const data = res.data || [];
+        const cardList = [];
+        let nowTime = new Date();
+        data.map(item => {
+          const stareTime = new Date(+item.validityStartTime);
+          const endTime = new Date(+item.validityEndTime);
+          item.effective = nowTime >= stareTime && nowTime <= endTime;
+          cardList.push(item);
+          return item;
         });
+        this.cardList = cardList;
+      }).finally(() => {
+        this.loading = false;
+      });
     },
     parseWeek(weekGetDay){
       if(weekGetDay == 1){
