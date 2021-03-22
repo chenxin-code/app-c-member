@@ -236,7 +236,8 @@ export default {
   height: 100%;
   position: fixed;
   padding: 40px 13px 20px;
-  overflow: scroll;
+  // overflow: scroll;
+  overflow: auto;
   background: linear-gradient(148deg, #fecf6f 0%, #fb853b 51%, #ffad49 100%);
 
   .option {
