@@ -13,8 +13,14 @@
         <div class="content-bottom-right-bg"></div>
         <div class="content-detail-top">
           <p class="title">优惠券兑换</p>
-          <van-field v-model="exchangeCode" type="text" placeholder="请输入兑换码"></van-field>
-          <div class="submit-btn" @click="exchangeSubmit">立即兑换</div>
+          <van-field
+            :class="isNotNull ? '' : 'border-red'"
+            v-model="exchangeCode"
+            type="text"
+            placeholder="请输入兑换码"
+          ></van-field>
+          <div v-show="!isNotNull" class="tip">请输入兑换码</div>
+          <div :class="isNotNull ? '' : 'submit-btn-tip'" class="submit-btn" @click="exchangeSubmit">立即兑换</div>
         </div>
         <div class="content-detail-bottom">
           <p class="title">什么是兑换码？</p>
@@ -52,6 +58,7 @@ export default {
   },
   data() {
     return {
+      isNotNull: true,
       showConfirm: false,
       exchangeCode: '', //卡密Id
       couponActivityId: '', //卡券活动派发id
@@ -209,6 +216,9 @@ export default {
     //   }
     // },
     exchangeSubmit() {
+      if (!this.exchangeCode) {
+        return;
+      }
       this.getCamiloExchangeDetail();
     },
     cancelConfim() {
@@ -217,6 +227,15 @@ export default {
     confirmBtn() {
       //这里是异步
       this.confirmExchange();
+    }
+  },
+  watch: {
+    exchangeCode(newVal) {
+      if (!newVal) {
+        this.isNotNull = false;
+      } else {
+        this.isNotNull = true;
+      }
     }
   }
 };
@@ -316,6 +335,16 @@ export default {
           font-weight: 400;
           color: #d8d8d8;
         }
+
+        .border-red {
+          border: 1px solid #f5222d;
+        }
+
+        .tip {
+          color: #f5222d;
+          text-align: left;
+          padding-top: 5px;
+        }
         .submit-btn {
           width: 100%;
           padding: 8px 0;
@@ -326,6 +355,10 @@ export default {
           background: #fa755a;
           border-radius: 8px;
           margin-top: 32px;
+        }
+
+        .submit-btn-tip {
+          margin-top: 10px;
         }
       }
       .content-detail-bottom {
