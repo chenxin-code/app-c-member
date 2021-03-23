@@ -168,7 +168,7 @@ export default {
     this.paramsList(); //mixin引入公共method
 
     if (this.$store.getters.isDebugMode) {
-      this.memberId = '2332445899206164529';
+      this.memberId = '2276541642808754230';
       localStorage.setItem('memberId', this.memberId);
       this.getList();
       this.getUserInfo();

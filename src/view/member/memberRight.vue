@@ -39,7 +39,7 @@
             <div class="card-right-left-middle">
               领取后{{v.takeEffectDayNums}}天内有效
             </div>
-            <div class="card-right-left-bottom" v-if="v.monthGetDay">
+            <div class="card-right-left-bottom" :style="{width: v.monthGetDay < 10 ? '73px' : '77px'}" v-if="v.monthGetDay">
               每月{{v.monthGetDay}}日领取
             </div>
             <div class="card-right-left-bottom" style="width: 65px;" v-else-if="v.weekGetDay">
@@ -406,7 +406,7 @@ export default {
   created() {
     if (this.$store.getters.isDebugMode) {
       //生产需注释
-      this.memberId = '2332445899206164529';
+      this.memberId = '2276541642808754230';
       this.queryReceiveCouponList();
       this.getMemberDetail();
     } else {
@@ -556,7 +556,6 @@ export default {
           margin-top: 8px;
           padding: 5px 2px;
           border-radius: 3px;
-          width: 73px;
         }
       }
       .exchange-card-right-right {
