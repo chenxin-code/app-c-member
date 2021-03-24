@@ -62,19 +62,19 @@
               ></van-icon>
             </div>
           </div>
-          <div class="exchange-card-right-right">
+          <div class="exchange-card-right-right" :class="getPageClass(levelId)">
             <template>
               <div class="aaaaa" v-if="v.condition !== 1">
                 <span class="aaaaa-left">{{v.integrealCount}}</span>
                 <span class="aaaaa-right">邦豆</span>
               </div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="getCoupon(v)" v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse">立即领取</div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 1 && v.goUse">去使用</div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="exchangeBD(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse">邦豆兑换</div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && v.goUse">去使用</div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="getCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && !v.goUse">立即领取</div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && v.goUse">去使用</div>
-              <div class="exchange-card-right-bottom-btn kongxin" :class="getPageClass(levelId)" v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay,v.weekGetDay)">未生效</div>
+              <div class="exchange-card-right-bottom-btn" @click="getCoupon(v)" v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse">立即领取</div>
+              <div class="exchange-card-right-bottom-btn" :class="{ineffective: !v.effective}" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 1 && v.goUse">去使用</div>
+              <div class="exchange-card-right-bottom-btn" @click="exchangeBD(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse">邦豆兑换</div>
+              <div class="exchange-card-right-bottom-btn" :class="{ineffective: !v.effective}" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && v.goUse">去使用</div>
+              <div class="exchange-card-right-bottom-btn" @click="getCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && !v.goUse">立即领取</div>
+              <div class="exchange-card-right-bottom-btn" :class="{ineffective: !v.effective}" @click="useCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && v.goUse">去使用</div>
+              <div class="exchange-card-right-bottom-btn kongxin" v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay,v.weekGetDay)">未生效</div>
             </template>
           </div>
         </div>
@@ -347,10 +347,19 @@ export default {
       });
     },
     checkTimeOK(monthGetDay,weekGetDay){
-      if(monthGetDay){
+      if(monthGetDay && !weekGetDay){
         return new Date().getDate() == monthGetDay//获取当前日(1-31)
-      }else if(weekGetDay){
-        return new Date().getDay() == weekGetDay - 1//获取当前星期X(0-6,0代表星期天)
+      }else if(!monthGetDay && weekGetDay){
+        let getDay = new Date().getDay();//获取当前星期X(0-6,0代表星期天)
+        if([1,2,3,4,5,6].includes(weekGetDay)){//周一二三四五六
+          return getDay == weekGetDay;
+        }else if(weekGetDay == 7){//周日
+          return getDay == 0;
+        }else{
+          return false
+        }
+      }else{
+        return false
       }
     },
     getMemberDetail() {
@@ -703,46 +712,50 @@ export default {
           font-family: PingFangSC-Medium, PingFang SC;
           font-weight: 500;
           color: #ffffff;
-        }
-        .exchange-card-right-bottom-btn.lv1 {
-          background: linear-gradient(to right, #C8CCDF 0%, #989ebd 100%);
-          &.kongxin {
-            background: #fff;
-            color: #989ebd;
-            border: 1px solid #989ebd;
+          &.ineffective {
+            background: #f8f8f8 !important;
+            color: #d4d4d4 !important;
           }
         }
-        .exchange-card-right-bottom-btn.lv2 {
-          background: linear-gradient(to right, #E2B490 0%, #FFD5B5 50%, #A56D4C 100%);
-          &.kongxin {
-            background: #fff;
-            color: #B5561A;
-            border: 1px solid #B5561A;
-          }
+      }
+      .exchange-card-right-right.lv1 .exchange-card-right-bottom-btn {
+        background: linear-gradient(to right, #C8CCDF 0%, #989ebd 100%);
+        &.kongxin {
+          background: #fff;
+          color: #989ebd;
+          border: 1px solid #989ebd;
         }
-        .exchange-card-right-bottom-btn.lv3 {
-          background: linear-gradient(to right, #C8C7C7 0%, #7E807D 100%);
-          &.kongxin {
-            background: #fff;
-            color: #8D8D8D;
-            border: 1px solid #8D8D8D;
-          }
+      }
+      .exchange-card-right-right.lv2 .exchange-card-right-bottom-btn {
+        background: linear-gradient(to right, #E2B490 0%, #FFD5B5 50%, #A56D4C 100%);
+        &.kongxin {
+          background: #fff;
+          color: #B5561A;
+          border: 1px solid #B5561A;
         }
-        .exchange-card-right-bottom-btn.lv4 {
-          background: linear-gradient(to right, #FFDAA5 0%, #E5A23A 100%);
-          &.kongxin {
-            background: #fff;
-            color: #F7BF65;
-            border: 1px solid #F7BF65;
-          }
+      }
+      .exchange-card-right-right.lv3 .exchange-card-right-bottom-btn {
+        background: linear-gradient(to right, #C8C7C7 0%, #7E807D 100%);
+        &.kongxin {
+          background: #fff;
+          color: #8D8D8D;
+          border: 1px solid #8D8D8D;
         }
-        .exchange-card-right-bottom-btn.lv5 {
-          background: linear-gradient(to right, #B8C2F3 0%, #262877 100%);
-          &.kongxin {
-            background: #fff;
-            color: #7F88A7;
-            border: 1px solid #7F88A7;
-          }
+      }
+      .exchange-card-right-right.lv4 .exchange-card-right-bottom-btn {
+        background: linear-gradient(to right, #FFDAA5 0%, #E5A23A 100%);
+        &.kongxin {
+          background: #fff;
+          color: #F7BF65;
+          border: 1px solid #F7BF65;
+        }
+      }
+      .exchange-card-right-right.lv5 .exchange-card-right-bottom-btn {
+        background: linear-gradient(to right, #B8C2F3 0%, #262877 100%);
+        &.kongxin {
+          background: #fff;
+          color: #7F88A7;
+          border: 1px solid #7F88A7;
         }
       }
     }
