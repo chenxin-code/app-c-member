@@ -380,7 +380,7 @@ export default {
     console.log('$store.getters.isDebugMode :>> ', this.$store.getters.isDebugMode);
     if (this.$store.getters.isDebugMode) {
       // 生产需注释
-      this.memberId = '2332445899206164529';
+      this.memberId = '2276541642808754230';
       localStorage.setItem('memberId', this.memberId);
       this.getMemberDetail();
       this.queryReceiveCouponList();

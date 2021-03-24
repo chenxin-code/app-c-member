@@ -36,30 +36,58 @@
             <div class="card-right-left-top">
               {{v.couponTitle}}
             </div>
-            <div class="card-right-left-middle">
-              领取后{{v.takeEffectDayNums}}天内有效
+            <!--<div class="card-right-left-middle">
+              {{ getTime(v.validityStartTime) }}-{{ getTime(v.validityEndTime) }}
+            </div>-->
+            <div class="card-right-left-middle" v-if="v.validityType === 1">
+              <!--领取后{{v.takeEffectDayNums}}天内有效-->
+              {{ getTime(v.validityStartTime) }}-{{ getTime(v.validityEndTime) }}
             </div>
-            <div class="card-right-left-bottom" v-if="v.monthGetDay">
+            <div class="card-right-left-bottom-2"
+                 :class="{ wi2: v.monthGetDay < 10, wi3: v.monthGetDay >= 10 }"
+                 v-if="v.monthGetDay">
               每月{{v.monthGetDay}}日领取
             </div>
-            <div class="card-right-left-bottom" style="width: 65px;" v-else-if="v.weekGetDay">
+            <div class="card-right-left-bottom-2 wi1"
+                 v-else-if="v.weekGetDay">
               每周{{parseWeek(v.weekGetDay)}}领取
             </div>
+            <div class="card-right-left-bottom" @click="collapse(`tabcouponDesc${k}`)">
+              使用规则
+              <van-icon
+                name="arrow-down"
+                size="12"
+                class="icon-arrow-down"
+                :ref="`tabcouponDesc${k}Icon`"
+              ></van-icon>
+            </div>
           </div>
-          <div class="exchange-card-right-right">
+          <div class="exchange-card-right-right" :class="getPageClass(levelId)">
             <template>
-              <div class="aaaaa">
+              <div class="aaaaa" v-if="v.condition !== 1">
                 <span class="aaaaa-left">{{v.integrealCount}}</span>
                 <span class="aaaaa-right">邦豆</span>
               </div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="getCoupon(v)" v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse">立即领取</div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 1 && v.goUse">去使用</div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="exchangeBD(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse">邦豆兑换</div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && v.goUse">去使用</div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="getCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && !v.goUse">立即领取</div>
-              <div class="exchange-card-right-bottom-btn" :class="getPageClass(levelId)" @click="useCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && v.goUse">去使用</div>
-              <div class="exchange-card-right-bottom-btn kongxin" :class="getPageClass(levelId)" v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay,v.weekGetDay)">未生效</div>
+              <div class="exchange-card-right-bottom-btn" @click="getCoupon(v)" v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse">立即领取</div>
+              <div class="exchange-card-right-bottom-btn" :class="{ineffective: !v.effective}" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 1 && v.goUse">去使用</div>
+              <div class="exchange-card-right-bottom-btn" @click="exchangeBD(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse">邦豆兑换</div>
+              <div class="exchange-card-right-bottom-btn" :class="{ineffective: !v.effective}" @click="useCoupon(v)" v-else-if="v.isPeriodic === 0 && v.condition === 3 && v.goUse">去使用</div>
+              <div class="exchange-card-right-bottom-btn" @click="getCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && !v.goUse">立即领取</div>
+              <div class="exchange-card-right-bottom-btn" :class="{ineffective: !v.effective}" @click="useCoupon(v)" v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay,v.weekGetDay) && v.goUse">去使用</div>
+              <div class="exchange-card-right-bottom-btn kongxin" v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay,v.weekGetDay)">未生效</div>
             </template>
+          </div>
+        </div>
+        <div class="coupon-desc-wrap" :ref="`tabcouponDesc${k}`">
+          <div class="coupon-desc" :ref="`tabcouponDesc${k}Cont`">
+            <div class="coupon-desc-li" style="white-space: pre-line;">
+              {{ v.memo }}
+              <!-- 使用说明：平台10元通用优惠券，单笔订单满88元可使用。 -->
+            </div>
+            <!-- <div class="coupon-desc-li">
+              使用说明：平台10元通用优惠券;
+            </div> -->
+            <div class="coupon-desc-num">券编号：{{ v.couTypeCode }}</div>
           </div>
         </div>
       </div>
@@ -97,6 +125,7 @@
 
 <script>
 import api from '@/api';
+import * as moment from "moment";
 import nav from '@zkty-team/x-engine-module-nav';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
 import yjzdbill from '@zkty-team/x-engine-module-yjzdbill';
@@ -116,6 +145,10 @@ export default {
     };
   },
   methods: {
+    getTime(time) {
+      const date = new Date(+time);
+      return moment(date).format('YYYY.MM.DD');
+    },
     // 打开账单中心
     openDeital() {
       this.$toast.loading({
@@ -184,6 +217,7 @@ export default {
     },
     //去使用
     useCoupon(data) {
+      console.log('去使用--------->',data)
       if (!data.effective) {
         return false;
       }
@@ -313,10 +347,19 @@ export default {
       });
     },
     checkTimeOK(monthGetDay,weekGetDay){
-      if(monthGetDay){
+      if(monthGetDay && !weekGetDay){
         return new Date().getDate() == monthGetDay//获取当前日(1-31)
-      }else if(weekGetDay){
-        return new Date().getDay() == weekGetDay - 1//获取当前星期X(0-6,0代表星期天)
+      }else if(!monthGetDay && weekGetDay){
+        let getDay = new Date().getDay();//获取当前星期X(0-6,0代表星期天)
+        if([1,2,3,4,5,6].includes(weekGetDay)){//周一二三四五六
+          return getDay == weekGetDay;
+        }else if(weekGetDay == 7){//周日
+          return getDay == 0;
+        }else{
+          return false
+        }
+      }else{
+        return false
       }
     },
     getMemberDetail() {
@@ -367,6 +410,44 @@ export default {
         businessType: 0,
         condition: 0
       }).then(res => {
+        //模拟数据
+        // let res = {
+        //   "code":200,
+        //   "data":[
+        //     {
+        //       "activity":"4014",
+        //       "activityMemo":"",
+        //       "cost":"",
+        //       "couTypeCode":"20WY000236",
+        //       "couponStatus":0,
+        //       "couponSubhead":"相对满减1元001",
+        //       "couponTitle":"相对满减1元001",
+        //       "couponType":20,
+        //       "discountMaxDeduction":"",
+        //       "discountRatio":"0.9",
+        //       "faceAmount":"0.9",
+        //       "id":2372760729989154407,
+        //       "image":"",
+        //       "integrealCount":0,
+        //       "memo":"",
+        //       "operator":"",
+        //       "receiveCondition":"",
+        //       "receiveConditionRule":"",
+        //       "releaseCount":44,
+        //       "releaseForm":"",
+        //       "releaseRule":"",
+        //       "releaseType":"",
+        //       "satisfyAmount":"1.0",
+        //       "takeEffectDayNums":1,
+        //       "validityDayNums":1,
+        //       "isPeriodic":0,
+        //       "condition": 1,
+        //       "monthGetDay": 10,
+        //       "weekGetDay": 1
+        //     },
+        //   ],
+        //   "message":"success"
+        // };
         if (res.code === 200) {
           this.$toast.clear();
         }
@@ -406,7 +487,7 @@ export default {
   created() {
     if (this.$store.getters.isDebugMode) {
       //生产需注释
-      this.memberId = '2332445899206164529';
+      this.memberId = '2276541642808754230';
       this.queryReceiveCouponList();
       this.getMemberDetail();
     } else {
@@ -445,7 +526,7 @@ export default {
     }
   }
   .bangdou-exchange-card {
-    height: 97px;
+    //height: 97px;
     // flex-basis: 324px;
     //width: 343px;
     white-space: nowrap;
@@ -457,9 +538,10 @@ export default {
     box-shadow: 0 0.12rem 0.6rem 0 rgba(71, 77, 96, 0.06);
     border-radius: 12px;
     overflow: hidden;
+    flex-wrap: wrap;
     .exchange-card-left {
       width: 101px;
-      height: 97px;
+      height: 110px;
       // background-color: red;
       background-repeat: no-repeat;
       background-position: center center;
@@ -514,24 +596,28 @@ export default {
     }
     .exchange-card-right {
       flex: 1;
-      height: 97px;
+      height: 110px;
       background-color: #fff;
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
       align-items: stretch;
-      padding-right: 12px;
+      padding: 5px;
       .exchange-card-right-left {
         flex: 1;
-        padding: 8px 7px 0 12px;
+        padding: 5px 7px 0 5px;
         display: flex;
         flex-direction: column;
         // flex-flow: row wrap;
         justify-content: flex-start;
         align-items: stretch;
+        //flex-flow: row wrap;
         .card-right-left-top {
-          margin-bottom: 3px;
+          //flex: 50%;
+          //margin-bottom: 3px;
           font-size: 14px;
+          //line-height: 20px;
+          //height: 60px;
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 700;
           color: #121212;
@@ -544,19 +630,50 @@ export default {
           white-space: normal;
         }
         .card-right-left-middle {
+          //padding-top: 4px;
+          font-size: 12px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: #8d8d8d;
+          align-self: flex-end;
+          line-height: 1;
+          width: 100%;
+        }
+        .card-right-left-bottom {
+          margin-top: 5px;
+          padding: 2px 0;
+          font-size: 10px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: #bfbfbf;
+          line-height: 1;
+          align-self: flex-end;
+          width: 100%;
+        }
+        .card-right-left-middle {
           color: #999999;
           font-size: 12px;
           font-weight: 500;
           line-height: 12px;
           margin-top: 5px;
         }
-        .card-right-left-bottom {
+        .card-right-left-bottom-2 {
           font-size: 11px;
-          line-height: 10px;
-          margin-top: 8px;
-          padding: 5px 2px;
+          line-height: 1;
+          //height: 13px;
+          margin-top: 5px;
+          padding: 3px 2px;
+          display: inline;
           border-radius: 3px;
-          width: 73px;
+        }
+        .card-right-left-bottom-2.wi1{
+          width: 61px;
+        }
+        .card-right-left-bottom-2.wi2{
+          width: 66px;
+        }
+        .card-right-left-bottom-2.wi3{
+          width: 71px;
         }
       }
       .exchange-card-right-right {
@@ -595,46 +712,50 @@ export default {
           font-family: PingFangSC-Medium, PingFang SC;
           font-weight: 500;
           color: #ffffff;
-        }
-        .exchange-card-right-bottom-btn.lv1 {
-          background: linear-gradient(to right, #C8CCDF 0%, #989ebd 100%);
-          &.kongxin {
-            background: #fff;
-            color: #989ebd;
-            border: 1px solid #989ebd;
+          &.ineffective {
+            background: #f8f8f8 !important;
+            color: #d4d4d4 !important;
           }
         }
-        .exchange-card-right-bottom-btn.lv2 {
-          background: linear-gradient(to right, #E2B490 0%, #FFD5B5 50%, #A56D4C 100%);
-          &.kongxin {
-            background: #fff;
-            color: #B5561A;
-            border: 1px solid #B5561A;
-          }
+      }
+      .exchange-card-right-right.lv1 .exchange-card-right-bottom-btn {
+        background: linear-gradient(to right, #C8CCDF 0%, #989ebd 100%);
+        &.kongxin {
+          background: #fff;
+          color: #989ebd;
+          border: 1px solid #989ebd;
         }
-        .exchange-card-right-bottom-btn.lv3 {
-          background: linear-gradient(to right, #C8C7C7 0%, #7E807D 100%);
-          &.kongxin {
-            background: #fff;
-            color: #8D8D8D;
-            border: 1px solid #8D8D8D;
-          }
+      }
+      .exchange-card-right-right.lv2 .exchange-card-right-bottom-btn {
+        background: linear-gradient(to right, #E2B490 0%, #FFD5B5 50%, #A56D4C 100%);
+        &.kongxin {
+          background: #fff;
+          color: #B5561A;
+          border: 1px solid #B5561A;
         }
-        .exchange-card-right-bottom-btn.lv4 {
-          background: linear-gradient(to right, #FFDAA5 0%, #E5A23A 100%);
-          &.kongxin {
-            background: #fff;
-            color: #F7BF65;
-            border: 1px solid #F7BF65;
-          }
+      }
+      .exchange-card-right-right.lv3 .exchange-card-right-bottom-btn {
+        background: linear-gradient(to right, #C8C7C7 0%, #7E807D 100%);
+        &.kongxin {
+          background: #fff;
+          color: #8D8D8D;
+          border: 1px solid #8D8D8D;
         }
-        .exchange-card-right-bottom-btn.lv5 {
-          background: linear-gradient(to right, #B8C2F3 0%, #262877 100%);
-          &.kongxin {
-            background: #fff;
-            color: #7F88A7;
-            border: 1px solid #7F88A7;
-          }
+      }
+      .exchange-card-right-right.lv4 .exchange-card-right-bottom-btn {
+        background: linear-gradient(to right, #FFDAA5 0%, #E5A23A 100%);
+        &.kongxin {
+          background: #fff;
+          color: #F7BF65;
+          border: 1px solid #F7BF65;
+        }
+      }
+      .exchange-card-right-right.lv5 .exchange-card-right-bottom-btn {
+        background: linear-gradient(to right, #B8C2F3 0%, #262877 100%);
+        &.kongxin {
+          background: #fff;
+          color: #7F88A7;
+          border: 1px solid #7F88A7;
         }
       }
     }
@@ -646,6 +767,32 @@ export default {
       margin-left: 4px;
       align-self: flex-end;
     }
+    .coupon-desc-wrap {
+      height: 0;
+      display: none;
+      width: 100%;
+      overflow: hidden;
+      -webkit-transition: height 0.3s ease-in-out;
+      transition: height 0.3s ease-in-out;
+      will-change: height;
+
+      box-shadow: 0px 0.12rem 0.6rem 0px rgba(71, 77, 96, 0.06);
+      margin-top: 4px;
+      .coupon-desc {
+        font-size: 12px;
+        color: #bfbfbf;
+        padding: 10px 16px;
+        line-height: 18px;
+        &-num {
+          margin-top: 8px;
+        }
+      }
+    }
+    .icon-arrow-down {
+      vertical-align: bottom;
+      transition: all 0.3s;
+      bottom: -1px;
+    }
   }
   .bangdou-exchange-card.lv1 {
     .exchange-card-left {
@@ -653,7 +800,7 @@ export default {
     }
     .exchange-card-right {
       .exchange-card-right-left {
-        .card-right-left-bottom {
+        .card-right-left-bottom-2 {
           color: #7F86AA;
           background-color: #f5f5f7;
         }
@@ -674,7 +821,7 @@ export default {
     }
     .exchange-card-right {
       .exchange-card-right-left {
-        .card-right-left-bottom {
+        .card-right-left-bottom-2 {
           color: #B5561A;
           background-color: #f5f5f7;
         }
@@ -695,7 +842,7 @@ export default {
     }
     .exchange-card-right {
       .exchange-card-right-left {
-        .card-right-left-bottom {
+        .card-right-left-bottom-2 {
           color: #8D8D8D;
           background-color: #f5f5f7;
         }
@@ -716,7 +863,7 @@ export default {
     }
     .exchange-card-right {
       .exchange-card-right-left {
-        .card-right-left-bottom {
+        .card-right-left-bottom-2 {
           color: #F7BF65;
           background-color: #f5f5f7;
         }
@@ -737,7 +884,7 @@ export default {
     }
     .exchange-card-right {
       .exchange-card-right-left {
-        .card-right-left-bottom {
+        .card-right-left-bottom-2 {
           color: #7F86AA;
           background-color: #f5f5f7;
         }

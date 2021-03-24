@@ -216,7 +216,7 @@ export default {
 
       if (this.$store.getters.isDebugMode) {
         //生产需注释
-        this.memberId = '2332445899206164529';
+        this.memberId = '2276541642808754230';
         localStorage.setItem('memberId', this.memberId);
         this.getList();
         this.getUserInfo();
@@ -335,7 +335,19 @@ export default {
     },
     getUserInfo() {
       api.getUserInfo().then(res => {
+        console.log('getUserInfo------------->',res);
         this.userInfo = res.data || {};
+        if(this.userInfo.phoneAreaCode && this.userInfo.phone){
+          api.userPhoneQuery({
+            areaCode: this.userInfo.phoneAreaCode,
+            phone: this.userInfo.phone
+          }).then(res2 => {
+            console.log('userPhoneQuery------------->',res2);
+            if(res2.code === 200){
+              this.userInfo = Object.assign({},this.userInfo,{cardNo: res2.data.cardNo});
+            }
+          });
+        }
       });
     },
     getList() {
@@ -397,7 +409,13 @@ export default {
       } else {
         uri = 'http://apiv3.linli580.com';
       }
-      const url = `${uri}/coupon/?phone=${this.userInfo.phone}`;
+      let cardNo;
+      if(this.userInfo.cardNo){
+        cardNo = this.userInfo.cardNo;
+      }else{
+        cardNo = '';
+      }
+      const url = `${uri}/coupon/?phone=${this.userInfo.phone}&id_card=${cardNo}&type=1`;
       this.outUrlRefresh = false;
       this.scroll = this.$refs.scrollContent.scrollTop;
       router.openTargetRouter({

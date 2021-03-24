@@ -61,10 +61,8 @@
                         <div class="card-right-left-top">
                           {{ item.couponTitle }}
                         </div>
-                        <div class="card-right-left-middle">
-                          <span v-if="item.validityStartTime && item.validityEndTime">
-                            {{ getTime(item.validityStartTime) }}-{{ getTime(item.validityEndTime) }}
-                          </span>
+                        <div class="card-right-left-middle" v-if="item.validityType === 1">
+                          {{ getTime(item.validityStartTime) }}-{{ getTime(item.validityEndTime) }}
                         </div>
                         <div class="card-right-left-bottom" @click="collapse(`tab${index}couponDesc${cIndex}`)">
                           使用规则
