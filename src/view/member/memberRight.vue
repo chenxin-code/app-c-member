@@ -365,6 +365,8 @@ export default {
         }else{
           return false
         }
+      }else if(!monthGetDay && !weekGetDay){
+        return true
       }else{
         return false
       }
