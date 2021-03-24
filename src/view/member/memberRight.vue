@@ -138,6 +138,7 @@ export default {
   components: {},
   data() {
     return {
+      userInfo: {},
       memberId: null,
       levelId: null,
       cardList: [],
@@ -187,6 +188,12 @@ export default {
             });
           }
         }
+      });
+    },
+    getUserInfo() {
+      api.getUserInfo().then(res => {
+        console.log('getUserInfo------------->',res);
+        this.userInfo = res.data || {};
       });
     },
     //TODO:这里跳页报ngnix错误
@@ -490,6 +497,7 @@ export default {
       this.memberId = '2276541642808754230';
       this.queryReceiveCouponList();
       this.getMemberDetail();
+      this.getUserInfo();
     } else {
       //生产需打开
       localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
@@ -497,6 +505,7 @@ export default {
         localStorage.setItem('memberId', this.memberId);
         this.queryReceiveCouponList();
         this.getMemberDetail();
+        this.getUserInfo();
       });
     }
   },
