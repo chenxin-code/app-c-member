@@ -40,6 +40,23 @@
       :confrimDetail="confrimDetail"
       :confirmTime="confirmTime"
     />
+    <van-dialog
+      class="dialog-success"
+      v-model="isSuccessShow"
+      title="兑换成功"
+      :message="`有效期: ${confirmTime}`"
+      confirmButtonText="关闭"
+      @confirm="isSuccessShow = false"
+    ></van-dialog>
+
+    <van-dialog
+      class="dialog-fail"
+      v-model="isFailShow"
+      title="兑换失败"
+      message="<div style='font-size:13px;'>请确认信息是否填写正确, 若信息填写无误<div style='padding-top:5px;text-align:center'>可以拨打服务热线 <span style='color:#E8374A;'>400-806-123</span></div></div>"
+      confirmButtonText="关闭"
+      @confirm="isFailShow = false"
+    ></van-dialog>
   </div>
 </template>
 
@@ -58,6 +75,8 @@ export default {
   },
   data() {
     return {
+      isSuccessShow: false,
+      isFailShow: false,
       isNotNull: true,
       showConfirm: false,
       exchangeCode: '', //卡密Id
@@ -125,21 +144,6 @@ export default {
           console.log('getCamiloExchangeDetail res :>> ', res);
 
           if (res.code === 200) {
-            // ////////mock////////
-            // res.data = {
-            //   activityId: 123456789,
-            //   couponId: '123456789',
-            //   couponName: '物业50元代金券',
-            //   couponType: 10,
-            //   faceAmount: 50,
-            //   discountRatio: '',
-            //   expirationType: 3,
-            //   startTime: 1615782418758,
-            //   expirationTime: 1615782488758,
-            //   valiDays: '7',
-            //   offsetDays: '1'
-            // };
-            // ////////mock////////
             this.showConfirm = true;
             this.couponActivityId = res.data.id; //活动卡券活动派发id
             this.couponId = res.data.couponId; //卡券id
@@ -162,11 +166,7 @@ export default {
               this.confirmTime = '相对有效期, ' + res.data.valiDays + '天, 领取后' + res.data.offsetDays + '天生效'; //卡券有效期
             }
           } else if (res.code === 500) {
-            this.$dialog.alert({
-              confirmButtonText: '确认',
-              title: res.message,
-              closeOnPopstate: true
-            });
+            this.$toast(res.message);
           }
         });
     },
@@ -194,12 +194,11 @@ export default {
         .then(res => {
           console.log('confirmExchange res :>> ', res);
           if (res.code === 200) {
-            this.$toast('恭喜您, 优惠券兑换成功');
             this.showConfirm = false;
-            this.exchangeCode = '';
+            this.isSuccessShow = true;
           } else if (res.code === 500) {
-            this.$toast(res.message);
             this.showConfirm = false;
+            this.isFailShow = true;
           }
         });
     },
@@ -242,6 +241,143 @@ export default {
 </script>
 
 <style lang="less" scope>
+/* dialog弹窗 */
+.van-dialog {
+  padding: 16px 16px 24px !important;
+  width: calc(100% - 92px) !important;
+  background: #ffffff !important;
+  border-radius: 16px !important;
+
+  .van-dialog__header {
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-size: 18px;
+    color: @title-color;
+    font-weight: 700;
+    text-align: left;
+    padding-top: 16px;
+  }
+
+  .van-dialog__footer {
+    .van-dialog__cancel {
+      margin-right: 11px;
+      height: 38px;
+      background: #f5f5f6;
+      border-radius: 8px;
+
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #8d8d8d;
+    }
+
+    .van-dialog__confirm {
+      height: 38px;
+      background: #f5f5f5 !important;
+      border: none !important;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #8d8d8d !important;
+    }
+
+    .van-hairline--left::after {
+      border-left-width: 0;
+    }
+  }
+
+  .van-dialog__content {
+    min-height: auto;
+
+    .van-dialog__message {
+      padding: 16px 0 40px 0;
+      font-size: 16px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #8d8d8d;
+      text-align: left;
+      line-height: 16px;
+    }
+  }
+
+  &.dialog-success,
+  &.dialog-fail {
+    width: calc(100% - 92px) !important;
+    overflow: visible;
+    padding-top: 22px !important;
+
+    .van-dialog__header {
+      text-align: center;
+      font-size: 16px;
+      position: relative;
+      padding-top: 66px;
+
+      &::before {
+        position: absolute;
+        content: '';
+        width: 50px;
+        height: 50px;
+        top: 0;
+        background-image: url(../../../assets/img/dialog/dialog-success-icon.png);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        text-align: center;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    .van-dialog__content .van-dialog__message {
+      font-size: 14px;
+      white-space: inherit;
+    }
+
+    .van-dialog__footer {
+      overflow: visible;
+
+      &::after {
+        display: none;
+      }
+
+      .van-dialog__confirm.van-hairline--left {
+        background: linear-gradient(180deg, #41cc8b 0%, #41cc8b 100%);
+      }
+
+      .van-dialog__cancel {
+        background: rgba(70, 205, 142, 0.2);
+        color: #41cc8b;
+      }
+    }
+  }
+
+  &.dialog-fail {
+    &::before {
+      box-shadow: inset 0px -1px 2px 1px #eab3b8;
+    }
+
+    &::after {
+      background-image: url(../../../assets/img/dialog/dialog-cancel-overlay.png);
+    }
+
+    .van-dialog__header {
+      &::before {
+        background-image: url(../../../assets/img/dialog/dialog-cancel-icon.png);
+      }
+    }
+
+    .van-dialog__footer {
+      &::before {
+        background-image: url(../../../assets/img/dialog/dialog-cancel-border.png);
+      }
+
+      .van-dialog__confirm {
+        background: linear-gradient(180deg, #ff535b 0%, #e8374a 100%);
+      }
+    }
+  }
+}
+/* dialog弹窗 */
+
 .van-dialog .van-button {
   width: calc(100% - 0.12rem);
 }
