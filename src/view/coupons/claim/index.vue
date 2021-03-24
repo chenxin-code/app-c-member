@@ -123,7 +123,7 @@
 import api from '@/api';
 import nav from '@zkty-team/x-engine-module-nav';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
-import * as moment from "moment";
+import * as moment from 'moment';
 import Null from '@/components/null';
 import mixin from '../mixin/pageList';
 import _ from 'lodash';
@@ -169,6 +169,7 @@ export default {
 
     if (this.$store.getters.isDebugMode) {
       this.memberId = '2332445899206164529';
+      // this.memberId = '2332445899206164494';
       localStorage.setItem('memberId', this.memberId);
       this.getList();
       this.getUserInfo();
@@ -313,18 +314,22 @@ export default {
           if (res.code === 200) {
             this.$toast.clear();
             const list = res.data || [];
-            let nowTime = new Date();
+            let nowTime = moment(Date.now()).format('YYYYMMDD');
             // 是否在有效期
             list.map(item => {
-              const stareTime = new Date(+item.validityStartTime);
-              const endTime = new Date(+item.validityEndTime);
+              console.log('item.validityStartTime :>> ', item.validityStartTime);
+              console.log('item.validityEndTime :>> ', item.validityEndTime);
+              const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
+              const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
               if (nowTime >= stareTime && nowTime <= endTime) {
                 item.effective = true;
               } else {
                 item.effective = false;
               }
+              // console.log('queryReceiveCouponList item :>> ', item);
               return item;
             });
+            // console.log('queryReceiveCouponList list :>> ', list);
             this.list[tabIndex] = params.pageIndex === 1 ? list : _.concat(this.list[tabIndex], list);
             list.length < params.pageSize && (this.canLoadMore[tabIndex] = false);
             this.total[tabIndex] = (res.data && res.data.total) || 0;
