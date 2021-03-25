@@ -314,7 +314,7 @@ export default {
                   // 变更按钮为 '去使用'
                   if (res.data.result) {
                     this.$toast('兑换成功');
-                    if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+                    if (couponPersonDay || couponDay || couponPerson || couponTotal) {
                       this.$set(data, 'goUse', true);
                     }
                   } else {

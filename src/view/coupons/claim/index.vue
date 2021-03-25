@@ -246,7 +246,7 @@ export default {
 
             if (res.data.result) {
               this.$toast('领取成功');
-              if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+              if (couponPersonDay || couponDay || couponPerson || couponTotal) {
                 this.$set(data, 'goUse', true);
                 // 解决多维数组修改属性无效
                 this.list.push([]);

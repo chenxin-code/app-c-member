@@ -310,7 +310,7 @@ export default {
             // 删除不显示
             if (res.data.result) {
               this.$toast('领取成功');
-              if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+              if (couponPersonDay || couponDay || couponPerson || couponTotal) {
                 this.$set(data, 'goUse', true);
                 // 解决多维数组修改属性无效
                 this.list.push([]);
@@ -378,7 +378,7 @@ export default {
                     // 变更按钮为 '去使用'
                     if (res.data.result) {
                       this.$toast('兑换成功');
-                      if (couponPersonDay || couponPerson || couponPerson || couponTotal) {
+                      if (couponPersonDay || couponDay || couponPerson || couponTotal) {
                         this.$set(data, 'goUse', true);
                       }
                     } else {
