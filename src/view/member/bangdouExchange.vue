@@ -40,12 +40,12 @@
               <div class="exchange-card-item exchange-card-right">
                 <div class="exchange-card-right-left">
                   <div class="card-right-left-top">{{ item.couponTitle }}</div>
-                  <div class="card-right-left-middle" v-if="item.validityType === 1">
-                    {{ getTime(item.validityStartTime) }}-{{ getTime(item.validityEndTime) }}
-                  </div>
                   <div class="card-right-left-bottom">
                     <span class="card-right-left-bottom-left">{{ item.integrealCount }}</span>
                     <span class="card-right-left-bottom-right">邦豆</span>
+                  </div>
+                  <div class="card-right-left-middle" v-if="item.validityType === 1">
+                    {{ getTime(item.validityStartTime) }}-{{ getTime(item.validityEndTime) }}
                   </div>
                   <div class="card-right-left-bottom-sygz" @click="collapse(`tabcouponDesc1${cIndex}`)">
                     使用规则
@@ -100,12 +100,12 @@
                   <div class="card-right-left-top">
                     {{ item.couponTitle }}
                   </div>
-                  <div class="card-right-left-middle" v-if="item.validityType === 1">
-                    {{ getTime(item.validityStartTime) }}-{{ getTime(item.validityEndTime) }}
-                  </div>
                   <div class="card-right-left-bottom">
                     <span class="card-right-left-bottom-left">{{ item.integrealCount }}</span>
                     <span class="card-right-left-bottom-right">邦豆</span>
+                  </div>
+                  <div class="card-right-left-middle" v-if="item.validityType === 1">
+                    {{ getTime(item.validityStartTime) }}-{{ getTime(item.validityEndTime) }}
                   </div>
                   <div class="card-right-left-bottom-sygz" @click="collapse(`tabcouponDesc2${cIndex}`)">
                     使用规则
@@ -451,7 +451,7 @@ export default {
 
             .exchange-card-left {
               width: 101px;
-              height: 110px;
+              height: 97px;
               background-image: url('../../assets/img/coupons/red_card.png');
               background-repeat: no-repeat;
               background-position: center center;
@@ -494,7 +494,7 @@ export default {
 
             .exchange-card-right {
               flex: 1;
-              height: 110px;
+              height: 97px;
               background-color: #fff;
               display: flex;
               flex-direction: row;
@@ -532,7 +532,7 @@ export default {
                 }
 
                 .card-right-left-middle {
-                  //padding-top: 4px;
+                  padding-top: 5px;
                   font-size: 12px;
                   font-family: PingFangSC-Regular, PingFang SC;
                   font-weight: 400;
@@ -749,7 +749,7 @@ export default {
               }
 
               .card-right-left-middle {
-                //padding-top: 4px;
+                padding-top: 5px;
                 font-size: 12px;
                 font-family: PingFangSC-Regular, PingFang SC;
                 font-weight: 400;
