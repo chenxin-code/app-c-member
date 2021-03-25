@@ -43,8 +43,7 @@
             <div
               class="card-right-left-bottom-2"
               :class="{ wi2: v.monthGetDay < 10, wi3: v.monthGetDay >= 10 }"
-              v-if="v.monthGetDay"
-            >
+              v-if="v.monthGetDay">
               每月{{ v.monthGetDay }}日领取
             </div>
             <div class="card-right-left-bottom-2 wi1" v-else-if="v.weekGetDay">
@@ -57,59 +56,52 @@
           </div>
           <div class="exchange-card-right-right" :class="getPageClass(levelId)">
             <template>
-              <div class="aaaaa" v-if="v.condition !== 1">
-                <span class="aaaaa-left">{{ v.integrealCount }}</span>
-                <span class="aaaaa-right">邦豆</span>
+              <div class="bd-box" v-if="v.condition !== 1">
+                <span class="bd-box-left">{{ v.integrealCount }}</span>
+                <span class="bd-box-right">邦豆</span>
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
                 @click="getCoupon(v)"
-                v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse"
-              >
+                v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse">
                 立即领取
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
                 :class="{ ineffective: !v.effective }"
                 @click="useCoupon(v)"
-                v-else-if="v.isPeriodic === 0 && v.condition === 1 && v.goUse"
-              >
+                v-else-if="v.isPeriodic === 0 && v.condition === 1 && v.goUse">
                 去使用
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
                 @click="exchangeBD(v)"
-                v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse"
-              >
+                v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse">
                 邦豆兑换
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
                 :class="{ ineffective: !v.effective }"
                 @click="useCoupon(v)"
-                v-else-if="v.isPeriodic === 0 && v.condition === 3 && v.goUse"
-              >
+                v-else-if="v.isPeriodic === 0 && v.condition === 3 && v.goUse">
                 去使用
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
                 @click="getCoupon(v)"
-                v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay, v.weekGetDay) && !v.goUse"
-              >
+                v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay, v.weekGetDay) && !v.goUse">
                 立即领取
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
                 :class="{ ineffective: !v.effective }"
                 @click="useCoupon(v)"
-                v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay, v.weekGetDay) && v.goUse"
-              >
+                v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay, v.weekGetDay) && v.goUse">
                 去使用
               </div>
               <div
                 class="exchange-card-right-bottom-btn kongxin"
-                v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay, v.weekGetDay)"
-              >
+                v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay, v.weekGetDay)">
                 未生效
               </div>
             </template>
@@ -175,7 +167,6 @@
         <td>无</td>
       </tr>
     </table>
-
     <p class="title">特权说明</p>
     <div class="descr">
       1、普通会员、铜牌会员专项此特权，每月可领取一次（限每个月1号、10号、20号至当月末可分批领取）；领取的券包以活动页面信息为准，券包会不定期调整，领取后请在有效期内使用，过期未使用将不再补发改券包；
@@ -300,12 +291,10 @@ export default {
     },
     //立即领取
     getCoupon(data) {
-      api
-        .getReceiveCoupon({
+      api.getReceiveCoupon({
           couActivitiesId: data.id,
           memberId: this.memberId
-        })
-        .then(res => {
+        }).then(res => {
           if (res.code === 200) {
             // 该券
             const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
@@ -361,20 +350,16 @@ export default {
           }
           const rest = +res.data.integral - +data.integrealCount;
           this.$toast.clear();
-          this.$dialog
-            .confirm({
+          this.$dialog.confirm({
               title: '确认兑换',
               message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
-            })
-            .then(() => {
+            }).then(() => {
               //this.toast();
-              api
-                .getReceiveCoupon({
+              api.getReceiveCoupon({
                   couActivitiesId: data.id,
                   memberId: this.memberId,
                   integral: data.integrealCount
-                })
-                .then(res => {
+                }).then(res => {
                   if (res.code === 200) {
                     // 该券当前人
                     const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
@@ -480,16 +465,14 @@ export default {
         forbidClick: true,
         message: '加载中...'
       });
-      api
-        .queryReceiveCouponList({
+      api.queryReceiveCouponList({
           memberId: this.memberId,
           pageIndex: 1,
           pageSize: 9999,
           activityType: 2, //会员权益
           businessType: 0,
           condition: 0
-        })
-        .then(res => {
+        }).then(res => {
           //模拟数据
           // let res = {
           //   "code":200,
@@ -545,8 +528,7 @@ export default {
             return item;
           });
           this.cardList = cardList;
-        })
-        .finally(() => {
+        }).finally(() => {
           this.loading = false;
         });
     },
@@ -767,9 +749,9 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        .aaaaa {
+        .bd-box {
           //align-self: flex-start;
-          .aaaaa-left {
+          .bd-box-left {
             padding-right: 4px;
             height: 20px;
             font-size: 20px;
@@ -777,7 +759,7 @@ export default {
             font-weight: 500;
             line-height: 20px;
           }
-          .aaaaa-right {
+          .bd-box-right {
             height: 14px;
             font-size: 14px;
             font-family: PingFangSC-Medium, PingFang SC;
@@ -892,9 +874,9 @@ export default {
         }
       }
       .exchange-card-right-right {
-        .aaaaa {
-          .aaaaa-left,
-          .aaaaa-right {
+        .bd-box {
+          .bd-box-left,
+          .bd-box-right {
             color: #989ebd;
           }
         }
@@ -913,9 +895,9 @@ export default {
         }
       }
       .exchange-card-right-right {
-        .aaaaa {
-          .aaaaa-left,
-          .aaaaa-right {
+        .bd-box {
+          .bd-box-left,
+          .bd-box-right {
             color: #b5561a;
           }
         }
@@ -934,9 +916,9 @@ export default {
         }
       }
       .exchange-card-right-right {
-        .aaaaa {
-          .aaaaa-left,
-          .aaaaa-right {
+        .bd-box {
+          .bd-box-left,
+          .bd-box-right {
             color: #8d8d8d;
           }
         }
@@ -955,9 +937,9 @@ export default {
         }
       }
       .exchange-card-right-right {
-        .aaaaa {
-          .aaaaa-left,
-          .aaaaa-right {
+        .bd-box {
+          .bd-box-left,
+          .bd-box-right {
             color: #f7bf65;
           }
         }
@@ -976,9 +958,9 @@ export default {
         }
       }
       .exchange-card-right-right {
-        .aaaaa {
-          .aaaaa-left,
-          .aaaaa-right {
+        .bd-box {
+          .bd-box-left,
+          .bd-box-right {
             color: #7f88a7;
           }
         }
