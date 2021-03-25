@@ -552,11 +552,23 @@ export default {
             }
             .bangdou-exchange-card.row-reverse {
               flex-flow: row-reverse;
+              flex-wrap: wrap;
               .exchange-card-right {
                 flex-flow: row-reverse;
               }
               .card-left-top-num {
                 font-weight: 600;
+              }
+              .exchange-card-right-right {
+                // padding-right: 12px;
+                align-items: flex-end;
+                flex-direction: column;
+              }
+              .exchange-card-left-btn {
+                display: flex;
+              }
+              .exchange-card-right-left {
+                padding-left: 12px;
               }
             }
             .bangdou-exchange-card.shopping {
