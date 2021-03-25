@@ -454,13 +454,13 @@ export default {
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: stretch;
-                padding: 12px;
+                padding: 5px 12px;
                 // padding-left: 12px;
 
                 .exchange-card-right-left {
                   flex: 1;
                   display: flex;
-                  padding-top: 12px;
+                  padding: 5px 7px 0 5px;
                   flex-direction: column;
                   justify-content: flex-start;
                   align-items: stretch;
@@ -490,8 +490,8 @@ export default {
                     width: 100%;
                   }
                   .card-right-left-bottom {
-                    padding-top: 10px;
-                    padding-bottom: 10px;
+                    margin-top: 5px;
+                    padding: 2px 0;
                     font-size: 10px;
                     font-family: PingFangSC-Regular, PingFang SC;
                     font-weight: 400;

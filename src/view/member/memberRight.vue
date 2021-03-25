@@ -40,14 +40,11 @@
               <!--领取后{{v.takeEffectDayNums}}天内有效-->
               {{ getTime(v.validityStartTime) }}-{{ getTime(v.validityEndTime) }}
             </div>
-            <div
-              class="card-right-left-bottom-2"
-              :class="{ wi2: v.monthGetDay < 10, wi3: v.monthGetDay >= 10 }"
-              v-if="v.monthGetDay">
-              每月{{ v.monthGetDay }}日领取
+            <div class="card-right-left-bottom-2" v-if="v.monthGetDay">
+              <span>每月{{ v.monthGetDay }}日领取</span>
             </div>
-            <div class="card-right-left-bottom-2 wi1" v-else-if="v.weekGetDay">
-              每周{{ parseWeek(v.weekGetDay) }}领取
+            <div class="card-right-left-bottom-2" v-else-if="v.weekGetDay">
+              <span>每周{{ parseWeek(v.weekGetDay) }}领取</span>
             </div>
             <div class="card-right-left-bottom" @click="collapse(`tabcouponDesc${k}`)">
               使用规则
@@ -472,45 +469,45 @@ export default {
           activityType: 2, //会员权益
           businessType: 0,
           condition: 0
-        }).then(res => {
+        }).then(res1 => {
           //模拟数据
-          // let res = {
-          //   "code":200,
-          //   "data":[
-          //     {
-          //       "activity":"4014",
-          //       "activityMemo":"",
-          //       "cost":"",
-          //       "couTypeCode":"20WY000236",
-          //       "couponStatus":0,
-          //       "couponSubhead":"相对满减1元001",
-          //       "couponTitle":"相对满减1元001",
-          //       "couponType":20,
-          //       "discountMaxDeduction":"",
-          //       "discountRatio":"0.9",
-          //       "faceAmount":"0.9",
-          //       "id":2372760729989154407,
-          //       "image":"",
-          //       "integrealCount":0,
-          //       "memo":"",
-          //       "operator":"",
-          //       "receiveCondition":"",
-          //       "receiveConditionRule":"",
-          //       "releaseCount":44,
-          //       "releaseForm":"",
-          //       "releaseRule":"",
-          //       "releaseType":"",
-          //       "satisfyAmount":"1.0",
-          //       "takeEffectDayNums":1,
-          //       "validityDayNums":1,
-          //       "isPeriodic":0,
-          //       "condition": 1,
-          //       "monthGetDay": 10,
-          //       "weekGetDay": 1
-          //     },
-          //   ],
-          //   "message":"success"
-          // };
+          let res = {
+            "code":200,
+            "data":[
+              {
+                "activity":"4014",
+                "activityMemo":"",
+                "cost":"",
+                "couTypeCode":"20WY000236",
+                "couponStatus":0,
+                "couponSubhead":"相对满减1元001",
+                "couponTitle":"相对满减1元001",
+                "couponType":20,
+                "discountMaxDeduction":"",
+                "discountRatio":"0.9",
+                "faceAmount":"0.9",
+                "id":2372760729989154407,
+                "image":"",
+                "integrealCount":0,
+                "memo":"",
+                "operator":"",
+                "receiveCondition":"",
+                "receiveConditionRule":"",
+                "releaseCount":44,
+                "releaseForm":"",
+                "releaseRule":"",
+                "releaseType":"",
+                "satisfyAmount":"1.0",
+                "takeEffectDayNums":1,
+                "validityDayNums":1,
+                "isPeriodic":0,
+                "condition": 1,
+                "monthGetDay": 10,
+                "weekGetDay": 1
+              },
+            ],
+            "message":"success"
+          };
           if (res.code === 200) {
             this.$toast.clear();
           }
@@ -676,10 +673,11 @@ export default {
         padding: 5px 7px 0 5px;
         display: flex;
         flex-direction: column;
-        // flex-flow: row wrap;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
         justify-content: flex-start;
         align-items: stretch;
-        //flex-flow: row wrap;
+        flex-flow: row wrap;
         .card-right-left-top {
           //flex: 50%;
           //margin-bottom: 3px;
@@ -696,6 +694,7 @@ export default {
           line-clamp: 2;
           -webkit-box-orient: vertical;
           white-space: normal;
+          align-self: flex-start;
         }
         .card-right-left-middle {
           //padding-top: 4px;
@@ -733,15 +732,12 @@ export default {
           padding: 3px 2px;
           display: inline;
           border-radius: 3px;
-        }
-        .card-right-left-bottom-2.wi1 {
-          width: 61px;
-        }
-        .card-right-left-bottom-2.wi2 {
-          width: 66px;
-        }
-        .card-right-left-bottom-2.wi3 {
-          width: 71px;
+          align-self: center;
+          width: 100%;
+          > span {
+            padding: 3px 4px;
+            border-radius: 3px;
+          }
         }
       }
       .exchange-card-right-right {
@@ -869,8 +865,10 @@ export default {
     .exchange-card-right {
       .exchange-card-right-left {
         .card-right-left-bottom-2 {
-          color: #7f86aa;
-          background-color: #f5f5f7;
+          > span {
+            color: #7f86aa;
+            background-color: #f5f5f7;
+          }
         }
       }
       .exchange-card-right-right {
@@ -890,8 +888,10 @@ export default {
     .exchange-card-right {
       .exchange-card-right-left {
         .card-right-left-bottom-2 {
-          color: #b5561a;
-          background-color: #f5f5f7;
+          > span {
+            color: #b5561a;
+            background-color: #f5f5f7;
+          }
         }
       }
       .exchange-card-right-right {
@@ -911,8 +911,10 @@ export default {
     .exchange-card-right {
       .exchange-card-right-left {
         .card-right-left-bottom-2 {
-          color: #8d8d8d;
-          background-color: #f5f5f7;
+          > span {
+            color: #8d8d8d;
+            background-color: #f5f5f7;
+          }
         }
       }
       .exchange-card-right-right {
@@ -932,8 +934,10 @@ export default {
     .exchange-card-right {
       .exchange-card-right-left {
         .card-right-left-bottom-2 {
-          color: #f7bf65;
-          background-color: #f5f5f7;
+          > span {
+            color: #f7bf65;
+            background-color: #f5f5f7;
+          }
         }
       }
       .exchange-card-right-right {
@@ -953,8 +957,10 @@ export default {
     .exchange-card-right {
       .exchange-card-right-left {
         .card-right-left-bottom-2 {
-          color: #7f86aa;
-          background-color: #f5f5f7;
+          > span {
+            color: #7f86aa;
+            background-color: #f5f5f7;
+          }
         }
       }
       .exchange-card-right-right {
