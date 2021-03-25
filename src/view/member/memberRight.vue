@@ -30,9 +30,7 @@
         </div>
         <div class="exchange-card-item exchange-card-right">
           <div class="exchange-card-right-left">
-            <div class="card-right-left-top">
-              {{ v.couponTitle }}
-            </div>
+            <div class="card-right-left-top">{{v.couponTitle}}</div>
             <!--<div class="card-right-left-middle">
               {{ getTime(v.validityStartTime) }}-{{ getTime(v.validityEndTime) }}
             </div>-->
@@ -702,7 +700,7 @@ export default {
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 400;
           color: #8d8d8d;
-          align-self: flex-end;
+          align-self: flex-start;
           line-height: 1;
           width: 100%;
         }
@@ -722,7 +720,7 @@ export default {
           font-size: 12px;
           font-weight: 500;
           line-height: 12px;
-          margin-top: 5px;
+          //margin-top: 5px;
         }
         .card-right-left-bottom-2 {
           font-size: 11px;
