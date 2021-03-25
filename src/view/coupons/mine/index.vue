@@ -335,20 +335,17 @@ export default {
     },
     getUserInfo() {
       api.getUserInfo().then(res => {
-        console.log('getUserInfo------------->', res);
-        this.userInfo = res.data || {};
-        if (this.userInfo.phoneAreaCode && this.userInfo.phone) {
-          api
-            .userPhoneQuery({
-              areaCode: this.userInfo.phoneAreaCode,
-              phone: this.userInfo.phone
-            })
-            .then(res2 => {
-              console.log('userPhoneQuery------------->', res2);
-              if (res2.code === 200) {
-                this.userInfo = Object.assign({}, this.userInfo, { cardNo: res2.data.cardNo });
+        if (res.code == 200) {
+          this.userInfo = res.data;
+          if(res.data.id){
+            api.getUserCardNo({
+              id: res.data.id
+            }).then(res2 => {
+              if (res2.data) {
+                this.userInfo.cardNo = res2.data.cardNo;
               }
             });
+          }
         }
       });
     },

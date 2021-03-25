@@ -38,5 +38,5 @@ export default {
   GETCUSTOMUSER: option.c_user + '/api-c/v1/customer-room/customer',//获取当前人的人房关系ID
   CAMILO_EXCHANGE_DETAIL:'/times/member-bff/member/api-c/v1/member/selectCamilo',//卡密对应的优惠卷详情展示
   CAMILO_EXCHANGE:'/times/member-bff/member/api-c/v1/member/exchangeCamilo',//卡密确认兑换
-  USER_PHONE_QUERY: '/times/isv-bff/common/api-isv/v1/user/v1/user/phone/query',//号码查身份证
+  GET_USER_CARDNO: option.c_user + '/api-c/v1/user/id/query',//查身份证
 }
