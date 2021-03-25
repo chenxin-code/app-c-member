@@ -467,45 +467,45 @@ export default {
           activityType: 2, //会员权益
           businessType: 0,
           condition: 0
-        }).then(res1 => {
+        }).then(res => {
           //模拟数据
-          let res = {
-            "code":200,
-            "data":[
-              {
-                "activity":"4014",
-                "activityMemo":"",
-                "cost":"",
-                "couTypeCode":"20WY000236",
-                "couponStatus":0,
-                "couponSubhead":"相对满减1元001",
-                "couponTitle":"相对满减1元001",
-                "couponType":20,
-                "discountMaxDeduction":"",
-                "discountRatio":"0.9",
-                "faceAmount":"0.9",
-                "id":2372760729989154407,
-                "image":"",
-                "integrealCount":0,
-                "memo":"",
-                "operator":"",
-                "receiveCondition":"",
-                "receiveConditionRule":"",
-                "releaseCount":44,
-                "releaseForm":"",
-                "releaseRule":"",
-                "releaseType":"",
-                "satisfyAmount":"1.0",
-                "takeEffectDayNums":1,
-                "validityDayNums":1,
-                "isPeriodic":0,
-                "condition": 1,
-                "monthGetDay": 10,
-                "weekGetDay": 1
-              },
-            ],
-            "message":"success"
-          };
+          // let res = {
+          //   "code":200,
+          //   "data":[
+          //     {
+          //       "activity":"4014",
+          //       "activityMemo":"",
+          //       "cost":"",
+          //       "couTypeCode":"20WY000236",
+          //       "couponStatus":0,
+          //       "couponSubhead":"相对满减1元001",
+          //       "couponTitle":"相对满减1元001",
+          //       "couponType":20,
+          //       "discountMaxDeduction":"",
+          //       "discountRatio":"0.9",
+          //       "faceAmount":"0.9",
+          //       "id":2372760729989154407,
+          //       "image":"",
+          //       "integrealCount":0,
+          //       "memo":"",
+          //       "operator":"",
+          //       "receiveCondition":"",
+          //       "receiveConditionRule":"",
+          //       "releaseCount":44,
+          //       "releaseForm":"",
+          //       "releaseRule":"",
+          //       "releaseType":"",
+          //       "satisfyAmount":"1.0",
+          //       "takeEffectDayNums":1,
+          //       "validityDayNums":1,
+          //       "isPeriodic":0,
+          //       "condition": 1,
+          //       "monthGetDay": 10,
+          //       "weekGetDay": 1
+          //     },
+          //   ],
+          //   "message":"success"
+          // };
           if (res.code === 200) {
             this.$toast.clear();
           }
