@@ -30,7 +30,7 @@
         </div>
         <div class="exchange-card-item exchange-card-right">
           <div class="exchange-card-right-left">
-            <div class="card-right-left-top">{{v.couponTitle}}</div>
+            <div class="card-right-left-top">{{ v.couponTitle }}</div>
             <!--<div class="card-right-left-middle">
               {{ getTime(v.validityStartTime) }}-{{ getTime(v.validityEndTime) }}
             </div>-->
@@ -58,45 +58,52 @@
               <div
                 class="exchange-card-right-bottom-btn"
                 @click="getCoupon(v)"
-                v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse">
+                v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse"
+              >
                 立即领取
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
                 :class="{ ineffective: !v.effective }"
                 @click="useCoupon(v)"
-                v-else-if="v.isPeriodic === 0 && v.condition === 1 && v.goUse">
+                v-else-if="v.isPeriodic === 0 && v.condition === 1 && v.goUse"
+              >
                 去使用
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
                 @click="exchangeBD(v)"
-                v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse">
+                v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse"
+              >
                 邦豆兑换
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
                 :class="{ ineffective: !v.effective }"
                 @click="useCoupon(v)"
-                v-else-if="v.isPeriodic === 0 && v.condition === 3 && v.goUse">
+                v-else-if="v.isPeriodic === 0 && v.condition === 3 && v.goUse"
+              >
                 去使用
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
                 @click="getCoupon(v)"
-                v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay, v.weekGetDay) && !v.goUse">
+                v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay, v.weekGetDay) && !v.goUse"
+              >
                 立即领取
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
                 :class="{ ineffective: !v.effective }"
                 @click="useCoupon(v)"
-                v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay, v.weekGetDay) && v.goUse">
+                v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay, v.weekGetDay) && v.goUse"
+              >
                 去使用
               </div>
               <div
                 class="exchange-card-right-bottom-btn kongxin"
-                v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay, v.weekGetDay)">
+                v-else-if="v.isPeriodic === 1 && !checkTimeOK(v.monthGetDay, v.weekGetDay)"
+              >
                 未生效
               </div>
             </template>
@@ -162,6 +169,7 @@
         <td>无</td>
       </tr>
     </table>
+
     <p class="title">特权说明</p>
     <div class="descr">
       1、普通会员、铜牌会员专项此特权，每月可领取一次（限每个月1号、10号、20号至当月末可分批领取）；领取的券包以活动页面信息为准，券包会不定期调整，领取后请在有效期内使用，过期未使用将不再补发改券包；
@@ -239,7 +247,7 @@ export default {
     },
     getUserInfo() {
       api.getUserInfo().then(res => {
-        console.log('getUserInfo------------->',res);
+        console.log('getUserInfo------------->', res);
         this.userInfo = res.data || {};
       });
     },
@@ -286,10 +294,12 @@ export default {
     },
     //立即领取
     getCoupon(data) {
-      api.getReceiveCoupon({
+      api
+        .getReceiveCoupon({
           couActivitiesId: data.id,
           memberId: this.memberId
-        }).then(res => {
+        })
+        .then(res => {
           if (res.code === 200) {
             // 该券
             const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
@@ -345,16 +355,20 @@ export default {
           }
           const rest = +res.data.integral - +data.integrealCount;
           this.$toast.clear();
-          this.$dialog.confirm({
+          this.$dialog
+            .confirm({
               title: '确认兑换',
               message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
-            }).then(() => {
+            })
+            .then(() => {
               //this.toast();
-              api.getReceiveCoupon({
+              api
+                .getReceiveCoupon({
                   couActivitiesId: data.id,
                   memberId: this.memberId,
                   integral: data.integrealCount
-                }).then(res => {
+                })
+                .then(res => {
                   if (res.code === 200) {
                     // 该券当前人
                     const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
@@ -414,10 +428,10 @@ export default {
         } else {
           return false;
         }
-      }else if(!monthGetDay && !weekGetDay){
-        return true
-      }else{
-        return false
+      } else if (!monthGetDay && !weekGetDay) {
+        return true;
+      } else {
+        return false;
       }
     },
     getMemberDetail() {
@@ -460,70 +474,84 @@ export default {
         forbidClick: true,
         message: '加载中...'
       });
-      api.queryReceiveCouponList({
+      api
+        .queryReceiveCouponList({
           memberId: this.memberId,
           pageIndex: 1,
           pageSize: 9999,
           activityType: 2, //会员权益
           businessType: 0,
           condition: 0
-        }).then(res1 => {
+        })
+        .then(res1 => {
           //模拟数据
           let res = {
-            "code":200,
-            "data":[
+            code: 200,
+            data: [
               {
-                "activity":"4014",
-                "activityMemo":"",
-                "cost":"",
-                "couTypeCode":"20WY000236",
-                "couponStatus":0,
-                "couponSubhead":"相对满减1元001",
-                "couponTitle":"相对满减1元001",
-                "couponType":20,
-                "discountMaxDeduction":"",
-                "discountRatio":"0.9",
-                "faceAmount":"0.9",
-                "id":2372760729989154407,
-                "image":"",
-                "integrealCount":0,
-                "memo":"",
-                "operator":"",
-                "receiveCondition":"",
-                "receiveConditionRule":"",
-                "releaseCount":44,
-                "releaseForm":"",
-                "releaseRule":"",
-                "releaseType":"",
-                "satisfyAmount":"1.0",
-                "takeEffectDayNums":1,
-                "validityDayNums":1,
-                "isPeriodic":0,
-                "condition": 1,
-                "monthGetDay": 10,
-                "weekGetDay": 1
-              },
+                activity: '4014',
+                activityMemo: '',
+                cost: '',
+                couTypeCode: '20WY000236',
+                couponStatus: 0,
+                couponSubhead: '相对满减1元001',
+                couponTitle: '相对满减1元001',
+                couponType: 20,
+                discountMaxDeduction: '',
+                discountRatio: '0.9',
+                faceAmount: '0.9',
+                id: 2372760729989154407,
+                image: '',
+                integrealCount: 0,
+                memo: '',
+                operator: '',
+                receiveCondition: '',
+                receiveConditionRule: '',
+                releaseCount: 44,
+                releaseForm: '',
+                releaseRule: '',
+                releaseType: '',
+                satisfyAmount: '1.0',
+                takeEffectDayNums: 1,
+                validityDayNums: 1,
+                isPeriodic: 0,
+                condition: 1,
+                monthGetDay: 10,
+                weekGetDay: 1
+              }
             ],
-            "message":"success"
+            message: 'success'
           };
           if (res.code === 200) {
             this.$toast.clear();
           }
           const data = res.data || [];
           const cardList = [];
-          // let nowTime = new Date();
           let nowTime = moment(Date.now()).format('YYYYMMDD');
           data.map(item => {
-            // const stareTime = new Date(+item.validityStartTime);
-            // const endTime = new Date(+item.validityEndTime);
-            const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
-            const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
-            item.effective = nowTime >= stareTime && nowTime <= endTime;
-            cardList.push(item);
-            return item;
+            if (item.validityType === 1) {
+              const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
+              const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
+              if (nowTime >= stareTime && nowTime <= endTime) {
+                item.effective = true;
+              } else {
+                item.effective = false;
+              }
+              cardList.push(item);
+              return item;
+            } else if (item.validityType === 3) {
+              if (item.takeEffectDayNums === 0) {
+                item.effective = true;
+              } else if (item.takeEffectDayNums > 0) {
+                item.effective = false;
+              }
+              cardList.push(item);
+              return item;
+            }
           });
           this.cardList = cardList;
-        }).finally(() => {
+        })
+        .finally(() => {
           this.loading = false;
         });
     },

@@ -242,26 +242,39 @@ export default {
           const data = res.data || [];
           const propertyList = [];
           const vouchersList = [];
-          // let nowTime = new Date();
           let nowTime = moment(Date.now()).format('YYYYMMDD');
           data.map(item => {
-            // const stareTime = new Date(+item.validityStartTime);
-            // const endTime = new Date(+item.validityEndTime);
-            const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
-            const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
-            if (nowTime >= stareTime && nowTime <= endTime) {
-              item.effective = true;
-            } else {
-              item.effective = false;
-            }
-            // 物业
-            if (item.activity == '4014') {
-              propertyList.push(item);
-            } else if (item.activity == '4005') {
+            if (item.validityType === 1) {
+              const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
+              const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
+              if (nowTime >= stareTime && nowTime <= endTime) {
+                item.effective = true;
+              } else {
+                item.effective = false;
+              }
+              // 物业
+              if (item.activity == '4014') {
+                propertyList.push(item);
+              } else if (item.activity == '4005') {
               // 购物券
-              vouchersList.push(item);
+                vouchersList.push(item);
+              }
+              return item;
+            } else if (item.validityType === 3) {
+              if (item.takeEffectDayNums === 0) {
+                item.effective = true;
+              } else if (item.takeEffectDayNums > 0) {
+                item.effective = false;
+              }
+              // 物业
+              if (item.activity == '4014') {
+                propertyList.push(item);
+              } else if (item.activity == '4005') {
+              // 购物券
+                vouchersList.push(item);
+              }
+              return item;
             }
-            return item;
           });
           propertyList.length && (this.propertyList = propertyList);
           vouchersList.length && (this.vouchersList = vouchersList);
