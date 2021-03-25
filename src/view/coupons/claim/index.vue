@@ -315,8 +315,8 @@ export default {
             let nowTime = moment(Date.now()).format('YYYYMMDD');
             // 是否在有效期
             list.map(item => {
-              console.log('item.validityStartTime :>> ', item.validityStartTime);
-              console.log('item.validityEndTime :>> ', item.validityEndTime);
+              // console.log('item.validityStartTime :>> ', item.validityStartTime);
+              // console.log('item.validityEndTime :>> ', item.validityEndTime);
               const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
               const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
               if (nowTime >= stareTime && nowTime <= endTime) {

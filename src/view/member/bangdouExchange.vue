@@ -242,10 +242,13 @@ export default {
           const data = res.data || [];
           const propertyList = [];
           const vouchersList = [];
-          let nowTime = new Date();
+          // let nowTime = new Date();
+          let nowTime = moment(Date.now()).format('YYYYMMDD');
           data.map(item => {
-            const stareTime = new Date(+item.validityStartTime);
-            const endTime = new Date(+item.validityEndTime);
+            // const stareTime = new Date(+item.validityStartTime);
+            // const endTime = new Date(+item.validityEndTime);
+            const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
+            const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
             if (nowTime >= stareTime && nowTime <= endTime) {
               item.effective = true;
             } else {
