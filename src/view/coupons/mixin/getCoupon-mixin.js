@@ -34,6 +34,7 @@ export default {
     },
     useCoupon(data) {
       if (!data.effective) {
+        this.$toast('该卡券未在使用期限内～');
         return false;
       }
       if (data.activity === '4014') {
