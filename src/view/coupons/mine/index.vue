@@ -337,14 +337,16 @@ export default {
       api.getUserInfo().then(res => {
         if (res.code == 200) {
           this.userInfo = res.data;
-          if(res.data.id){
-            api.getUserCardNo({
-              id: res.data.id
-            }).then(res2 => {
-              if (res2.data) {
-                this.userInfo.cardNo = res2.data.cardNo;
-              }
-            });
+          if (res.data.id) {
+            api
+              .getUserCardNo({
+                id: res.data.id
+              })
+              .then(res2 => {
+                if (res2.data) {
+                  this.userInfo.cardNo = res2.data.cardNo;
+                }
+              });
           }
         }
       });
@@ -371,23 +373,14 @@ export default {
             let nowTime = moment(Date.now()).format('YYYYMMDD');
             // 是否在有效期
             list.map(item => {
-              if (item.validityType === 1) {
-                const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
-                const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
-                if (nowTime >= stareTime && nowTime <= endTime) {
-                  item.effective = true;
-                } else {
-                  item.effective = false;
-                }
-                return item;
-              } else if (item.validityType === 3) {
-                if (item.takeEffectDayNums === 0) {
-                  item.effective = true;
-                } else if (item.takeEffectDayNums > 0) {
-                  item.effective = false;
-                }
-                return item;
+              const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
+              const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
+              if (nowTime >= stareTime && nowTime <= endTime) {
+                item.effective = true;
+              } else {
+                item.effective = false;
               }
+              return item;
             });
             this.list[tabIndex] = params.pageIndex === 1 ? list : _.concat(this.list[tabIndex], list);
             list.length < params.pageSize && (this.canLoadMore[tabIndex] = false);
