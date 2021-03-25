@@ -45,8 +45,11 @@
       v-model="isSuccessShow"
       title="兑换成功"
       :message="`有效期: ${confirmTime}`"
-      confirmButtonText="关闭"
-      @confirm="isSuccessShow = false"
+      confirmButtonText="返回卡包"
+      @confirm="
+        isSuccessShow = false;
+        $routerHelper.back();
+      "
     ></van-dialog>
 
     <van-dialog

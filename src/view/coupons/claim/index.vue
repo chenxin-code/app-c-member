@@ -315,19 +315,25 @@ export default {
             let nowTime = moment(Date.now()).format('YYYYMMDD');
             // 是否在有效期
             list.map(item => {
-              // console.log('item.validityStartTime :>> ', item.validityStartTime);
-              // console.log('item.validityEndTime :>> ', item.validityEndTime);
-              const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
-              const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
-              if (nowTime >= stareTime && nowTime <= endTime) {
-                item.effective = true;
-              } else {
-                item.effective = false;
+              if (item.validityType === 1) {
+                const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
+                const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
+                if (nowTime >= stareTime && nowTime <= endTime) {
+                  item.effective = true;
+                } else {
+                  item.effective = false;
+                }
+                return item;
+              } else if (item.validityType === 3) {
+                if (item.takeEffectDayNums === 0) {
+                  item.effective = true;
+                } else if (item.takeEffectDayNums > 0) {
+                  item.effective = false;
+                }
+                return item;
               }
-              // console.log('queryReceiveCouponList item :>> ', item);
-              return item;
             });
-            // console.log('queryReceiveCouponList list :>> ', list);
+            console.log('queryReceiveCouponList list :>> ', list);
             this.list[tabIndex] = params.pageIndex === 1 ? list : _.concat(this.list[tabIndex], list);
             list.length < params.pageSize && (this.canLoadMore[tabIndex] = false);
             this.total[tabIndex] = (res.data && res.data.total) || 0;
