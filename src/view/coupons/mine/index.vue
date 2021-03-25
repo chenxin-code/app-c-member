@@ -201,12 +201,12 @@ export default {
       titleFontName: 'PingFangSC-Medium'
     });
     nav.setNavRightBtn({
-      title: "兑换优惠券",
-      titleColor: "#000000",
+      title: '兑换优惠券',
+      titleColor: '#000000',
       titleSize: 16,
-      iconSize: ["20", "20"],
+      iconSize: ['20', '20'],
       __event__: () => {
-        this.$routeHelper.router(this, "/exchangeCoupon", null, true);
+        this.$routeHelper.router(this, '/exchangeCoupon', null, true);
       }
     });
   },
@@ -335,15 +335,20 @@ export default {
     },
     getUserInfo() {
       api.getUserInfo().then(res => {
-        if (res.code == 200) {
-          this.userInfo = res.data;
-          api.getUserCardNo({
-            id: res.data.id
-          }).then(res2 => {
-            if (res2.data) {
-              this.userInfo.cardNo = res2.data.cardNo;
-            }
-          });
+        console.log('getUserInfo------------->', res);
+        this.userInfo = res.data || {};
+        if (this.userInfo.phoneAreaCode && this.userInfo.phone) {
+          api
+            .userPhoneQuery({
+              areaCode: this.userInfo.phoneAreaCode,
+              phone: this.userInfo.phone
+            })
+            .then(res2 => {
+              console.log('userPhoneQuery------------->', res2);
+              if (res2.code === 200) {
+                this.userInfo = Object.assign({}, this.userInfo, { cardNo: res2.data.cardNo });
+              }
+            });
         }
       });
     },
@@ -366,20 +371,26 @@ export default {
             this.$toast.clear();
             let list = [];
             res.data && (list = res.data.records || []);
-            //let nowTime = new Date();
             let nowTime = moment(Date.now()).format('YYYYMMDD');
             // 是否在有效期
             list.map(item => {
-              //const stareTime = new Date(+item.validityStartTime);
-              //const endTime = new Date(+item.validityEndTime);
-              const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
-              const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
-              if (nowTime >= stareTime && nowTime <= endTime) {
-                item.effective = true;
-              } else {
-                item.effective = false;
+              if (item.validityType === 1) {
+                const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
+                const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
+                if (nowTime >= stareTime && nowTime <= endTime) {
+                  item.effective = true;
+                } else {
+                  item.effective = false;
+                }
+                return item;
+              } else if (item.validityType === 3) {
+                if (item.takeEffectDayNums === 0) {
+                  item.effective = true;
+                } else if (item.takeEffectDayNums > 0) {
+                  item.effective = false;
+                }
+                return item;
               }
-              return item;
             });
             this.list[tabIndex] = params.pageIndex === 1 ? list : _.concat(this.list[tabIndex], list);
             list.length < params.pageSize && (this.canLoadMore[tabIndex] = false);
@@ -410,9 +421,9 @@ export default {
         uri = 'http://apiv3.linli580.com';
       }
       let cardNo;
-      if(this.userInfo.cardNo){
+      if (this.userInfo.cardNo) {
         cardNo = this.userInfo.cardNo;
-      }else{
+      } else {
         cardNo = '';
       }
       const url = `${uri}/coupon/?phone=${this.userInfo.phone}&id_card=${cardNo}&type=1`;

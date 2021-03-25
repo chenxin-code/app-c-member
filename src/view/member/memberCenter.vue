@@ -45,15 +45,37 @@
             </div>
             <div class="leveLogo-body">
               <div class="leveLogo"></div>
-              <div class="member-right"
-                   :class="getPageClass(memberObject == null ? '' : memberObject.memberCardRelats[0].levelId)"
-                   @click="toMemberRight()">
+              <div
+                class="member-right"
+                :class="getPageClass(memberObject == null ? '' : memberObject.memberCardRelats[0].levelId)"
+                @click="toMemberRight()"
+              >
                 会员权益
-                <img :src="require('./../../assets/img/member/to-member-right-lv1.png')" alt="" v-if="memberObject.memberCardRelats[0].levelId === 1" />
-                <img :src="require('./../../assets/img/member/to-member-right-lv2.png')" alt="" v-else-if="memberObject.memberCardRelats[0].levelId === 2" />
-                <img :src="require('./../../assets/img/member/to-member-right-lv3.png')" alt="" v-else-if="memberObject.memberCardRelats[0].levelId === 3" />
-                <img :src="require('./../../assets/img/member/to-member-right-lv4.png')" alt="" v-else-if="memberObject.memberCardRelats[0].levelId === 4" />
-                <img :src="require('./../../assets/img/member/to-member-right-lv5.png')" alt="" v-else-if="memberObject.memberCardRelats[0].levelId === 5" />
+                <img
+                  :src="require('./../../assets/img/member/to-member-right-lv1.png')"
+                  alt=""
+                  v-if="memberObject.memberCardRelats[0].levelId === 1"
+                />
+                <img
+                  :src="require('./../../assets/img/member/to-member-right-lv2.png')"
+                  alt=""
+                  v-else-if="memberObject.memberCardRelats[0].levelId === 2"
+                />
+                <img
+                  :src="require('./../../assets/img/member/to-member-right-lv3.png')"
+                  alt=""
+                  v-else-if="memberObject.memberCardRelats[0].levelId === 3"
+                />
+                <img
+                  :src="require('./../../assets/img/member/to-member-right-lv4.png')"
+                  alt=""
+                  v-else-if="memberObject.memberCardRelats[0].levelId === 4"
+                />
+                <img
+                  :src="require('./../../assets/img/member/to-member-right-lv5.png')"
+                  alt=""
+                  v-else-if="memberObject.memberCardRelats[0].levelId === 5"
+                />
               </div>
             </div>
           </div>
@@ -88,7 +110,7 @@
           </div>
           <!-- 邦豆兑换 -->
           <div class="bangdou-exchange">
-          <!-- <div class="bangdou-exchange" v-if="propertyList.length || vouchersList.length"> -->
+            <!-- <div class="bangdou-exchange" v-if="propertyList.length || vouchersList.length"> -->
             <div class="bangdou-exchange-header">
               <div class="exchange-header-title">邦豆兑换</div>
               <div class="exchange-header-seemore" @click="seemoreExchange">
@@ -531,8 +553,8 @@ export default {
       }
       return classTypeName;
     },
-    toMemberRight(){
-      this.$routerHelper.push({path: '/memberRight'})
+    toMemberRight() {
+      this.$routerHelper.push({ path: '/memberRight' });
     },
     pageInitial: function(sourceData) {
       this.classTypeName = '';
@@ -634,31 +656,51 @@ export default {
         const list = res.data || [];
         const propertyList = [];
         const vouchersList = [];
-        //let nowTime = new Date();
         let nowTime = moment(Date.now()).format('YYYYMMDD');
         list.map((item, index) => {
-          //const stareTime = new Date(+item.validityStartTime);
-          //const endTime = new Date(+item.validityEndTime);
-          const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
-          const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
-          if (nowTime >= stareTime && nowTime <= endTime) {
-            item.effective = true;
-          } else {
-            item.effective = false;
+          if (item.validityType === 1) {
+            const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
+            const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
+            if (nowTime >= stareTime && nowTime <= endTime) {
+              item.effective = true;
+            } else {
+              item.effective = false;
+            }
+
+            if (index % 2 === 0) {
+              propertyList.push(item);
+            } else {
+              vouchersList.push(item);
+            }
+            // 物业
+            // if (item.activity == "4014") {
+            //   propertyList.push(item);
+            // } else if (item.activity == "4005") {
+            //   // 购物券
+            //   vouchersList.push(item);
+            // }
+            return item;
+          } else if (item.validityType === 3) {
+            if (item.takeEffectDayNums === 0) {
+              item.effective = true;
+            } else if (item.takeEffectDayNums > 0) {
+              item.effective = false;
+            }
+
+            if (index % 2 === 0) {
+              propertyList.push(item);
+            } else {
+              vouchersList.push(item);
+            }
+            // 物业
+            // if (item.activity == "4014") {
+            //   propertyList.push(item);
+            // } else if (item.activity == "4005") {
+            //   // 购物券
+            //   vouchersList.push(item);
+            // }
+            return item;
           }
-          if (index % 2 === 0) {
-            propertyList.push(item);
-          } else {
-            vouchersList.push(item);
-          }
-          // 物业
-          // if (item.activity == "4014") {
-          //   propertyList.push(item);
-          // } else if (item.activity == "4005") {
-          //   // 购物券
-          //   vouchersList.push(item);
-          // }
-          return item;
         });
         propertyList.length && (this.propertyList = propertyList);
         vouchersList.length && (this.vouchersList = vouchersList);
@@ -911,11 +953,11 @@ export default {
           margin-top: -7px;
         }
         &.Lv1 {
-          color: #7F86AA;
+          color: #7f86aa;
           background-color: #fff;
         }
         &.Lv2 {
-          color: #B5561A;
+          color: #b5561a;
           background-color: #fff;
         }
         &.Lv3 {
@@ -923,12 +965,12 @@ export default {
           background-color: #fff;
         }
         &.Lv4 {
-          color: #B68843;
+          color: #b68843;
           background-color: #fff;
         }
         &.Lv5 {
           color: #121212;
-          background-color: #F1D8B0;
+          background-color: #f1d8b0;
         }
       }
     }
