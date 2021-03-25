@@ -371,7 +371,7 @@ export default {
             let list = [];
             res.data && (list = res.data.records || []);
             let nowTime = moment(Date.now()).format('YYYYMMDD');
-            // 是否在有效期
+            // 是否在有效期: 此处数据来自商城,不需要判断固定有效期和相对有效期
             list.map(item => {
               const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
               const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
