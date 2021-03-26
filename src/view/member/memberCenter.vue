@@ -803,7 +803,7 @@ export default {
 }
 
 .plus-icon1-enter-active {
-  transition: opacity 0;
+  transition: opacity 0s;
 }
 .plus-icon1-enter {
   opacity: 0;
@@ -958,11 +958,11 @@ export default {
         }
         &.Lv2 {
           color: #b5561a;
-          background-color: #fff;
+          background-color: #EEE3DC;
         }
         &.Lv3 {
           color: #434342;
-          background-color: #fff;
+          background-color: #E8E8E8;
         }
         &.Lv4 {
           color: #b68843;
@@ -1142,7 +1142,7 @@ export default {
   }
 
   .cz-number-body {
-    color: #fff;
+    color: #F1D8B0;
   }
   .cz-number {
     background-image: url('../../assets/img/member/icon-chno-l5.png');
@@ -1154,15 +1154,15 @@ export default {
 
   .progressBar {
     .bg {
-      background-color: #fff;
+      background-color: #F1D8B0;
     }
     .progres {
-      background-color: #fff;
+      background-color: #F1D8B0;
     }
   }
 
   .progressBarWord {
-    color: #fff;
+    color: #F1D8B0;
 
     .pbn {
       display: none;

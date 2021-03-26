@@ -124,9 +124,7 @@
           普通会员
         </td>
         <td>
-          每月领
-          <span style="color: deeppink">60元</span>
-          会员礼券
+          每月领<span style="color: #E8374A">60元</span>会员礼券
         </td>
       </tr>
       <tr>
@@ -135,9 +133,7 @@
           铜牌会员
         </td>
         <td>
-          每月领
-          <span style="color: deeppink">330元</span>
-          会员礼券
+          每月领<span style="color: #E8374A">330元</span>会员礼券
         </td>
       </tr>
       <tr>
@@ -165,7 +161,9 @@
     <p class="title">特权说明</p>
     <div class="descr">
       1、普通会员、铜牌会员专项此特权，每月可领取一次（限每个月1号、10号、20号至当月末可分批领取）；领取的券包以活动页面信息为准，券包会不定期调整，领取后请在有效期内使用，过期未使用将不再补发改券包；
+      <div style="height: 15px;"></div>
       2、如存在违规行为（包括但不限于恶意刷单、套取资金、机器作弊、虚假交易等违反诚实信用原则行为），主办方有权拒绝向您发送奖励、撤销相关违规交易、追回已发送的奖励，必要时追究法律责任。
+      <div style="height: 15px;"></div>
     </div>
   </div>
 </template>
@@ -273,6 +271,7 @@ export default {
     useCoupon(data) {
       console.log('去使用--------->', data);
       if (!data.effective) {
+        this.$toast('该卡券未在使用期限内～');
         return false;
       }
       // 4005/购物券 -- 4014/物业券
@@ -425,7 +424,7 @@ export default {
         if (res.code === 200) {
           this.levelId = res.data.memberCardRelats[0].levelId;
           // this.levelId = 1;
-          // this.levelId = 2;
+           //this.levelId = 2;
           // this.levelId = 3;
           // this.levelId = 4;
           // this.levelId = 5;
@@ -825,7 +824,7 @@ export default {
         }
       }
       .exchange-card-right-right.lv5 .exchange-card-right-bottom-btn {
-        background: linear-gradient(to right, #b8c2f3 0%, #262877 100%);
+        background: linear-gradient(to right, #666666 0%, #121212 100%);
         &.kongxin {
           background: #fff;
           color: #7f88a7;
@@ -877,7 +876,7 @@ export default {
         .card-right-left-bottom-2 {
           > span {
             color: #7f86aa;
-            background-color: #f5f5f7;
+            background-color: #F1F2F6;
           }
         }
       }
@@ -900,7 +899,7 @@ export default {
         .card-right-left-bottom-2 {
           > span {
             color: #b5561a;
-            background-color: #f5f5f7;
+            background-color: #F3E3D9;
           }
         }
       }
@@ -923,7 +922,7 @@ export default {
         .card-right-left-bottom-2 {
           > span {
             color: #8d8d8d;
-            background-color: #f5f5f7;
+            background-color: #EEEEEE;
           }
         }
       }
@@ -946,7 +945,7 @@ export default {
         .card-right-left-bottom-2 {
           > span {
             color: #f7bf65;
-            background-color: #f5f5f7;
+            background-color: #FEF4E6;
           }
         }
       }
@@ -968,8 +967,8 @@ export default {
       .exchange-card-right-left {
         .card-right-left-bottom-2 {
           > span {
-            color: #7f86aa;
-            background-color: #f5f5f7;
+            color: #8D8D8D;
+            background-color: #F1F2F6;
           }
         }
       }
@@ -977,7 +976,7 @@ export default {
         .bd-box {
           .bd-box-left,
           .bd-box-right {
-            color: #7f88a7;
+            color: #121212;
           }
         }
       }
