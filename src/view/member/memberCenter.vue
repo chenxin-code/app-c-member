@@ -49,7 +49,7 @@
                 class="member-right"
                 :class="getPageClass(memberObject == null ? '' : memberObject.memberCardRelats[0].levelId)"
                 @click="toMemberRight()"
-              >
+                v-if="showMemberRight">
                 会员权益
                 <img
                   :src="require('./../../assets/img/member/to-member-right-lv1.png')"
@@ -77,6 +77,7 @@
                   v-else-if="memberObject.memberCardRelats[0].levelId === 5"
                 />
               </div>
+              <div style="margin-top: 25px;height: 24px;" v-else></div>
             </div>
           </div>
         </div>
@@ -395,7 +396,8 @@ export default {
       integralRecordData: [],
       propertyList: [],
       vouchersList: [],
-      memberObject: null
+      memberObject: null,
+      showMemberRight: false//上线前临时开关
     };
   },
 
