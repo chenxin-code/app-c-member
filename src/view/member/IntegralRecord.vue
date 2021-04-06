@@ -8,11 +8,11 @@
         <div class="title">邦豆记录</div>
         <div class="number">{{ totalNumber }}</div>
       </div>
-      <!-- <div class="totonumber" v-if="guoqi != 0">
+       <div class="totonumber" v-if="guoqi != 0">
         <div class="guoqitishi">
           {{ invalidTime }}即将过期的积分<span>{{ guoqi }}</span>
         </div>
-      </div>-->
+      </div>
     </div>
     <div class="page-body" :style="{ height: pageHeight }" v-if="memberId != null">
       <div class="dataMessage" v-if="showNoData">
@@ -35,8 +35,8 @@
                   <div class="title">{{ item.behaviourName }}</div>
                   <div class="explain">{{ item.updateTime | timeFormat }}</div>
                 </div>
-                <div class="task-right">
-                  <div>{{ item.changeType == 1 ? '+' : '-' }}{{ item.integralChange }}</div>
+                <div class="task-right" :class="item.isInvalid ? 'shixiao' : ''">
+                  <div>{{ item.isInvalid ? '' : (item.changeType == 1 ? '+' : '-') }}{{ item.integralChange }}</div>
                 </div>
               </div>
             </template>
@@ -146,7 +146,7 @@ export default {
         memberId: this.memberId,
         pageIndex: this.pageIndex,
         pageSize: this.pageSize,
-        isInvalid: 0,
+        //isInvalid: 0,
         status: 2
       };
 
@@ -160,6 +160,45 @@ export default {
         .integralRecord(par)
         .finally(() => this.getMemberDetail())
         .then(res => {
+          //模拟数据
+          // let res = {
+          //   "code": 200,
+          //   "data": {
+          //     "current": 0,
+          //     "pages": 0,
+          //     "records": [
+          //       {
+          //         "behaviourCode": "",
+          //         "behaviourName": "",
+          //         "changeType": 0,
+          //         "clientCode": "",
+          //         "clientName": "",
+          //         "createTime": "",
+          //         "createUser": 0,
+          //         "createUserName": "",
+          //         "describe": "",
+          //         "id": 123456789,
+          //         "integral": 0,
+          //         "integralChange": 1,
+          //         "invalidTime": "",
+          //         "isDeleted": 0,
+          //         "isInvalid": 1,
+          //         "memberId": 0,
+          //         "status": 0,
+          //         "taskId": 0,
+          //         "taskName": "",
+          //         "templateCardId": 0,
+          //         "type": 0,
+          //         "updateTime": "",
+          //         "updateUser": 0
+          //       }
+          //     ],
+          //     "searchCount": true,
+          //     "size": 0,
+          //     "total": 0
+          //   },
+          //   "message": ""
+          // };
           // console.log("integralRecord res :>> ", res);
           if (res.code == 200) {
             this.$toast.clear();
@@ -317,6 +356,9 @@ export default {
   font-weight: 500;
   color: #e8374a;
   white-space: nowrap;
+  &.shixiao {
+    color: #0b75ff;
+  }
 }
 .task-list-body .task-node .title {
   font-size: 16px;
