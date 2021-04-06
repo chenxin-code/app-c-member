@@ -397,7 +397,7 @@ export default {
       propertyList: [],
       vouchersList: [],
       memberObject: null,
-      showMemberRight: false//上线前临时开关
+      showMemberRight: true//上线前临时开关
     };
   },
 
