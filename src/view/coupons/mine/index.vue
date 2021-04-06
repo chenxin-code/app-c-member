@@ -97,6 +97,7 @@
                             去使用
                           </div>
                         </div>
+                        <div class="card-used" :class="[{ 'expired-img': checkExpired(item.validityEndTime) }]"></div>
                       </div>
                       <div class="coupon-desc-wrap" :ref="`tab${index}couponDesc${cindex}`">
                         <div class="coupon-desc" :ref="`tab${index}couponDesc${cindex}Cont`">
@@ -258,6 +259,10 @@ export default {
       const date = new Date(+time);
       return moment(date).format('YYYY.MM.DD');
     },
+    //3天内卡券过期提醒
+    checkExpired(validityEndTime){
+      return validityEndTime - Date.now() <= 3 * 86400 * 1000;
+    },
     useCoupon(data) {
       if (!data.effective) {
         return false;
@@ -366,6 +371,63 @@ export default {
       api
         .queryMemberCouponList(params)
         .then(res => {
+          //模拟数据
+          // let res = {
+          //   "code": 200,
+          //   "data": {
+          //     "current": 0,
+          //     "pages": 0,
+          //     "records": [
+          //       {
+          //         "activity": "",
+          //         "activityId": 0,
+          //         "activityMemo": "",
+          //         "activityName": "",
+          //         "activityType": 0,
+          //         "condition": 0,
+          //         "cost": "",
+          //         "couTypeCode": 123456789,
+          //         "couponStatus": 0,
+          //         "couponSubhead": "",
+          //         "couponTitle": "小白",
+          //         "couponType": 0,
+          //         "createTime": "",
+          //         "currentDate": "",
+          //         "discountMaxDeduction": 200,
+          //         "discountRatio": "",
+          //         "faceAmount": 100,
+          //         "id": 123456789,
+          //         "image": "",
+          //         "integrealCount": 2000,
+          //         "isPeriodic": 0,
+          //         "memo": "",
+          //         "monthGetDay": 0,
+          //         "offCount": 0,
+          //         "operator": "张三",
+          //         "receiveCondition": "",
+          //         "receiveConditionRule": "",
+          //         "receiveCount": 0,
+          //         "releaseCount": 0,
+          //         "releaseForm": "",
+          //         "releaseRule": "",
+          //         "releaseType": "",
+          //         "satisfyAmount": 2000,
+          //         "source": 0,
+          //         "takeEffectDayNums": 0,
+          //         "updateTime": "",
+          //         "validityDayNums": 0,
+          //         "validityEndTime": "1617887200000",
+          //         "validityStartTime": "1617667200000",
+          //         "validityType": 0,
+          //         "weekGetDay": 0
+          //       }
+          //     ],
+          //     "searchCount": true,
+          //     "size": 0,
+          //     "total": 0
+          //   },
+          //   "message": ""
+          // };
           if (res.code === 200) {
             this.$toast.clear();
             let list = [];
@@ -584,6 +646,7 @@ export default {
                   justify-content: flex-start;
                   align-items: stretch;
                   padding: 0 12px;
+                  position: relative;
 
                   .exchange-card-right-left {
                     flex: 1;
@@ -739,6 +802,21 @@ export default {
             }
           }
         }
+      }
+    }
+
+    .card-used {
+      width: 49px;
+      height: 52px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 1;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 49px 52px;
+      &.expired-img {
+        background-image: url("../../../assets/img/coupons/to_expired.png");
       }
     }
 
