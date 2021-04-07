@@ -175,6 +175,9 @@
                           <span class="card-right-left-bottom-left">{{ item.integrealCount }}</span>
                           <span class="card-right-left-bottom-right">邦豆</span>
                         </div>
+                        <div class="card-right-left-bottom-sygz" @click="sygz(item)">
+                          <span>使用规则</span>
+                        </div>
                       </div>
                       <div class="exchange-card-right-right">
                         <template v-if="item.activity === '4014'">
@@ -249,6 +252,9 @@
                           <span class="card-right-left-bottom-left">{{ item.integrealCount }}</span>
                           <span class="card-right-left-bottom-right">邦豆</span>
                         </div>
+                        <div class="card-right-left-bottom-sygz" @click="sygz(item)">
+                          <span>使用规则</span>
+                        </div>
                       </div>
                       <div class="exchange-card-right-right">
                         <template v-if="item.activity === '4014'">
@@ -293,6 +299,9 @@
                             item.integrealCount
                           }}</span>
                           <span class="card-right-left-bottom-right">邦豆</span>
+                        </div>
+                        <div class="card-right-left-bottom-sygz" @click="sygz(item)">
+                          <span>使用规则</span>
                         </div>
                       </div>
                     </div>
@@ -366,6 +375,13 @@
         </div>
       </div>
     </transition>
+    <van-overlay class="van-overlay" :show="showPopup">
+      <div class="messageBox">
+        <div class="memo">{{memo}}</div>
+        <div class="cou-type-code">券编号：{{couTypeCode}}</div>
+        <div class="know-btn" @click="showPopup = false">知道了</div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 <script>
@@ -397,7 +413,10 @@ export default {
       propertyList: [],
       vouchersList: [],
       memberObject: null,
-      showMemberRight: true//上线前临时开关
+      showPopup: false,
+      memo: null,
+      couTypeCode: null,
+      showMemberRight: true,//上线前临时开关
     };
   },
 
@@ -449,6 +468,11 @@ export default {
     }
   },
   methods: {
+    sygz(item){
+      this.showPopup = true;
+      this.memo = item.memo || null;
+      this.couTypeCode = item.couTypeCode || null;
+    },
     getBtnWord: function(state) {
       var reMsg = '未开始';
       switch (state.statues) {
@@ -652,6 +676,45 @@ export default {
         condition: 3
       };
       api.queryReceiveCouponList(params).then(res => {
+        //模拟数据
+        // let res = {
+        //   "code":200,
+        //   "data":[
+        //     {
+        //       "activity":"4014",
+        //       "activityMemo":"",
+        //       "cost":"",
+        //       "couTypeCode":"20WY000236",
+        //       "couponStatus":0,
+        //       "couponSubhead":"相对满减1元001",
+        //       "couponTitle":"相对满减1元001",
+        //       "couponType":20,
+        //       "discountMaxDeduction":"",
+        //       "discountRatio":"0.9",
+        //       "faceAmount":"0.9",
+        //       "id":2372760729989154407,
+        //       "image":"",
+        //       "integrealCount":0,
+        //       "memo":"使用说明：平台10元通用优惠券，单笔订单满88元可使用。",
+        //       "operator":"",
+        //       "receiveCondition":"",
+        //       "receiveConditionRule":"",
+        //       "releaseCount":44,
+        //       "releaseForm":"",
+        //       "releaseRule":"",
+        //       "releaseType":"",
+        //       "satisfyAmount":"1.0",
+        //       "takeEffectDayNums":1,
+        //       "validityDayNums":1,
+        //       "isPeriodic":0,
+        //       "condition": 1,
+        //       "monthGetDay": 10,
+        //       "weekGetDay": 1,
+        //       "validityType": 1
+        //     },
+        //   ],
+        //   "message":"success"
+        // };
         if (res.code === 200) {
           this.$toast.clear();
         }
@@ -1372,6 +1435,20 @@ export default {
                   line-height: 14px;
                 }
               }
+              .card-right-left-bottom-sygz {
+                margin-top: 15px;
+                font-family: PingFangSC-Regular, PingFang SC;
+                align-self: flex-end;
+                width: 100%;
+                > span {
+                  color: #E8374A;
+                  line-height: 1;
+                  padding: 4px 5px;
+                  font-size: 10px;
+                  border: 1px solid #E8374A;
+                  border-radius: 15px;
+                }
+              }
             }
             .exchange-card-right-right {
               display: flex;
@@ -1603,5 +1680,41 @@ export default {
   border-radius: 10px;
   opacity: 0.2;
   margin: 10px 0px;
+}
+.van-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .messageBox {
+    display: flex;
+    flex-flow: column;
+    //align-items: center;
+    width: 283px;
+    //height: 321px;
+    padding: 16px;
+    background: #ffffff;
+    border-radius: 16px;
+    .memo,
+    .cou-type-code {
+      margin-top: 10px;
+      font-size: 15px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #121212;
+    }
+    .know-btn {
+      width: 100%;
+      text-align: center;
+      height: 38px;
+      line-height: 38px;
+      background: #e8374a;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #fff;
+      margin-top: 22px;
+    }
+  }
 }
 </style>
