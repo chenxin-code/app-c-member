@@ -32,6 +32,9 @@ Object.values(Components).forEach(components => {
 
 Vue.config.productionTip = false;
 
+//项目配置
+import "./config";
+
 new Vue({
   router,
   store,

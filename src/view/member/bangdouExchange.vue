@@ -174,6 +174,7 @@
         我的卡券(我的/卡券)
       </button>
     </div>
+    <newToast ref="newToast"></newToast>
   </div>
 </template>
 
@@ -186,6 +187,7 @@ import * as moment from 'moment';
 import Null from '@/components/null';
 import _ from 'lodash';
 import couponMixin from '../coupons/mixin/getCoupon-mixin';
+import newToast from './../../components/newToast';
 const defaultImg = require('@/assets/img/coupons/coupon-default.png');
 
 export default {
@@ -206,7 +208,7 @@ export default {
     };
   },
   components: {
-    Null
+    Null,newToast
   },
   // beforeRouteLeave(to, form, next) {
   //   next();
@@ -355,7 +357,11 @@ export default {
                   const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
                   // 变更按钮为 '去使用'
                   if (res.data.result) {
-                    this.$toast('兑换成功');
+                    if(this.$qiangTX){
+                      this.$refs.newToast.showToast('兑换成功',data);
+                    }else{
+                      this.$toast('兑换成功');
+                    }
                     if (couponPersonDay || couponDay || couponPerson || couponTotal) {
                       this.$set(data, 'goUse', true);
                     }

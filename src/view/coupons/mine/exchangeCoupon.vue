@@ -233,17 +233,13 @@ export default {
   },
   watch: {
     exchangeCode(newVal) {
-      if (!newVal) {
-        this.isNotNull = false;
-      } else {
-        this.isNotNull = true;
-      }
+      this.isNotNull = newVal;
     }
   }
 };
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 /* dialog弹窗 */
 .van-dialog {
   padding: 16px 16px 24px !important;

@@ -31,7 +31,7 @@ export default {
 };
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .van-popup.van-popup--center {
   width: 283px;
   height: auto !important;

@@ -114,6 +114,7 @@
     <div v-show="showNull" class="exchange-main-null">
       <null :message="nullMsg" bgicon="pets" :isadd="true" />
     </div>
+    <newToast ref="newToast"></newToast>
   </div>
 </template>
 
@@ -126,6 +127,7 @@ import Null from '@/components/null';
 import mixin from '../mixin/pageList';
 import _ from 'lodash';
 import couponMixin from '../mixin/getCoupon-mixin';
+import newToast from './../../../components/newToast';
 const defaultImg = require('@/assets/img/coupons/coupon-default.png');
 
 export default {
@@ -159,7 +161,7 @@ export default {
     };
   },
   components: {
-    Null
+    Null,newToast
   },
   watch: {},
   created() {
@@ -227,6 +229,7 @@ export default {
       return moment(date).format('YYYY.MM.DD');
     },
     getCoupon(data, index, cIndex) {
+      //this.$refs.newToast.showToast('领取成功',data);return
       this.toast();
       api
         .getReceiveCoupon({
@@ -245,7 +248,11 @@ export default {
             // 删除不显示
 
             if (res.data.result) {
-              this.$toast('领取成功');
+              if(this.$qiangTX){
+                this.$refs.newToast.showToast('领取成功',data);
+              }else{
+                this.$toast('领取成功');
+              }
               if (couponPersonDay || couponDay || couponPerson || couponTotal) {
                 this.$set(data, 'goUse', true);
                 // 解决多维数组修改属性无效

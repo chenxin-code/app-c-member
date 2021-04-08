@@ -116,6 +116,7 @@
         </div>
       </div>
     </div>
+    <newToast ref="newToast"></newToast>
     <p class="title">各等级特权</p>
     <table>
       <tr>
@@ -177,10 +178,11 @@ import yjzdbill from '@zkty-team/x-engine-module-yjzdbill';
 import router from '@zkty-team/x-engine-module-router';
 import mixin from './../coupons/mixin/pageList';
 import couponMixin from './../coupons/mixin/getCoupon-mixin';
+import newToast from './../../components/newToast';
 export default {
   name: 'memberRight',
   mixins: [mixin, couponMixin],
-  components: {},
+  components: {newToast},
   data() {
     return {
       userInfo: {},
@@ -298,7 +300,11 @@ export default {
             // 变更按钮为 '去使用'
             // 删除不显示
             if (res.data.result) {
-              this.$toast('领取成功');
+              if(this.$qiangTX){
+                this.$refs.newToast.showToast('领取成功',data);
+              }else{
+                this.$toast('领取成功');
+              }
               if (couponPersonDay || couponDay || couponPerson || couponTotal) {
                 this.$set(data, 'goUse', true);
                 // 解决多维数组修改属性无效
@@ -362,7 +368,11 @@ export default {
                     const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
                     // 变更按钮为 '去使用'
                     if (res.data.result) {
-                      this.$toast('兑换成功');
+                      if(this.$qiangTX){
+                        this.$refs.newToast.showToast('兑换成功',data);
+                      }else{
+                        this.$toast('兑换成功');
+                      }
                       if (couponPersonDay || couponDay || couponPerson || couponTotal) {
                         this.$set(data, 'goUse', true);
                       }

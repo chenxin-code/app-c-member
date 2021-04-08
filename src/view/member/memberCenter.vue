@@ -382,6 +382,7 @@
         <div class="know-btn" @click="showPopup = false">知道了</div>
       </div>
     </van-overlay>
+    <newToast ref="newToast"></newToast>
   </div>
 </template>
 <script>
@@ -390,6 +391,7 @@ import nav from '@zkty-team/x-engine-module-nav';
 import api from '@/api';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
 import couponMixin from '../coupons/mixin/getCoupon-mixin';
+import newToast from './../../components/newToast';
 import * as moment from 'moment';
 const defaultImg = require('@/assets/img/coupons/coupon-default.png');
 
@@ -419,7 +421,9 @@ export default {
       showMemberRight: true,//上线前临时开关
     };
   },
-
+  components: {
+    newToast
+  },
   activated() {
     console.log('$store.getters.isDebugMode :>> ', this.$store.getters.isDebugMode);
     if (this.$store.getters.isDebugMode) {
@@ -624,7 +628,11 @@ export default {
                   const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
                   const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
                   if (res.data.result) {
-                    this.$toast('兑换成功');
+                    if(this.$qiangTX){
+                      this.$refs.newToast.showToast('兑换成功',data);
+                    }else{
+                      this.$toast('兑换成功');
+                    }
                     setTimeout(() => {
                       this.getMemberDetail();
                     }, 500);
