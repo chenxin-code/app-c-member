@@ -51,7 +51,7 @@
                         >
                           去使用
                         </div>
-                        <div v-else class="exchange-card-left-btn" @click="getCoupon(item, index, cIndex)">
+                        <div v-else class="exchange-card-left-btn" @click="!showNewToast && getCoupon(item, index, cIndex)">
                           立即领取
                         </div>
                       </template>
@@ -84,7 +84,7 @@
                           >
                             去使用
                           </div>
-                          <div v-else class="exchange-card-right-right-btn" @click="getCoupon(item, index, cIndex)">
+                          <div v-else class="exchange-card-right-right-btn" @click="!showNewToast && getCoupon(item, index, cIndex)">
                             立即领取
                           </div>
                         </template>
@@ -114,7 +114,7 @@
     <div v-show="showNull" class="exchange-main-null">
       <null :message="nullMsg" bgicon="pets" :isadd="true" />
     </div>
-    <newToast ref="newToast"></newToast>
+    <newToast :toastStr="toastStr" :couponItem="couponItem" v-if="showNewToast"></newToast>
   </div>
 </template>
 
@@ -157,7 +157,9 @@ export default {
           label: '购物券',
           businessType: '4005'
         }
-      ]
+      ],
+      //newToast
+      toastStr: '', couponItem: {}, showNewToast: false
     };
   },
   components: {
@@ -229,64 +231,68 @@ export default {
       return moment(date).format('YYYY.MM.DD');
     },
     getCoupon(data, index, cIndex) {
-      //this.$refs.newToast.showToast('领取成功',data);return
       this.toast();
-      api
-        .getReceiveCoupon({
-          couActivitiesId: data.id,
-          memberId: this.memberId
-        })
-        .then(res => {
-          if (res.code === 200) {
-            // 该券
-            const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
-            const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
-            const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
-            const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
-            // 变更按钮为 '去使用'
+      api.getReceiveCoupon({
+        couActivitiesId: data.id,
+        memberId: this.memberId
+      }).then(res => {
+        if (res.code === 200) {
+          // 该券
+          const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+          const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+          const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+          const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
+          // 变更按钮为 '去使用'
 
-            // 删除不显示
+          // 删除不显示
 
-            if (res.data.result) {
-              if(this.$qiangTX){
-                this.$refs.newToast.showToast('领取成功',data);
-              }else{
-                this.$toast('领取成功');
+          if (res.data.result) {
+            if(this.$qiangTX){
+              this.toastStr = '领取成功';
+              this.couponItem = data;
+              this.showNewToast = true;
+              setTimeout(() => {
+                this.showNewToast = false;
+              }, 3000);
+            }else{
+              this.$toast('领取成功');
+            }
+            if (couponPersonDay || couponDay || couponPerson || couponTotal) {
+              this.$set(data, 'goUse', true);
+              // 解决多维数组修改属性无效
+              this.list.push([]);
+              this.list.splice(this.list.length - 1, 1);
+            }
+          } else {
+            // 都未达到上限，后台/数据库处理错误
+            if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+              console.log('无存在上限，后台/数据库处理错误');
+              this.$toast('领取失败');
+            } else {
+              if (couponTotal) {
+                return this.$toast('该优惠券已领光');
               }
-              if (couponPersonDay || couponDay || couponPerson || couponTotal) {
+              if (couponDay) {
+                return this.$toast('该优惠券今日已领光');
+              }
+              if (couponPersonDay || couponPerson) {
                 this.$set(data, 'goUse', true);
                 // 解决多维数组修改属性无效
                 this.list.push([]);
                 this.list.splice(this.list.length - 1, 1);
               }
-            } else {
-              // 都未达到上限，后台/数据库处理错误
-              if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
-                console.log('无存在上限，后台/数据库处理错误');
-                this.$toast('领取失败');
-              } else {
-                if (couponTotal) {
-                  return this.$toast('该优惠券已领光');
-                }
-                if (couponDay) {
-                  return this.$toast('该优惠券今日已领光');
-                }
-                if (couponPersonDay || couponPerson) {
-                  this.$set(data, 'goUse', true);
-                  // 解决多维数组修改属性无效
-                  this.list.push([]);
-                  this.list.splice(this.list.length - 1, 1);
-                }
-                if (couponPerson) {
-                  return this.$toast('该优惠券您已达领取上限');
-                }
-                if (couponPersonDay) {
-                  return this.$toast('该优惠券您今日已达领取上限');
-                }
+              if (couponPerson) {
+                return this.$toast('该优惠券您已达领取上限');
+              }
+              if (couponPersonDay) {
+                return this.$toast('该优惠券您今日已达领取上限');
               }
             }
           }
-        });
+        }
+      }).finally(() => {
+        this.$toast.clear();
+      });
     },
     getUserInfo(callBack) {
       api.getUserInfo().then(res => {

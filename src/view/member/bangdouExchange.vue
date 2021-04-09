@@ -61,7 +61,7 @@
                   >
                     去使用
                   </div>
-                  <div v-else class="exchange-card-right-right-btn" @click="exchange(item, 0, cIndex)">
+                  <div v-else class="exchange-card-right-right-btn" @click="!showNewToast && exchange(item, 0, cIndex)">
                     邦豆兑换
                   </div>
                 </div>
@@ -141,7 +141,7 @@
                 >
                   去使用
                 </div>
-                <div v-else class="exchange-card-left-btn" @click="exchange(item, 1, cIndex)">
+                <div v-else class="exchange-card-left-btn" @click="!showNewToast && exchange(item, 1, cIndex)">
                   邦豆兑换
                 </div>
               </div>
@@ -174,7 +174,7 @@
         我的卡券(我的/卡券)
       </button>
     </div>
-    <newToast ref="newToast"></newToast>
+    <newToast :toastStr="toastStr" :couponItem="couponItem" v-if="showNewToast"></newToast>
   </div>
 </template>
 
@@ -204,7 +204,9 @@ export default {
       vouchersList: [], // 购物券
       canLoadMore: true, //解决下拉刷新
       // ---分隔符---
-      petsUpdateList: []
+      petsUpdateList: [],
+      //newToast
+      toastStr: '', couponItem: {}, showNewToast: false
     };
   },
   components: {
@@ -300,7 +302,7 @@ export default {
               if (item.activity == '4014') {
                 propertyList.push(item);
               } else if (item.activity == '4005') {
-              // 购物券
+                // 购物券
                 vouchersList.push(item);
               }
               return item;
@@ -314,7 +316,7 @@ export default {
               if (item.activity == '4014') {
                 propertyList.push(item);
               } else if (item.activity == '4005') {
-              // 购物券
+                // 购物券
                 vouchersList.push(item);
               }
               return item;
@@ -358,7 +360,12 @@ export default {
                   // 变更按钮为 '去使用'
                   if (res.data.result) {
                     if(this.$qiangTX){
-                      this.$refs.newToast.showToast('兑换成功',data);
+                      this.toastStr = '兑换成功';
+                      this.couponItem = data;
+                      this.showNewToast = true;
+                      setTimeout(() => {
+                        this.showNewToast = false;
+                      }, 3000);
                     }else{
                       this.$toast('兑换成功');
                     }
@@ -393,6 +400,8 @@ export default {
                     }
                   }
                 }
+              }).finally(() => {
+                this.$toast.clear();
               });
             });
         }

@@ -161,7 +161,7 @@
                         >
                           去使用
                         </div>
-                        <div v-else class="exchange-card-left-btn" @click="exchange(item, 1, cIndex)">
+                        <div v-else class="exchange-card-left-btn" @click="!showNewToast && exchange(item, 1, cIndex)">
                           邦豆兑换
                         </div>
                       </template>
@@ -189,7 +189,7 @@
                           >
                             去使用
                           </div>
-                          <div v-else class="exchange-card-right-right-btn" @click="exchange(item, 0, cIndex)">
+                          <div v-else class="exchange-card-right-right-btn" @click="!showNewToast && exchange(item, 0, cIndex)">
                             邦豆兑换
                           </div>
                         </template>
@@ -238,7 +238,7 @@
                         >
                           去使用
                         </div>
-                        <div v-else class="exchange-card-left-btn" @click="exchange(item, 1, cIndex)">
+                        <div v-else class="exchange-card-left-btn" @click="!showNewToast && exchange(item, 1, cIndex)">
                           邦豆兑换
                         </div>
                       </template>
@@ -266,7 +266,7 @@
                           >
                             去使用
                           </div>
-                          <div v-else class="exchange-card-right-right-btn" @click="exchange(item, 0, cIndex)">
+                          <div v-else class="exchange-card-right-right-btn" @click="!showNewToast && exchange(item, 0, cIndex)">
                             邦豆兑换
                           </div>
                         </template>
@@ -337,7 +337,7 @@
                       <div
                         v-else
                         class="exchange-card-left-btn"
-                        @click="exchange(item, 1, cIndex)"
+                        @click="!showNewToast && exchange(item, 1, cIndex)"
                       >
                         邦豆兑换
                       </div>
@@ -382,7 +382,7 @@
         <div class="know-btn" @click="showPopup = false">知道了</div>
       </div>
     </van-overlay>
-    <newToast ref="newToast"></newToast>
+    <newToast :toastStr="toastStr" :couponItem="couponItem" v-if="showNewToast"></newToast>
   </div>
 </template>
 <script>
@@ -418,7 +418,10 @@ export default {
       showPopup: false,
       memo: null,
       couTypeCode: null,
-      showMemberRight: true,//上线前临时开关
+      //newToast
+      toastStr: '', couponItem: {}, showNewToast: false,
+      //上线前临时开关
+      showMemberRight: true,
     };
   },
   components: {
@@ -629,7 +632,12 @@ export default {
                   const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
                   if (res.data.result) {
                     if(this.$qiangTX){
-                      this.$refs.newToast.showToast('兑换成功',data);
+                      this.toastStr = '兑换成功';
+                      this.couponItem = data;
+                      this.showNewToast = true;
+                      setTimeout(() => {
+                        this.showNewToast = false;
+                      }, 3000);
                     }else{
                       this.$toast('兑换成功');
                     }
@@ -669,6 +677,8 @@ export default {
                     }
                   }
                 }
+              }).finally(() => {
+                this.$toast.clear();
               });
             });
         }

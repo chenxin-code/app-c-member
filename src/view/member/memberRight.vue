@@ -57,7 +57,7 @@
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
-                @click="getCoupon(v)"
+                @click="!showNewToast && getCoupon(v)"
                 v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse">
                 立即领取
               </div>
@@ -70,7 +70,7 @@
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
-                @click="exchangeBD(v)"
+                @click="!showNewToast && exchangeBD(v)"
                 v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse">
                 邦豆兑换
               </div>
@@ -83,7 +83,7 @@
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
-                @click="getCoupon(v)"
+                @click="!showNewToast && getCoupon(v)"
                 v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay, v.weekGetDay) && !v.goUse">
                 立即领取
               </div>
@@ -116,7 +116,7 @@
         </div>
       </div>
     </div>
-    <newToast ref="newToast"></newToast>
+    <newToast :toastStr="toastStr" :couponItem="couponItem" v-if="showNewToast"></newToast>
     <p class="title">各等级特权</p>
     <table>
       <tr>
@@ -189,7 +189,9 @@ export default {
       memberId: null,
       levelId: null,
       cardList: [],
-      loading: false
+      loading: false,
+      //newToast
+      toastStr: '', couponItem: {}, showNewToast: false
     };
   },
   methods: {
@@ -287,62 +289,70 @@ export default {
     },
     //立即领取
     getCoupon(data) {
+      this.toast();
       api.getReceiveCoupon({
-          couActivitiesId: data.id,
-          memberId: this.memberId
-        }).then(res => {
-          if (res.code === 200) {
-            // 该券
-            const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
-            const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
-            const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
-            const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
-            // 变更按钮为 '去使用'
-            // 删除不显示
-            if (res.data.result) {
-              if(this.$qiangTX){
-                this.$refs.newToast.showToast('领取成功',data);
-              }else{
-                this.$toast('领取成功');
+        couActivitiesId: data.id,
+        memberId: this.memberId
+      }).then(res => {
+        if (res.code === 200) {
+          // 该券
+          const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+          const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+          const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+          const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
+          // 变更按钮为 '去使用'
+          // 删除不显示
+          if (res.data.result) {
+            if(this.$qiangTX){
+              this.toastStr = '领取成功';
+              this.couponItem = data;
+              this.showNewToast = true;
+              setTimeout(() => {
+                this.showNewToast = false;
+              }, 3000);
+            }else{
+              this.$toast('领取成功');
+            }
+            if (couponPersonDay || couponDay || couponPerson || couponTotal) {
+              this.$set(data, 'goUse', true);
+              // 解决多维数组修改属性无效
+              this.list.push([]);
+              this.list.splice(this.list.length - 1, 1);
+            }
+          } else {
+            // 都未达到上限，后台/数据库处理错误
+            if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+              console.log('无存在上限，后台/数据库处理错误');
+              this.$toast('领取失败');
+            } else {
+              if (couponTotal) {
+                return this.$toast('该优惠券已领光');
               }
-              if (couponPersonDay || couponDay || couponPerson || couponTotal) {
+              if (couponDay) {
+                return this.$toast('该优惠券今日已领光');
+              }
+              if (couponPersonDay || couponPerson) {
                 this.$set(data, 'goUse', true);
                 // 解决多维数组修改属性无效
                 this.list.push([]);
                 this.list.splice(this.list.length - 1, 1);
               }
-            } else {
-              // 都未达到上限，后台/数据库处理错误
-              if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
-                console.log('无存在上限，后台/数据库处理错误');
-                this.$toast('领取失败');
-              } else {
-                if (couponTotal) {
-                  return this.$toast('该优惠券已领光');
-                }
-                if (couponDay) {
-                  return this.$toast('该优惠券今日已领光');
-                }
-                if (couponPersonDay || couponPerson) {
-                  this.$set(data, 'goUse', true);
-                  // 解决多维数组修改属性无效
-                  this.list.push([]);
-                  this.list.splice(this.list.length - 1, 1);
-                }
-                if (couponPerson) {
-                  return this.$toast('该优惠券您已达领取上限');
-                }
-                if (couponPersonDay) {
-                  return this.$toast('该优惠券您今日已达领取上限');
-                }
+              if (couponPerson) {
+                return this.$toast('该优惠券您已达领取上限');
+              }
+              if (couponPersonDay) {
+                return this.$toast('该优惠券您今日已达领取上限');
               }
             }
           }
-        });
+        }
+      }).finally(() => {
+        this.$toast.clear();
+      });
     },
     //邦豆兑换
     exchangeBD(data) {
-      //this.toast();
+      this.toast();
       api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
         if (res.code === 200) {
           if (+data.integrealCount > +res.data.integral) {
@@ -351,62 +361,71 @@ export default {
           const rest = +res.data.integral - +data.integrealCount;
           this.$toast.clear();
           this.$dialog.confirm({
-              title: '确认兑换',
-              message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
-            }).then(() => {
-              //this.toast();
-              api.getReceiveCoupon({
-                  couActivitiesId: data.id,
-                  memberId: this.memberId,
-                  integral: data.integrealCount
-                }).then(res => {
-                  if (res.code === 200) {
-                    // 该券当前人
-                    const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
-                    const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
-                    const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
-                    const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
-                    // 变更按钮为 '去使用'
-                    if (res.data.result) {
-                      if(this.$qiangTX){
-                        this.$refs.newToast.showToast('兑换成功',data);
-                      }else{
-                        this.$toast('兑换成功');
-                      }
-                      if (couponPersonDay || couponDay || couponPerson || couponTotal) {
-                        this.$set(data, 'goUse', true);
-                      }
-                    } else {
-                      if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
-                        console.log('无存在上限，后台/数据库处理错误');
-                        this.$toast('兑换失败');
-                      } else {
-                        if (couponTotal) {
-                          // if (type === 0) {
-                          //   this.propertyList.splice(index, 1);
-                          // } else {
-                          //   this.vouchersList.splice(index, 1);
-                          // }
-                          return this.$toast('该优惠券已兑换完');
-                        }
-                        if (couponDay) {
-                          return this.$toast('该优惠券今日已兑换完');
-                        }
-                        if (couponPersonDay || couponPerson) {
-                          this.$set(data, 'goUse', true);
-                        }
-                        if (couponPerson) {
-                          return this.$toast('该优惠券您已兑换完');
-                        }
-                        if (couponPersonDay) {
-                          return this.$toast('该优惠券您今日已兑换完');
-                        }
-                      }
+            title: '确认兑换',
+            message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
+          }).then(() => {
+            this.toast();
+            api.getReceiveCoupon({
+              couActivitiesId: data.id,
+              memberId: this.memberId,
+              integral: data.integrealCount
+            }).then(res => {
+              if (res.code === 200) {
+                // 该券当前人
+                const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+                const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+                const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+                const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
+                // 变更按钮为 '去使用'
+                if (res.data.result) {
+                  if(this.$qiangTX){
+                    this.toastStr = '兑换成功';
+                    this.couponItem = data;
+                    this.showNewToast = true;
+                    setTimeout(() => {
+                      this.showNewToast = false;
+                    }, 3000);
+                  }else{
+                    this.$toast('兑换成功');
+                  }
+                  if (couponPersonDay || couponDay || couponPerson || couponTotal) {
+                    this.$set(data, 'goUse', true);
+                  }
+                } else {
+                  if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+                    console.log('无存在上限，后台/数据库处理错误');
+                    this.$toast('兑换失败');
+                  } else {
+                    if (couponTotal) {
+                      // if (type === 0) {
+                      //   this.propertyList.splice(index, 1);
+                      // } else {
+                      //   this.vouchersList.splice(index, 1);
+                      // }
+                      return this.$toast('该优惠券已兑换完');
+                    }
+                    if (couponDay) {
+                      return this.$toast('该优惠券今日已兑换完');
+                    }
+                    if (couponPersonDay || couponPerson) {
+                      this.$set(data, 'goUse', true);
+                    }
+                    if (couponPerson) {
+                      return this.$toast('该优惠券您已兑换完');
+                    }
+                    if (couponPersonDay) {
+                      return this.$toast('该优惠券您今日已兑换完');
                     }
                   }
-                });
+                }
+              }
+            }).finally(() => {
+              this.$toast.clear();
             });
+          });
         }
+      }).finally(() => {
+        this.$toast.clear();
       });
     },
     checkTimeOK(monthGetDay, weekGetDay) {
@@ -434,7 +453,7 @@ export default {
         if (res.code === 200) {
           this.levelId = res.data.memberCardRelats[0].levelId;
           // this.levelId = 1;
-           //this.levelId = 2;
+          //this.levelId = 2;
           // this.levelId = 3;
           // this.levelId = 4;
           // this.levelId = 5;
@@ -470,80 +489,80 @@ export default {
         message: '加载中...'
       });
       api.queryReceiveCouponList({
-          memberId: this.memberId,
-          pageIndex: 1,
-          pageSize: 9999,
-          activityType: 2, //会员权益
-          businessType: 0,
-          condition: 0
-        }).then(res => {
-          //模拟数据
-          // let res = {
-          //   "code":200,
-          //   "data":[
-          //     {
-          //       "activity":"4014",
-          //       "activityMemo":"",
-          //       "cost":"",
-          //       "couTypeCode":"20WY000236",
-          //       "couponStatus":0,
-          //       "couponSubhead":"相对满减1元001",
-          //       "couponTitle":"相对满减1元001",
-          //       "couponType":20,
-          //       "discountMaxDeduction":"",
-          //       "discountRatio":"0.9",
-          //       "faceAmount":"0.9",
-          //       "id":2372760729989154407,
-          //       "image":"",
-          //       "integrealCount":0,
-          //       "memo":"",
-          //       "operator":"",
-          //       "receiveCondition":"",
-          //       "receiveConditionRule":"",
-          //       "releaseCount":44,
-          //       "releaseForm":"",
-          //       "releaseRule":"",
-          //       "releaseType":"",
-          //       "satisfyAmount":"1.0",
-          //       "takeEffectDayNums":1,
-          //       "validityDayNums":1,
-          //       "isPeriodic":0,
-          //       "condition": 1,
-          //       "monthGetDay": 10,
-          //       "weekGetDay": 1
-          //     },
-          //   ],
-          //   "message":"success"
-          // };
-          if (res.code === 200) {
-            this.$toast.clear();
-          }
-          const data = res.data || [];
-          const cardList = [];
-          let nowTime = moment(Date.now()).format('YYYYMMDD');
-          data.map(item => {
-            if (item.validityType === 1) {
-              const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
-              const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
-              if (nowTime >= stareTime && nowTime <= endTime) {
-                item.effective = true;
-              } else {
-                item.effective = false;
-              }
-              cardList.push(item);
-              return item;
-            } else if (item.validityType === 3) {
-              if (item.takeEffectDayNums === 0) {
-                item.effective = true;
-              } else if (item.takeEffectDayNums > 0) {
-                item.effective = false;
-              }
-              cardList.push(item);
-              return item;
+        memberId: this.memberId,
+        pageIndex: 1,
+        pageSize: 9999,
+        activityType: 2, //会员权益
+        businessType: 0,
+        condition: 0
+      }).then(res => {
+        //模拟数据
+        // let res = {
+        //   "code":200,
+        //   "data":[
+        //     {
+        //       "activity":"4014",
+        //       "activityMemo":"",
+        //       "cost":"",
+        //       "couTypeCode":"20WY000236",
+        //       "couponStatus":0,
+        //       "couponSubhead":"相对满减1元001",
+        //       "couponTitle":"相对满减1元001",
+        //       "couponType":20,
+        //       "discountMaxDeduction":"",
+        //       "discountRatio":"0.9",
+        //       "faceAmount":"0.9",
+        //       "id":2372760729989154407,
+        //       "image":"",
+        //       "integrealCount":0,
+        //       "memo":"",
+        //       "operator":"",
+        //       "receiveCondition":"",
+        //       "receiveConditionRule":"",
+        //       "releaseCount":44,
+        //       "releaseForm":"",
+        //       "releaseRule":"",
+        //       "releaseType":"",
+        //       "satisfyAmount":"1.0",
+        //       "takeEffectDayNums":1,
+        //       "validityDayNums":1,
+        //       "isPeriodic":0,
+        //       "condition": 1,
+        //       "monthGetDay": 10,
+        //       "weekGetDay": 1
+        //     },
+        //   ],
+        //   "message":"success"
+        // };
+        if (res.code === 200) {
+          this.$toast.clear();
+        }
+        const data = res.data || [];
+        const cardList = [];
+        let nowTime = moment(Date.now()).format('YYYYMMDD');
+        data.map(item => {
+          if (item.validityType === 1) {
+            const stareTime = moment(Number(item.validityStartTime)).format('YYYYMMDD');
+            const endTime = moment(Number(item.validityEndTime)).format('YYYYMMDD');
+            if (nowTime >= stareTime && nowTime <= endTime) {
+              item.effective = true;
+            } else {
+              item.effective = false;
             }
-          });
-          this.cardList = cardList;
-        })
+            cardList.push(item);
+            return item;
+          } else if (item.validityType === 3) {
+            if (item.takeEffectDayNums === 0) {
+              item.effective = true;
+            } else if (item.takeEffectDayNums > 0) {
+              item.effective = false;
+            }
+            cardList.push(item);
+            return item;
+          }
+        });
+        this.cardList = cardList;
+      })
         .finally(() => {
           this.loading = false;
         });

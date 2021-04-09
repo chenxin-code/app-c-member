@@ -1,5 +1,5 @@
 <template>
-  <div class="van-toast van-toast--middle" v-if="show">
+  <div class="van-toast van-toast--middle">
     <i class="van-icon van-toast__icon">
       <img src="./../assets/img/icon_paycard_default.png" class="van-icon__image">
     </i>
@@ -13,23 +13,7 @@ import couponMixin from './../view/coupons/mixin/getCoupon-mixin';
 export default {
   name: "newToast",
   mixins: [couponMixin],
-  data(){
-    return {
-      toastStr: null,
-      couponItem: null,
-      show: false
-    };
-  },
-  methods: {
-    showToast(toastStr,couponItem) {
-      this.toastStr = toastStr;
-      this.couponItem = couponItem;
-      this.show = true;
-      setTimeout(() => {
-        this.show = false;
-      }, 3000);
-    }
-  }
+  props: ['toastStr','couponItem']
 }
 </script>
 
