@@ -248,6 +248,7 @@ export default {
 
           if (res.data.result) {
             if(this.$qiangTX){
+              this.$toast.clear();
               this.toastStr = '领取成功';
               this.couponItem = data;
               this.showNewToast = true;
@@ -290,9 +291,7 @@ export default {
             }
           }
         }
-      }).finally(() => {
-        this.$toast.clear();
-      });
+      }).finally(() => {});
     },
     getUserInfo(callBack) {
       api.getUserInfo().then(res => {

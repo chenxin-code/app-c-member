@@ -632,6 +632,7 @@ export default {
                   const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
                   if (res.data.result) {
                     if(this.$qiangTX){
+                      this.$toast.clear();
                       this.toastStr = '兑换成功';
                       this.couponItem = data;
                       this.showNewToast = true;
@@ -677,9 +678,7 @@ export default {
                     }
                   }
                 }
-              }).finally(() => {
-                this.$toast.clear();
-              });
+              }).finally(() => {});
             });
         }
       });
