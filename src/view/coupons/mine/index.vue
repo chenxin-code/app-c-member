@@ -678,6 +678,7 @@ export default {
                       align-self: flex-end;
                       line-height: 1;
                       width: 100%;
+                      z-index: 2;
                     }
                     .card-right-left-bottom {
                       padding-top: 10px;
