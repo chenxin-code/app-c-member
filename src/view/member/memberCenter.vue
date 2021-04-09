@@ -377,7 +377,7 @@
     </transition>
     <van-overlay class="van-overlay" :show="showPopup">
       <div class="messageBox">
-        <div class="memo">{{memo}}</div>
+        <div class="memo" v-html="memo"></div>
         <div class="cou-type-code">券编号：{{couTypeCode}}</div>
         <div class="know-btn" @click="showPopup = false">知道了</div>
       </div>
@@ -712,7 +712,7 @@ export default {
         //       "id":2372760729989154407,
         //       "image":"",
         //       "integrealCount":0,
-        //       "memo":"使用说明：平台10元通用优惠券，单笔订单满88元可使用。",
+        //       "memo":"",
         //       "operator":"",
         //       "receiveCondition":"",
         //       "receiveConditionRule":"",

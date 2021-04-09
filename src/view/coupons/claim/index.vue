@@ -93,13 +93,7 @@
                     </div>
                     <div class="coupon-desc-wrap" :ref="`tab${index}couponDesc${cIndex}`">
                       <div class="coupon-desc" :ref="`tab${index}couponDesc${cIndex}Cont`">
-                        <div class="coupon-desc-li" style="white-space: pre-line;">
-                          {{ item.memo }}
-                          <!-- 使用说明：平台10元通用优惠券，单笔订单满88元可使用。 -->
-                        </div>
-                        <!-- <div class="coupon-desc-li">
-                          使用说明：平台10元通用优惠券;
-                        </div> -->
+                        <div class="coupon-desc-li" style="white-space: pre-line;" v-html="item.memo"></div>
                         <div class="coupon-desc-num">券编号：{{ item.couTypeCode }}</div>
                       </div>
                     </div>

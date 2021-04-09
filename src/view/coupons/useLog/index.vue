@@ -117,20 +117,10 @@
                           {{ couponType(item) }}
                         </div>
                       </div>
-                      <div
-                        class="coupon-desc-wrap"
-                        :ref="`tab${index}couponDesc${cIndex}`"
-                      >
-                        <div
-                          class="coupon-desc"
-                          :ref="`tab${index}couponDesc${cIndex}Cont`"
-                        >
-                          <div class="coupon-desc-li">
-                            {{ item.memo }}
-                          </div>
-                          <div class="coupon-desc-num">
-                            券编号：{{ item.couTypeCode }}
-                          </div>
+                      <div class="coupon-desc-wrap" :ref="`tab${index}couponDesc${cIndex}`">
+                        <div class="coupon-desc" :ref="`tab${index}couponDesc${cIndex}Cont`">
+                          <div class="coupon-desc-li" v-html="item.memo"></div>
+                          <div class="coupon-desc-num">券编号：{{ item.couTypeCode }}</div>
                         </div>
                       </div>
                       <!-- 已使用图片 -->
