@@ -26,6 +26,7 @@
             :finished="finished"
             :offset="10"
             finished-text="没有更多了"
+            loading-text=" "
             @load="onLoad"
             v-if="!showNoData"
           >
