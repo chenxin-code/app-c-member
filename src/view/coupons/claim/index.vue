@@ -17,13 +17,16 @@
                         'row-reverse': item.activity !== '4014'
                       },
                       {
-                        shopping: item.activity !== '4014'
+                        'shopping': item.activity === '4005'
+                      },
+                      {
+                        'entity': item.activity === '4015'
                       }
                     ]"
                   >
                     <!-- <template v-if="item.activity === '4014'"> -->
                     <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
+                      <div class="exchange-card-left-top" v-if="item.activity !== '4015'">
                         <template v-if="item.couponType === 40">
                           <div class="card-left-top-num">
                             {{ +item.discountRatio * 10 }}
@@ -39,10 +42,23 @@
                           </div>
                         </template>
                       </div>
-                      <div class="exchange-card-left-bottom">
+                      <div class="exchange-card-left-bottom"  v-if="item.activity !== '4015'">
                         {{ couponType(item) }}
                       </div>
-                      <template v-if="item.activity !== '4014'">
+                      <template v-if="item.activity == '4005'">
+                        <div
+                          v-if="item.goUse"
+                          class="exchange-card-left-btn"
+                          :class="{ ineffective: !item.effective }"
+                          @click="useCoupon(item)"
+                        >
+                          去使用
+                        </div>
+                        <div v-else class="exchange-card-left-btn" @click="!showNewToast && getCoupon(item, index, cIndex)">
+                          立即领取
+                        </div>
+                      </template>
+                      <template v-if="item.activity == '4015'">
                         <div
                           v-if="item.goUse"
                           class="exchange-card-left-btn"
@@ -150,6 +166,10 @@ export default {
         {
           label: '购物券',
           businessType: '4005'
+        },
+        {
+          label: '实物券',
+          businessType: '4015'
         }
       ],
       //newToast
@@ -164,7 +184,7 @@ export default {
     this.paramsList(); //mixin引入公共method
 
     if (this.$store.getters.isDebugMode) {
-      this.memberId = '2332445899206164529';
+      this.memberId = '2454637924935794688';
       // this.memberId = '2332445899206164494';
       localStorage.setItem('memberId', this.memberId);
       this.getList();
@@ -220,6 +240,10 @@ export default {
     });
   },
   methods: {
+    tabChange(){
+      this.list[this.active] = [];
+      this.getList();
+    },
     getTime(time) {
       const date = new Date(+time);
       return moment(date).format('YYYY.MM.DD');
@@ -607,6 +631,39 @@ export default {
                 font-family: PingFangSC-Medium, PingFang SC;
                 font-weight: 500;
                 color: #ff7709;
+                margin-top: 8px;
+              }
+            }
+            .bangdou-exchange-card.entity{
+              .exchange-card-right-left {
+                padding-left: 12px;
+                padding-top: 0;
+              }
+              .exchange-card-left {
+                background-image: url('../../../assets/img/coupons/blue_card.png');
+              }
+              .exchange-card-right-right .exchange-card-right-right-btn {
+                width: 72px;
+                height: 72px;
+                border-radius: 4px;
+                background-image: url('../../../assets/img/coupons/food.png');
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: 100% 100%;
+              }
+              .exchange-card-left-btn {
+                width: 68px;
+                height: 22px;
+                background: #ffffff;
+                border-radius: 15px;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                font-size: 12px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: #1B7BFF;
                 margin-top: 8px;
               }
             }

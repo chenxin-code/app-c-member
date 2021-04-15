@@ -30,12 +30,15 @@
                           'row-reverse': item.activity !== '4014'
                         },
                         {
-                          shopping: item.activity !== '4014'
+                          'shopping': item.activity === '4005'
+                        },
+                        {
+                          'entity': item.activity === '4015'
                         }
                       ]"
                     >
                       <div class="exchange-card-item exchange-card-left">
-                        <div class="exchange-card-left-top">
+                        <div class="exchange-card-left-top" v-if="item.activity !== '4015'">
                           <template v-if="item.couponType === 40">
                             <div class="card-left-top-num">
                               {{ +item.discountRatio * 10 }}
@@ -55,7 +58,7 @@
                             {{ item.faceAmount }}
                           </div> -->
                         </div>
-                        <div class="exchange-card-left-bottom">
+                        <div class="exchange-card-left-bottom" v-if="item.activity !== '4015'">
                           {{ couponType(item) }}
                         </div>
                         <!-- <div class="exchange-card-left-bottom">满100元可用</div> -->
@@ -129,6 +132,14 @@
       </div>
       <div class="exchange-footer-item" @click="linkCoupon">其他卡券</div>
     </div>
+    <van-dialog
+      class="dialog-fail"
+      v-model="isFailShow"
+      title="兑换失败"
+      :message="`<div style='font-size:13px;text-align:center;color:#8D8D8D;'>说明：仅限本人使用<div style='padding-top:5px;text-align:center;color:#8D8D8D;'>二维码使用过后即时失效</div><div class='rect'><img style='width:100%' src=`+materualCode+` /></div></div>`"
+      confirmButtonText="关闭"
+      @confirm="isFailShow = false"
+    ></van-dialog>
   </div>
 </template>
 
@@ -176,10 +187,16 @@ export default {
         {
           label: '购物券',
           businessType: '200001'
+        },
+        {
+          label: '实物券',
+          businessType: '200100'
         }
       ],
       scroll: 0,
-      pageRefresh: true
+      pageRefresh: true,
+      isFailShow:false,
+      materualCode:'',
     };
   },
   components: {
@@ -187,6 +204,7 @@ export default {
   },
   created() {
     this.paramsList();
+   
   },
   mounted() {
     nav.setNavLeftBtn({
@@ -211,7 +229,7 @@ export default {
 
       if (this.$store.getters.isDebugMode) {
         //生产需注释
-        this.memberId = '2276541642808754230';
+        this.memberId = '2454637924935794688';
         localStorage.setItem('memberId', this.memberId);
         this.getList();
         this.getUserInfo();
@@ -243,6 +261,10 @@ export default {
     next();
   },
   methods: {
+    tabChange(){
+      const tabIndex = this.active;
+      this.getList();
+    },
     loadMore() {
       const tabIndex = this.active;
       if (this.list[tabIndex].length < this.total[tabIndex]) {
@@ -268,6 +290,9 @@ export default {
       } else if (data.activity === '4005') {
         this.openMall(data);
         // console.log("打开商城");
+      }
+      else if (data.activity === '4015') {
+        this.getUserMaterual(data);
       }
     },
     //TODO:这里跳页报ngnix错误
@@ -349,6 +374,21 @@ export default {
           }
         }
       });
+    },
+    // 使用实物券
+    getUserMaterual(data) {
+      let this_ = this;
+      // Dialog.alert({
+      //     title: '实物券二维码',
+      //     message: '弹窗内容',
+      //     theme: 'round-button',
+      //   }).then(() => {
+      //     // on close
+      //   });
+      api.getUserMaterual({"couNo":data.couNo,"couTypeCode":data.couTypeCode,"memberId":this.memberId}).then(res => {
+        this_.materualCode = res.data;
+        this_.isFailShow = true;
+      })
     },
     getList() {
       const tabIndex = this.active;
@@ -626,6 +666,7 @@ export default {
                     font-weight: 500;
                     color: #ff7709;
                   }
+                  
                 }
 
                 .exchange-card-right {
@@ -791,12 +832,19 @@ export default {
               .bangdou-exchange-card.shopping .exchange-card-left {
                 background-image: url('../../../assets/img/coupons/yellow_card.png');
               }
+              .bangdou-exchange-card.entity .exchange-card-left {
+                background-image: url('../../../assets/img/coupons/blue_card.png');
+              }
             }
           }
         }
       }
     }
-
+    .entity{
+      & .exchange-card-left-btn{
+        color: #1B7BFF !important;
+      }
+    }
     .card-used {
       width: 49px;
       height: 52px;
@@ -879,3 +927,37 @@ export default {
   }
 }
 </style>
+<style lang="less">
+  .van-dialog.dialog-fail {
+  .van-dialog__header {
+    text-align: center;
+  }
+  .van-dialog__footer{
+    text-align: center;
+    .van-button.van-dialog__confirm{
+      width:100%;
+      background-color: #F5F5F6 !important;
+      color:#8D8D8D !important;
+      border-color:#F5F5F6;
+    }
+  }
+  .van-dialog__message{
+     padding-bottom: 10px;
+  }
+}
+.rect{
+  padding: 0 20px;
+  margin: 15px 0;
+background:
+                    linear-gradient(to top, #FCECEE, #FCECEE) left top no-repeat,/*上左*/
+                    linear-gradient(to right, #FCECEE, #FCECEE) left top no-repeat,/*左上*/
+                    linear-gradient(to left, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
+                    linear-gradient(to bottom, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
+                    linear-gradient(to left, #FCECEE, #FCECEE) left bottom no-repeat,/*下左*/
+                    linear-gradient(to bottom, #FCECEE, #FCECEE) left bottom no-repeat,/*左下*/
+                    linear-gradient(to top, #FCECEE, #FCECEE) right bottom no-repeat,/*下右*/
+                    linear-gradient(to left, #FCECEE, #FCECEE) right bottom no-repeat;/*右下*/
+            background-size: 2px 16px, 16px 2px, 2px 16px, 16px 2px;
+}
+</style>>
+
