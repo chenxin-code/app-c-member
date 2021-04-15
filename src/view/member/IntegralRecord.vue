@@ -82,7 +82,7 @@ export default {
   methods: {
     async initData() {
       if (this.$store.getters.isDebugMode) {
-        this.memberId = '2276541642808754230'; //生产需注释
+        this.memberId = '2454637924935794688'; //生产需注释
       } else {
         //生产需打开
         await localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {

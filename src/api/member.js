@@ -26,3 +26,6 @@ export const queryMemberCouponList = data => fetchApi(URL.MEMBER_COUPON_LIST, da
 export const integralConversion = data => fetchApi(URL.INTEGRALCONVERSION, data, "POST") //获取会员卡券使用记录
 export const getCamiloExchangeDetail = data => fetchApi(URL.CAMILO_EXCHANGE_DETAIL, data, "GET") //获取会员卡券使用记录
 export const confirmCamiloExchange = data => fetchApi(URL.CAMILO_EXCHANGE, data, "POST") //兑换优惠券
+
+export const getUserMaterual = data => fetchApi(URL.GET_USE_MATERUAL, data, "GET") //使用实物券
+

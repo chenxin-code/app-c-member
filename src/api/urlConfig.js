@@ -39,4 +39,7 @@ export default {
   CAMILO_EXCHANGE_DETAIL:'/times/member-bff/member/api-c/v1/member/selectCamilo',//卡密对应的优惠卷详情展示
   CAMILO_EXCHANGE:'/times/member-bff/member/api-c/v1/member/exchangeCamilo',//卡密确认兑换
   GET_USER_CARDNO: option.c_user + '/api-c/v1/user/id/query',//查身份证
+
+  GET_USE_MATERUAL: option.member + '/coupon/api/v1/generate-qrcode', //实物券使用
+  
 }
