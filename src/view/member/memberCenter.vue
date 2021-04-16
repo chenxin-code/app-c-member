@@ -641,13 +641,16 @@ export default {
                       this.showNewToast = true;
                       setTimeout(() => {
                         this.showNewToast = false;
+                        setTimeout(() => {
+                          this.getMemberDetail();
+                        }, 0);
                       }, 3000);
                     }else{
                       this.$toast('兑换成功');
+                      setTimeout(() => {
+                        this.getMemberDetail();
+                      }, 500);
                     }
-                    setTimeout(() => {
-                      this.getMemberDetail();
-                    }, 500);
 
                     // 存在上限，变更按钮为 '去使用'
                     if (couponDay || couponPersonDay || couponPerson || couponTotal) {
