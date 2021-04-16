@@ -60,7 +60,7 @@ export default {
       });
 
       const tempParam = encodeURIComponent(
-        `${uri}/app-vue/app/index.htm#/mall2/list/${datestr}?pageType=coupon&coupon=${data.couponType}&couThresholdAmount=${data.satisfyAmount}&couFaceValue=${data.faceAmount}&lastPath=%2Fcoupon_list&endTime=${data.validityEndTime}&backApp=true`
+        `${uri}/app-vue/app/index.htm#/common`
       );
       const url = `${uri}/app/index?token=${token}&redirect=${tempParam}`;
       console.log('openMall url :>> ', url);
