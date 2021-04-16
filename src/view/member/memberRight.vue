@@ -270,7 +270,6 @@ export default {
     },
     //去使用
     useCoupon(data) {
-      console.log('去使用--------->', data);
       if (!data.effective) {
         this.$toast('该卡券未在使用期限内～');
         return false;

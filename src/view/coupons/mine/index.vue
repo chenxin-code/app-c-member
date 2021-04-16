@@ -204,7 +204,7 @@ export default {
   },
   created() {
     this.paramsList();
-   
+
   },
   mounted() {
     nav.setNavLeftBtn({
@@ -281,6 +281,7 @@ export default {
     },
     useCoupon(data) {
       if (!data.effective) {
+        this.$toast('该卡券未在使用期限内～');
         return false;
       }
       // 4005/购物券 -- 4014/物业券
@@ -290,8 +291,7 @@ export default {
       } else if (data.activity === '4005') {
         this.openMall(data);
         // console.log("打开商城");
-      }
-      else if (data.activity === '4015') {
+      } else if (data.activity === '4015') {
         this.getUserMaterual(data);
       }
     },
@@ -666,7 +666,7 @@ export default {
                     font-weight: 500;
                     color: #ff7709;
                   }
-                  
+
                 }
 
                 .exchange-card-right {
@@ -729,6 +729,7 @@ export default {
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
+                    z-index: 2;
 
                     .exchange-card-right-right-btn {
                       width: 68px;
