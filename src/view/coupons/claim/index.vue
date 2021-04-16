@@ -124,7 +124,7 @@
     <div v-show="showNull" class="exchange-main-null">
       <null :message="nullMsg" bgicon="pets" :isadd="true" />
     </div>
-    <newToast :toastStr="toastStr" :couponItem="couponItem" v-if="showNewToast"></newToast>
+    <newToast :toastStr="toastStr" :couponItem="couponItem" @qwsy="qwsy" v-if="showNewToast"></newToast>
   </div>
 </template>
 
@@ -240,6 +240,9 @@ export default {
     });
   },
   methods: {
+    qwsy(couponItem){
+      this.useCoupon(couponItem);
+    },
     tabChange(){
       this.list[this.active] = [];
       this.getList();

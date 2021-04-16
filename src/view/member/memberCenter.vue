@@ -382,7 +382,7 @@
         <div class="know-btn" @click="showPopup = false">知道了</div>
       </div>
     </van-overlay>
-    <newToast :toastStr="toastStr" :couponItem="couponItem" v-if="showNewToast"></newToast>
+    <newToast :toastStr="toastStr" :couponItem="couponItem" @qwsy="qwsy" v-if="showNewToast"></newToast>
   </div>
 </template>
 <script>
@@ -475,6 +475,9 @@ export default {
     }
   },
   methods: {
+    qwsy(couponItem){
+      this.useCoupon(couponItem);
+    },
     sygz(item){
       this.showPopup = true;
       this.memo = item.memo || null;

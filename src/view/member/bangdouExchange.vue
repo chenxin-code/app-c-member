@@ -162,7 +162,7 @@
         我的卡券(我的/卡券)
       </button>
     </div>
-    <newToast :toastStr="toastStr" :couponItem="couponItem" v-if="showNewToast"></newToast>
+    <newToast :toastStr="toastStr" :couponItem="couponItem" @qwsy="qwsy" v-if="showNewToast"></newToast>
   </div>
 </template>
 
@@ -239,6 +239,9 @@ export default {
     });
   },
   methods: {
+    qwsy(couponItem){
+      this.useCoupon(couponItem);
+    },
     getUserInfo() {
       api.getUserInfo().then(res => {
         this.userInfo = res.data || {};

@@ -110,7 +110,7 @@
         </div>
       </div>
     </div>
-    <newToast :toastStr="toastStr" :couponItem="couponItem" v-if="showNewToast"></newToast>
+    <newToast :toastStr="toastStr" :couponItem="couponItem" @qwsy="qwsy" v-if="showNewToast"></newToast>
     <p class="title">各等级特权</p>
     <table>
       <tr>
@@ -189,6 +189,9 @@ export default {
     };
   },
   methods: {
+    qwsy(couponItem){
+      this.useCoupon(couponItem);
+    },
     getTime(time) {
       const date = new Date(+time);
       return moment(date).format('YYYY.MM.DD');

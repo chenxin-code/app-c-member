@@ -4,15 +4,13 @@
       <img src="./../assets/img/icon_paycard_default.png" class="van-icon__image">
     </i>
     <div class="van-toast__text">{{toastStr}}</div>
-    <span class="toast-btn" @click="useCoupon(couponItem)">前往使用</span>
+    <span class="toast-btn" @click="$emit('qwsy',couponItem)">前往使用</span>
   </div>
 </template>
 
 <script>
-import couponMixin from './../view/coupons/mixin/getCoupon-mixin';
 export default {
   name: "newToast",
-  mixins: [couponMixin],
   props: ['toastStr','couponItem']
 }
 </script>
