@@ -121,6 +121,14 @@
         </van-tab>
       </van-tabs>
     </div>
+    <van-dialog
+      class="dialog-fail"
+      v-model="isFailShow"
+      title="兑换说明"
+      :message="`<div style='font-size:13px;text-align:center;color:#8D8D8D;'>说明：仅限本人使用<div style='padding-top:5px;text-align:center;color:#8D8D8D;'>二维码使用过后即时失效</div><div class='rect'><img style='width:100%' src=`+materualCode+` /></div></div>`"
+      confirmButtonText="关闭"
+      @confirm="isFailShow = false"
+    ></van-dialog>
     <div v-show="showNull" class="exchange-main-null">
       <null :message="nullMsg" bgicon="pets" :isadd="true" />
     </div>
@@ -173,7 +181,9 @@ export default {
         }
       ],
       //newToast
-      toastStr: '', couponItem: {}, showNewToast: false
+      toastStr: '', couponItem: {}, showNewToast: false,
+      isFailShow:false,
+      materualCode:'',
     };
   },
   components: {
@@ -710,5 +720,38 @@ export default {
     left: 0;
     z-index: 9;
   }
+}
+</style>
+<style lang="less">
+  .van-dialog.dialog-fail {
+  .van-dialog__header {
+    text-align: center;
+  }
+  .van-dialog__footer{
+    text-align: center;
+    .van-button.van-dialog__confirm{
+      width:100%;
+      background-color: #F5F5F6 !important;
+      color:#8D8D8D !important;
+      border-color:#F5F5F6;
+    }
+  }
+  .van-dialog__message{
+     padding-bottom: 10px;
+  }
+}
+.rect{
+  padding: 0 20px;
+  margin: 15px 0;
+background:
+                    linear-gradient(to top, #FCECEE, #FCECEE) left top no-repeat,/*上左*/
+                    linear-gradient(to right, #FCECEE, #FCECEE) left top no-repeat,/*左上*/
+                    linear-gradient(to left, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
+                    linear-gradient(to bottom, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
+                    linear-gradient(to left, #FCECEE, #FCECEE) left bottom no-repeat,/*下左*/
+                    linear-gradient(to bottom, #FCECEE, #FCECEE) left bottom no-repeat,/*左下*/
+                    linear-gradient(to top, #FCECEE, #FCECEE) right bottom no-repeat,/*下右*/
+                    linear-gradient(to left, #FCECEE, #FCECEE) right bottom no-repeat;/*右下*/
+            background-size: 2px 16px, 16px 2px, 2px 16px, 16px 2px;
 }
 </style>

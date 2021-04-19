@@ -135,7 +135,7 @@
     <van-dialog
       class="dialog-fail"
       v-model="isFailShow"
-      title="兑换失败"
+      title="兑换说明"
       :message="`<div style='font-size:13px;text-align:center;color:#8D8D8D;'>说明：仅限本人使用<div style='padding-top:5px;text-align:center;color:#8D8D8D;'>二维码使用过后即时失效</div><div class='rect'><img style='width:100%' src=`+materualCode+` /></div></div>`"
       confirmButtonText="关闭"
       @confirm="isFailShow = false"

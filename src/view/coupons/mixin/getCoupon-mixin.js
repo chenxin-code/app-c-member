@@ -45,6 +45,11 @@ export default {
         appNav.changeBottomToIndex({selectIndex: 0});
         //this.openMall(data);
         // console.log("打开商城");
+      }else if (data.activity === '4015') {
+        this.getUserMaterual(data);
+        //appNav.changeBottomToIndex({selectIndex: 0});
+        //this.openMall(data);
+        // console.log("打开商城");
       }
     },
     //TODO:这里跳页报ngnix错误
@@ -115,6 +120,20 @@ export default {
           }
         }
       });
-    }
+    },
+    getUserMaterual(data) {
+      let this_ = this;
+      // Dialog.alert({
+      //     title: '实物券二维码',
+      //     message: '弹窗内容',
+      //     theme: 'round-button',
+      //   }).then(() => {
+      //     // on close
+      //   });
+      api.getUserMaterual({"couNo":data.couNo,"couTypeCode":data.couTypeCode,"memberId":this.memberId}).then(res => {
+        this_.materualCode = res.data;
+        this_.isFailShow = true;
+      })
+    },
   }
 };
