@@ -8,6 +8,7 @@ import api from '@/api';
 import router from '@zkty-team/x-engine-module-router';
 import yjzdbill from '@zkty-team/x-engine-module-yjzdbill';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
+import appNav from '@zkty-team/x-engine-module-nav';
 
 export default {
   data() {
@@ -41,7 +42,8 @@ export default {
         this.openDeital();
         // this.
       } else if (data.activity === '4005') {
-        this.openMall(data);
+        appNav.changeBottomToIndex({selectIndex: 0});
+        //this.openMall(data);
         // console.log("打开商城");
       }
     },

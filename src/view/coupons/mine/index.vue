@@ -148,6 +148,7 @@ import api from '@/api';
 import nav from '@zkty-team/x-engine-module-nav';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
 import router from '@zkty-team/x-engine-module-router';
+import appNav from '@zkty-team/x-engine-module-nav';
 import yjzdbill from '@zkty-team/x-engine-module-yjzdbill';
 import * as moment from 'moment';
 import Null from '@/components/null';
@@ -289,7 +290,8 @@ export default {
         this.openDeital();
         // this.
       } else if (data.activity === '4005') {
-        this.openMall(data);
+        appNav.changeBottomToIndex({selectIndex: 0});
+        //this.openMall(data);
         // console.log("打开商城");
       } else if (data.activity === '4015') {
         this.getUserMaterual(data);

@@ -170,6 +170,7 @@ import nav from '@zkty-team/x-engine-module-nav';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
 import yjzdbill from '@zkty-team/x-engine-module-yjzdbill';
 import router from '@zkty-team/x-engine-module-router';
+import appNav from '@zkty-team/x-engine-module-nav';
 import mixin from './../coupons/mixin/pageList';
 import couponMixin from './../coupons/mixin/getCoupon-mixin';
 import newToast from './../../components/newToast';
@@ -279,7 +280,8 @@ export default {
         this.openDeital();
         // this.
       } else if (data.activity === '4005') {
-        this.openMall(data);
+        appNav.changeBottomToIndex({selectIndex: 0});
+        //this.openMall(data);
         // console.log("打开商城");
       }
     },
