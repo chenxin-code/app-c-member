@@ -280,7 +280,7 @@ export default {
         this.openDeital();
         // this.
       } else if (data.activity === '4005') {
-        appNav.changeBottomToIndex({selectIndex: 0});
+        appNav.changeBottomToIndex({selectIndex: 2});
         //this.openMall(data);
         // console.log("打开商城");
       }
