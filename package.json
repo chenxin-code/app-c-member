@@ -11,7 +11,7 @@
     "@zkty-team/x-engine-module-engine": "~0.1.12",
     "@zkty-team/x-engine-module-geo": "~0.1.12",
     "@zkty-team/x-engine-module-localstorage": "~0.1.12",
-    "@zkty-team/x-engine-module-nav": "~0.1.12",
+    "@zkty-team/x-engine-module-nav": "^0.1.20",
     "@zkty-team/x-engine-module-network": "~0.1.12",
     "@zkty-team/x-engine-module-router": "~0.1.12",
     "@zkty-team/x-engine-module-ui": "~0.1.12",
