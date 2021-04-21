@@ -582,7 +582,7 @@ export default {
   created() {
     if (this.$store.getters.isDebugMode) {
       //生产需注释
-      this.memberId = '2454637924935794688';
+      this.memberId = '2246728470920953932';
       this.queryReceiveCouponList();
       this.getMemberDetail();
       this.getUserInfo();

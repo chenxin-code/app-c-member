@@ -230,7 +230,7 @@ export default {
 
       if (this.$store.getters.isDebugMode) {
         //生产需注释
-        this.memberId = '2454637924935794688';
+        this.memberId = '2246728470920953932';
         localStorage.setItem('memberId', this.memberId);
         this.getList();
         this.getUserInfo();
@@ -878,6 +878,7 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 2;
     background: #fafafa;
     display: flex;
     flex-direction: row;

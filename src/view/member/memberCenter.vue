@@ -431,7 +431,7 @@ export default {
     console.log('$store.getters.isDebugMode :>> ', this.$store.getters.isDebugMode);
     if (this.$store.getters.isDebugMode) {
       // 生产需注释
-      this.memberId = '2454637924935794688';
+      this.memberId = '2246728470920953932';
       localStorage.setItem('memberId', this.memberId);
       this.getMemberDetail();
       this.queryReceiveCouponList();
@@ -1460,6 +1460,7 @@ export default {
               }
               .card-right-left-bottom-sygz {
                 margin-top: 15px;
+                margin-bottom: 15px;
                 font-family: PingFangSC-Regular, PingFang SC;
                 align-self: flex-end;
                 width: 100%;

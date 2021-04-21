@@ -155,9 +155,9 @@ const vueConfig = {
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     proxy: {
       '/times/': {
-        target: 'http://8.129.64.205:16666', //一体化dev后端ip地址及端口
+        // target: 'http://8.129.64.205:16666', //一体化dev后端ip地址及端口 （作废！）
         // target: 'http://m-center-dev.linli.timesgroup.cn:16666', //一体化dev后端ip地址及端口
-        // target: "http://m-center-uat-linli.timesgroup.cn",//一体化dev后端ip地址及端口
+         target: "http://m-center-uat-linli.timesgroup.cn",//一体化dev后端ip地址及端口
         changeOrigin: true, //开启跨域
         ws: true //是否开启websocket
       }

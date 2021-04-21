@@ -83,18 +83,14 @@ export default {
   methods: {
     async initData() {
       if (this.$store.getters.isDebugMode) {
-        this.memberId = '2454637924935794688'; //生产需注释
+        this.memberId = '2246728470920953932';
       } else {
-        //生产需打开
         await localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
           this.memberId = res.result;
         });
       }
-
       this.getMemberDetail();
-      this.invalidTime = moment()
-        .add(7, 'd')
-        .format('YYYY-MM-DD');
+      this.invalidTime = moment().add(7, 'd').format('YYYY-MM-DD');
       this.overdueIntegral();
     },
     getMemberDetail: function() {
