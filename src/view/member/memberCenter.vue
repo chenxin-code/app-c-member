@@ -1345,7 +1345,7 @@ export default {
         // align-items: stretch;
         // margin-bottom: 16px;
         .bangdou-exchange-card {
-          height: 106px;
+          //height: 106px;
           // flex-basis: 324px;
           width: 324px;
           white-space: nowrap;
@@ -1360,7 +1360,7 @@ export default {
 
           .exchange-card-left {
             width: 101px;
-            height: 106px;
+            //height: 106px;
             // background-color: red;
             background-image: url('../../assets/img/coupons/red_card.png');
             background-repeat: no-repeat;
@@ -1403,7 +1403,7 @@ export default {
 
           .exchange-card-right {
             flex: 1;
-            height: 106px;
+            //height: 106px;
             background-color: #fff;
             display: flex;
             flex-direction: row;
