@@ -254,6 +254,8 @@ export default {
     },
     tabChange(){
       this.list[this.active] = [];
+      const tabIndex = this.active;
+      this.pageIndex[tabIndex] = 1;
       this.getList();
     },
     getTime(time) {

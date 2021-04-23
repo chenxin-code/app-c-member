@@ -264,6 +264,7 @@ export default {
   methods: {
     tabChange(){
       const tabIndex = this.active;
+      this.pageIndex[tabIndex] = 1;
       this.getList();
     },
     loadMore() {
