@@ -296,6 +296,9 @@ export default {
               this.list.push([]);
               this.list.splice(this.list.length - 1, 1);
             }
+            //存couNo
+            this.list[this.active][cIndex].couNo = res.data.couNo;
+            console.log('存couNo结果--------->',this.list[this.active]);
           } else {
             // 都未达到上限，后台/数据库处理错误
             if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
