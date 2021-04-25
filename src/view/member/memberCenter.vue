@@ -161,7 +161,7 @@
                         >
                           去使用
                         </div>
-                        <div v-else class="exchange-card-left-btn" @click="!showNewToast && exchange(item, 1, cIndex)">
+                        <div v-else class="exchange-card-left-btn" @click="!showNewToast && exchange(item, 1, cIndex, 'property')">
                           邦豆兑换
                         </div>
                       </template>
@@ -174,6 +174,9 @@
                         <div class="card-right-left-bottom">
                           <span class="card-right-left-bottom-left">{{ item.integrealCount }}</span>
                           <span class="card-right-left-bottom-right">邦豆</span>
+                        </div>
+                        <div class="card-right-left-middle" v-if="item.validityType === 1">
+                          {{ getTime(item.validityStartTime) }}-{{ getTime(item.validityEndTime) }}
                         </div>
                         <div class="card-right-left-bottom-sygz" @click="sygz(item)">
                           <span>使用规则</span>
@@ -189,7 +192,7 @@
                           >
                             去使用
                           </div>
-                          <div v-else class="exchange-card-right-right-btn" @click="!showNewToast && exchange(item, 0, cIndex)">
+                          <div v-else class="exchange-card-right-right-btn" @click="!showNewToast && exchange(item, 0, cIndex, 'property')">
                             邦豆兑换
                           </div>
                         </template>
@@ -238,7 +241,7 @@
                         >
                           去使用
                         </div>
-                        <div v-else class="exchange-card-left-btn" @click="!showNewToast && exchange(item, 1, cIndex)">
+                        <div v-else class="exchange-card-left-btn" @click="!showNewToast && exchange(item, 1, cIndex, 'vouchers')">
                           邦豆兑换
                         </div>
                       </template>
@@ -251,6 +254,9 @@
                         <div class="card-right-left-bottom">
                           <span class="card-right-left-bottom-left">{{ item.integrealCount }}</span>
                           <span class="card-right-left-bottom-right">邦豆</span>
+                        </div>
+                        <div class="card-right-left-middle" v-if="item.validityType === 1">
+                          {{ getTime(item.validityStartTime) }}-{{ getTime(item.validityEndTime) }}
                         </div>
                         <div class="card-right-left-bottom-sygz" @click="sygz(item)">
                           <span>使用规则</span>
@@ -266,7 +272,7 @@
                           >
                             去使用
                           </div>
-                          <div v-else class="exchange-card-right-right-btn" @click="!showNewToast && exchange(item, 0, cIndex)">
+                          <div v-else class="exchange-card-right-right-btn" @click="!showNewToast && exchange(item, 0, cIndex, 'vouchers')">
                             邦豆兑换
                           </div>
                         </template>
@@ -300,6 +306,9 @@
                           }}</span>
                           <span class="card-right-left-bottom-right">邦豆</span>
                         </div>
+                        <div class="card-right-left-middle" v-if="item.validityType === 1">
+                    {{ getTime(item.validityStartTime) }}-{{ getTime(item.validityEndTime) }}
+                  </div>
                         <div class="card-right-left-bottom-sygz" @click="sygz(item)">
                           <span>使用规则</span>
                         </div>
@@ -485,6 +494,10 @@ export default {
     }
   },
   methods: {
+    getTime(time) {
+      const date = new Date(+time);
+      return moment(date).format('YYYY.MM.DD');
+    },
     qwsy(couponItem){
       this.useCoupon(couponItem);
     },
@@ -615,7 +628,7 @@ export default {
       this.getMyTaskListByMember(this.memberId);
       this.$forceUpdate();
     },
-    exchange(data, type, index) {
+    exchange(data, type, cIndex, newtype) {
       this.toast();
       api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
         if (res.code === 200) {
@@ -665,6 +678,14 @@ export default {
                     // 存在上限，变更按钮为 '去使用'
                     if (couponDay || couponPersonDay || couponPerson || couponTotal) {
                       this.$set(data, 'goUse', true);
+                    }
+                    //存couNo
+                    if(newtype === 'property'){
+                      this.propertyList[cIndex].couNo = res.data.couNo;
+                      console.log('存couNo结果--------->',this.propertyList);
+                    }else if(newtype === 'vouchers'){
+                      this.vouchersList[cIndex].couNo = res.data.couNo;
+                      console.log('存couNo结果--------->',this.vouchersList);
                     }
                   } else {
                     if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
@@ -1355,7 +1376,7 @@ export default {
         // align-items: stretch;
         // margin-bottom: 16px;
         .bangdou-exchange-card {
-          //height: 106px;
+          min-height: 106px;
           // flex-basis: 324px;
           width: 324px;
           white-space: nowrap;
@@ -1370,7 +1391,7 @@ export default {
 
           .exchange-card-left {
             width: 101px;
-            //height: 106px;
+            min-height: 106px;
             // background-color: red;
             background-image: url('../../assets/img/coupons/red_card.png');
             background-repeat: no-repeat;
@@ -1413,7 +1434,7 @@ export default {
 
           .exchange-card-right {
             flex: 1;
-            //height: 106px;
+            min-height: 106px;
             background-color: #fff;
             display: flex;
             flex-direction: row;
@@ -1469,8 +1490,8 @@ export default {
                 }
               }
               .card-right-left-bottom-sygz {
-                margin-top: 15px;
-                margin-bottom: 15px;
+                margin-top: 10px;
+                margin-bottom: 10px;
                 font-family: PingFangSC-Regular, PingFang SC;
                 align-self: flex-end;
                 width: 100%;
@@ -1482,6 +1503,17 @@ export default {
                   border: 1px solid #E8374A;
                   border-radius: 15px;
                 }
+              }
+
+              .card-right-left-middle {
+                padding-top: 5px;
+                font-size: 12px;
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
+                color: #8d8d8d;
+                align-self: flex-start;
+                line-height: 1;
+                width: 100%;
               }
             }
             .exchange-card-right-right {

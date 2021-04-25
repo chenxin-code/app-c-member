@@ -456,7 +456,7 @@ export default {
 
             .exchange-card-left {
               width: 101px;
-              height: 97px;
+              min-height: 97px;
               background-image: url('../../assets/img/coupons/red_card.png');
               background-repeat: no-repeat;
               background-position: center center;
@@ -499,7 +499,7 @@ export default {
 
             .exchange-card-right {
               flex: 1;
-              height: 97px;
+              min-height: 97px;
               background-color: #fff;
               display: flex;
               flex-direction: row;
@@ -648,7 +648,7 @@ export default {
 
             .exchange-card-left {
               width: 101px;
-              height: 97px;
+              min-height: 97px;
               background-image: url('../../assets/img/coupons/yellow_card.png');
               background-repeat: no-repeat;
               background-position: center center;
@@ -714,7 +714,7 @@ export default {
 
             .exchange-card-right {
               flex: 1;
-              height: 97px;
+              min-height: 97px;
               background-color: #fff;
               display: flex;
               flex-direction: row;
