@@ -214,6 +214,9 @@
                     :class="[
                       {
                         'row-reverse': item.activity !== '4014'
+                      },
+                      {
+                        'entity': item.activity === '4015'
                       }
                     ]"
                   >
