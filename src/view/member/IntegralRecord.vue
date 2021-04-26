@@ -354,7 +354,7 @@ export default {
   color: #e8374a;
   white-space: nowrap;
   &.shixiao {
-    color: #0b75ff;
+    color: #8d8d8d;
   }
 }
 .task-list-body .task-node .title {
