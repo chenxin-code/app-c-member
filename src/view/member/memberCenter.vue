@@ -138,7 +138,7 @@
                     ]"
                   >
                     <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
+                      <div class="exchange-card-left-top" v-if="item.activity !== '4015'">
                         <template v-if="item.couponType === 40">
                           <div class="card-left-top-num">
                             {{ +item.discountRatio * 10 }}
@@ -152,7 +152,7 @@
                           </div>
                         </template>
                       </div>
-                      <div class="exchange-card-left-bottom">
+                      <div class="exchange-card-left-bottom" v-if="item.activity !== '4015'">
                         {{ couponType(item) }}
                       </div>
                       <template v-if="item.activity !== '4014'">
@@ -221,7 +221,7 @@
                     ]"
                   >
                     <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
+                      <div class="exchange-card-left-top" v-if="item.activity !== '4015'">
                         <template v-if="item.couponType === 40">
                           <div class="card-left-top-num">
                             {{ +item.discountRatio * 10 }}
@@ -235,7 +235,7 @@
                           </div>
                         </template>
                       </div>
-                      <div class="exchange-card-left-bottom">
+                      <div class="exchange-card-left-bottom" v-if="item.activity !== '4015'">
                         {{ couponType(item) }}
                       </div>
                       <template v-if="item.activity !== '4014'">
@@ -321,7 +321,7 @@
                       </div>
                     </div>
                     <div class="exchange-card-item exchange-card-left">
-                      <div class="exchange-card-left-top">
+                      <div class="exchange-card-left-top" v-if="item.activity !== '4015'">
                         <template v-if="item.couponType === 40">
                           <div class="card-left-top-num">
                             {{ +item.discountRatio * 10 }}
@@ -337,7 +337,7 @@
                           </div>
                         </template>
                       </div>
-                      <div class="exchange-card-left-bottom">
+                      <div class="exchange-card-left-bottom" v-if="item.activity !== '4015'">
                         {{ couponType(item) }}
                       </div>
 
