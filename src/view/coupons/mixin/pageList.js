@@ -44,7 +44,7 @@ export default {
         total.push(0);
       });
       this.list = list;
-      this.canLoadMore = canLoadMore
+      this.canLoadMore = canLoadMore;
       this.pageIndex = pageIndex;
       this.total = total;
     },

@@ -57,7 +57,7 @@
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
-                @click="!showNewToast && getCoupon(v)"
+                @click="!showNewToast && getCoupon(v,k)"
                 v-if="v.isPeriodic === 0 && v.condition === 1 && !v.goUse">
                 立即领取
               </div>
@@ -70,7 +70,7 @@
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
-                @click="!showNewToast && exchangeBD(v)"
+                @click="!showNewToast && exchangeBD(v,k)"
                 v-else-if="v.isPeriodic === 0 && v.condition === 3 && !v.goUse">
                 邦豆兑换
               </div>
@@ -83,7 +83,7 @@
               </div>
               <div
                 class="exchange-card-right-bottom-btn"
-                @click="!showNewToast && getCoupon(v)"
+                @click="!showNewToast && getCoupon(v,k)"
                 v-else-if="v.isPeriodic === 1 && checkTimeOK(v.monthGetDay, v.weekGetDay) && !v.goUse">
                 立即领取
               </div>
@@ -160,6 +160,14 @@
       2、如存在违规行为（包括但不限于恶意刷单、套取资金、机器作弊、虚假交易等违反诚实信用原则行为），主办方有权拒绝向您发送奖励、撤销相关违规交易、追回已发送的奖励，必要时追究法律责任。
       <div style="height: 15px;"></div>
     </div>
+    <van-dialog
+      class="dialog-fail"
+      v-model="isFailShow"
+      title="兑换说明"
+      :message="`<div style='font-size:13px;text-align:center;color:#8D8D8D;'>说明：仅限本人使用<div style='padding-top:5px;text-align:center;color:#8D8D8D;'>二维码使用过后即时失效</div><div class='rect'><img style='width:100%' src=`+materualCode+` /></div></div>`"
+      confirmButtonText="关闭"
+      @confirm="isFailShow = false"
+    ></van-dialog>
   </div>
 </template>
 
@@ -185,6 +193,8 @@ export default {
       levelId: null,
       cardList: [],
       loading: false,
+      isFailShow: false,
+      materualCode: '',
       //newToast
       toastStr: '', couponItem: {}, showNewToast: false
     };
@@ -283,10 +293,15 @@ export default {
         appNav.changeBottomToIndex({selectIndex: 2});
         //this.openMall(data);
         // console.log("打开商城");
+      } else if (data.activity === '4015') {
+        api.getUserMaterual({"couNo":data.couNo,"couTypeCode":data.couTypeCode,"memberId":this.memberId}).then(resp => {
+          this.materualCode = resp.data;
+          this.isFailShow = true;
+        })
       }
     },
     //立即领取
-    getCoupon(data) {
+    getCoupon(data,k) {
       this.toast();
       api.getReceiveCoupon({
         couActivitiesId: data.id,
@@ -318,6 +333,8 @@ export default {
               this.list.push([]);
               this.list.splice(this.list.length - 1, 1);
             }
+            //存couNo
+            this.cardList[k].couNo = res.data.couNo;
           } else {
             // 都未达到上限，后台/数据库处理错误
             if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
@@ -348,7 +365,7 @@ export default {
       }).finally(() => {});
     },
     //邦豆兑换
-    exchangeBD(data) {
+    exchangeBD(data,k) {
       this.toast();
       api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
         if (res.code === 200) {
@@ -389,6 +406,8 @@ export default {
                   if (couponPersonDay || couponDay || couponPerson || couponTotal) {
                     this.$set(data, 'goUse', true);
                   }
+                  //存couNo
+                  this.cardList[k].couNo = res.data.couNo;
                 } else {
                   if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
                     console.log('无存在上限，后台/数据库处理错误');
