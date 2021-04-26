@@ -131,6 +131,9 @@
                       },
                       {
                         shopping: item.activity !== '4014'
+                      },
+                      {
+                        'entity': item.activity === '4015'
                       }
                     ]"
                   >
@@ -1584,6 +1587,15 @@ export default {
             font-weight: 500;
             color: #ff7709;
             margin-top: 8px;
+          }
+        }
+
+        .bangdou-exchange-card.entity{
+          .exchange-card-left {
+            background-image: url('../../assets/img/coupons/blue_card.png');
+          }
+          .exchange-card-left-btn {
+            color: #1B7BFF;
           }
         }
         .goods-img {
