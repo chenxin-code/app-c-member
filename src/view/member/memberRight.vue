@@ -7,7 +7,10 @@
     </div>
     <div v-else>
       <div class="bangdou-exchange-card" :class="getPageClass(levelId)" v-for="(v, k) in cardList" :key="k">
-        <div class="exchange-card-item exchange-card-left">
+        <div class="exchange-card-item exchange-card-left" v-if="v.activity === '4015'">
+          <div class="exchange-card-left-swq">实物券</div>
+        </div>
+        <div class="exchange-card-item exchange-card-left" v-else>
           <div class="exchange-card-left-top">
             <template v-if="v.couponType === 40">
               <div class="card-left-top-num">
@@ -699,6 +702,16 @@ export default {
         color: #fff;
         margin-top: 8px;
       }
+      .exchange-card-left-swq {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        font-size: 17px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: bold;
+        color: #fff;
+      }
       .exchange-card-left-bottom {
         display: flex;
         flex-direction: row;
@@ -1063,5 +1076,38 @@ export default {
     font-size: 14px;
     line-height: 27px;
   }
+}
+</style>
+<style lang="less">
+.van-dialog.dialog-fail {
+  .van-dialog__header {
+    text-align: center;
+  }
+  .van-dialog__footer{
+    text-align: center;
+    .van-button.van-dialog__confirm{
+      width:100%;
+      background-color: #F5F5F6 !important;
+      color:#8D8D8D !important;
+      border-color:#F5F5F6;
+    }
+  }
+  .van-dialog__message{
+    padding-bottom: 10px;
+  }
+}
+.rect{
+  padding: 0 20px;
+  margin: 15px 0;
+  background:
+    linear-gradient(to top, #FCECEE, #FCECEE) left top no-repeat,/*上左*/
+    linear-gradient(to right, #FCECEE, #FCECEE) left top no-repeat,/*左上*/
+    linear-gradient(to left, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
+    linear-gradient(to bottom, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
+    linear-gradient(to left, #FCECEE, #FCECEE) left bottom no-repeat,/*下左*/
+    linear-gradient(to bottom, #FCECEE, #FCECEE) left bottom no-repeat,/*左下*/
+    linear-gradient(to top, #FCECEE, #FCECEE) right bottom no-repeat,/*下右*/
+    linear-gradient(to left, #FCECEE, #FCECEE) right bottom no-repeat;/*右下*/
+  background-size: 2px 16px, 16px 2px, 2px 16px, 16px 2px;
 }
 </style>
