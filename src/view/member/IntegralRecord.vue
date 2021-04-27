@@ -10,7 +10,7 @@
       </div>
        <div class="totonumber" v-if="guoqi != 0">
         <div class="guoqitishi">
-          {{ invalidTime }}即将过期的积分<span>{{ guoqi }}</span>
+          <!--{{ invalidTime }}-->即将过期的邦豆<span>{{ guoqi }}</span>
         </div>
       </div>
     </div>

@@ -31,7 +31,7 @@ const routes = [
     name: "growthValueRecord",
     component: resolve => require(["@/view/member/growthValueRecord"], resolve)
   },
-  //积分记录
+  //邦豆记录
   {
     path: "/IntegralRecord",
     name: "IntegralRecord",
