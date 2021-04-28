@@ -20,8 +20,8 @@ Vue.use(Vuex)
 Vue.use(Vant);
 Vue.use(infiniteScroll)
 
-import vConsole from "vconsole/dist/vconsole.min.js";
-new vConsole();
+// import vConsole from "vconsole/dist/vconsole.min.js";
+// new vConsole();
 
 Vue.prototype.$routeHelper = routeHelper;
 

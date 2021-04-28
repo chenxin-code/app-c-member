@@ -392,7 +392,7 @@
     </transition>
     <van-overlay class="van-overlay" :show="showPopup">
       <div class="messageBox">
-        <div class="memo" v-html="memo"></div>
+        <div class="memo" style="white-space: pre-line;" v-html="memo"></div>
         <div class="cou-type-code">券编号：{{couTypeCode}}</div>
         <div class="know-btn" @click="showPopup = false">知道了</div>
       </div>
@@ -446,7 +446,7 @@ export default {
       //newToast
       toastStr: '', couponItem: {}, showNewToast: false,
       //上线前临时开关
-      showMemberRight: true,
+      showMemberRight: false,
     };
   },
   components: {
