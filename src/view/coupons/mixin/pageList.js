@@ -8,7 +8,6 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      // devServer: "dev",
       loading: false,
       list: [],
       pageIndex: [],
@@ -17,7 +16,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['devServer'])
+
   },
   filters: {
     delPoint (num) {

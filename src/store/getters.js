@@ -5,7 +5,6 @@
  */
 const getters = {
   token: state => state.user.token,
-  devServer: state => state.user.devServer,
   isDebugMode: state => state.user.isDebugMode
 };
 export default getters;

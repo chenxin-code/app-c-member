@@ -301,7 +301,7 @@ export default {
     //TODO:这里跳页报ngnix错误
     async openMall(data) {
       let uri;
-      if (this.devServer !== 'prod') {
+      if (!this.$isProdBuild) {
         uri = 'http://mall-uat-app-linli.timesgroup.cn';
       } else {
         uri = 'http://mall-prod-app-linli.timesgroup.cn';
@@ -501,7 +501,7 @@ export default {
         return this.$toast('手机号无效');
       }
       let uri;
-      if (this.devServer !== 'prod') {
+      if (!this.$isProdBuild) {
         uri = 'http://apiv3.linli580.com.cn';
       } else {
         uri = 'http://apiv3.linli580.com';
@@ -528,7 +528,7 @@ export default {
       // test: https://dev-mall-linli.timesgroup.cn/H5/#/anitransferMy?token=
       // prod: https://mall-linli.timesgroup.cn/H5/#/anitransferMy?token=
       let uri;
-      if (this.devServer !== 'prod') {
+      if (!this.$isProdBuild) {
         uri = 'https://dev-mall-linli.timesgroup.cn';
       } else {
         uri = 'https://mall-linli.timesgroup.cn';

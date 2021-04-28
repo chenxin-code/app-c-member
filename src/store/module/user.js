@@ -7,7 +7,6 @@ const user = {
   state: {
     //存储定义的变量
     token: '',
-    devServer: 'dev', //生产: "prod" || uat+dev是"dev"
     isDebugMode: process.env.NODE_ENV === 'development' //写死会员ID为 true || 原生localStorage获取会员ID为 false
   },
   mutations: {

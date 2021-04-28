@@ -259,7 +259,7 @@ export default {
     //TODO:这里跳页报ngnix错误
     async openMall(data) {
       let uri;
-      if (this.devServer !== 'prod') {
+      if (!this.$isProdBuild) {
         uri = 'http://mall-uat-app-linli.timesgroup.cn';
       } else {
         uri = 'http://mall-prod-app-linli.timesgroup.cn';

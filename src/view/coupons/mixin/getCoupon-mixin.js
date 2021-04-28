@@ -14,11 +14,10 @@ export default {
   data() {
     return {
       userInfo: {}
-      // devServer: 'dev'
     };
   },
   computed: {
-    ...mapGetters(['devServer'])
+
   },
   filters: {
     delPoint(num) {
@@ -55,7 +54,8 @@ export default {
     //TODO:这里跳页报ngnix错误
     async openMall(data) {
       let uri;
-      if (this.devServer !== 'prod') {
+      //这里的$isProdBuild可能取不到  不过没关系  这方法废了
+      if (!this.$isProdBuild) {
         uri = 'http://mall-uat-app-linli.timesgroup.cn';
       } else {
         uri = 'http://mall-prod-app-linli.timesgroup.cn';
