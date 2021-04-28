@@ -8,7 +8,7 @@
         <div class="title">邦豆记录</div>
         <div class="number">{{ totalNumber }}</div>
       </div>
-       <div class="totonumber" v-if="guoqi != 0">
+      <div class="totonumber" v-if="guoqi != 0">
         <div class="guoqitishi">
           <!--{{ invalidTime }}-->即将过期的邦豆<span>{{ guoqi }}</span>
         </div>
@@ -52,6 +52,7 @@
 import api from '@/api';
 import * as moment from 'moment';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
+
 export default {
   data() {
     return {
@@ -76,7 +77,7 @@ export default {
     this.pageHeight = this.$refs.integralRecord.clientHeight + 'px';
   },
   filters: {
-    timeFormat: function(value) {
+    timeFormat(value) {
       return moment(value).format('YYYY-MM-DD HH:mm:ss');
     }
   },
@@ -85,42 +86,35 @@ export default {
       if (this.$store.getters.isDebugMode) {
         this.memberId = '2246728470920953932';
       } else {
-        await localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+        await localstorage.get({key: 'LLBMemberId', isPublic: true}).then(res => {
           this.memberId = res.result;
         });
       }
       this.getMemberDetail();
-      this.invalidTime = moment().add(7, 'd').format('YYYY-MM-DD');
       this.overdueIntegral();
     },
-    getMemberDetail: function() {
-      // console.log("getMemberDetail gogogo");
-      const par = {
-        memberId: this.memberId
-      };
-      // console.log("par :>> ", par);
-      api.memberDetailByMemberID(par).then(res => {
-        // console.log("res.data :>> ", res.data);
+    getMemberDetail() {
+      api.memberDetailByMemberID({memberId: this.memberId}).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           this.totalNumber = res.data.integral;
         }
       });
     },
-    pageBack: function() {
+    pageBack() {
       this.$routerHelper.back();
     },
-    overdueIntegral: function() {
+    overdueIntegral() {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
         message: '加载中...'
       });
-      const par = {
+      this.invalidTime = moment().add(7, 'd').format('YYYY-MM-DD');
+      api.overdueIntegral({
         invalidTime: this.invalidTime,
         memberId: this.memberId
-      };
-      api.overdueIntegral(par).then(res => {
+      }).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           if (res.data === undefined) {
@@ -132,119 +126,112 @@ export default {
       });
     },
     onLoad() {
-      // console.log("onLoad...");
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
         message: '加载中...'
       });
       this.pageIndex = this.pageIndex + 1;
-      const par = {
-        memberId: this.memberId,
-        pageIndex: this.pageIndex,
-        pageSize: this.pageSize,
-        //isInvalid: 0,
-        status: 2
-      };
-
       if (this.total != null && this.dataSource.length >= this.total) {
         this.finished = true;
         this.loading = false;
         return false;
       }
-
-      api
-        .integralRecord(par)
-        .finally(() => this.getMemberDetail())
-        .then(res => {
-          //模拟数据
-          // let res = {
-          //   "code": 200,
-          //   "data": {
-          //     "current": 0,
-          //     "pages": 0,
-          //     "records": [
-          //       {
-          //         "behaviourCode": "",
-          //         "behaviourName": "",
-          //         "changeType": 0,
-          //         "clientCode": "",
-          //         "clientName": "",
-          //         "createTime": "",
-          //         "createUser": 0,
-          //         "createUserName": "",
-          //         "describe": "",
-          //         "id": 123456789,
-          //         "integral": 0,
-          //         "integralChange": 1,
-          //         "invalidTime": "",
-          //         "isDeleted": 0,
-          //         "isInvalid": 1,
-          //         "memberId": 0,
-          //         "status": 0,
-          //         "taskId": 0,
-          //         "taskName": "",
-          //         "templateCardId": 0,
-          //         "type": 0,
-          //         "updateTime": "",
-          //         "updateUser": 0
-          //       }
-          //     ],
-          //     "searchCount": true,
-          //     "size": 0,
-          //     "total": 0
-          //   },
-          //   "message": ""
-          // };
-          // console.log("integralRecord res :>> ", res);
-          if (res.code == 200) {
-            this.$toast.clear();
-            this.total = res.data.total;
-            if (res.data.records.length > 0) {
-              this.showNoData = false;
-              this.showDataList = true;
-            } else {
-              this.showNoData = true;
-              this.showDataList = false;
-            }
-
-            if (this.refreshing) {
-              this.dataSource = [];
-              this.refreshing = false;
-            }
-            for (let i = 0; i < res.data.records.length; i++) {
-              this.dataSource.push(res.data.records[i]);
-            }
-            this.loading = false;
-            if (this.dataSource.length >= res.data.total) {
-              this.finished = true;
-            }
+      api.integralRecord({
+        memberId: this.memberId,
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize,
+        //isInvalid: 0,
+        status: 2
+      }).then(res => {
+        //模拟数据
+        // let res = {
+        //   "code": 200,
+        //   "data": {
+        //     "current": 0,
+        //     "pages": 0,
+        //     "records": [
+        //       {
+        //         "behaviourCode": "",
+        //         "behaviourName": "",
+        //         "changeType": 0,
+        //         "clientCode": "",
+        //         "clientName": "",
+        //         "createTime": "",
+        //         "createUser": 0,
+        //         "createUserName": "",
+        //         "describe": "",
+        //         "id": 123456789,
+        //         "integral": 0,
+        //         "integralChange": 1,
+        //         "invalidTime": "",
+        //         "isDeleted": 0,
+        //         "isInvalid": 1,
+        //         "memberId": 0,
+        //         "status": 0,
+        //         "taskId": 0,
+        //         "taskName": "",
+        //         "templateCardId": 0,
+        //         "type": 0,
+        //         "updateTime": "",
+        //         "updateUser": 0
+        //       }
+        //     ],
+        //     "searchCount": true,
+        //     "size": 0,
+        //     "total": 0
+        //   },
+        //   "message": ""
+        // };
+        if (res.code == 200) {
+          this.$toast.clear();
+          this.total = res.data.total;
+          if (res.data.records.length > 0) {
+            this.showNoData = false;
+            this.showDataList = true;
+          } else {
+            this.showNoData = true;
+            this.showDataList = false;
           }
-        });
+
+          if (this.refreshing) {
+            this.dataSource = [];
+            this.refreshing = false;
+          }
+          for (let i = 0; i < res.data.records.length; i++) {
+            this.dataSource.push(res.data.records[i]);
+          }
+          this.loading = false;
+          if (this.dataSource.length >= res.data.total) {
+            this.finished = true;
+          }
+        }
+      }).finally(() => {
+        this.getMemberDetail();
+        this.overdueIntegral();
+      });
     },
     onRefresh() {
       // 清空列表数据
       this.dataSource = [];
       this.pageIndex = 0;
       (this.total = null), (this.finished = false);
-
       // 重新加载数据
       // 将 loading 设置为 true，表示处于加载状态
       this.loading = true;
       this.onLoad();
     },
-    getMemberGrownLogListUsingGET: function() {
+    getMemberGrownLogListUsingGET() {
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
         message: '加载中...'
       });
-      const par = {
+      api.getMemberGrownLogListUsingGET({
         memberId: this.memberId,
         pageIndex: 1,
         pageSize: 10
-      };
-      api.getMemberGrownLogListUsingGET(par).then(res => {
+      }).then(res => {
         if (res.code == 200) {
           this.$toast.clear();
           this.dataSource = res.data.records;
@@ -254,10 +241,12 @@ export default {
   }
 };
 </script>
+
 <style lang="less" scoped>
 .van-pull-refresh {
   overflow: visible;
 }
+
 .dataMessage {
   .icon {
     width: 100%;
@@ -268,6 +257,7 @@ export default {
     background-repeat: no-repeat;
     background-image: url('../../assets/img/icon-nodata.png');
   }
+
   .message {
     text-align: center;
     font-size: 14px;
@@ -276,16 +266,19 @@ export default {
     color: #8d8d8d;
   }
 }
+
 .integralRecord {
   position: fixed;
   height: 100%;
   width: 100%;
 }
+
 .page-body {
   padding: 0px 16px 16px 16px;
   padding-top: 244px;
   overflow: auto;
 }
+
 .page-head {
   position: fixed;
   top: 0px;
@@ -297,6 +290,7 @@ export default {
   background-repeat: no-repeat;
   padding: 38px 16px 0px 16px;
   background-image: url('../../assets/img/member/icon-bg-singin-2.png');
+
   .option {
     display: flex;
     justify-content: space-between;
@@ -310,6 +304,7 @@ export default {
       background-image: url('../../assets/img/member/icon-a-left.png');
     }
   }
+
   .title-body .title {
     width: 100%;
     text-align: center;
@@ -318,6 +313,7 @@ export default {
     font-weight: 500;
     color: #ffffff;
   }
+
   .title-body .number {
     margin-top: 24px;
     display: flex;
@@ -328,6 +324,7 @@ export default {
     font-weight: 500;
     color: #ffffff;
   }
+
   .totonumber {
     position: absolute;
     bottom: -10px;
@@ -347,22 +344,26 @@ export default {
   box-shadow: 0px 6px 30px 0px rgba(71, 77, 96, 0.06);
   border-radius: 12px;
 }
+
 .task-list-body .task-right {
   font-size: 20px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #e8374a;
   white-space: nowrap;
+
   &.shixiao {
     color: #8d8d8d;
   }
 }
+
 .task-list-body .task-node .title {
   font-size: 16px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #121212;
 }
+
 .task-list-body .task-node .explain {
   font-size: 12px;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -370,6 +371,7 @@ export default {
   color: #8d8d8d;
   margin-top: 8px;
 }
+
 .guoqitishi {
   font-size: 14px;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -377,6 +379,7 @@ export default {
   color: #121212;
   background-color: #fff;
   padding-bottom: 10px;
+
   span {
     margin-left: 10px;
     color: red;
