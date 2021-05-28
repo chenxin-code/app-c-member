@@ -28,3 +28,14 @@ yarn lint
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### 项目配置文件
+
+src/config.js（配置开发模式token,打包类型...）
+
+### 获取开发模式token
+
+* POST请求
+* http://m-center-uat-linli.timesgroup.cn/times/auth/oauth/token?grant_type=sms_code&client_id=app_c&client_secret=times&username=&password=&scope=all
+* username  会员id对应手机号
+* password  短信验证码

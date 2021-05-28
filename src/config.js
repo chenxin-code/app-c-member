@@ -1,15 +1,13 @@
+//项目配置文件
 import Vue from "vue";
 
-//项目配置文件记得检查！！！！
 
-
-//打包前检查！！！！
-//打包前检查！！！！
-//打包前检查！！！！
-Vue.prototype.$isProdBuild = true;//生产包 => true   uat包 => false
-//打包前检查！！！！
-//打包前检查！！！！
-//打包前检查！！！！
+/*
+* 打包类型
+* 打生产包还是uat包  打包前记得检查
+* 生产包 => true   uat包 => false
+*/
+Vue.prototype.$isProdBuild = false;
 
 
 //开发模式 会员id
@@ -17,14 +15,14 @@ Vue.prototype.$memberId = '2246728470920953932';
 
 
 /*
-* 开发模式 token  1天内有效
+* 开发模式 token
 * 获取token
 * POST请求
-* http://m-center-uat-linli.timesgroup.cn/times/auth/oauth/token?grant_type=sms_code&client_id=app_c&client_secret=times&username=15626127382&password=210527&scope=all
-* username  15626127382  会员id对应手机号
-* password  210527  当天日期
-* */
-Vue.prototype.$token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTYyNjEyNzM4MiIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjI1Mjk5NDYzOTIyNzI1NzU2MSwiZXhwIjoxNjIyMTUyNjkyLCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIiwib3duZXIiXSwianRpIjoiNWJiMWQwYmMtMjc0ZS00MWUzLTg4OWEtNmYyMmRkNDRlZjEzIiwiY2xpZW50X2lkIjoiYXBwX2MifQ.f5O_Bfe0-8SFgNPEzsCXX3sGz5aoD15hCAss8KK1ELBquMhqrHSsS5V5Awko2DMUE0T2l4e6klzqeyrrtHZI3nBvOIoFUqCGloB6JLjc-1yLVNe6U2RRoW5oaPi00CNkqibFoKOfqi-L1WC9nssfo-ZevMVee2HjChfo5iZQ9YroRAPy1_Vj_1i8sAtx9cuZdTcdb8tEKVHtQfl2_L7DfAVrzX6Q0w-LvVYMAw2f6nP_hXYbtfBtpHTEYSyacPDHuCgOn-T8AELGPKSUFhB9-LmQ1JYmpIHF9-d6LsX-owYqAAcgpt0Z7Y8PgzlYr8j5oCQxTIdDwF4HqxV6VtlqVA';
+* http://m-center-uat-linli.timesgroup.cn/times/auth/oauth/token?grant_type=sms_code&client_id=app_c&client_secret=times&username=&password=&scope=all
+* username  会员id对应手机号
+* password  短信验证码
+*/
+Vue.prototype.$token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTYyNjEyNzM4MiIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjI1Mjk5NDYzOTIyNzI1NzU2MSwiZXhwIjoxNjIyMjEwNDc3LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIiwib3duZXIiXSwianRpIjoiMmFiODQ3MGMtMWFlZC00YzIwLWIyYTgtMzlhOTY0ZTczNDU3IiwiY2xpZW50X2lkIjoiYXBwX2MifQ.W_pT274hkDZ7hkVhFBLqxG2SGTnlxynstEunYT8D4yF1kyKlmlgIYDNd2tmCQs6paIXiCb7wWQpbYVDsdB60ZQAw2AO4eiyMsoTdVrwKJV6NOYttYvLcrzsScgOoEEGi-9c43CJl2JBxDRQrzcQApNGkNqP-74r-GduJD-A3NyBxgSDM03wu5Su_gK3DGfVc5stsfuOPez2Lppbb3ScaCTUUpwHrcCMC2ZAH2Gak47Zdd2j1RT9cr4fPmfNZww6-H5CVmeq6qV_uKOs1JhHrGEyH9x_LO7RiCZCmGnMxCYg8SocLljZuR7p7xD49RY4DL1lha3lACSV2doB0vTK1NQ';
 
 
 //领取/兑换成功强提醒开关
