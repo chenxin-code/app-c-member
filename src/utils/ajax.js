@@ -4,6 +4,7 @@ import api from '@/api';
 import QS from 'qs';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
 import { Toast } from 'vant';
+import Vue from "vue";
 
 // var BASEURL = ''
 var REFRESH = '';
@@ -49,7 +50,7 @@ HTTP.interceptors.request.use(async config => {
     //   });
 
     //开发环境
-    tokenStr1 = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTYyNjEyNzM4MiIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjI1Mjk5NDYzOTIyNzI1NzU2MSwiZXhwIjoxNjIxNjAyMDk3LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIiwib3duZXIiXSwianRpIjoiMGRlYzU3YWYtNmE3MS00MjczLWFmY2ItYTBkZWIyNDRhMGJlIiwiY2xpZW50X2lkIjoiYXBwX2MifQ.Cv9FJ8qtoXYJQcJh0j2FulnerXoTSXIZVClk-ldirExlhAQIECvy3ELFothNcJHrvJ6hVgUhoUQUNOLuE2nm5n20fjN_qSASSJitbLXJmpE1fVblgUbe6f8TVl0IPWlv9X-aeWMUSsonKtaWEISdCapd2yrXBXF1YWSgsWyaUqZMixdL7fW38VpZ4jfjdzot6scw5aKk1a7VALQ3VEzcfRtP8MXtgdJEW1l5nE1ABcoDShxIFjzfw5GHOFMOLX3Arpnx4L4gkXeHaLhVR1g00nV9a32-H3OSqF5S68evdWbj8xubu69xG6nKSdtb7j7Opucw0DGO_qwKj4Qey79IPw`;
+    tokenStr1 = 'Bearer ' + Vue.prototype.$token;
     config.headers.Authorization = tokenStr1;
     return config;
   } else {

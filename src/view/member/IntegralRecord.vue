@@ -84,7 +84,7 @@ export default {
   methods: {
     async initData() {
       if (this.$store.getters.isDebugMode) {
-        this.memberId = '2246728470920953932';
+        this.memberId = this.$memberId;
       } else {
         await localstorage.get({key: 'LLBMemberId', isPublic: true}).then(res => {
           this.memberId = res.result;
