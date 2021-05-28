@@ -399,7 +399,7 @@
     </van-overlay>
     <van-overlay class="van-overlay" :show="showPopupMemo">
       <div class="messageBox">
-        <div class="cou-type-code">任务描述：{{popupMemoText}}</div>
+        <div class="cou-type-code">{{popupMemoText}}</div>
         <div class="know-btn" @click="showPopupMemo = false">知道了</div>
       </div>
     </van-overlay>
@@ -512,15 +512,23 @@ export default {
   },
   methods: {
     onTaskList(item) {
-      if (item.executeType !== '1') {
-        if (item.jumpPath && item.jumpPath.length > 0) {
-          router.openTargetRouter(JSON.parse(item.jumpPath));
+      try {
+        if (item.executeType !== 1) {
+          if (item.jumpPath && item.jumpPath.length > 0) {
+            router.openTargetRouter(JSON.parse(item.jumpPath));
+          }
+        } else {
+          if (item.memo && item.memo.length > 0) {
+            this.popupMemoText = item.memo;
+            this.showPopupMemo = true;
+          }
         }
-      } else {
-        if (item.memo && item.memo.length > 0) {
-          this.popupMemoText = item.memo;
-          this.showPopupMemo = true;
-        }
+      } catch (error) {
+        this.$toast.fail({
+          duration: 100, // 持续展示 toast
+          forbidClick: true,
+          message: '网络异常'
+        });
       }
     },
     getTime(time) {
@@ -907,7 +915,7 @@ export default {
       });
       const par = {
         pageIndex: 1,
-        pageSize: 3,
+        pageSize: 20,
         memberId: memberID
       };
       api.getMyTaskListByMember(par).then(res => {
