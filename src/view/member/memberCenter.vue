@@ -376,7 +376,7 @@
               <div class="message">暂无任务</div>
             </div>
             <div v-if="taskList.length > 0">
-              <div class="task-node" v-for="(item, index) in taskList" :key="index">
+              <div class="task-node" v-for="(item, index) in taskList" :key="index" @click="onTaskList(item)">
                 <div class="task-left">
                   <div class="title">{{ item.taskName }}</div>
                   <div class="explain">{{ item.taskCondition }}</div>
@@ -397,6 +397,12 @@
         <div class="know-btn" @click="showPopup = false">知道了</div>
       </div>
     </van-overlay>
+    <van-overlay class="van-overlay" :show="showPopupMemo">
+      <div class="messageBox">
+        <div class="cou-type-code">{{popupMemoText}}</div>
+        <div class="know-btn" @click="showPopupMemo = false">知道了</div>
+      </div>
+    </van-overlay>
     <newToast :toastStr="toastStr" :couponItem="couponItem" @qwsy="qwsy" v-if="showNewToast"></newToast>
     <van-dialog
       class="dialog-fail"
@@ -412,6 +418,7 @@
 /* eslint-disable */
 import nav from '@zkty-team/x-engine-module-nav';
 import api from '@/api';
+import router from '@zkty-team/x-engine-module-router';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
 import couponMixin from '../coupons/mixin/getCoupon-mixin';
 import newToast from './../../components/newToast';
@@ -439,14 +446,18 @@ export default {
       vouchersList: [],
       memberObject: null,
       showPopup: false,
+      showPopupMemo: false,
+      popupMemoText: '',
       memo: null,
       couTypeCode: null,
       isFailShow: false,
       materualCode: '',
       //newToast
-      toastStr: '', couponItem: {}, showNewToast: false,
+      toastStr: '',
+      couponItem: {},
+      showNewToast: false,
       //上线前临时开关
-      showMemberRight: false,
+      showMemberRight: false
     };
   },
   components: {
@@ -500,14 +511,34 @@ export default {
     }
   },
   methods: {
+    onTaskList(item) {
+      try {
+        if (item.executeType !== 1) {
+          if (item.jumpPath && item.jumpPath.length > 0) {
+            router.openTargetRouter(JSON.parse(item.jumpPath));
+          }
+        } else {
+          if (item.memo && item.memo.length > 0) {
+            this.popupMemoText = item.memo;
+            this.showPopupMemo = true;
+          }
+        }
+      } catch (error) {
+        this.$toast.fail({
+          duration: 100, // 持续展示 toast
+          forbidClick: true,
+          message: '网络异常'
+        });
+      }
+    },
     getTime(time) {
       const date = new Date(+time);
       return moment(date).format('YYYY.MM.DD');
     },
-    qwsy(couponItem){
+    qwsy(couponItem) {
       this.useCoupon(couponItem);
     },
-    sygz(item){
+    sygz(item) {
       this.showPopup = true;
       this.memo = item.memo || null;
       this.couTypeCode = item.couTypeCode || null;
@@ -632,6 +663,7 @@ export default {
       this.differencePercentage = sourceData.memberCardRelats[0].grow / sourceData.memberCardRelats[0].rangeEnd;
       this.integralRecord(this.memberId);
       this.getMyTaskListByMember(this.memberId);
+      // this.getMyTaskListByMember('2436937814953172359');
       this.$forceUpdate();
     },
     exchange(data, type, cIndex, newtype) {
@@ -647,7 +679,11 @@ export default {
           this.$dialog
             .confirm({
               title: '确认兑换',
-              message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${data.integrealCount}</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${res.data.integral}</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
+              message: `<div><span style="padding-right:4px;color:#121212;">本次消耗</span><span style="color:#121212;">${
+                data.integrealCount
+              }</span></div><div><span style="padding-right:4px;color:#121212;">当前剩余</span><span style="color:#121212;">${
+                res.data.integral
+              }</span></div><div><span style="padding-right:4px;color:#121212;">兑换后剩余</span><span style="color:#121212;">${rest}</span></div>`
             })
             .then(() => {
               const params = {
@@ -656,72 +692,75 @@ export default {
                 integral: data.integrealCount
               };
               this.toast();
-              api.getReceiveCoupon(params).then(res => {
-                if (res.code === 200) {
-                  const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
-                  const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
-                  const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
-                  const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
-                  if (res.data.result) {
-                    if(this.$qiangTX){
-                      this.$toast.clear();
-                      this.toastStr = '兑换成功';
-                      this.couponItem = data;
-                      this.showNewToast = true;
-                      setTimeout(() => {
-                        this.showNewToast = false;
+              api
+                .getReceiveCoupon(params)
+                .then(res => {
+                  if (res.code === 200) {
+                    const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+                    const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+                    const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+                    const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
+                    if (res.data.result) {
+                      if (this.$qiangTX) {
+                        this.$toast.clear();
+                        this.toastStr = '兑换成功';
+                        this.couponItem = data;
+                        this.showNewToast = true;
+                        setTimeout(() => {
+                          this.showNewToast = false;
+                          setTimeout(() => {
+                            this.getMemberDetail();
+                          }, 0);
+                        }, 3000);
+                      } else {
+                        this.$toast('兑换成功');
                         setTimeout(() => {
                           this.getMemberDetail();
-                        }, 0);
-                      }, 3000);
-                    }else{
-                      this.$toast('兑换成功');
-                      setTimeout(() => {
-                        this.getMemberDetail();
-                      }, 500);
-                    }
+                        }, 500);
+                      }
 
-                    // 存在上限，变更按钮为 '去使用'
-                    if (couponDay || couponPersonDay || couponPerson || couponTotal) {
-                      this.$set(data, 'goUse', true);
-                    }
-                    //存couNo
-                    if(newtype === 'property'){
-                      this.propertyList[cIndex].couNo = res.data.couNo;
-                      console.log('存couNo结果--------->',this.propertyList);
-                    }else if(newtype === 'vouchers'){
-                      this.vouchersList[cIndex].couNo = res.data.couNo;
-                      console.log('存couNo结果--------->',this.vouchersList);
-                    }
-                  } else {
-                    if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
-                      console.log('无存在上限，后台/数据库处理错误');
-                      this.$toast('兑换失败');
-                    } else {
-                      if (couponTotal) {
-                        // if (type === 0) {
-                        //   this.propertyList.splice(index, 1);
-                        // } else {
-                        //   this.vouchersList.splice(index, 1);
-                        // }
-                        return this.$toast('该优惠券已兑换完');
-                      }
-                      if (couponDay) {
-                        return this.$toast('该优惠券今日已兑换完');
-                      }
-                      if (couponPersonDay || couponPerson) {
+                      // 存在上限，变更按钮为 '去使用'
+                      if (couponDay || couponPersonDay || couponPerson || couponTotal) {
                         this.$set(data, 'goUse', true);
                       }
-                      if (couponPerson) {
-                        return this.$toast('该优惠券您已兑换完');
+                      //存couNo
+                      if (newtype === 'property') {
+                        this.propertyList[cIndex].couNo = res.data.couNo;
+                        console.log('存couNo结果--------->', this.propertyList);
+                      } else if (newtype === 'vouchers') {
+                        this.vouchersList[cIndex].couNo = res.data.couNo;
+                        console.log('存couNo结果--------->', this.vouchersList);
                       }
-                      if (couponPersonDay) {
-                        return this.$toast('该优惠券您今日已兑换完');
+                    } else {
+                      if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+                        console.log('无存在上限，后台/数据库处理错误');
+                        this.$toast('兑换失败');
+                      } else {
+                        if (couponTotal) {
+                          // if (type === 0) {
+                          //   this.propertyList.splice(index, 1);
+                          // } else {
+                          //   this.vouchersList.splice(index, 1);
+                          // }
+                          return this.$toast('该优惠券已兑换完');
+                        }
+                        if (couponDay) {
+                          return this.$toast('该优惠券今日已兑换完');
+                        }
+                        if (couponPersonDay || couponPerson) {
+                          this.$set(data, 'goUse', true);
+                        }
+                        if (couponPerson) {
+                          return this.$toast('该优惠券您已兑换完');
+                        }
+                        if (couponPersonDay) {
+                          return this.$toast('该优惠券您今日已兑换完');
+                        }
                       }
                     }
                   }
-                }
-              }).finally(() => {});
+                })
+                .finally(() => {});
             });
         }
       });
@@ -876,7 +915,7 @@ export default {
       });
       const par = {
         pageIndex: 1,
-        pageSize: 3,
+        pageSize: 20,
         memberId: memberID
       };
       api.getMyTaskListByMember(par).then(res => {
@@ -1083,11 +1122,11 @@ export default {
         }
         &.Lv2 {
           color: #b5561a;
-          background-color: #EEE3DC;
+          background-color: #eee3dc;
         }
         &.Lv3 {
           color: #434342;
-          background-color: #E8E8E8;
+          background-color: #e8e8e8;
         }
         &.Lv4 {
           color: #b68843;
@@ -1267,7 +1306,7 @@ export default {
   }
 
   .cz-number-body {
-    color: #F1D8B0;
+    color: #f1d8b0;
   }
   .cz-number {
     background-image: url('../../assets/img/member/icon-chno-l5.png');
@@ -1279,15 +1318,15 @@ export default {
 
   .progressBar {
     .bg {
-      background-color: #F1D8B0;
+      background-color: #f1d8b0;
     }
     .progres {
-      background-color: #F1D8B0;
+      background-color: #f1d8b0;
     }
   }
 
   .progressBarWord {
-    color: #F1D8B0;
+    color: #f1d8b0;
 
     .pbn {
       display: none;
@@ -1502,11 +1541,11 @@ export default {
                 align-self: flex-end;
                 width: 100%;
                 > span {
-                  color: #E8374A;
+                  color: #e8374a;
                   line-height: 1;
                   padding: 4px 5px;
                   font-size: 10px;
-                  border: 1px solid #E8374A;
+                  border: 1px solid #e8374a;
                   border-radius: 15px;
                 }
               }
@@ -1593,12 +1632,12 @@ export default {
           }
         }
 
-        .bangdou-exchange-card.entity{
+        .bangdou-exchange-card.entity {
           .exchange-card-left {
             background-image: url('../../assets/img/coupons/blue_card.png');
           }
           .exchange-card-left-btn {
-            color: #1B7BFF;
+            color: #1b7bff;
           }
         }
         .goods-img {
@@ -1804,31 +1843,30 @@ export default {
   .van-dialog__header {
     text-align: center;
   }
-  .van-dialog__footer{
+  .van-dialog__footer {
     text-align: center;
-    .van-button.van-dialog__confirm{
-      width:100%;
-      background-color: #F5F5F6 !important;
-      color:#8D8D8D !important;
-      border-color:#F5F5F6;
+    .van-button.van-dialog__confirm {
+      width: 100%;
+      background-color: #f5f5f6 !important;
+      color: #8d8d8d !important;
+      border-color: #f5f5f6;
     }
   }
-  .van-dialog__message{
+  .van-dialog__message {
     padding-bottom: 10px;
   }
 }
-.rect{
+.rect {
   padding: 0 20px;
   margin: 15px 0;
-  background:
-    linear-gradient(to top, #FCECEE, #FCECEE) left top no-repeat,/*上左*/
-    linear-gradient(to right, #FCECEE, #FCECEE) left top no-repeat,/*左上*/
-    linear-gradient(to left, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
-    linear-gradient(to bottom, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
-    linear-gradient(to left, #FCECEE, #FCECEE) left bottom no-repeat,/*下左*/
-    linear-gradient(to bottom, #FCECEE, #FCECEE) left bottom no-repeat,/*左下*/
-    linear-gradient(to top, #FCECEE, #FCECEE) right bottom no-repeat,/*下右*/
-    linear-gradient(to left, #FCECEE, #FCECEE) right bottom no-repeat;/*右下*/
+  background: linear-gradient(to top, #fcecee, #fcecee) left top no-repeat,
+    /*上左*/ linear-gradient(to right, #fcecee, #fcecee) left top no-repeat,
+    /*左上*/ linear-gradient(to left, #fcecee, #fcecee) right top no-repeat,
+    /*上右*/ linear-gradient(to bottom, #fcecee, #fcecee) right top no-repeat,
+    /*上右*/ linear-gradient(to left, #fcecee, #fcecee) left bottom no-repeat,
+    /*下左*/ linear-gradient(to bottom, #fcecee, #fcecee) left bottom no-repeat,
+    /*左下*/ linear-gradient(to top, #fcecee, #fcecee) right bottom no-repeat,
+    /*下右*/ linear-gradient(to left, #fcecee, #fcecee) right bottom no-repeat; /*右下*/
   background-size: 2px 16px, 16px 2px, 2px 16px, 16px 2px;
 }
 </style>
