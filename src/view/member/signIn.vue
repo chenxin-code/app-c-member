@@ -234,12 +234,25 @@ export default {
           self.$toast.clear();
         })
         .then(res => {
+          //let res = JSON.parse('{"code":200,"data":{"count":14,"sign":false,"taskVoList":[{"afterTask":12,"awardGrow":"0","awardIntegral":"10","beforeTask":null,"complete":true,"day":1,"endTime":null,"executeNum":null,"id":9,"isPeriodic":1,"isShow":0,"maxLevel":null,"memo":"","minLevel":null,"periodic":"","source":"sys_linlibang","sourceName":"","startTime":null,"taskCondition":"邻里邦用户通过邻里邦ProApp完成每日签到","taskImage":"","taskName":"每日签到","validity":1},{"afterTask":13,"awardGrow":"0","awardIntegral":"20","beforeTask":9,"complete":true,"day":2,"endTime":null,"executeNum":null,"id":12,"isPeriodic":1,"isShow":0,"maxLevel":null,"memo":"","minLevel":null,"periodic":"","source":"sys_linlibang","sourceName":"","startTime":null,"taskCondition":"邻里邦用户通过邻里邦ProApp完成每日签到","taskImage":"","taskName":"每日签到","validity":1},{"afterTask":14,"awardGrow":"0","awardIntegral":"60","beforeTask":12,"complete":true,"day":3,"endTime":null,"executeNum":null,"id":13,"isPeriodic":1,"isShow":0,"maxLevel":null,"memo":"","minLevel":null,"periodic":"","source":"sys_linlibang","sourceName":"","startTime":null,"taskCondition":"邻里邦用户通过邻里邦ProApp完成每日签到","taskImage":"","taskName":"每日签到","validity":1},{"afterTask":15,"awardGrow":"0","awardIntegral":"40","beforeTask":13,"complete":true,"day":4,"endTime":null,"executeNum":null,"id":14,"isPeriodic":1,"isShow":0,"maxLevel":null,"memo":"","minLevel":null,"periodic":"","source":"sys_linlibang","sourceName":"","startTime":null,"taskCondition":"邻里邦用户通过邻里邦ProApp完成每日签到","taskImage":"","taskName":"每日签到","validity":1},{"afterTask":16,"awardGrow":"0","awardIntegral":"50","beforeTask":14,"complete":true,"day":5,"endTime":null,"executeNum":null,"id":15,"isPeriodic":1,"isShow":0,"maxLevel":null,"memo":"","minLevel":null,"periodic":"","source":"sys_linlibang","sourceName":"","startTime":null,"taskCondition":"邻里邦用户通过邻里邦ProApp完成每日签到","taskImage":"","taskName":"每日签到","validity":1},{"afterTask":17,"awardGrow":"0","awardIntegral":"60","beforeTask":15,"complete":true,"day":6,"endTime":null,"executeNum":null,"id":16,"isPeriodic":1,"isShow":0,"maxLevel":null,"memo":"","minLevel":null,"periodic":"","source":"sys_linlibang","sourceName":"","startTime":null,"taskCondition":"邻里邦用户通过邻里邦ProApp完成每日签到","taskImage":"","taskName":"每日签到","validity":1},{"afterTask":null,"awardGrow":"0","awardIntegral":"100","beforeTask":16,"complete":true,"day":7,"endTime":null,"executeNum":null,"id":17,"isPeriodic":1,"isShow":0,"maxLevel":null,"memo":"","minLevel":null,"periodic":"","source":"sys_linlibang","sourceName":"","startTime":null,"taskCondition":"邻里邦用户通过邻里邦ProApp完成每日签到","taskImage":"","taskName":"每日签到","validity":1}]},"message":"success"}');
           if (res.code == 200) {
             console.log(res);
             self.taskVoList = res.data.taskVoList;
             self.isClick = res.data.sign;
             var number = parseInt(res.data.count / 7);
-            self.count = res.data.count - number * 7;
+            if(res.data.sign){
+              if(res.data.count % 7 === 0){
+                self.count = 7;
+              }else{
+                self.count = res.data.count - number * 7;
+              }
+            }else{
+              if(res.data.count % 7 === 0){
+                self.count = 0;
+              }else{
+                self.count = res.data.count - number * 7;
+              }
+            }
           }
         });
     }
