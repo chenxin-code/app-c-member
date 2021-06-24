@@ -471,6 +471,10 @@ export default {
   mounted() {
     window.addEventListener('visibilitychange', this.hanldeVisiblityChange);
   },
+   beforeDestroy() {
+    // 在组件生命周期结束的时候销毁避免多次监听。
+    window.removeEventListener('visibilitychange', this.hanldeVisiblityChange);
+  },
   beforeRouteEnter(to, from, next) {
     if (from.name == 'growthValueRecord' || from.name == 'IntegralRecord' || from.name == 'gradeDescription') {
       to.meta.isBack = true;
