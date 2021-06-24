@@ -16,7 +16,10 @@ yarn serve
 ### Compiles and minifies for production
 
 ```
-yarn build
+测试环境打包
+yarn build:test
+生产环境打包
+yarn build:prod
 ```
 
 ### Lints and fixes files
