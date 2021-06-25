@@ -196,8 +196,8 @@ export default {
       ],
       scroll: 0,
       pageRefresh: true,
-      isFailShow:false,
-      materualCode:'',
+      isFailShow: false,
+      materualCode: ''
     };
   },
   components: {
@@ -205,7 +205,6 @@ export default {
   },
   created() {
     this.paramsList();
-
   },
   mounted() {
     nav.setNavLeftBtn({
@@ -262,7 +261,7 @@ export default {
     next();
   },
   methods: {
-    tabChange(){
+    tabChange() {
       const tabIndex = this.active;
       this.pageIndex[tabIndex] = 1;
       this.getList();
@@ -278,7 +277,7 @@ export default {
       return moment(date).format('YYYY.MM.DD');
     },
     //3天内卡券过期提醒
-    checkExpired(validityEndTime){
+    checkExpired(validityEndTime) {
       return validityEndTime - Date.now() <= 3 * 86400 * 1000;
     },
     useCoupon(data) {
@@ -291,7 +290,7 @@ export default {
         this.openDeital();
         // this.
       } else if (data.activity === '4005') {
-        appNav.changeBottomToIndex({selectIndex: 2});
+        appNav.changeBottomToIndex({ selectIndex: 2 });
         //this.openMall(data);
         // console.log("打开商城");
       } else if (data.activity === '4015') {
@@ -313,9 +312,7 @@ export default {
         token = res.result;
       });
 
-      const tempParam = encodeURIComponent(
-        `${uri}/app-vue/app/index.htm#/common`
-      );
+      const tempParam = encodeURIComponent(`${uri}/app-vue/app/index.htm#/common`);
       const url = `${uri}/app/index?token=${token}&redirect=${tempParam}`;
       console.log('openMall url :>> ', url);
 
@@ -327,18 +324,23 @@ export default {
     // 打开账单中心
     async openDeital() {
       let token;
-      await localstorage.get({
-        key: 'LLBToken', isPublic: true}).then(res => {
-        token = res.result;
+      await localstorage
+        .get({
+          key: 'LLBToken',
+          isPublic: true
+        })
+        .then(res => {
+          token = res.result;
         });
-      const tempParam = encodeURIComponent(
-        `/app-vue/app/index#/order/2`
-      );
-      const url = `http://mall-${this.$isProdBuild ? 'prod' : 'uat'}-app-linli.timesgroup.cn/app/index?token=${token}&redirect=${tempParam}`;
+      const tempParam = encodeURIComponent(`/app-vue/app/index#/order/2`);
+      const url = `http://mall-${
+        this.$isProdBuild ? 'prod' : 'uat'
+      }-app-linli.timesgroup.cn/app/index?token=${token}&redirect=${tempParam}`;
 
       router.openTargetRouter({
         type: 'h5',
-        uri: url
+        uri: url,
+        hideNavbar: true
       });
       // const userId = this.userInfo.phone;
       // api.getCustomUser().then(res => {
@@ -402,10 +404,10 @@ export default {
       //   }).then(() => {
       //     // on close
       //   });
-      api.getUserMaterual({"couNo":data.couNo,"couTypeCode":data.couTypeCode,"memberId":this.memberId}).then(res => {
+      api.getUserMaterual({ couNo: data.couNo, couTypeCode: data.couTypeCode, memberId: this.memberId }).then(res => {
         this_.materualCode = res.data;
         this_.isFailShow = true;
-      })
+      });
     },
     getList() {
       const tabIndex = this.active;
@@ -683,7 +685,6 @@ export default {
                     font-weight: 500;
                     color: #ff7709;
                   }
-
                 }
 
                 .exchange-card-right {
@@ -858,9 +859,9 @@ export default {
         }
       }
     }
-    .entity{
-      & .exchange-card-left-btn{
-        color: #1B7BFF !important;
+    .entity {
+      & .exchange-card-left-btn {
+        color: #1b7bff !important;
       }
     }
     .card-used {
@@ -874,7 +875,7 @@ export default {
       background-position: center center;
       background-size: 49px 52px;
       &.expired-img {
-        background-image: url("../../../assets/img/coupons/to_expired.png");
+        background-image: url('../../../assets/img/coupons/to_expired.png');
       }
     }
 
@@ -947,36 +948,35 @@ export default {
 }
 </style>
 <style lang="less">
-  .van-dialog.dialog-fail {
+.van-dialog.dialog-fail {
   .van-dialog__header {
     text-align: center;
   }
-  .van-dialog__footer{
+  .van-dialog__footer {
     text-align: center;
-    .van-button.van-dialog__confirm{
-      width:100%;
-      background-color: #F5F5F6 !important;
-      color:#8D8D8D !important;
-      border-color:#F5F5F6;
+    .van-button.van-dialog__confirm {
+      width: 100%;
+      background-color: #f5f5f6 !important;
+      color: #8d8d8d !important;
+      border-color: #f5f5f6;
     }
   }
-  .van-dialog__message{
-     padding-bottom: 10px;
+  .van-dialog__message {
+    padding-bottom: 10px;
   }
 }
-.rect{
+.rect {
   padding: 0 20px;
   margin: 15px 0;
-background:
-                    linear-gradient(to top, #FCECEE, #FCECEE) left top no-repeat,/*上左*/
-                    linear-gradient(to right, #FCECEE, #FCECEE) left top no-repeat,/*左上*/
-                    linear-gradient(to left, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
-                    linear-gradient(to bottom, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
-                    linear-gradient(to left, #FCECEE, #FCECEE) left bottom no-repeat,/*下左*/
-                    linear-gradient(to bottom, #FCECEE, #FCECEE) left bottom no-repeat,/*左下*/
-                    linear-gradient(to top, #FCECEE, #FCECEE) right bottom no-repeat,/*下右*/
-                    linear-gradient(to left, #FCECEE, #FCECEE) right bottom no-repeat;/*右下*/
-            background-size: 2px 16px, 16px 2px, 2px 16px, 16px 2px;
+  background: linear-gradient(to top, #fcecee, #fcecee) left top no-repeat,
+    /*上左*/ linear-gradient(to right, #fcecee, #fcecee) left top no-repeat,
+    /*左上*/ linear-gradient(to left, #fcecee, #fcecee) right top no-repeat,
+    /*上右*/ linear-gradient(to bottom, #fcecee, #fcecee) right top no-repeat,
+    /*上右*/ linear-gradient(to left, #fcecee, #fcecee) left bottom no-repeat,
+    /*下左*/ linear-gradient(to bottom, #fcecee, #fcecee) left bottom no-repeat,
+    /*左下*/ linear-gradient(to top, #fcecee, #fcecee) right bottom no-repeat,
+    /*下右*/ linear-gradient(to left, #fcecee, #fcecee) right bottom no-repeat; /*右下*/
+  background-size: 2px 16px, 16px 2px, 2px 16px, 16px 2px;
 }
 </style>>
 

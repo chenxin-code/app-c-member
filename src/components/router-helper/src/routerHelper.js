@@ -9,7 +9,7 @@ import _ from 'lodash'
 
 export default {
   //是否为移动端 false不是，true 是
-  isPhone: process.env.NODE_ENV === "development" ? false : true,
+  isPhone: process.env.VUE_APP_CURENV !== "development",
   formatData: function (data) {
     var returnData = data;
     var paramsStr = "";

@@ -20,7 +20,7 @@ function addStyleResource(rule) {
       patterns: [resolve('./src/assets/css/var.less')]
     });
 }
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.VUE_APP_CURENV === 'production';
 const assetsCDN = {
   // webpack build externals
   externals: {

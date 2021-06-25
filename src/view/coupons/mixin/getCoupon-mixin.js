@@ -100,7 +100,7 @@ export default {
       router.openTargetRouter({
         type: 'h5',
         uri: url,
-        hideNavbar : false
+        hideNavbar: true
       });
       // const userId = this.userInfo.phone;
       // api.getCustomUser().then(res => {
