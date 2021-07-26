@@ -24,7 +24,7 @@ import vConsole from "vconsole/dist/vconsole.min.js";
 if (process.env.VUE_APP_CURENV !== 'production') {
   new vConsole();
 }
-
+ 
 Vue.prototype.$routeHelper = routeHelper;
 
 

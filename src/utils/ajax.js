@@ -9,7 +9,7 @@ import Vue from "vue";
 // var BASEURL = ''
 var REFRESH = '';
 
-// if (process.env.NODE_ENV === 'development') {
+// if (process.env.VUE_APP_CURENV === 'development') {
 //   // getBaseURL();
 //   // BASEURL = '/'
 //   // BASEURL = "http://dev.linli580.com:10000/";
@@ -38,7 +38,7 @@ export const HTTP = axios.create({
 //请求拦截
 HTTP.interceptors.request.use(async config => {
   let tokenStr1;
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.VUE_APP_CURENV === 'development') {
     //生产环境
     // await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
     //   tokenStr1 = "Bearer " + res.result;
@@ -144,7 +144,7 @@ async function refreshToken() {
 }
 var baseurl;
 export const fetchApi = async (api, rawData = {}, method = 'GET', headers = {}) => {
-  if (process.env.NODE_ENV !== 'development') {
+  if (process.env.VUE_APP_CURENV !== 'development') {
     await localstorage.get({ key: 'LLBOrigin', isPublic: true }).then(res => {
       //如果需要写死服务器环境可以在这里处理
       baseurl = res.result + '/';
