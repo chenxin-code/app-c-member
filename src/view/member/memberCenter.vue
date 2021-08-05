@@ -464,28 +464,17 @@ export default {
     newToast
   },
   activated() {
-    console.log('$store.getters.isDebugMode :>> ', this.$store.getters.isDebugMode);
-    if (this.$store.getters.isDebugMode) {
-      // 生产需注释
-      this.memberId = this.$memberId;
-      localStorage.setItem('memberId', this.memberId);
-      this.getMemberDetail();
-      this.queryReceiveCouponList();
-    } else {
-      // 生产需打开
-      if (this.$route.meta.isBack != true) {
-        localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
-          this.memberId = res.result;
-          console.log('this.memberId :>> ', this.memberId);
-          localStorage.setItem('memberId', this.memberId);
-          this.getMemberDetail();
-          this.queryReceiveCouponList();
-        });
-      }
-    }
+    //console.log('$store.getters.isDebugMode :>> ', this.$store.getters.isDebugMode);
+    this.hanldeVisiblityChange();
   },
   created() {},
-  mounted() {},
+  mounted() {
+    window.addEventListener('visibilitychange', this.hanldeVisiblityChange);
+  },
+   beforeDestroy() {
+    // 在组件生命周期结束的时候销毁避免多次监听。
+    window.removeEventListener('visibilitychange', this.hanldeVisiblityChange);
+  },
   beforeRouteEnter(to, from, next) {
     if (from.name == 'growthValueRecord' || from.name == 'IntegralRecord' || from.name == 'gradeDescription') {
       to.meta.isBack = true;
@@ -511,6 +500,28 @@ export default {
     }
   },
   methods: {
+    hanldeVisiblityChange() {
+      if (document.visibilityState === 'visible') {
+        if (this.$store.getters.isDebugMode) {
+          // 生产需注释
+          this.memberId = this.$memberId;
+          localStorage.setItem('memberId', this.memberId);
+          this.getMemberDetail();
+          this.queryReceiveCouponList();
+        } else {
+          // 生产需打开
+          if (this.$route.meta.isBack != true) {
+            localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+              this.memberId = res.result;
+              //console.log('this.memberId :>> ', this.memberId);
+              localStorage.setItem('memberId', this.memberId);
+              this.getMemberDetail();
+              this.queryReceiveCouponList();
+            });
+          }
+        }
+      }
+    },
     onTaskList(item) {
       try {
         if (item.executeType !== 1) {

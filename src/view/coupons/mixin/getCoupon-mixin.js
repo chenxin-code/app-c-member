@@ -86,40 +86,55 @@ export default {
       }
     },
     // 打开账单中心
-    openDeital() {
-      const userId = this.userInfo.phone;
-      api.getCustomUser().then(res => {
-        if (res.code == 200) {
-          this.$toast.clear();
-          if (res.data.length > 0) {
-            var userRoomNo = '';
-            for (var i = 0; i < res.data.length; i++) {
-              userRoomNo = userRoomNo.concat(res.data[i].custRoomId).concat('|');
-            }
-            userRoomNo = userRoomNo.slice(0, userRoomNo.length - 1);
-            console.log(userRoomNo);
-            yjzdbill.YJBillList({
-              businessCstNo: userId,
-              userRoomNo: userRoomNo,
-              roomNo: '',
-              billStatus: 10,
-              billType: 1,
-              appScheme: 'x-engine',
-              payType: false
-            });
-          } else {
-            yjzdbill.YJBillList({
-              businessCstNo: userId,
-              userRoomNo: '',
-              roomNo: '',
-              billStatus: 10,
-              billType: 1,
-              appScheme: 'x-engine',
-              payType: false
-            });
-          }
-        }
+    async openDeital() {
+      let token;
+      await localstorage.get({
+        key: 'LLBToken', isPublic: true}).then(res => {
+        token = res.result;
+        });
+      const tempParam = encodeURIComponent(
+        `/app-vue/app/index#/order/2`
+      );
+      const url = `http://mall-${this.$isProdBuild ? 'prod' : 'uat'}-app-linli.timesgroup.cn/app/index?token=${token}&redirect=${tempParam}`;
+
+      router.openTargetRouter({
+        type: 'h5',
+        uri: url,
+        hideNavbar: true
       });
+      // const userId = this.userInfo.phone;
+      // api.getCustomUser().then(res => {
+      //   if (res.code == 200) {
+      //     this.$toast.clear();
+      //     if (res.data.length > 0) {
+      //       var userRoomNo = '';
+      //       for (var i = 0; i < res.data.length; i++) {
+      //         userRoomNo = userRoomNo.concat(res.data[i].custRoomId).concat('|');
+      //       }
+      //       userRoomNo = userRoomNo.slice(0, userRoomNo.length - 1);
+      //       console.log(userRoomNo);
+      //       yjzdbill.YJBillList({
+      //         businessCstNo: userId,
+      //         userRoomNo: userRoomNo,
+      //         roomNo: '',
+      //         billStatus: 10,
+      //         billType: 1,
+      //         appScheme: 'x-engine',
+      //         payType: false
+      //       });
+      //     } else {
+      //       yjzdbill.YJBillList({
+      //         businessCstNo: userId,
+      //         userRoomNo: '',
+      //         roomNo: '',
+      //         billStatus: 10,
+      //         billType: 1,
+      //         appScheme: 'x-engine',
+      //         payType: false
+      //       });
+      //     }
+      //   }
+      // });
     },
     getUserMaterual(data) {
       let this_ = this;

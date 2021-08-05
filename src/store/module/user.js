@@ -7,7 +7,7 @@ const user = {
   state: {
     //存储定义的变量
     token: '',
-    isDebugMode: process.env.NODE_ENV === 'development' //写死会员ID为 true || 原生localStorage获取会员ID为 false
+    isDebugMode: process.env.VUE_APP_CURENV === 'development' //写死会员ID为 true || 原生localStorage获取会员ID为 false
   },
   mutations: {
     //更改state里面的值定义的一些方法

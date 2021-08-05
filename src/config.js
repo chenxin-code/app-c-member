@@ -7,7 +7,7 @@ import Vue from "vue";
 * 打生产包还是uat包  打包前记得检查
 * 生产包 => true   uat包 => false
 */
-Vue.prototype.$isProdBuild = false;
+Vue.prototype.$isProdBuild = process.env.VUE_APP_CURENV === 'production';
 
 
 //开发模式 会员id
