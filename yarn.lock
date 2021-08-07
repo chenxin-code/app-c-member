@@ -1421,6 +1421,11 @@
   resolved "https://registry.yarnpkg.com/@zkty-team/x-engine-module-engine/-/x-engine-module-engine-0.1.12.tgz#b4ed65729330dc1e046007621323831a4a39c74e"
   integrity sha512-zYWRr6WtdXZgnaJ7/i08KgFUa87pDjF5Qp40QpjCS5fYw87egKSJlqMuajQPxDgRoDp0MBmqYMEVIMFMsKFlrg==
 
+"@zkty-team/x-engine-module-engine@^0.1.20":
+  version "0.1.21"
+  resolved "https://registry.yarnpkg.com/@zkty-team/x-engine-module-engine/-/x-engine-module-engine-0.1.21.tgz#9beac041a3c0a58b90023eef60eefc45d8853ced"
+  integrity sha512-vapUniOBBCz04LLYC64v7f0HFvR/VFfuyh4wAQXL2uRcMogthNXuZj3nidig1T7Jwc7y9DCIZzXUb5kjlX6RUw==
+
 "@zkty-team/x-engine-module-geo@~0.1.12":
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/@zkty-team/x-engine-module-geo/-/x-engine-module-geo-0.1.12.tgz#c91203338368c670abebc1084be37d9514cdee91"
@@ -1436,13 +1441,13 @@
   dependencies:
     "@zkty-team/x-engine-module-engine" "^0.1.12"
 
-"@zkty-team/x-engine-module-nav@~0.1.12":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@zkty-team/x-engine-module-nav/-/x-engine-module-nav-0.1.12.tgz#15cac54db4e36001f48089893cef4661df76ea3d"
-  integrity sha512-4PU75wANqfgbfFD/MeOxnuW0Q5IiyxLGaxzkB0JCm1DgFjbJ3AbrcoOIrZoPJcTkOAlsMF9D4nvW4XjnfkousQ==
+"@zkty-team/x-engine-module-nav@^0.1.20":
+  version "0.1.20"
+  resolved "https://registry.yarnpkg.com/@zkty-team/x-engine-module-nav/-/x-engine-module-nav-0.1.20.tgz#efd10b2b4f49c3e8c22c88dcb76bd4c1cf68eff0"
+  integrity sha512-9BkQRHG8rSCPXWME/5ZjJBiWurJPlSQYr7HqKA6tfaNoGGMMJOcdBCRYRxIZ/xotsOKoyX8Ff1xa0g4qvhlVkg==
   dependencies:
     "@zkty-team/x-cli" "^1.1.4"
-    "@zkty-team/x-engine-module-engine" "^0.1.12"
+    "@zkty-team/x-engine-module-engine" "^0.1.20"
 
 "@zkty-team/x-engine-module-network@~0.1.12":
   version "0.1.12"

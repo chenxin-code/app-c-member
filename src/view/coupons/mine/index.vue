@@ -30,10 +30,10 @@
                           'row-reverse': item.activity !== '4014'
                         },
                         {
-                          'shopping': item.activity === '4005'
+                          shopping: item.activity === '4005'
                         },
                         {
-                          'entity': item.activity === '4015'
+                          entity: item.activity === '4015'
                         }
                       ]"
                     >
@@ -136,7 +136,11 @@
       class="dialog-fail"
       v-model="isFailShow"
       title="兑换说明"
-      :message="`<div style='font-size:13px;text-align:center;color:#8D8D8D;'>说明：仅限本人使用<div style='padding-top:5px;text-align:center;color:#8D8D8D;'>二维码使用过后即时失效</div><div class='rect'><img style='width:100%' src=`+materualCode+` /></div></div>`"
+      :message="
+        `<div style='font-size:13px;text-align:center;color:#8D8D8D;'>说明：仅限本人使用<div style='padding-top:5px;text-align:center;color:#8D8D8D;'>二维码使用过后即时失效</div><div class='rect'><img style='width:100%' src=` +
+          materualCode +
+          ` /></div></div>`
+      "
       confirmButtonText="关闭"
       @confirm="isFailShow = false"
     ></van-dialog>
@@ -290,9 +294,21 @@ export default {
         this.openDeital();
         // this.
       } else if (data.activity === '4005') {
-        appNav.changeBottomToIndex({ selectIndex: 2 });
+        // 跳转到商城搜索商品列表
+        let url = `https://mall-${
+          this.$isProdBuild ? 'prod' : 'uat'
+        }-app-linli.timesgroup.cn/app-vue/app/index#/mall2/list/
+          ${this.getDataString()}?skuIds=${data.merchanDises}`;
+          console.log(`url`,url);
+          
+        router.openTargetRouter({
+          type: 'h5',
+          uri: url,
+          hideNavbar: true
+        });
+        // appNav.changeBottomToIndex({ selectIndex: 2 });
         //this.openMall(data);
-        // console.log("打开商城");
+        console.log('打开商城', data);
       } else if (data.activity === '4015') {
         this.getUserMaterual(data);
       }
@@ -559,6 +575,10 @@ export default {
     },
     goExchangeCoupon: function() {
       this.$routeHelper.router(this, '/exchangeCoupon', null, true);
+    },
+    // 获取时间戳字符串
+    getDataString() {
+      return new Date().getTime() + '';
     }
   }
 };
@@ -978,5 +998,5 @@ export default {
     /*下右*/ linear-gradient(to left, #fcecee, #fcecee) right bottom no-repeat; /*右下*/
   background-size: 2px 16px, 16px 2px, 2px 16px, 16px 2px;
 }
-</style>>
-
+</style>
+>

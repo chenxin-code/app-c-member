@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-20 10:31:06
- * @LastEditTime: 2021-02-04 11:00:14
+ * @LastEditTime: 2021-08-07 10:53:14
  */
 import Vue from "vue";
 import App from "./App.vue";
@@ -24,7 +24,7 @@ import vConsole from "vconsole/dist/vconsole.min.js";
 if (process.env.VUE_APP_CURENV !== 'production') {
   new vConsole();
 }
- 
+
 Vue.prototype.$routeHelper = routeHelper;
 
 

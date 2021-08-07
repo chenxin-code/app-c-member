@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-20 10:31:06
- * @LastEditTime: 2021-01-28 17:44:06
+ * @LastEditTime: 2021-08-07 10:21:41
  */
 export let option = {
   login: '/times/auth', // 登录
@@ -36,10 +36,9 @@ export default {
   MEMBER_COUPON_LIST: option.member + '/coupon/api/v1/coupon-member/list', //获取会员可使用卡券列表
   INTEGRALCONVERSION: option.member + '/api/v1/integralConversion', // 邦豆兑换
   GETCUSTOMUSER: option.c_user + '/api-c/v1/customer-room/customer',//获取当前人的人房关系ID
-  CAMILO_EXCHANGE_DETAIL:'/times/member-bff/member/api-c/v1/member/selectCamilo',//卡密对应的优惠卷详情展示
-  CAMILO_EXCHANGE:'/times/member-bff/member/api-c/v1/member/exchangeCamilo',//卡密确认兑换
+  CAMILO_EXCHANGE_DETAIL: '/times/member-bff/member/api-c/v1/member/selectCamilo',//卡密对应的优惠卷详情展示
+  CAMILO_EXCHANGE: '/times/member-bff/member/api-c/v1/member/exchangeCamilo',//卡密确认兑换
   GET_USER_CARDNO: option.c_user + '/api-c/v1/user/id/query',//查身份证
 
   GET_USE_MATERUAL: option.member + '/coupon/api/v1/generate-qrcode', //实物券使用
-  
 }
