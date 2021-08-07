@@ -17,10 +17,10 @@
                         'row-reverse': item.activity !== '4014'
                       },
                       {
-                        'shopping': item.activity === '4005'
+                        shopping: item.activity === '4005'
                       },
                       {
-                        'entity': item.activity === '4015'
+                        entity: item.activity === '4015'
                       }
                     ]"
                   >
@@ -42,7 +42,7 @@
                           </div>
                         </template>
                       </div>
-                      <div class="exchange-card-left-bottom"  v-if="item.activity !== '4015'">
+                      <div class="exchange-card-left-bottom" v-if="item.activity !== '4015'">
                         {{ couponType(item) }}
                       </div>
                       <template v-if="item.activity == '4005'">
@@ -54,7 +54,11 @@
                         >
                           去使用
                         </div>
-                        <div v-else class="exchange-card-left-btn" @click="!showNewToast && getCoupon(item, index, cIndex)">
+                        <div
+                          v-else
+                          class="exchange-card-left-btn"
+                          @click="!showNewToast && getCoupon(item, index, cIndex)"
+                        >
                           立即领取
                         </div>
                       </template>
@@ -67,7 +71,11 @@
                         >
                           去使用
                         </div>
-                        <div v-else class="exchange-card-left-btn" @click="!showNewToast && getCoupon(item, index, cIndex)">
+                        <div
+                          v-else
+                          class="exchange-card-left-btn"
+                          @click="!showNewToast && getCoupon(item, index, cIndex)"
+                        >
                           立即领取
                         </div>
                       </template>
@@ -100,7 +108,11 @@
                           >
                             去使用
                           </div>
-                          <div v-else class="exchange-card-right-right-btn" @click="!showNewToast && getCoupon(item, index, cIndex)">
+                          <div
+                            v-else
+                            class="exchange-card-right-right-btn"
+                            @click="!showNewToast && getCoupon(item, index, cIndex)"
+                          >
                             立即领取
                           </div>
                         </template>
@@ -125,7 +137,11 @@
       class="dialog-fail"
       v-model="isFailShow"
       title="兑换说明"
-      :message="`<div style='font-size:13px;text-align:center;color:#8D8D8D;'>说明：仅限本人使用<div style='padding-top:5px;text-align:center;color:#8D8D8D;'>二维码使用过后即时失效</div><div class='rect'><img style='width:100%' src=`+materualCode+` /></div></div>`"
+      :message="
+        `<div style='font-size:13px;text-align:center;color:#8D8D8D;'>说明：仅限本人使用<div style='padding-top:5px;text-align:center;color:#8D8D8D;'>二维码使用过后即时失效</div><div class='rect'><img style='width:100%' src=` +
+          materualCode +
+          ` /></div></div>`
+      "
       confirmButtonText="关闭"
       @confirm="isFailShow = false"
     ></van-dialog>
@@ -181,13 +197,17 @@ export default {
         }
       ],
       //newToast
-      toastStr: '', couponItem: {}, showNewToast: false,
-      isFailShow:false,
-      materualCode:'',
+      toastStr: '',
+      couponItem: {},
+      showNewToast: false,
+      isFailShow: false,
+      materualCode: '',
+      merchanDises: ''
     };
   },
   components: {
-    Null,newToast
+    Null,
+    newToast
   },
   watch: {},
   created() {
@@ -249,10 +269,11 @@ export default {
     });
   },
   methods: {
-    qwsy(couponItem){
+    qwsy(couponItem) {
+      couponItem.merchanDises = this.merchanDises; //获取优惠券sku
       this.useCoupon(couponItem);
     },
-    tabChange(){
+    tabChange() {
       this.list[this.active] = [];
       const tabIndex = this.active;
       this.pageIndex[tabIndex] = 1;
@@ -264,69 +285,73 @@ export default {
     },
     getCoupon(data, index, cIndex) {
       this.toast();
-      api.getReceiveCoupon({
-        couActivitiesId: data.id,
-        memberId: this.memberId
-      }).then(res => {
-        if (res.code === 200) {
-          // 该券
-          const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
-          const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
-          const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
-          const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
-          // 变更按钮为 '去使用'
+      api
+        .getReceiveCoupon({
+          couActivitiesId: data.id,
+          memberId: this.memberId
+        })
+        .then(res => {
+          if (res.code === 200) {
+            // 该券
+            const couponDay = res.data.canCouponDayTotal <= res.data.couponDayTotal;
+            const couponPersonDay = res.data.canCouponPersonDayTotal <= res.data.couponPersonDayTotal;
+            const couponPerson = res.data.canCouponPersonTotal <= res.data.couponPersonTotal;
+            const couponTotal = res.data.canCouponTotal <= res.data.couponTotal;
+            // 变更按钮为 '去使用'
 
-          // 删除不显示
+            // 删除不显示
 
-          if (res.data.result) {
-            if(this.$qiangTX){
-              this.$toast.clear();
-              this.toastStr = '领取成功';
-              this.couponItem = data;
-              this.showNewToast = true;
-              setTimeout(() => {
-                this.showNewToast = false;
-              }, 3000);
-            }else{
-              this.$toast('领取成功');
-            }
-            if (couponPersonDay || couponDay || couponPerson || couponTotal) {
-              this.$set(data, 'goUse', true);
-              // 解决多维数组修改属性无效
-              this.list.push([]);
-              this.list.splice(this.list.length - 1, 1);
-            }
-            //存couNo
-            this.list[this.active][cIndex].couNo = res.data.couNo;
-            console.log('存couNo结果--------->',this.list[this.active]);
-          } else {
-            // 都未达到上限，后台/数据库处理错误
-            if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
-              console.log('无存在上限，后台/数据库处理错误');
-              this.$toast('领取失败');
-            } else {
-              if (couponTotal) {
-                return this.$toast('该优惠券已领光');
+            if (res.data.result) {
+              this.merchanDises = res.data.merchanDises;
+              if (this.$qiangTX) {
+                this.$toast.clear();
+                this.toastStr = '领取成功';
+                this.couponItem = data;
+                this.showNewToast = true;
+                setTimeout(() => {
+                  this.showNewToast = false;
+                }, 3000);
+              } else {
+                this.$toast('领取成功');
               }
-              if (couponDay) {
-                return this.$toast('该优惠券今日已领光');
-              }
-              if (couponPersonDay || couponPerson) {
+              if (couponPersonDay || couponDay || couponPerson || couponTotal) {
                 this.$set(data, 'goUse', true);
                 // 解决多维数组修改属性无效
                 this.list.push([]);
                 this.list.splice(this.list.length - 1, 1);
               }
-              if (couponPerson) {
-                return this.$toast('该优惠券您已达领取上限');
-              }
-              if (couponPersonDay) {
-                return this.$toast('该优惠券您今日已达领取上限');
+              //存couNo
+              this.list[this.active][cIndex].couNo = res.data.couNo;
+              console.log('存couNo结果--------->', this.list[this.active]);
+            } else {
+              // 都未达到上限，后台/数据库处理错误
+              if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
+                console.log('无存在上限，后台/数据库处理错误');
+                this.$toast('领取失败');
+              } else {
+                if (couponTotal) {
+                  return this.$toast('该优惠券已领光');
+                }
+                if (couponDay) {
+                  return this.$toast('该优惠券今日已领光');
+                }
+                if (couponPersonDay || couponPerson) {
+                  this.$set(data, 'goUse', true);
+                  // 解决多维数组修改属性无效
+                  this.list.push([]);
+                  this.list.splice(this.list.length - 1, 1);
+                }
+                if (couponPerson) {
+                  return this.$toast('该优惠券您已达领取上限');
+                }
+                if (couponPersonDay) {
+                  return this.$toast('该优惠券您今日已达领取上限');
+                }
               }
             }
           }
-        }
-      }).finally(() => {});
+        })
+        .finally(() => {});
     },
     getUserInfo(callBack) {
       api.getUserInfo().then(res => {
@@ -651,7 +676,7 @@ export default {
                 margin-top: 8px;
               }
             }
-            .bangdou-exchange-card.entity{
+            .bangdou-exchange-card.entity {
               .exchange-card-right-left {
                 padding-left: 12px;
                 padding-top: 0;
@@ -680,7 +705,7 @@ export default {
                 font-size: 12px;
                 font-family: PingFangSC-Medium, PingFang SC;
                 font-weight: 500;
-                color: #1B7BFF;
+                color: #1b7bff;
                 margin-top: 8px;
               }
             }
@@ -727,35 +752,34 @@ export default {
 }
 </style>
 <style lang="less">
-  .van-dialog.dialog-fail {
+.van-dialog.dialog-fail {
   .van-dialog__header {
     text-align: center;
   }
-  .van-dialog__footer{
+  .van-dialog__footer {
     text-align: center;
-    .van-button.van-dialog__confirm{
-      width:100%;
-      background-color: #F5F5F6 !important;
-      color:#8D8D8D !important;
-      border-color:#F5F5F6;
+    .van-button.van-dialog__confirm {
+      width: 100%;
+      background-color: #f5f5f6 !important;
+      color: #8d8d8d !important;
+      border-color: #f5f5f6;
     }
   }
-  .van-dialog__message{
-     padding-bottom: 10px;
+  .van-dialog__message {
+    padding-bottom: 10px;
   }
 }
-.rect{
+.rect {
   padding: 0 20px;
   margin: 15px 0;
-background:
-                    linear-gradient(to top, #FCECEE, #FCECEE) left top no-repeat,/*上左*/
-                    linear-gradient(to right, #FCECEE, #FCECEE) left top no-repeat,/*左上*/
-                    linear-gradient(to left, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
-                    linear-gradient(to bottom, #FCECEE, #FCECEE) right top no-repeat,/*上右*/
-                    linear-gradient(to left, #FCECEE, #FCECEE) left bottom no-repeat,/*下左*/
-                    linear-gradient(to bottom, #FCECEE, #FCECEE) left bottom no-repeat,/*左下*/
-                    linear-gradient(to top, #FCECEE, #FCECEE) right bottom no-repeat,/*下右*/
-                    linear-gradient(to left, #FCECEE, #FCECEE) right bottom no-repeat;/*右下*/
-            background-size: 2px 16px, 16px 2px, 2px 16px, 16px 2px;
+  background: linear-gradient(to top, #fcecee, #fcecee) left top no-repeat,
+    /*上左*/ linear-gradient(to right, #fcecee, #fcecee) left top no-repeat,
+    /*左上*/ linear-gradient(to left, #fcecee, #fcecee) right top no-repeat,
+    /*上右*/ linear-gradient(to bottom, #fcecee, #fcecee) right top no-repeat,
+    /*上右*/ linear-gradient(to left, #fcecee, #fcecee) left bottom no-repeat,
+    /*下左*/ linear-gradient(to bottom, #fcecee, #fcecee) left bottom no-repeat,
+    /*左下*/ linear-gradient(to top, #fcecee, #fcecee) right bottom no-repeat,
+    /*下右*/ linear-gradient(to left, #fcecee, #fcecee) right bottom no-repeat; /*右下*/
+  background-size: 2px 16px, 16px 2px, 2px 16px, 16px 2px;
 }
 </style>
