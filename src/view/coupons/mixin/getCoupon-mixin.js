@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-28 23:31:05
- * @LastEditTime: 2021-08-07 10:25:56
+ * @LastEditTime: 2021-08-07 19:57:47
  */
 import { mapGetters } from 'vuex';
 import api from '@/api';
@@ -44,7 +44,7 @@ export default {
         let url = `https://mall-${
           this.$isProdBuild ? 'prod' : 'uat'
           }-app-linli.timesgroup.cn/app-vue/app/index#/mall2/list/
-          ${this.getDataString()}?skuIds=${data.merchanDises}`;
+          ${this.getDataString()}?skuIds=${data.merchanDises}&searchFrom=coupon`;
         router.openTargetRouter({
           type: 'h5',
           uri: url,

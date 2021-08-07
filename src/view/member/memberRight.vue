@@ -296,7 +296,7 @@ export default {
         let url = `https://mall-${
           this.$isProdBuild ? 'prod' : 'uat'
         }-app-linli.timesgroup.cn/app-vue/app/index#/mall2/list/
-          ${this.getDataString()}?skuIds=${data.merchanDises}`;
+          ${this.getDataString()}?skuIds=${data.merchanDises}&searchFrom=coupon`;
         router.openTargetRouter({
           type: 'h5',
           uri: url,
