@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-28 23:31:05
- * @LastEditTime: 2021-02-01 14:05:03
+ * @LastEditTime: 2021-08-07 19:57:47
  */
 import { mapGetters } from 'vuex';
 import api from '@/api';
@@ -11,7 +11,7 @@ import localstorage from '@zkty-team/x-engine-module-localstorage';
 import appNav from '@zkty-team/x-engine-module-nav';
 
 export default {
-  data() {
+  data () {
     return {
       userInfo: {}
     };
@@ -20,19 +20,19 @@ export default {
 
   },
   filters: {
-    delPoint(num) {
+    delPoint (num) {
       const regexp = /(?:\.0*|(\.\d+?)0+)$/;
       num = `${num}`;
       return num.replace(regexp, '$1');
     }
   },
   methods: {
-    delPoint(num) {
+    delPoint (num) {
       const regexp = /(?:\.0*|(\.\d+?)0+)$/;
       num = `${num}`;
       return num.replace(regexp, '$1');
     },
-    useCoupon(data) {
+    useCoupon (data) {
       if (!data.effective) {
         this.$toast('该卡券未在使用期限内～');
         return false;
@@ -41,10 +41,19 @@ export default {
         this.openDeital();
         // this.
       } else if (data.activity === '4005') {
-        appNav.changeBottomToIndex({selectIndex: 2});
+        let url = `https://mall-${
+          this.$isProdBuild ? 'prod' : 'uat'
+          }-app-linli.timesgroup.cn/app-vue/app/index#/mall2/list/
+          ${this.getDataString()}?skuIds=${data.merchanDises}&searchFrom=coupon`;
+        router.openTargetRouter({
+          type: 'h5',
+          uri: url,
+          hideNavbar: true
+        });
+        // appNav.changeBottomToIndex({ selectIndex: 2 });
         //this.openMall(data);
         // console.log("打开商城");
-      }else if (data.activity === '4015') {
+      } else if (data.activity === '4015') {
         this.getUserMaterual(data);
         //appNav.changeBottomToIndex({selectIndex: 0});
         //this.openMall(data);
@@ -52,7 +61,7 @@ export default {
       }
     },
     //TODO:这里跳页报ngnix错误
-    async openMall(data) {
+    async openMall (data) {
       let uri;
       //这里的$isProdBuild可能取不到  不过没关系  这方法废了
       if (!this.$isProdBuild) {
@@ -77,7 +86,7 @@ export default {
         uri: url
       });
     },
-    couponType(item) {
+    couponType (item) {
       if (item.couponType === 10) {
         return `无门槛立减`;
       } else if (item.couponType === 20 || item.couponType === 40) {
@@ -86,12 +95,13 @@ export default {
       }
     },
     // 打开账单中心
-    async openDeital() {
+    async openDeital () {
       let token;
       await localstorage.get({
-        key: 'LLBToken', isPublic: true}).then(res => {
+        key: 'LLBToken', isPublic: true
+      }).then(res => {
         token = res.result;
-        });
+      });
       const tempParam = encodeURIComponent(
         `/app-vue/app/index#/order/2`
       );
@@ -136,7 +146,7 @@ export default {
       //   }
       // });
     },
-    getUserMaterual(data) {
+    getUserMaterual (data) {
       let this_ = this;
       // Dialog.alert({
       //     title: '实物券二维码',
@@ -145,10 +155,14 @@ export default {
       //   }).then(() => {
       //     // on close
       //   });
-      api.getUserMaterual({"couNo":data.couNo,"couTypeCode":data.couTypeCode,"memberId":this.memberId}).then(res => {
+      api.getUserMaterual({ "couNo": data.couNo, "couTypeCode": data.couTypeCode, "memberId": this.memberId }).then(res => {
         this_.materualCode = res.data;
         this_.isFailShow = true;
       })
     },
+    // 获取时间戳字符串
+    getDataString () {
+      return new Date().getTime() + '';
+    }
   }
 };

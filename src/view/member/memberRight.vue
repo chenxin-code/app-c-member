@@ -293,7 +293,16 @@ export default {
         this.openDeital();
         // this.
       } else if (data.activity === '4005') {
-        appNav.changeBottomToIndex({selectIndex: 2});
+        let url = `https://mall-${
+          this.$isProdBuild ? 'prod' : 'uat'
+        }-app-linli.timesgroup.cn/app-vue/app/index#/mall2/list/
+          ${this.getDataString()}?skuIds=${data.merchanDises}&searchFrom=coupon`;
+        router.openTargetRouter({
+          type: 'h5',
+          uri: url,
+          hideNavbar: true
+        });
+        // appNav.changeBottomToIndex({selectIndex: 2});
         //this.openMall(data);
         // console.log("打开商城");
       } else if (data.activity === '4015') {
@@ -599,6 +608,10 @@ export default {
       } else if (weekGetDay == 7) {
         return '日';
       }
+    },
+    // 获取时间戳字符串
+    getDataString () {
+      return new Date().getTime() + '';
     }
   },
   created() {

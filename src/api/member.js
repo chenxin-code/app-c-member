@@ -1,7 +1,7 @@
 /*
  * @Description: 这是***页面
  * @Date: 2021-01-20 10:31:06
- * @LastEditTime: 2021-01-27 16:25:37
+ * @LastEditTime: 2021-08-07 10:31:51
  */
 import { fetchApi } from '@/utils/ajax'
 import URL from './urlConfig'
@@ -28,4 +28,6 @@ export const getCamiloExchangeDetail = data => fetchApi(URL.CAMILO_EXCHANGE_DETA
 export const confirmCamiloExchange = data => fetchApi(URL.CAMILO_EXCHANGE, data, "POST") //兑换优惠券
 
 export const getUserMaterual = data => fetchApi(URL.GET_USE_MATERUAL, data, "GET") //使用实物券
+// export const getShoppingSku = data => fetchApi(URL.GET_SHOPPING_SKU, data, "POST") //获取购物券sku数据
+
 

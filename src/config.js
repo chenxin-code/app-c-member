@@ -1,3 +1,9 @@
+/*
+ * @Description: 这是***页面
+ * @Date: 2021-08-06 16:41:52
+ * @Author: shuimei
+ * @LastEditTime: 2021-08-06 17:00:13
+ */
 //项目配置文件
 import Vue from "vue";
 
@@ -11,7 +17,7 @@ Vue.prototype.$isProdBuild = process.env.VUE_APP_CURENV === 'production';
 
 
 //开发模式 会员id
-Vue.prototype.$memberId = '2246728470920953932';
+Vue.prototype.$memberId = '2331048196588962398';
 
 
 /*
@@ -22,7 +28,7 @@ Vue.prototype.$memberId = '2246728470920953932';
 * username  会员id对应手机号
 * password  短信验证码
 */
-Vue.prototype.$token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTYyNjEyNzM4MiIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjI1Mjk5NDYzOTIyNzI1NzU2MSwiZXhwIjoxNjMxMTg4Nzk4LCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIiwib3duZXIiXSwianRpIjoiOWIxM2E5NzctYzEzOC00YTQyLWE1YzUtYjY0M2ZiN2Q3Yjc0IiwiY2xpZW50X2lkIjoiYXBwX2MifQ.FWRsbAzEDyww2xUQy3NX4NB1hC5AqUrYoSorlgn4ka3PDCmIVGarR3W06dkTiqsTJqERVfKyNzhvtaSZrH8tL78eC-UZQlb_ZDQi0y1eNWUq-vuug9_om8HN-yWR99Gv-rAxQxsqDdoeYmvs2Nx7ShKZQ4Qik4pE6IlgSpQKQ9ZHNc_nACTDaM1wKLJzygQ2fbb1XOQSlnVMPiRxKoxgQy-SVwEkAbuuv4uMHyOGmWt7_kLCe9ts9WEHEcWJYVQMHvkzhbguFDIzFzQ7m3Mi8w7HWpIBTF4d0MjBB9KcGx9KnbwKxJbMOkXjQC9hkMinwAsQkL_ewGzrWjq2_OYTRw';
+Vue.prototype.$token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMzkyNTE4MjUyNSIsInNjb3BlIjpbImFsbCJdLCJpZCI6MjYyOTg1MDg5MjQzNzgxNjYyMywiZXhwIjoxNjI4MzI2NzMxLCJhdXRob3JpdGllcyI6WyJ2aXNpdG9yIl0sImp0aSI6IjQwNTMzMDU4LTI5MDgtNDQ5Ny1iNzkwLTZlNmFkMzEyYTNlNCIsImNsaWVudF9pZCI6ImFwcF9jIn0.HU-efoARInLTYGPaPLcWebn5kYCjWmIGrdUO_VKtKNCyy6CWpN2wUDTwYAho4Jg0QhpaqbvOoasBp8UZwIN6kf0bkrWibcehGi6hBh28VZhUq8E12lhcwgvdZ71O7_Sp8Ag9oiLp7xm5Y3Wu67YVynEHI4ZIMimGMWwSZeQXd96nhBfKwEvWVWlR_AWjrl9H0dq1-HhNguGkngeVmtfKBlvuIN50R-nJNkGvER0g5a8RyrsqDNYVCNOx1oZBShnrFgkyYThmn_9FvukUiTmcz5Gn4GjSe2Mn3hCUeHCir9lZSLC8ep9rkQFVqlY4nG9FW_TQYWsCxGetw9HHWmTLbg';
 
 
 //领取/兑换成功强提醒开关
