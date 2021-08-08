@@ -297,10 +297,9 @@ export default {
         // 跳转到商城搜索商品列表
         let url = `https://mall-${
           this.$isProdBuild ? 'prod' : 'uat'
-        }-app-linli.timesgroup.cn/app-vue/app/index#/mall2/list/
-          ${this.getDataString()}?skuIds=${data.merchanDises}&searchFrom=coupon`;
+        }-app-linli.timesgroup.cn/app-vue/app/index#/mall2/list/${this.getDataString()}?skuIds=${data.merchanDises}&searchFrom=coupon`;
           console.log(`url`,url);
-          
+
         router.openTargetRouter({
           type: 'h5',
           uri: url,
