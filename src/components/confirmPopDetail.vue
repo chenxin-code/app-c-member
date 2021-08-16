@@ -79,7 +79,7 @@ export default {
     margin-right: 11px;
   }
   .btn span:nth-child(2) {
-    background: #e8374a;
+    background: #E5165A;
     color: #fff;
   }
 }

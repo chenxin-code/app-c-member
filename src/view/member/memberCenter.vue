@@ -1365,7 +1365,7 @@ export default {
   background-repeat: no-repeat;
   background-image: url('../../assets/img/member/icon-jt-right.png');
   .num {
-    color: #e8374a;
+    color: #E5165A;
   }
 }
 
@@ -1449,7 +1449,7 @@ export default {
             width: 101px;
             min-height: 106px;
             // background-color: red;
-            background-image: url('../../assets/img/coupons/red_card.png');
+            background-image: url('../../assets/img/coupons/pink_card.png');
             background-repeat: no-repeat;
             background-position: center center;
             background-size: 100% 100%;
@@ -1533,7 +1533,7 @@ export default {
                   font-size: 20px;
                   font-family: PingFangSC-Medium, PingFang SC;
                   font-weight: 500;
-                  color: #e8374a;
+                  color: #E5165A;
                   line-height: 20px;
                 }
                 .card-right-left-bottom-right {
@@ -1541,7 +1541,7 @@ export default {
                   font-size: 14px;
                   font-family: PingFangSC-Medium, PingFang SC;
                   font-weight: 500;
-                  color: #e8374a;
+                  color: #E5165A;
                   line-height: 14px;
                 }
               }
@@ -1552,11 +1552,11 @@ export default {
                 align-self: flex-end;
                 width: 100%;
                 > span {
-                  color: #e8374a;
+                  color: #E5165A;
                   line-height: 1;
                   padding: 4px 5px;
                   font-size: 10px;
-                  border: 1px solid #e8374a;
+                  border: 1px solid #E5165A;
                   border-radius: 15px;
                 }
               }
@@ -1585,7 +1585,7 @@ export default {
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                background: linear-gradient(180deg, #ff8381 0%, #e8374a 100%);
+                background: linear-gradient(180deg, #FF6094 0%, #E5165A 100%);
                 border-radius: 15px;
                 font-size: 12px;
                 font-family: PingFangSC-Medium, PingFang SC;
@@ -1769,7 +1769,7 @@ export default {
   font-size: 14px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #e8374a;
+  color: #E5165A;
   background: #fcecee;
   border-radius: 15px;
 }
@@ -1838,7 +1838,7 @@ export default {
       text-align: center;
       height: 38px;
       line-height: 38px;
-      background: #e8374a;
+      background: #E5165A;
       border-radius: 8px;
       font-size: 14px;
       font-family: PingFangSC-Medium, PingFang SC;

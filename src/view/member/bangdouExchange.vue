@@ -457,7 +457,7 @@ export default {
             .exchange-card-left {
               width: 101px;
               min-height: 97px;
-              background-image: url('../../assets/img/coupons/red_card.png');
+              background-image: url('../../assets/img/coupons/pink_card.png');
               background-repeat: no-repeat;
               background-position: center center;
               background-size: 100% 100%;
@@ -557,13 +557,13 @@ export default {
                     font-size: 20px;
                     font-family: PingFangSC-Medium, PingFang SC;
                     font-weight: 500;
-                    color: #e8374a;
+                    color: #E5165A;
                   }
                   .card-right-left-bottom-right {
                     font-size: 14px;
                     font-family: PingFangSC-Medium, PingFang SC;
                     font-weight: 500;
-                    color: #e8374a;
+                    color: #E5165A;
                     line-height: 14px;
                   }
                 }
@@ -592,7 +592,7 @@ export default {
                   flex-direction: row;
                   justify-content: center;
                   align-items: center;
-                  background: linear-gradient(180deg, #ff8381 0%, #e8374a 100%);
+                  background: linear-gradient(180deg, #FF6094 0%, #E5165A 100%);
                   border-radius: 15px;
                   font-size: 12px;
                   font-family: PingFangSC-Medium, PingFang SC;
@@ -790,14 +790,14 @@ export default {
                 font-size: 20px;
                 font-family: PingFangSC-Medium, PingFang SC;
                 font-weight: 500;
-                color: #e8374a;
+                color: #E5165A;
                 line-height: 20px;
               }
               .card-right-left-bottom-right {
                 font-size: 14px;
                 font-family: PingFangSC-Medium, PingFang SC;
                 font-weight: 500;
-                color: #e8374a;
+                color: #E5165A;
                 line-height: 14px;
               }
             }

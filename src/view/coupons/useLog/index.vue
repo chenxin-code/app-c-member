@@ -284,8 +284,8 @@ export default {
       font-size: 16px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
-      color: #e8374a;
-      background-color: #fcecee;
+      color: #E5165A;
+      background-color: #FFECF2;
     }
 
     ::v-deep .van-tabs__nav--card .van-tab {

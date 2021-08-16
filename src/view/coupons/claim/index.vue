@@ -483,7 +483,7 @@ export default {
               .exchange-card-left {
                 width: 101px;
                 height: 106px;
-                background-image: url('../../../assets/img/coupons/red_card.png');
+                background-image: url('../../../assets/img/coupons/pink_card.png');
                 background-repeat: no-repeat;
                 background-position: center center;
                 background-size: 100% 100%;
@@ -592,7 +592,7 @@ export default {
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
-                    background: linear-gradient(180deg, #ff8381 0%, #e8374a 100%);
+                    background: linear-gradient(180deg, #FF6094 0%, #E5165A 100%);
                     border-radius: 15px;
                     font-size: 12px;
                     font-family: PingFangSC-Medium, PingFang SC;

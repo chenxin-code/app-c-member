@@ -289,7 +289,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 38px 16px 0px 16px;
-  background-image: url('../../assets/img/member/icon-bg-singin-2.png');
+  background-image: url('../../assets/img/member/icon-bg-singin-2-pink.png');
 
   .option {
     display: flex;
@@ -349,7 +349,7 @@ export default {
   font-size: 20px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #e8374a;
+  color: #E5165A;
   white-space: nowrap;
 
   &.shixiao {

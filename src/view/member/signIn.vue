@@ -265,7 +265,7 @@ export default {
   .btn {
     height: 42px;
     line-height: 42px;
-    background: linear-gradient(180deg, #ff8381 0%, #e8374a 100%);
+    background: linear-gradient(180deg, #FF6094 0%, #E5165A 100%);
     border-radius: 26px;
     text-align: center;
     font-size: 18px;
@@ -274,12 +274,12 @@ export default {
     color: #ffffff;
   }
   .btn.goPath {
-    background: #fcecee;
+    background: #FFECF2;
     border-radius: 26px;
     font-size: 18px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
-    color: #e8374a;
+    color: #E5165A;
   }
 }
 
@@ -289,7 +289,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 38px 16px 0px 16px;
-  background-image: url('../../assets/img/member/icon-bg-singin-2.png');
+  background-image: url('../../assets/img/member/icon-bg-singin-2-pink.png');
   .option {
     display: flex;
     justify-content: space-between;
@@ -327,7 +327,7 @@ export default {
     font-size: 30px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
-    color: #e8374a;
+    color: #E5165A;
   }
   .title-body .number .days {
     font-size: 18px;
@@ -360,10 +360,10 @@ export default {
 }
 .signlnBtn.active {
   .awardIntegral {
-    color: #e8374a;
+    color: #E5165A;
   }
   .awardIntegral span {
-    color: #e8374a;
+    color: #E5165A;
   }
 }
 .signlnBtn {

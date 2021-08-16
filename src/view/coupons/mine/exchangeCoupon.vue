@@ -370,7 +370,7 @@ export default {
       }
 
       .van-dialog__confirm {
-        background: linear-gradient(180deg, #ff535b 0%, #e8374a 100%);
+        background: linear-gradient(180deg, #ff535b 0%, #E5165A 100%);
       }
     }
   }
