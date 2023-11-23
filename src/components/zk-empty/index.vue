@@ -12,15 +12,15 @@
 
 <script>
 export default {
-  name: "zk-empty",
+  name: 'zk-empty',
   props: {
     image: {
       type: String,
-      default: "default"
+      default: 'default'
     },
     description: {
       type: String,
-      default: "暂无数据"
+      default: '暂无数据'
     }
   },
   data() {
@@ -29,17 +29,17 @@ export default {
   methods: {
     getImg() {
       const images = [
-        "activity",
-        "amount",
-        "car",
-        "default",
-        "news",
-        "order",
-        "search",
-        "coupon"
+        'activity',
+        'amount',
+        'car',
+        'default',
+        'news',
+        'order',
+        'search',
+        'coupon'
       ];
       if (images.includes(this.image)) {
-        return require("@/assets/img/empty/empty-" + this.image + ".png");
+        return require('@/assets/img/empty/empty-' + this.image + '.png');
       } else {
         return this.image;
       }

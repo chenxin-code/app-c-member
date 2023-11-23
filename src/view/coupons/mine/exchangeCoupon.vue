@@ -82,24 +82,24 @@ export default {
       isFailShow: false,
       isNotNull: true,
       showConfirm: false,
-      exchangeCode: '', //卡密Id
-      couponActivityId: '', //卡券活动派发id
-      couponId: '', //卡券id
-      memberId: '', //会员id
-      confrimValue: '', //卡券标题
-      confrimDetail: '', //卡券面值
-      confirmTime: '' //卡券有效期
+      exchangeCode: '', // 卡密Id
+      couponActivityId: '', // 卡券活动派发id
+      couponId: '', // 卡券id
+      memberId: '', // 会员id
+      confrimValue: '', // 卡券标题
+      confrimDetail: '', // 卡券面值
+      confirmTime: '' // 卡券有效期
     };
   },
 
   created() {
     if (this.$store.getters.isDebugMode) {
-      //生产需注释
+      // 生产需注释
       this.memberId = this.$memberId;
       localStorage.setItem('memberId', this.memberId);
     } else {
-      //生产需打开
-      localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+      // 生产需打开
+      localstorage.get({key: 'LLBMemberId', isPublic: true}).then(res => {
         this.memberId = res.result;
         localStorage.setItem('memberId', this.memberId);
       });
@@ -148,25 +148,25 @@ export default {
 
           if (res.code === 200) {
             this.showConfirm = true;
-            this.couponActivityId = res.data.id; //活动卡券活动派发id
-            this.couponId = res.data.couponId; //卡券id
-            this.confrimValue = res.data.couponName; //卡券标题
+            this.couponActivityId = res.data.id; // 活动卡券活动派发id
+            this.couponId = res.data.couponId; // 卡券id
+            this.confrimValue = res.data.couponName; // 卡券标题
 
             if (res.data.couponType === 10) {
-              this.confrimDetail = res.data.faceAmount + '元代金券'; //卡券面值
+              this.confrimDetail = res.data.faceAmount + '元代金券'; // 卡券面值
             }
             if (res.data.couponType === 20) {
-              this.confrimDetail = res.data.faceAmount + '元满减券'; //卡券面值
+              this.confrimDetail = res.data.faceAmount + '元满减券'; // 卡券面值
             }
             if (res.data.couponType === 40) {
-              this.confrimDetail = res.data.discountRatio * 10 + '折' + '折扣券'; //卡券面值
+              this.confrimDetail = res.data.discountRatio * 10 + '折' + '折扣券'; // 卡券面值
             }
 
             if (res.data.expirationType === 1) {
-              this.confirmTime = this.momentStr(res.data.startTime) + ' ~ ' + this.momentStr(res.data.expirationTime); //卡券有效期
+              this.confirmTime = this.momentStr(res.data.startTime) + ' ~ ' + this.momentStr(res.data.expirationTime); // 卡券有效期
             }
             if (res.data.expirationType === 3) {
-              this.confirmTime = '相对有效期, ' + res.data.valiDays + '天, 领取后' + res.data.offsetDays + '天生效'; //卡券有效期
+              this.confirmTime = '相对有效期, ' + res.data.valiDays + '天, 领取后' + res.data.offsetDays + '天生效'; // 卡券有效期
             }
           } else if (res.code === 500) {
             this.$toast(res.message);
@@ -178,10 +178,10 @@ export default {
       // console.log('confirmExchange this.memberId :>> ', this.memberId);
 
       const para = {
-        camiloId: this.exchangeCode, //卡密Id
-        couponActivityId: this.couponActivityId, //卡券活动派发id
-        couponId: this.couponId, //卡券id
-        memberId: this.memberId //会员id
+        camiloId: this.exchangeCode, // 卡密Id
+        couponActivityId: this.couponActivityId, // 卡券活动派发id
+        couponId: this.couponId, // 卡券id
+        memberId: this.memberId // 会员id
       };
       console.log('confirmExchange para :>> ', para);
       // return;
@@ -227,7 +227,7 @@ export default {
       this.showConfirm = false;
     },
     confirmBtn() {
-      //这里是异步
+      // 这里是异步
       this.confirmExchange();
     }
   },

@@ -10,9 +10,9 @@
 
 <script>
 export default {
-  name: "newToast",
-  props: ['toastStr','couponItem']
-}
+  name: 'newToast',
+  props: ['toastStr', 'couponItem']
+};
 </script>
 
 <style scoped>

@@ -4,4 +4,4 @@ import * as member from './member';
 export default {
     ...pub,
     ...member
-}
+};

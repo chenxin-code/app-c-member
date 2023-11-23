@@ -179,7 +179,7 @@ import newToast from './../../components/newToast';
 const defaultImg = require('@/assets/img/coupons/coupon-default.png');
 
 export default {
-  mixins: [mixin,couponMixin],
+  mixins: [mixin, couponMixin],
   data() {
     return {
       loading: false,
@@ -188,24 +188,24 @@ export default {
       nullMsg: '',
       memberId: '',
       pageRefresh: true,
-      propertyList: [], //物业券
+      propertyList: [], // 物业券
       vouchersList: [], // 购物券
-      canLoadMore: true, //解决下拉刷新
+      canLoadMore: true, // 解决下拉刷新
       // ---分隔符---
       petsUpdateList: [],
-      //newToast
+      // newToast
       toastStr: '', couponItem: {}, showNewToast: false
     };
   },
   components: {
-    Null,newToast
+    Null, newToast
   },
   // beforeRouteLeave(to, form, next) {
   //   next();
   // },
   watch: {},
   created() {
-    //本地测试用
+    // 本地测试用
     // this.toast();
     // Promise.all([
     //   this.queryReceiveCouponList(4014),
@@ -215,13 +215,13 @@ export default {
     // });
 
     if (this.$store.getters.isDebugMode) {
-      //生产需注释
+      // 生产需注释
       this.memberId = this.$memberId;
       this.queryReceiveCouponList();
       this.getUserInfo();
     } else {
-      //生产需打开
-      localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+      // 生产需打开
+      localstorage.get({key: 'LLBMemberId', isPublic: true}).then(res => {
         this.memberId = res.result;
         localStorage.setItem('memberId', this.memberId);
         this.queryReceiveCouponList();
@@ -322,7 +322,7 @@ export default {
     },
     exchange(data, type, index) {
       this.toast();
-      api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
+      api.memberDetailByMemberID({memberId: this.memberId}).then(res => {
         if (res.code === 200) {
           if (+data.integrealCount > +res.data.integral) {
             return this.$toast('剩余邦豆不足');

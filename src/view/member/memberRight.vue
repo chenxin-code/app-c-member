@@ -198,7 +198,7 @@ export default {
       loading: false,
       isFailShow: false,
       materualCode: '',
-      //newToast
+      // newToast
       toastStr: '', couponItem: {}, showNewToast: false
     };
   },
@@ -252,11 +252,11 @@ export default {
     },
     getUserInfo() {
       api.getUserInfo().then(res => {
-        console.log('getUserInfo------------->',res);
+        console.log('getUserInfo------------->', res);
         this.userInfo = res.data || {};
       });
     },
-    //TODO:这里跳页报ngnix错误
+    // TODO:这里跳页报ngnix错误
     async openMall(data) {
       let uri;
       if (!this.$isProdBuild) {
@@ -267,7 +267,7 @@ export default {
 
       const datestr = Number(new Date());
       let token;
-      await localstorage.get({ key: 'LLBToken', isPublic: true }).then(res => {
+      await localstorage.get({key: 'LLBToken', isPublic: true}).then(res => {
         token = res.result;
       });
 
@@ -282,7 +282,7 @@ export default {
         uri: url
       });
     },
-    //去使用
+    // 去使用
     useCoupon(data) {
       if (!data.effective) {
         this.$toast('该卡券未在使用期限内～');
@@ -302,17 +302,17 @@ export default {
           hideNavbar: true
         });
         // appNav.changeBottomToIndex({selectIndex: 2});
-        //this.openMall(data);
+        // this.openMall(data);
         // console.log("打开商城");
       } else if (data.activity === '4015') {
-        api.getUserMaterual({"couNo":data.couNo,"couTypeCode":data.couTypeCode,"memberId":this.memberId}).then(resp => {
+        api.getUserMaterual({'couNo':data.couNo, 'couTypeCode':data.couTypeCode, 'memberId':this.memberId}).then(resp => {
           this.materualCode = resp.data;
           this.isFailShow = true;
-        })
+        });
       }
     },
-    //立即领取
-    getCoupon(data,k) {
+    // 立即领取
+    getCoupon(data, k) {
       this.toast();
       api.getReceiveCoupon({
         couActivitiesId: data.id,
@@ -344,7 +344,7 @@ export default {
               this.list.push([]);
               this.list.splice(this.list.length - 1, 1);
             }
-            //存couNo
+            // 存couNo
             this.cardList[k].couNo = res.data.couNo;
           } else {
             // 都未达到上限，后台/数据库处理错误
@@ -375,10 +375,10 @@ export default {
         }
       }).finally(() => {});
     },
-    //邦豆兑换
-    exchangeBD(data,k) {
+    // 邦豆兑换
+    exchangeBD(data, k) {
       this.toast();
-      api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
+      api.memberDetailByMemberID({memberId: this.memberId}).then(res => {
         if (res.code === 200) {
           if (+data.integrealCount > +res.data.integral) {
             return this.$toast('剩余邦豆不足');
@@ -417,7 +417,7 @@ export default {
                   if (couponPersonDay || couponDay || couponPerson || couponTotal) {
                     this.$set(data, 'goUse', true);
                   }
-                  //存couNo
+                  // 存couNo
                   this.cardList[k].couNo = res.data.couNo;
                 } else {
                   if (!couponDay && !couponPersonDay && !couponPerson && !couponTotal) {
@@ -454,30 +454,30 @@ export default {
     },
     checkTimeOK(monthGetDay, weekGetDay) {
       if (monthGetDay && !weekGetDay) {
-        return new Date().getDate() == monthGetDay; //获取当前日(1-31)
+        return new Date().getDate() == monthGetDay; // 获取当前日(1-31)
       } else if (!monthGetDay && weekGetDay) {
-        let getDay = new Date().getDay(); //获取当前星期X(0-6,0代表星期天)
+        let getDay = new Date().getDay(); // 获取当前星期X(0-6,0代表星期天)
         if ([1, 2, 3, 4, 5, 6].includes(weekGetDay)) {
-          //周一二三四五六
+          // 周一二三四五六
           return getDay == weekGetDay;
         } else if (weekGetDay == 7) {
-          //周日
+          // 周日
           return getDay == 0;
         } else {
           return false;
         }
       }else if(!monthGetDay && !weekGetDay){
-        return true
+        return true;
       }else{
-        return false
+        return false;
       }
     },
     getMemberDetail() {
-      api.memberDetailByMemberID({ memberId: this.memberId }).then(res => {
+      api.memberDetailByMemberID({memberId: this.memberId}).then(res => {
         if (res.code === 200) {
           this.levelId = res.data.memberCardRelats[0].levelId;
           // this.levelId = 1;
-          //this.levelId = 2;
+          // this.levelId = 2;
           // this.levelId = 3;
           // this.levelId = 4;
           // this.levelId = 5;
@@ -516,11 +516,11 @@ export default {
         memberId: this.memberId,
         pageIndex: 1,
         pageSize: 9999,
-        activityType: 2, //会员权益
+        activityType: 2, // 会员权益
         businessType: 0,
         condition: 0
       }).then(res => {
-        //模拟数据
+        // 模拟数据
         // let res = {
         //   "code":200,
         //   "data":[
@@ -615,14 +615,14 @@ export default {
   },
   created() {
     if (this.$store.getters.isDebugMode) {
-      //生产需注释
+      // 生产需注释
       this.memberId = this.$memberId;
       this.queryReceiveCouponList();
       this.getMemberDetail();
       this.getUserInfo();
     } else {
-      //生产需打开
-      localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+      // 生产需打开
+      localstorage.get({key: 'LLBMemberId', isPublic: true}).then(res => {
         this.memberId = res.result;
         localStorage.setItem('memberId', this.memberId);
         this.queryReceiveCouponList();

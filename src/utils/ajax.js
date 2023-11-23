@@ -3,8 +3,8 @@ import JSONbig from 'json-bigint';
 import api from '@/api';
 import QS from 'qs';
 import localstorage from '@zkty-team/x-engine-module-localstorage';
-import { Toast } from 'vant';
-import Vue from "vue";
+import {Toast} from 'vant';
+import Vue from 'vue';
 
 // var BASEURL = ''
 var REFRESH = '';
@@ -19,7 +19,7 @@ var REFRESH = '';
 //  // BASEURL = "http://sit.linli590.cn:7777/"
 // }
 
-const JSONBigString = JSONbig({ storeAsString: true });
+const JSONBigString = JSONbig({storeAsString: true});
 export const HTTP = axios.create({
   withCredentials: false,
   timeout: 20000,
@@ -35,11 +35,11 @@ export const HTTP = axios.create({
   ]
 });
 
-//请求拦截
+// 请求拦截
 HTTP.interceptors.request.use(async config => {
   let tokenStr1;
   if (process.env.VUE_APP_CURENV === 'development') {
-    //生产环境
+    // 生产环境
     // await localstorage.get({ key: "LLBToken", isPublic: true }).then(res => {
     //   tokenStr1 = "Bearer " + res.result;
     // });
@@ -49,15 +49,15 @@ HTTP.interceptors.request.use(async config => {
     //     REFRESH = "Bearer " + res.result;
     //   });
 
-    //开发环境
+    // 开发环境
     tokenStr1 = 'Bearer ' + Vue.prototype.$token;
     config.headers.Authorization = tokenStr1;
     return config;
   } else {
-    await localstorage.get({ key: 'LLBToken', isPublic: true }).then(res => {
+    await localstorage.get({key: 'LLBToken', isPublic: true}).then(res => {
       tokenStr1 = 'Bearer ' + res.result;
     });
-    await localstorage.get({ key: 'LLBRefreshToken', isPublic: true }).then(res => {
+    await localstorage.get({key: 'LLBRefreshToken', isPublic: true}).then(res => {
       REFRESH = 'Bearer ' + res.result;
     });
     config.headers.Authorization = tokenStr1;
@@ -69,20 +69,20 @@ function handleParams(url, rawData, rawMethod) {
   const method = rawMethod.toUpperCase();
   let data = {};
   if (method === 'GET') {
-    data = { params: rawData };
+    data = {params: rawData};
   }
   switch (method) {
     case 'GET':
-      data = { params: rawData };
+      data = {params: rawData};
       break;
     case 'POST':
     case 'PUT':
     case 'PATCH':
     case 'DELETE':
-      data = { data: rawData };
+      data = {data: rawData};
       break;
     default:
-      data = { params: rawData };
+      data = {params: rawData};
       break;
   }
 
@@ -95,8 +95,8 @@ function handleParams(url, rawData, rawMethod) {
 
 async function handleFail(option) {
   console.log(option);
-  const { error, reject } = option;
-  const { response } = error;
+  const {error, reject} = option;
+  const {response} = error;
   console.log('error', error);
   if (response) {
     Toast('请求失败');
@@ -145,8 +145,8 @@ async function refreshToken() {
 var baseurl;
 export const fetchApi = async (api, rawData = {}, method = 'GET', headers = {}) => {
   if (process.env.VUE_APP_CURENV !== 'development') {
-    await localstorage.get({ key: 'LLBOrigin', isPublic: true }).then(res => {
-      //如果需要写死服务器环境可以在这里处理
+    await localstorage.get({key: 'LLBOrigin', isPublic: true}).then(res => {
+      // 如果需要写死服务器环境可以在这里处理
       baseurl = res.result + '/';
     });
   } else {
@@ -159,7 +159,7 @@ export const fetchApi = async (api, rawData = {}, method = 'GET', headers = {}) 
         withCredentials: false,
         url: options.url,
         method: options.method,
-        headers: { ...defaultHeader, ...headers },
+        headers: {...defaultHeader, ...headers},
         ...options.data
       }).then(
         resp => {

@@ -140,14 +140,14 @@
 </template>
 
 <script>
-import api from "@/api";
-import nav from "@zkty-team/x-engine-module-nav";
-import localstorage from "@zkty-team/x-engine-module-localstorage";
-import * as moment from "moment";
-import _ from "lodash";
-import mixin from "../mixin/pageList";
-import Null from "@/components/null";
-const defaultImg = require("@/assets/img/coupons/coupon-default.png");
+import api from '@/api';
+import nav from '@zkty-team/x-engine-module-nav';
+import localstorage from '@zkty-team/x-engine-module-localstorage';
+import * as moment from 'moment';
+import _ from 'lodash';
+import mixin from '../mixin/pageList';
+import Null from '@/components/null';
+const defaultImg = require('@/assets/img/coupons/coupon-default.png');
 
 export default {
   mixins: [mixin],
@@ -158,20 +158,20 @@ export default {
       defaultImg: defaultImg,
       loading: false,
       showNull: false,
-      nullMsg: "",
-      memberId: "",
+      nullMsg: '',
+      memberId: '',
       // ---分隔符---
-      //宠物信息
+      // 宠物信息
       petsUpdateList: [],
       busy: false,
       tabList: [
         {
-          label: "已使用",
-          status: "40"
+          label: '已使用',
+          status: '40'
         },
         {
-          label: "已过期",
-          status: "70"
+          label: '已过期',
+          status: '70'
         }
       ]
     };
@@ -181,9 +181,9 @@ export default {
   },
   created() {
     this.paramsList();
-    localstorage.get({ key: "LLBMemberId", isPublic: true }).then(res => {
+    localstorage.get({key: 'LLBMemberId', isPublic: true}).then(res => {
       this.memberId = res.result;
-      localStorage.setItem("memberId", this.memberId);
+      localStorage.setItem('memberId', this.memberId);
       this.getList();
     });
     // this.memberId = "2331048196588962531";
@@ -191,17 +191,17 @@ export default {
   },
   mounted() {
     nav.setNavLeftBtn({
-      title: "优惠券使用记录",
-      titleColor: "#121212",
+      title: '优惠券使用记录',
+      titleColor: '#121212',
       titleSize: 24,
-      titleFontName: "PingFangSC-Medium"
+      titleFontName: 'PingFangSC-Medium'
     });
     // this.getList();
   },
   methods: {
     getTime(time) {
       const date = new Date(+time);
-      return moment(date).format("YYYY.MM.DD");
+      return moment(date).format('YYYY.MM.DD');
     },
     loadMore() {
       const tabIndex = this.active;

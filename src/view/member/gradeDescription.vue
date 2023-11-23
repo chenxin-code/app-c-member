@@ -117,13 +117,13 @@
   </div>
 </template>
 <script>
-import nav from "@zkty-team/x-engine-module-nav";
+import nav from '@zkty-team/x-engine-module-nav';
 export default {
   created() { },
   mounted() {
     nav.setNavLeftBtn({
-      title: "会员卡攻略",
-      titleColor: "#121212",
+      title: '会员卡攻略',
+      titleColor: '#121212',
       titleSize: 24
     });
   },

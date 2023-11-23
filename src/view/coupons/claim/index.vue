@@ -196,7 +196,7 @@ export default {
           businessType: '4015'
         }
       ],
-      //newToast
+      // newToast
       toastStr: '',
       couponItem: {},
       showNewToast: false,
@@ -211,7 +211,7 @@ export default {
   },
   watch: {},
   created() {
-    this.paramsList(); //mixin引入公共method
+    this.paramsList(); // mixin引入公共method
 
     if (this.$store.getters.isDebugMode) {
       this.memberId = this.$memberId;
@@ -219,7 +219,7 @@ export default {
       this.getList();
       this.getUserInfo();
     } else {
-      localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+      localstorage.get({key: 'LLBMemberId', isPublic: true}).then(res => {
         // app首页进入，获取不到会员信息
         if (res.result) {
           this.memberId = res.result;
@@ -270,7 +270,7 @@ export default {
   },
   methods: {
     qwsy(couponItem) {
-      couponItem.merchanDises = this.merchanDises; //获取优惠券sku
+      couponItem.merchanDises = this.merchanDises; // 获取优惠券sku
       this.useCoupon(couponItem);
     },
     tabChange() {
@@ -320,7 +320,7 @@ export default {
                 this.list.push([]);
                 this.list.splice(this.list.length - 1, 1);
               }
-              //存couNo
+              // 存couNo
               this.list[this.active][cIndex].couNo = res.data.couNo;
               console.log('存couNo结果--------->', this.list[this.active]);
             } else {

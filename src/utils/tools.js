@@ -3,18 +3,18 @@
  * @Date: 2021-01-20 10:31:06
  * @LastEditTime: 2021-01-20 18:25:58
  */
-import nav from "@zkty-team/x-engine-module-nav";
+import nav from '@zkty-team/x-engine-module-nav';
 
 export default {
-  //是否为移动端 false不是，true 是
-  isPhone: process.env.VUE_APP_CURENV !== "development",
+  // 是否为移动端 false不是，true 是
+  isPhone: process.env.VUE_APP_CURENV !== 'development',
   formatData: function (data) {
     var returnData = data;
-    var paramsStr = "";
+    var paramsStr = '';
     if (this.isPhone == true) {
-      //拼接参数
+      // 拼接参数
       for (var k in returnData) {
-        paramsStr = paramsStr + k + "=" + returnData[k] + "&";
+        paramsStr = paramsStr + k + '=' + returnData[k] + '&';
       }
       paramsStr = paramsStr.substr(0, paramsStr.length - 1);
       returnData = encodeURI(paramsStr);
@@ -23,9 +23,9 @@ export default {
   },
   router: function (self, path, data, hideNavbar) {
     var par = {};
-    par[this.isPhone == true ? "url" : "path"] = path;
+    par[this.isPhone == true ? 'url' : 'path'] = path;
     if (data != undefined && data != null) {
-      par[this.isPhone == true ? "params" : "query"] = this.formatData(data);
+      par[this.isPhone == true ? 'params' : 'query'] = this.formatData(data);
     }
     if (this.isPhone == true) {
       if (hideNavbar != undefined) {

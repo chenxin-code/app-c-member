@@ -3,7 +3,7 @@
  * @Date: 2021-01-28 23:31:05
  * @LastEditTime: 2021-08-07 19:57:47
  */
-import { mapGetters } from 'vuex';
+import {mapGetters} from 'vuex';
 import api from '@/api';
 import router from '@zkty-team/x-engine-module-router';
 import yjzdbill from '@zkty-team/x-engine-module-yjzdbill';
@@ -50,19 +50,19 @@ export default {
           hideNavbar: true
         });
         // appNav.changeBottomToIndex({ selectIndex: 2 });
-        //this.openMall(data);
+        // this.openMall(data);
         // console.log("打开商城");
       } else if (data.activity === '4015') {
         this.getUserMaterual(data);
-        //appNav.changeBottomToIndex({selectIndex: 0});
-        //this.openMall(data);
+        // appNav.changeBottomToIndex({selectIndex: 0});
+        // this.openMall(data);
         // console.log("打开商城");
       }
     },
-    //TODO:这里跳页报ngnix错误
+    // TODO:这里跳页报ngnix错误
     async openMall (data) {
       let uri;
-      //这里的$isProdBuild可能取不到  不过没关系  这方法废了
+      // 这里的$isProdBuild可能取不到  不过没关系  这方法废了
       if (!this.$isProdBuild) {
         uri = 'http://mall-uat-app-linli.timesgroup.cn';
       } else {
@@ -70,7 +70,7 @@ export default {
       }
       const datestr = Number(new Date());
       let token;
-      await localstorage.get({ key: 'LLBToken', isPublic: true }).then(res => {
+      await localstorage.get({key: 'LLBToken', isPublic: true}).then(res => {
         token = res.result;
       });
 
@@ -87,7 +87,7 @@ export default {
     },
     couponType (item) {
       if (item.couponType === 10) {
-        return `无门槛立减`;
+        return '无门槛立减';
       } else if (item.couponType === 20 || item.couponType === 40) {
         const num = this.delPoint(item.satisfyAmount);
         return `满${num}元可用`;
@@ -102,7 +102,7 @@ export default {
         token = res.result;
       });
       const tempParam = encodeURIComponent(
-        `/app-vue/app/index#/order/2`
+        '/app-vue/app/index#/order/2'
       );
       const url = `http://mall-${this.$isProdBuild ? 'prod' : 'uat'}-app-linli.timesgroup.cn/app/index?token=${token}&redirect=${tempParam}`;
 
@@ -154,10 +154,10 @@ export default {
       //   }).then(() => {
       //     // on close
       //   });
-      api.getUserMaterual({ "couNo": data.couNo, "couTypeCode": data.couTypeCode, "memberId": this.memberId }).then(res => {
+      api.getUserMaterual({'couNo': data.couNo, 'couTypeCode': data.couTypeCode, 'memberId': this.memberId}).then(res => {
         this_.materualCode = res.data;
         this_.isFailShow = true;
-      })
+      });
     },
     // 获取时间戳字符串
     getDataString () {

@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import routerHelper from "./routerHelper";
+import routerHelper from './routerHelper';
 
-import _ from "lodash";
+import _ from 'lodash';
 export default {
-  name: "route-helper",
+  name: 'route-helper',
   props: {
     to: {
       type: Object,
@@ -23,7 +23,7 @@ export default {
     rouerLink() {
       // 无跳转
       if (_.isEmpty(this.to)) {
-        console.warn("No parameters");
+        console.warn('No parameters');
         return false;
       }
       // console.log("to", routerHelper);

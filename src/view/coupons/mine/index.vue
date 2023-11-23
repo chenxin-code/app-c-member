@@ -173,13 +173,13 @@ export default {
       showNull: false,
       nullMsg: '',
       // ---分隔符---
-      //宠物信息
+      // 宠物信息
       petsUpdateList: [],
       // ___________________________________________
       active: 0,
       memberId: '',
       busy: false,
-      outUrlRefresh: true, //控制跳外部链接刷新
+      outUrlRefresh: true, // 控制跳外部链接刷新
       tabList: [
         {
           label: '全部',
@@ -232,14 +232,14 @@ export default {
       this.paramsList();
 
       if (this.$store.getters.isDebugMode) {
-        //生产需注释
+        // 生产需注释
         this.memberId = this.$memberId;
         localStorage.setItem('memberId', this.memberId);
         this.getList();
         this.getUserInfo();
       } else {
-        //生产需打开
-        localstorage.get({ key: 'LLBMemberId', isPublic: true }).then(res => {
+        // 生产需打开
+        localstorage.get({key: 'LLBMemberId', isPublic: true}).then(res => {
           this.memberId = res.result;
           localStorage.setItem('memberId', this.memberId);
           this.getList();
@@ -280,7 +280,7 @@ export default {
       const date = new Date(+time);
       return moment(date).format('YYYY.MM.DD');
     },
-    //3天内卡券过期提醒
+    // 3天内卡券过期提醒
     checkExpired(validityEndTime) {
       return validityEndTime - Date.now() <= 3 * 86400 * 1000;
     },
@@ -298,7 +298,7 @@ export default {
         let url = `https://mall-${
           this.$isProdBuild ? 'prod' : 'uat'
         }-app-linli.timesgroup.cn/app-vue/app/index#/mall2/list/${this.getDataString()}?skuIds=${data.merchanDises}&searchFrom=coupon`;
-          console.log(`url`,url);
+          console.log('url', url);
 
         router.openTargetRouter({
           type: 'h5',
@@ -306,13 +306,13 @@ export default {
           hideNavbar: true
         });
         // appNav.changeBottomToIndex({ selectIndex: 2 });
-        //this.openMall(data);
+        // this.openMall(data);
         console.log('打开商城', data);
       } else if (data.activity === '4015') {
         this.getUserMaterual(data);
       }
     },
-    //TODO:这里跳页报ngnix错误
+    // TODO:这里跳页报ngnix错误
     async openMall(data) {
       let uri;
       if (!this.$isProdBuild) {
@@ -323,7 +323,7 @@ export default {
 
       const datestr = Number(new Date());
       let token;
-      await localstorage.get({ key: 'LLBToken', isPublic: true }).then(res => {
+      await localstorage.get({key: 'LLBToken', isPublic: true}).then(res => {
         token = res.result;
       });
 
@@ -347,7 +347,7 @@ export default {
         .then(res => {
           token = res.result;
         });
-      const tempParam = encodeURIComponent(`/app-vue/app/index#/order/2`);
+      const tempParam = encodeURIComponent('/app-vue/app/index#/order/2');
       const url = `http://mall-${
         this.$isProdBuild ? 'prod' : 'uat'
       }-app-linli.timesgroup.cn/app/index?token=${token}&redirect=${tempParam}`;
@@ -419,7 +419,7 @@ export default {
       //   }).then(() => {
       //     // on close
       //   });
-      api.getUserMaterual({ couNo: data.couNo, couTypeCode: data.couTypeCode, memberId: this.memberId }).then(res => {
+      api.getUserMaterual({couNo: data.couNo, couTypeCode: data.couTypeCode, memberId: this.memberId}).then(res => {
         this_.materualCode = res.data;
         this_.isFailShow = true;
       });
@@ -439,7 +439,7 @@ export default {
       api
         .queryMemberCouponList(params)
         .then(res => {
-          //模拟数据
+          // 模拟数据
           // let res = {
           //   "code": 200,
           //   "data": {
@@ -553,7 +553,7 @@ export default {
     },
     async linkCoupon() {
       let token;
-      await localstorage.get({ key: 'LLBToken', isPublic: true }).then(res => {
+      await localstorage.get({key: 'LLBToken', isPublic: true}).then(res => {
         token = res.result;
       });
       // test: https://dev-mall-linli.timesgroup.cn/H5/#/anitransferMy?token=

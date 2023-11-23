@@ -69,8 +69,8 @@ const vueConfig = {
           terserOptions: {
             compress: {
               warnings: false,
-              drop_console: true, //去除console
-              drop_debugger: true, //去除debugger
+              drop_console: true, // 去除console
+              drop_debugger: true, // 去除debugger
               pure_funcs: ['console.log']
             }
           }
@@ -157,9 +157,9 @@ const vueConfig = {
       '/times/': {
         // target: 'http://8.129.64.205:16666', //一体化dev后端ip地址及端口 （作废！）
         // target: 'http://m-center-dev.linli.timesgroup.cn:16666', //一体化dev后端ip地址及端口
-         target: "http://m-center-uat-linli.timesgroup.cn",//一体化dev后端ip地址及端口
-        changeOrigin: true, //开启跨域
-        ws: true //是否开启websocket
+         target: 'http://m-center-uat-linli.timesgroup.cn', // 一体化dev后端ip地址及端口
+        changeOrigin: true, // 开启跨域
+        ws: true // 是否开启websocket
       }
     }
   },
@@ -167,7 +167,7 @@ const vueConfig = {
   // disable source map in production
   productionSourceMap: false,
   lintOnSave: undefined,
-  //CLI集成的webpack中的babel-loader默认忽略了node_modules目录，这里是为了二次编译node_modules里的依赖(大部分依赖都会用babel转为es5以下的语法)
+  // CLI集成的webpack中的babel-loader默认忽略了node_modules目录，这里是为了二次编译node_modules里的依赖(大部分依赖都会用babel转为es5以下的语法)
   // transpileDependencies: [
   //   "@zkty-team/x-engine-module-engine",
   //   "@zkty-team/x-engine-module-geo",

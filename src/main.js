@@ -3,24 +3,24 @@
  * @Date: 2021-01-20 10:31:06
  * @LastEditTime: 2021-08-07 10:53:14
  */
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import "./utils/rem.js";
-import "./assets/css/common.less";
-import infiniteScroll from 'vue-infinite-scroll'
-import routeHelper from "./utils/tools";
-import store from './store'
-import Vuex from "vuex"
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+import './utils/rem.js';
+import './assets/css/common.less';
+import infiniteScroll from 'vue-infinite-scroll';
+import routeHelper from './utils/tools';
+import store from './store';
+import Vuex from 'vuex';
 
-import Vant from "vant";
-import "vant/lib/index.css";
-import * as Components from '@/components'
-Vue.use(Vuex)
+import Vant from 'vant';
+import 'vant/lib/index.css';
+import * as Components from '@/components';
+Vue.use(Vuex);
 Vue.use(Vant);
-Vue.use(infiniteScroll)
+Vue.use(infiniteScroll);
 
-import vConsole from "vconsole/dist/vconsole.min.js";
+import vConsole from 'vconsole/dist/vconsole.min.js';
 if (process.env.VUE_APP_CURENV !== 'production') {
   new vConsole();
 }
@@ -29,16 +29,16 @@ Vue.prototype.$routeHelper = routeHelper;
 
 
 Object.values(Components).forEach(components => {
-  Vue.component(components.name, components)
-})
+  Vue.component(components.name, components);
+});
 
 Vue.config.productionTip = false;
 
-//项目配置
-import "./config";
+// 项目配置
+import './config';
 
 new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount("#app");
+}).$mount('#app');
