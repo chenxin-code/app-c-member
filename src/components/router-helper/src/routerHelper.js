@@ -36,7 +36,7 @@ export default {
     var par = {};
     par[this.isPhone === true ? 'url' : 'path'] = path;
     if (!_.isEmpty(data)) {
-      par[this.isPhone == true ? 'params' : 'query'] = this.formatData(data);
+      par[this.isPhone === true ? 'params' : 'query'] = this.formatData(data);
     }
     if (this.isPhone && Object.prototype.hasOwnProperty.call(route, 'hideNavbar')) {
       par.hideNavbar = route.hideNavbar;

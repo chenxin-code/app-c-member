@@ -7,7 +7,8 @@
     "build": "set NODE_OPTIONS=--openssl-legacy-provider & vue-cli-service build",
     "build:test": "set NODE_OPTIONS=--openssl-legacy-provider & vue-cli-service build --mode test",
     "build:prod": "set NODE_OPTIONS=--openssl-legacy-provider & vue-cli-service build --mode prod",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "fix": "eslint src/**/*.*  --fix"
   },
   "dependencies": {
     "@zkty-team/x-engine-module-engine": "~0.1.12",

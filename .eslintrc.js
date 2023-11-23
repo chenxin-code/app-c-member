@@ -38,9 +38,9 @@ module.exports = {
 		// 强制一致使用反引号、双引号或单引号
 		'quotes': ['warn', 'single'],
 		// 强制执行最大行长度
-		'max-len': ['warn', { 'code': 120 }],
+		'max-len': ['off', { 'code': 120 }],
 		// 要求使用 === 和 !==
-		'eqeqeq': ['warn', 'allow-null'],
+		'eqeqeq': ['off', 'allow-null'],
 		// 在逗号前后强制执行一致的间距
 		'comma-spacing': ['warn', { 'before': false, 'after': true }],
 		// 禁止未使用的变量

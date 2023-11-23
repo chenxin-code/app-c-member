@@ -102,7 +102,7 @@ async function handleFail(option) {
     Toast('请求失败');
   } else {
     var originalRequest = error.config;
-    if (error.code == 'ECONNABORTED' && error.message.indexOf('timeout') != -1 && !originalRequest._retry) {
+    if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1 && !originalRequest._retry) {
       originalRequest._retry = true;
       Toast('请求超时');
     }
